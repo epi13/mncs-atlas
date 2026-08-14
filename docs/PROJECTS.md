@@ -1,6 +1,6 @@
 # MNCS Project Directory
 
-This directory is intentionally concise. Follow each repository's README for current implementation details.
+This directory is intentionally concise. Follow each repository's README for current implementation details. Atlas distinguishes **public family projects** from **deployment/operator implementations** so a private or local control surface is not mistaken for a normative requirement.
 
 ## Standards and semantics
 
@@ -34,11 +34,31 @@ A non-normative MCP/CLI development and evidence control plane. Forge runs decla
 
 Repository: https://github.com/epi13/mncs-fabric
 
-A persistent operator-controlled execution and evidence fabric. Fabric handles identified workers, authenticated transport, exact-target admission, bounded execution, resource/capability observations, retries, and durable execution evidence. It does not choose tools, models, semantic routes, or result acceptance.
+A persistent operator-controlled execution and evidence fabric. Fabric handles identified workers, authenticated transport, exact-target admission, bounded execution, resource/capability observations, retries, durable detached execution, and execution evidence. It does not choose tools, models, semantic routes, or result acceptance.
 
-### Local harness and operator control surfaces
+## Operator implementations
 
-MNCS deployments may use operator-specific local harnesses and remote control surfaces. These own model routing, workspace policy, approvals, and acceptance while consuming Fabric's persistent service. They are deployment infrastructure rather than sources of MNCS authority.
+The current laboratory has concrete operator components that matter to understanding the running system but are **deployment infrastructure rather than sources of MNCS authority**. Their implementation repositories may be private or environment-specific. Atlas documents the responsibility boundary, not an access promise.
+
+### MNCS Control MCP
+
+Current role: protected remote development control surface.
+
+MNCS Control MCP exposes an authorized development workspace, Git, processes, project operations, tools, and bounded MNCS adapters through a fail-closed sandboxed boundary. It can consume Local Harness, Fabric, Forge, and Commons interfaces without taking ownership of their service lifecycles or authority domains.
+
+It does **not** own Fabric worker presence or trust material, Local Harness routing policy, Commons persistence, or MNCS conformance.
+
+See [OPERATING_MODEL.md](OPERATING_MODEL.md).
+
+### Local Harness
+
+Current role: model/tool policy and deployment-level result acceptance.
+
+Local Harness owns workspace meaning, model and tool routing, guarded agent/tool loops, approvals, deterministic verification/escalation, metrics, and deployment-level result acceptance. In the intended persistent-service deployment it consumes Fabric and Commons rather than starting or owning those services.
+
+It does **not** own Fabric exact-target admission/transport, Commons truth or command authority, or MNCS normative status.
+
+See [OPERATING_MODEL.md](OPERATING_MODEL.md).
 
 ## Coordination and learning
 
@@ -46,7 +66,7 @@ MNCS deployments may use operator-specific local harnesses and remote control su
 
 Repository: https://github.com/epi13/MNCS-Commons
 
-A structured coordination and knowledge-exchange layer for agents and humans. Commons records observations, claims, work requests, replications, advisories, and decisions with provenance and evidence. Contributions remain untrusted by default.
+A persistent structured coordination and knowledge-exchange layer for agents and humans. Commons records observations, claims, work requests, replications, advisories, decisions, and durable work history with provenance and evidence. Contributions remain untrusted by default and Commons never turns publication into execution permission.
 
 ### RAVEL
 
@@ -74,13 +94,29 @@ The empirical companion to the standards work. It contains controlled case studi
 
 Repository: https://github.com/epi13/mncs-atlas
 
-This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, contributor orientation, and links into authoritative project documentation.
+This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, contributor orientation, the current operator-model boundary, and links into authoritative project documentation.
+
+## Choosing where to start
+
+| If you want to… | Start with… |
+| --- | --- |
+| understand evidence/status semantics or conformance | MNCS / MNCDS |
+| author or run declared development/evidence workflows | Forge |
+| route local-model and guarded tool work | Local Harness |
+| operate the authorized development workspace remotely | MNCS Control MCP |
+| execute on an exact persistent worker | Fabric |
+| share findings, requests, replications, or decisions | Commons |
+| learn from governed experience | RAVEL / MNEL |
+| challenge claims empirically | Reference Studies |
+| independently validate a supported record subset | Rust Validator + governing MNCS docs |
+| understand how the family fits together | Atlas |
 
 ## Adding a project
 
 A project belongs in this directory when it has a meaningful family-level role rather than merely using MNCS internally. Add it with:
 
-1. its public repository or canonical home;
+1. its public repository or canonical home when one is available;
 2. one paragraph describing what it owns;
 3. one sentence describing what it explicitly does **not** own when that boundary matters;
-4. corresponding terminology/architecture updates if the family model changes.
+4. a visibility/deployment note when the implementation is private, local-only, or operator-specific;
+5. corresponding terminology/architecture/machine-map updates if the family model changes.
