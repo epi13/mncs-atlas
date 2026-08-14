@@ -1,0 +1,95 @@
+{
+  "schema_version": "0.1.0",
+  "name": "MNCS Atlas",
+  "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family.",
+  "non_normative": true,
+  "authority": "orientation-only",
+  "canonical_human_guide": "https://epi13.github.io/mncs-atlas/",
+  "canonical_repository": "https://github.com/epi13/mncs-atlas",
+  "documentation": {
+    "architecture": "https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md",
+    "projects": "https://github.com/epi13/mncs-atlas/blob/main/docs/PROJECTS.md",
+    "terminology": "https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md",
+    "agents": "https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md",
+    "contributing": "https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md"
+  },
+  "invariants": [
+    "Capability is not authority.",
+    "Execution success is not conformance.",
+    "Publication is not acceptance.",
+    "Learning remains governed.",
+    "Missing or insufficient evidence remains UNKNOWN."
+  ],
+  "projects": [
+    {
+      "name": "MNCS / MNCDS",
+      "repository": "https://github.com/epi13/machine-native-complexity-standard",
+      "role": "governing-standard",
+      "maturity": "experimental",
+      "responsibility": "Technical authority, evidence and status semantics, development governance, schemas, RFCs, and claim boundaries."
+    },
+    {
+      "name": "MNCS Language",
+      "repository": "https://github.com/epi13/mncs-language",
+      "role": "language-research",
+      "maturity": "research",
+      "responsibility": "Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA."
+    },
+    {
+      "name": "Forge",
+      "repository": "https://github.com/epi13/mncs-forge-mcp",
+      "role": "development-control-plane",
+      "maturity": "active-infrastructure",
+      "responsibility": "Non-normative bounded development and evidence workflows, provider orchestration, lineage, and evaluator-mode boundaries."
+    },
+    {
+      "name": "Fabric",
+      "repository": "https://github.com/epi13/mncs-fabric",
+      "role": "execution-substrate",
+      "maturity": "active-infrastructure",
+      "responsibility": "Persistent exact-target execution, authenticated transport, capability and resource observations, retries, and execution evidence."
+    },
+    {
+      "name": "Commons",
+      "repository": "https://github.com/epi13/MNCS-Commons",
+      "role": "coordination-and-knowledge-exchange",
+      "maturity": "active-infrastructure",
+      "responsibility": "Structured provenance-aware knowledge exchange for observations, claims, work requests, replications, advisories, and decisions."
+    },
+    {
+      "name": "RAVEL",
+      "repository": "https://github.com/epi13/RAVEL",
+      "role": "adaptive-intelligence",
+      "maturity": "research",
+      "responsibility": "Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS and MNCDS authority."
+    },
+    {
+      "name": "MNEL",
+      "repository": "https://github.com/epi13/Machine-Native-Experimental-Learning",
+      "role": "experimental-learning",
+      "maturity": "research",
+      "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
+    },
+    {
+      "name": "Reference Studies",
+      "repository": "https://github.com/epi13/mncs-reference-studies",
+      "role": "empirical-research",
+      "maturity": "research",
+      "responsibility": "Controlled empirical comparisons, case studies, reimplementations, reproducibility, and first-class negative results."
+    },
+    {
+      "name": "Rust Validator",
+      "repository": "https://github.com/epi13/mncs-validator-rs",
+      "role": "independent-validation",
+      "maturity": "active-infrastructure",
+      "responsibility": "Independent offline validation for supported MNCS subsets without wrapping the Python implementation or executing evidence."
+    },
+    {
+      "name": "Atlas",
+      "repository": "https://github.com/epi13/mncs-atlas",
+      "role": "family-orientation",
+      "maturity": "orientation",
+      "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, and machine-readable orientation."
+    }
+  ]
+}

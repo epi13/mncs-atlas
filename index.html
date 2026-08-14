@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MNCS Atlas: a guide to the Machine-Native Complexity Standard project family, architecture, terminology, maturity, and contribution paths.">
+  <meta name="theme-color" content="#0b1020">
+  <meta property="og:title" content="MNCS Atlas — Machine-Native Complexity Standard">
+  <meta property="og:description" content="Family-level map of the MNCS research ecosystem: authority, evidence, architecture, projects, and how to contribute.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://epi13.github.io/mncs-atlas/">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>MNCS Atlas — Machine-Native Complexity Standard</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="#top" aria-label="MNCS Atlas home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span><strong>MNCS</strong> Atlas</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+        <a href="#overview">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#projects">Projects</a>
+        <a href="#status">Status</a>
+        <a href="#terminology">Terminology</a>
+        <a href="#contribute">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="top" class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">The map of the MNCS project family</p>
+          <h1>Machine-native systems should make <span>authority, evidence, and uncertainty</span> explicit.</h1>
+          <p class="lede">MNCS Atlas is the lightweight family-level guide to the Machine-Native Complexity Standard research ecosystem: what it is, how its projects fit together, where authority lives, and how a new human or agent can contribute without reconstructing the architecture from ten separate READMEs.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#architecture">See how it fits together</a>
+            <a class="button ghost" href="https://github.com/epi13/mncs-atlas">View on GitHub</a>
+          </div>
+        </div>
+        <aside class="principle-card" aria-label="Core project principle">
+          <p class="card-kicker">Core boundary</p>
+          <p class="big-quote">Capability is not authority.</p>
+          <p>A model can propose. A tool can execute. A verifier can measure. A learning system can remember. None of those roles silently grants the right to promote its own result into governing truth.</p>
+          <div class="status-row" aria-label="Conservative status ordering">
+            <span>FAIL</span><b>&gt;</b><span>UNKNOWN</span><b>&gt;</b><span>PASS</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="overview" class="section">
+      <div class="shell two-col intro-grid">
+        <div>
+          <p class="eyebrow">What is MNCS?</p>
+          <h2>A research program for accepting machine-produced software through bounded evidence.</h2>
+        </div>
+        <div class="prose">
+          <p>The <strong>Machine-Native Complexity Standard (MNCS)</strong> is an open experimental standard for accepting generated or machine-optimized implementations through bounded evidence. <strong>MNCDS</strong> is its separate development-process specification.</p>
+          <p>The wider project family tests what happens when contracts, evidence, semantic identity, authority, execution, coordination, and learning are designed for machine participation from the beginning—while remaining inspectable by humans.</p>
+          <p class="muted">Atlas is non-normative. Detailed project documentation and the standards repository remain authoritative for their own domains.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section section-dark">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">Architecture</p>
+          <h2>Different layers, deliberately different authority.</h2>
+          <p>The family is easier to understand when it is mapped by responsibility instead of treating every repository as another interchangeable tool.</p>
+        </div>
+
+        <div class="architecture-map" role="img" aria-label="Conceptual MNCS family architecture from authority through development, execution, coordination, learning, and studies">
+          <div class="arch-layer authority">
+            <span class="layer-label">Governing authority</span>
+            <div class="arch-card featured"><strong>MNCS</strong><small>contracts · evidence semantics · status · conformance</small></div>
+            <div class="arch-card"><strong>MNCDS</strong><small>development process · candidate lifecycle · evidence flow</small></div>
+            <div class="arch-card"><strong>Validators</strong><small>bounded offline validation</small></div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="arch-layer work">
+            <span class="layer-label">Development &amp; reasoning</span>
+            <div class="arch-card"><strong>Agents / models</strong><small>plans · code · hypotheses · repairs</small></div>
+            <div class="arch-card"><strong>RAVEL</strong><small>strategy · memory · adaptive evidence selection</small></div>
+            <div class="arch-card"><strong>MNEL</strong><small>bounded experiments · causal learning</small></div>
+            <div class="arch-card featured"><strong>Forge</strong><small>declared workflows · providers · evidence control</small></div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="arch-layer substrate">
+            <span class="layer-label">Execution &amp; coordination substrate</span>
+            <div class="arch-card featured"><strong>Fabric</strong><small>exact-target execution · transport · execution evidence</small></div>
+            <div class="arch-card"><strong>Commons</strong><small>structured knowledge · work requests · replication</small></div>
+            <div class="arch-card"><strong>Local harnesses</strong><small>routing · tools · policy · acceptance</small></div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="arch-layer research">
+            <span class="layer-label">Empirical challenge</span>
+            <div class="arch-card"><strong>Reference Studies</strong><small>controlled comparisons · negative results · reproducibility</small></div>
+            <div class="arch-card"><strong>MNCS Language</strong><small>verification-native semantics · language research</small></div>
+          </div>
+        </div>
+
+        <div class="flow-section">
+          <h3 class="flow-heading">Representative end-to-end flow</h3>
+          <p class="flow-lede">A successful step does not automatically promote the next layer. Execution success is not verifier success; verifier success is not independent evaluation.</p>
+          <ol class="flow-steps" aria-label="Representative workflow steps">
+            <li><span class="flow-num">1</span><div><strong>Request</strong><p>Human or agent states a bounded goal.</p></div></li>
+            <li><span class="flow-num">2</span><div><strong>Orchestrate</strong><p>Local harness or Forge chooses a declared action and providers.</p></div></li>
+            <li><span class="flow-num">3</span><div><strong>Execute</strong><p>Fabric admits and runs an exact-target workload, recording execution evidence.</p></div></li>
+            <li><span class="flow-num">4</span><div><strong>Observe</strong><p>Providers, compilers, or verifiers emit scoped observations.</p></div></li>
+            <li><span class="flow-num">5</span><div><strong>Record</strong><p>Evidence, lineage, and status are kept explicit; gaps stay UNKNOWN.</p></div></li>
+            <li><span class="flow-num">6</span><div><strong>Share &amp; learn</strong><p>Commons may publish scoped knowledge; RAVEL/MNEL may update strategy under governance.</p></div></li>
+            <li><span class="flow-num">7</span><div><strong>Evaluate</strong><p>MNCS/MNCDS validators judge only the claims they are authorized to judge.</p></div></li>
+          </ol>
+        </div>
+
+        <div class="boundary-grid">
+          <article><span>01</span><h3>Execution is not conformance</h3><p>Fabric can prove that an identified bounded execution occurred under its recorded conditions. That does not make the workload formally MNCS-conformant.</p></article>
+          <article><span>02</span><h3>Coordination is not command</h3><p>Commons can preserve claims, evidence, work requests, disputes, and decisions without becoming an unrestricted instruction channel or source of truth.</p></article>
+          <article><span>03</span><h3>Learning remains governed</h3><p>RAVEL and MNEL can improve strategy from validated experience, but their confidence cannot turn unsupported evidence into PASS.</p></article>
+          <article><span>04</span><h3>Tools do not self-promote</h3><p>Forge, agents, providers, and candidates can create evidence and proposals. Selection and governing status remain outside the candidate's control.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="shell">
+        <div class="section-heading compact">
+          <p class="eyebrow">Project family</p>
+          <h2>Follow the responsibility boundary, then go deep in the owning repo.</h2>
+        </div>
+
+        <div class="project-grid">
+          <a class="project-card" href="https://github.com/epi13/machine-native-complexity-standard"><span class="project-type">Standard</span><h3>MNCS / MNCDS</h3><p>Technical authority, evidence/status semantics, development governance, schemas, RFCs, and claim boundaries.</p><span class="repo-link">machine-native-complexity-standard ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/mncs-language"><span class="project-type">Language</span><h3>MNCS Language</h3><p>Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA.</p><span class="repo-link">mncs-language ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/mncs-forge-mcp"><span class="project-type">Control plane</span><h3>Forge</h3><p>Non-normative bounded development and evidence workflows, provider orchestration, lineage, and evaluator-mode boundaries.</p><span class="repo-link">mncs-forge-mcp ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/mncs-fabric"><span class="project-type">Execution substrate</span><h3>Fabric</h3><p>Persistent exact-target execution, authenticated transport, capability/resource observations, retries, and execution evidence.</p><span class="repo-link">mncs-fabric ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/MNCS-Commons"><span class="project-type">Coordination</span><h3>Commons</h3><p>Structured, provenance-aware knowledge exchange for observations, claims, work requests, replications, advisories, and decisions.</p><span class="repo-link">MNCS-Commons ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/RAVEL"><span class="project-type">Adaptive intelligence</span><h3>RAVEL</h3><p>Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS/MNCDS authority.</p><span class="repo-link">RAVEL ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/Machine-Native-Experimental-Learning"><span class="project-type">Experimental learning</span><h3>MNEL</h3><p>Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation.</p><span class="repo-link">Machine-Native-Experimental-Learning ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/mncs-reference-studies"><span class="project-type">Research</span><h3>Reference Studies</h3><p>Controlled empirical comparisons, case studies, reimplementations, reproducibility, and first-class negative results.</p><span class="repo-link">mncs-reference-studies ↗</span></a>
+          <a class="project-card" href="https://github.com/epi13/mncs-validator-rs"><span class="project-type">Validation</span><h3>Rust Validator</h3><p>Independent offline validation for supported MNCS subsets without wrapping the Python implementation or executing evidence.</p><span class="repo-link">mncs-validator-rs ↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="section section-soft">
+      <div class="shell">
+        <div class="section-heading compact">
+          <p class="eyebrow">Status &amp; maturity</p>
+          <h2>Everything here is experimental. Treat claims as scoped, not universal.</h2>
+          <p>Atlas does not publish a scoreboard. The notes below are orientation aids only; each repository’s README and specs remain authoritative for current implementation reality.</p>
+        </div>
+
+        <div class="status-grid">
+          <article class="status-card">
+            <span class="status-badge experimental">Experimental</span>
+            <h3>MNCS / MNCDS</h3>
+            <p>Open experimental standards work. Non-accredited. Technical acceptance and development-process semantics live here; tools do not inherit that authority by association.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>MNCS Language</h3>
+            <p>Verification-native language and semantic representation research. Exploratory; not a required path to MNCS conformance.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Forge</h3>
+            <p>Non-normative control plane for declared workflows and evidence lineage. Actively developed; does not define conformance.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Fabric</h3>
+            <p>Persistent exact-target execution and evidence substrate. Operator-controlled; execution records are not MNCS status.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Commons</h3>
+            <p>Structured coordination and knowledge exchange. Publication is not acceptance; records stay untrusted by default.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>RAVEL &amp; MNEL</h3>
+            <p>Adaptive strategy and experimental learning beneath governing authority. Learning remains advisory until governed.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>Reference Studies</h3>
+            <p>Empirical companion for controlled comparisons and negative results. Protocols and claims are study-local.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Rust Validator</h3>
+            <p>Independent offline validation for supported subsets. Deliberately separate from the Python path and from execution.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge orientation">Orientation</span>
+            <h3>Atlas</h3>
+            <p>Family map and contributor orientation only. Non-normative. Correct the map when project reality drifts.</p>
+          </article>
+        </div>
+
+        <p class="status-footnote">Maturity labels are descriptive, not ranked. Absence of a label does not imply readiness or incompleteness beyond what the owning repository states.</p>
+      </div>
+    </section>
+
+    <section id="terminology" class="section">
+      <div class="shell terminology-layout">
+        <div class="section-heading compact">
+          <p class="eyebrow">Shared language</p>
+          <h2>A small vocabulary prevents large architectural misunderstandings.</h2>
+          <p>Family terminology is intentionally conservative. The full index lives in <code>docs/TERMINOLOGY.md</code>.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md">Open the terminology index ↗</a>
+        </div>
+        <dl class="term-list">
+          <div><dt>Authority</dt><dd>The bounded right to make a particular decision or claim. Capability is not authority.</dd></div>
+          <div><dt>Evidence</dt><dd>Identified observations or records supporting a bounded claim, with provenance, scope, and freshness.</dd></div>
+          <div><dt>UNKNOWN</dt><dd>An intentional result for missing, stale, unsupported, unavailable, or insufficient evidence—not an inconvenience to hide.</dd></div>
+          <div><dt>Provider</dt><dd>A replaceable compiler, analyzer, benchmark, verifier, runtime harness, or other capability used to produce observations.</dd></div>
+          <div><dt>Worker</dt><dd>An identified execution participant. Availability does not imply independence, trust, or suitability for every claim.</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="contribute" class="section section-soft">
+      <div class="shell contribute-grid">
+        <div>
+          <p class="eyebrow">For new contributors &amp; agents</p>
+          <h2>Start with the map. Then read the owning project.</h2>
+          <p class="lede-small">The fastest safe path into MNCS is not to read every repository. It is to identify the authority and responsibility boundary first.</p>
+        </div>
+        <ol class="steps">
+          <li><span>1</span><div><strong>Orient</strong><p>Read Atlas architecture and terminology so family names mean the same thing.</p></div></li>
+          <li><span>2</span><div><strong>Locate ownership</strong><p>Find the repository that owns the behavior you want to change.</p></div></li>
+          <li><span>3</span><div><strong>Read locally</strong><p>Use that project's README, specs, architecture docs, tests, and public interfaces as the implementation authority.</p></div></li>
+          <li><span>4</span><div><strong>Preserve boundaries</strong><p>Do not turn transport into trust, execution into conformance, publication into acceptance, or learning into authority.</p></div></li>
+          <li><span>5</span><div><strong>Contribute evidence</strong><p>Prefer narrow changes, explicit uncertainty, reproducible results, and versioned public contracts.</p></div></li>
+        </ol>
+      </div>
+
+      <div class="shell pathway-grid">
+        <article class="pathway-card">
+          <p class="card-kicker">Human contributors</p>
+          <h3>Prefer clarity over completeness</h3>
+          <p>Update Atlas when the family map drifts. Keep implementation detail in the owning repository. Surface UNKNOWN states instead of filling gaps with optimistic language.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md">Read CONTRIBUTING.md ↗</a>
+        </article>
+        <article class="pathway-card">
+          <p class="card-kicker">Coding &amp; research agents</p>
+          <h3>Establish authority before editing</h3>
+          <p>Follow the orientation sequence in AGENTS.md. Do not infer architecture from repository names alone. Prefer public interfaces and explicit provenance over cross-repo internal coupling.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Read AGENTS.md ↗</a>
+        </article>
+        <article class="pathway-card">
+          <p class="card-kicker">Cross-project changes</p>
+          <h3>Define the boundary first</h3>
+          <p>When a feature spans repositories, state which component owns the claim, which records move across the boundary, and what remains UNKNOWN. Prefer versioned public records over shared internals.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md">Read ARCHITECTURE.md ↗</a>
+        </article>
+      </div>
+
+      <div class="shell callout">
+        <div><p class="card-kicker">Agent orientation</p><h3>Working with Codex, Grok, local models, or another coding agent?</h3><p><code>AGENTS.md</code> defines the family-level invariants an agent should establish before editing across MNCS repositories.</p></div>
+        <a class="button primary" href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Read AGENTS.md</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <strong>MNCS Atlas</strong>
+        <p>The forest map for a machine-native research project family.</p>
+        <p class="footer-links">
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/PROJECTS.md">Projects</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md">Terminology</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Agents</a>
+        </p>
+      </div>
+      <div>
+        <p>Atlas is non-normative documentation. MNCS is open, experimental, and non-accredited.</p>
+        <p>Apache-2.0 · <span id="year">2026</span></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

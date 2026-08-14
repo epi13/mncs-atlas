@@ -20,8 +20,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Compile integrity checker
-        run: python -m py_compile scripts/check_site.py
+      - name: Compile site tooling
+        run: python -m py_compile scripts/check_site.py scripts/sync_pages_root.py
 
-      - name: Check site links and assets
+      - name: Check Pages root mirror
+        run: python scripts/sync_pages_root.py --check
+
+      - name: Check site links, assets, and machine map
         run: python scripts/check_site.py

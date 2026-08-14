@@ -15,6 +15,8 @@ Do not infer family architecture from repository names alone. Establish the owni
 5. If the change crosses a boundary, read the adjacent project's public contract before modifying either side.
 6. Preserve evidence and authority semantics in code, documentation, tests, and prompts.
 
+For automated discovery, [site/atlas.json](site/atlas.json) provides a compact machine-readable family map. It is orientation-only and never outranks the owning project's current documentation or specifications.
+
 ## Family-wide invariants
 
 - **MNCS defines technical acceptance/conformance semantics.** MNCDS separately governs the development process.
@@ -54,3 +56,5 @@ Do not repair a disagreement by silently changing normative meaning. Surface the
 ## Working style for agents
 
 Prefer narrow, evidence-backed changes. Preserve provenance. Reuse public interfaces rather than reaching into sibling internals. Do not add hidden fallback behavior across machines, models, evaluators, or trust boundaries. When evidence is absent, report the gap.
+
+When changing the Atlas website, edit only the canonical `site/` tree, run `python scripts/sync_pages_root.py`, and let CI verify that the root GitHub Pages compatibility mirror remains byte-for-byte current.
