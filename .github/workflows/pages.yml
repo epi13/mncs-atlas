@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'site/**'
+      - 'scripts/check_site.py'
+      - 'scripts/sync_pages_root.py'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -26,6 +28,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify Pages compatibility mirror
+        run: python scripts/sync_pages_root.py --check
+
+      - name: Validate Atlas site
+        run: python scripts/check_site.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
