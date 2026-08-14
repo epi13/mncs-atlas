@@ -15,6 +15,7 @@ Atlas should answer the questions that do not belong in any one project README:
 - Where does authority live, and where does it explicitly *not* live?
 - What should a new human contributor or coding agent read before changing anything?
 - Which terminology should mean the same thing across repositories?
+- What is the rough maturity posture of each family component (experimental, research, infrastructure, orientation)?
 
 Atlas intentionally does **not** duplicate detailed implementation documentation. When a repository README, specification, RFC, schema, or source file is authoritative for a local question, Atlas links there instead.
 
@@ -22,7 +23,7 @@ Atlas intentionally does **not** duplicate detailed implementation documentation
 
 ```text
 site/                    dependency-free GitHub Pages site
-  index.html
+  index.html             overview, architecture, projects, status, pathways
   assets/
 docs/
   ARCHITECTURE.md        family-level architecture and authority map
@@ -30,7 +31,7 @@ docs/
   TERMINOLOGY.md         shared terminology index
 AGENTS.md                 orientation contract for AI/coding agents
 CONTRIBUTING.md           contribution guidance for Atlas
-.github/workflows/        GitHub Pages deployment
+.github/workflows/        GitHub Pages deployment + site integrity CI
 ```
 
 ## Local preview
