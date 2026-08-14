@@ -9,13 +9,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 
-MIRRORS = {
-    SITE / "index.html": ROOT / "index.html",
-    SITE / "404.html": ROOT / "404.html",
-    SITE / "atlas.json": ROOT / "atlas.json",
-    SITE / "assets" / "styles.css": ROOT / "assets" / "styles.css",
-    SITE / "assets" / "app.js": ROOT / "assets" / "app.js",
-}
+MIRROR_PATHS = (
+    "index.html",
+    "404.html",
+    "atlas.json",
+    "robots.txt",
+    "sitemap.xml",
+    "assets/styles.css",
+    "assets/app.js",
+    "schema/atlas.schema.json",
+)
+
+MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
 
 
 def main() -> int:

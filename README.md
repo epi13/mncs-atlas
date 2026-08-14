@@ -2,7 +2,7 @@
 
 **A family-level guide to the Machine-Native Complexity Standard (MNCS) project ecosystem.**
 
-MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, and gives humans and agents a reliable place to start.
+MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, distinguishes authority from operator topology, and gives humans and agents a reliable place to start.
 
 ## What Atlas is for
 
@@ -12,10 +12,12 @@ Atlas should answer the questions that do not belong in any one project README:
 - What is the difference between MNCS and MNCDS?
 - Which repository owns which responsibility?
 - How do Forge, Fabric, Commons, RAVEL, MNEL, the language work, validators, and studies relate?
+- How do current operator components such as MNCS Control MCP and Local Harness fit without becoming normative requirements?
 - Where does authority live, and where does it explicitly *not* live?
+- Which persistent service owns worker presence, execution history, knowledge state, routing policy, or remote-control state?
 - What should a new human contributor or coding agent read before changing anything?
 - Which terminology should mean the same thing across repositories?
-- What is the rough maturity posture of each family component (experimental, research, infrastructure, orientation)?
+- What is the rough maturity posture of each family component?
 
 Atlas intentionally does **not** duplicate detailed implementation documentation. When a repository README, specification, RFC, schema, or source file is authoritative for a local question, Atlas links there instead.
 
@@ -23,17 +25,25 @@ Atlas intentionally does **not** duplicate detailed implementation documentation
 
 ```text
 site/                    canonical dependency-free GitHub Pages source
-  index.html             overview, architecture, projects, status, pathways
+  index.html             overview, entry points, architecture, runtime, projects
   404.html               project-aware not-found page
-  atlas.json             machine-readable family orientation map
+  atlas.json             machine-readable family + operator orientation map
+  robots.txt             crawler guidance
+  sitemap.xml            public Pages sitemap
+  schema/
+    atlas.schema.json     machine-readable Atlas shape
   assets/
 index.html                generated root compatibility mirror of site/index.html
 404.html                  generated root compatibility mirror of site/404.html
 atlas.json                generated root compatibility mirror of site/atlas.json
+robots.txt                generated root compatibility mirror
+sitemap.xml               generated root compatibility mirror
+schema/                   generated root compatibility mirror of site/schema/
 assets/                   generated root compatibility mirror of site/assets/
 .nojekyll                 disables legacy Jekyll rendering when Pages uses main:/
 docs/
-  ARCHITECTURE.md         family-level architecture and authority map
+  ARCHITECTURE.md         family-level authority and responsibility map
+  OPERATING_MODEL.md      current operator/runtime path and lifecycle ownership
   PROJECTS.md             project directory and responsibility boundaries
   TERMINOLOGY.md          shared terminology index
 AGENTS.md                 orientation contract for AI/coding agents
@@ -68,18 +78,38 @@ Atlas also keeps a generated root compatibility mirror because GitHub's legacy b
 
 This dual-mode layout makes the public front door resilient while keeping `site/` the single source of truth.
 
+## Authority map vs operating model
+
+Atlas deliberately keeps two related views:
+
+- [Architecture](docs/ARCHITECTURE.md) answers **who is allowed to claim what?**
+- [Operating model](docs/OPERATING_MODEL.md) answers **how does the current MNCS laboratory actually get bounded work done?**
+
+That distinction prevents protected remote control, model routing, persistent execution, knowledge storage, and normative evaluation from collapsing into one vague "control plane."
+
 ## Machine-readable Atlas
 
-`site/atlas.json` is a non-normative orientation surface for agents and tooling. It provides stable project-family names, roles, repositories, maturity labels, responsibility summaries, and core invariants. It is deliberately an orientation map rather than a conformance or authority source.
+`site/atlas.json` is a non-normative orientation surface for agents and tooling. Version 0.2 adds:
+
+- stable IDs for public family projects;
+- explicit current operator components;
+- cross-component relationship records;
+- task-oriented entry points;
+- freshness guidance and review date;
+- a published JSON Schema at `site/schema/atlas.schema.json`.
+
+The machine map is deliberately orientation data rather than a conformance or authority source.
 
 ## Family documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Operating model](docs/OPERATING_MODEL.md)
 - [Project directory](docs/PROJECTS.md)
 - [Terminology](docs/TERMINOLOGY.md)
 - [Agent orientation](AGENTS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
+- [Atlas schema](site/schema/atlas.schema.json)
 
 ## Site checks
 
@@ -88,7 +118,7 @@ python scripts/sync_pages_root.py --check
 python scripts/check_site.py
 ```
 
-These checks validate local links and fragments, required assets, the machine-readable Atlas shape, `.nojekyll`, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
+These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, `.nojekyll`, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
 
 ## Documentation rule
 

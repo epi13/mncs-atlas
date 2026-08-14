@@ -6,10 +6,13 @@ MNCS Atlas exists to reduce orientation cost across the MNCS project family with
 
 Good Atlas contributions include:
 
-- family-level architecture explanations;
+- family-level authority and architecture explanations;
+- operator/runtime maps that clarify current deployment topology without making it normative;
 - project maps and responsibility boundaries;
+- lifecycle-ownership and service-consumer boundaries;
 - terminology used across multiple repositories;
 - human and agent onboarding paths;
+- machine-readable orientation and relationship metadata;
 - diagrams that explain cross-project flows;
 - links to authoritative project documentation;
 - corrections when the family map has drifted from implementation reality.
@@ -18,12 +21,14 @@ Implementation details that are local to one repository usually belong in that r
 
 ## Before opening a change
 
-1. Read [AGENTS.md](AGENTS.md), even if you are a human contributor; it summarizes the authority boundaries Atlas is expected to preserve.
-2. Read the README or specification of every project whose relationship you are changing.
-3. Prefer links and concise summaries over copied implementation detail.
-4. Distinguish current implementation from future intent.
-5. Preserve `PASS`, `FAIL`, and `UNKNOWN` semantics. Do not turn missing evidence into positive claims.
-6. Do not describe Forge, Fabric, Commons, RAVEL, MNEL, a model, or Atlas itself as having MNCS conformance authority unless a normative MNCS document explicitly grants that authority.
+1. Read [AGENTS.md](AGENTS.md), even if you are a human contributor; it summarizes the authority/lifecycle boundaries Atlas is expected to preserve.
+2. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). If the change touches a running deployment, service lifecycle, model routing, Control, Fabric, or Commons, also read [docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
+3. Read the README or specification of every project whose relationship you are changing.
+4. Prefer links and concise summaries over copied implementation detail.
+5. Distinguish current implementation from future intent and public projects from deployment-private/operator implementations.
+6. Preserve `PASS`, `FAIL`, and `UNKNOWN` semantics. Do not turn missing evidence into positive claims.
+7. Preserve lifecycle ownership. A service consumer should not be described as owning a persistent service merely because it can call or observe it.
+8. Do not describe Forge, Fabric, Commons, RAVEL, MNEL, Control, Local Harness, a model, or Atlas itself as having MNCS conformance authority unless a normative MNCS document explicitly grants that authority.
 
 ## Site changes
 
@@ -57,12 +62,25 @@ Check at minimum:
 - readable contrast;
 - internal anchor links;
 - external repository links;
-- consistency between the site, `atlas.json`, and `docs/` source material;
+- consistency between the site, `atlas.json`, its schema, and `docs/` source material;
+- crawler/discovery files (`robots.txt`, `sitemap.xml`);
 - root mirror parity with the canonical `site/` tree.
 
 ## Machine-readable orientation
 
-`site/atlas.json` is intentionally non-normative. Keep it concise, versioned, and aligned with the family map. It may help agents discover project roles and repositories, but it must never be treated as a replacement for the owning project's current specifications or documentation.
+`site/atlas.json` is intentionally non-normative. Keep it versioned and aligned with the family map.
+
+When changing it:
+
+- preserve stable component IDs unless identity genuinely changes;
+- give every relationship valid `from` and `to` component IDs;
+- distinguish public `projects` from deployment-specific `operator_components`;
+- keep task-oriented `entry_points` bounded and descriptive;
+- update `last_reviewed` when the family map has actually been checked against current owning documentation;
+- update `site/schema/atlas.schema.json` when the machine-map shape changes;
+- never treat the map as a replacement for the owning project's current specifications or documentation.
+
+CI verifies ID uniqueness, relationship references, entry-point references, schema/discovery files, and mirror parity.
 
 ## Pull requests
 
@@ -70,7 +88,8 @@ A useful PR description should state:
 
 - what family-level understanding changed;
 - which project documentation was consulted;
-- whether the change is descriptive, architectural, or normative;
+- whether the change is descriptive, architectural, operator/deployment-specific, or normative;
+- which component owns any new persistent state or lifecycle;
 - any areas that remain intentionally `UNKNOWN` or provisional.
 
-Atlas changes should make the project family easier to understand without increasing ambiguity about where technical authority lives.
+Atlas changes should make the project family easier to understand without increasing ambiguity about where technical authority or lifecycle ownership lives.

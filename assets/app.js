@@ -1,6 +1,12 @@
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('#site-nav');
 
+function closeNav() {
+  if (!toggle || !nav) return;
+  nav.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}
+
 if (toggle && nav) {
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
@@ -8,10 +14,18 @@ if (toggle && nav) {
   });
 
   nav.addEventListener('click', (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
+    if (event.target instanceof HTMLAnchorElement) closeNav();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && nav.classList.contains('open')) {
+      closeNav();
+      toggle.focus();
     }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 820) closeNav();
   });
 }
 
