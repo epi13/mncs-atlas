@@ -1,27 +1,36 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
+  "last_reviewed": "2026-08-14",
   "name": "MNCS Atlas",
-  "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family.",
+  "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its current operator stack.",
   "non_normative": true,
   "authority": "orientation-only",
   "canonical_human_guide": "https://epi13.github.io/mncs-atlas/",
   "canonical_repository": "https://github.com/epi13/mncs-atlas",
+  "schema": "https://epi13.github.io/mncs-atlas/schema/atlas.schema.json",
   "documentation": {
     "architecture": "https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md",
+    "operating_model": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md",
     "projects": "https://github.com/epi13/mncs-atlas/blob/main/docs/PROJECTS.md",
     "terminology": "https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md",
     "agents": "https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md",
     "contributing": "https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md"
   },
+  "freshness": {
+    "policy": "Atlas is descriptive orientation. Verify implementation-sensitive claims against the owning repository before acting.",
+    "status": "reviewed"
+  },
   "invariants": [
     "Capability is not authority.",
     "Execution success is not conformance.",
+    "Transport is not trust.",
     "Publication is not acceptance.",
     "Learning remains governed.",
     "Missing or insufficient evidence remains UNKNOWN."
   ],
   "projects": [
     {
+      "id": "mncs",
       "name": "MNCS / MNCDS",
       "repository": "https://github.com/epi13/machine-native-complexity-standard",
       "role": "governing-standard",
@@ -29,6 +38,7 @@
       "responsibility": "Technical authority, evidence and status semantics, development governance, schemas, RFCs, and claim boundaries."
     },
     {
+      "id": "mncs-language",
       "name": "MNCS Language",
       "repository": "https://github.com/epi13/mncs-language",
       "role": "language-research",
@@ -36,27 +46,31 @@
       "responsibility": "Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA."
     },
     {
+      "id": "forge",
       "name": "Forge",
       "repository": "https://github.com/epi13/mncs-forge-mcp",
-      "role": "development-control-plane",
+      "role": "development-and-evidence-control-plane",
       "maturity": "active-infrastructure",
-      "responsibility": "Non-normative bounded development and evidence workflows, provider orchestration, lineage, and evaluator-mode boundaries."
+      "responsibility": "Non-normative bounded development and evidence workflows, provider orchestration, lineage, evidence gaps, and evaluator-mode boundaries."
     },
     {
+      "id": "fabric",
       "name": "Fabric",
       "repository": "https://github.com/epi13/mncs-fabric",
       "role": "execution-substrate",
       "maturity": "active-infrastructure",
-      "responsibility": "Persistent exact-target execution, authenticated transport, capability and resource observations, retries, and execution evidence."
+      "responsibility": "Persistent exact-target execution, authenticated transport, worker presence, capability and resource observations, retries, and execution evidence."
     },
     {
+      "id": "commons",
       "name": "Commons",
       "repository": "https://github.com/epi13/MNCS-Commons",
       "role": "coordination-and-knowledge-exchange",
       "maturity": "active-infrastructure",
-      "responsibility": "Structured provenance-aware knowledge exchange for observations, claims, work requests, replications, advisories, and decisions."
+      "responsibility": "Structured provenance-aware knowledge exchange and durable work coordination for observations, claims, requests, replications, advisories, and decisions."
     },
     {
+      "id": "ravel",
       "name": "RAVEL",
       "repository": "https://github.com/epi13/RAVEL",
       "role": "adaptive-intelligence",
@@ -64,6 +78,7 @@
       "responsibility": "Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS and MNCDS authority."
     },
     {
+      "id": "mnel",
       "name": "MNEL",
       "repository": "https://github.com/epi13/Machine-Native-Experimental-Learning",
       "role": "experimental-learning",
@@ -71,6 +86,7 @@
       "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
     },
     {
+      "id": "reference-studies",
       "name": "Reference Studies",
       "repository": "https://github.com/epi13/mncs-reference-studies",
       "role": "empirical-research",
@@ -78,6 +94,7 @@
       "responsibility": "Controlled empirical comparisons, case studies, reimplementations, reproducibility, and first-class negative results."
     },
     {
+      "id": "rust-validator",
       "name": "Rust Validator",
       "repository": "https://github.com/epi13/mncs-validator-rs",
       "role": "independent-validation",
@@ -85,11 +102,145 @@
       "responsibility": "Independent offline validation for supported MNCS subsets without wrapping the Python implementation or executing evidence."
     },
     {
+      "id": "atlas",
       "name": "Atlas",
       "repository": "https://github.com/epi13/mncs-atlas",
       "role": "family-orientation",
       "maturity": "orientation",
-      "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, and machine-readable orientation."
+      "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, operator-model documentation, and machine-readable orientation."
+    }
+  ],
+  "operator_components": [
+    {
+      "id": "control",
+      "name": "MNCS Control MCP",
+      "role": "protected-remote-workspace-control",
+      "visibility": "deployment-private",
+      "responsibility": "Exposes an authorized development workspace, Git, process, project, tooling, and bounded MNCS adapters through a fail-closed sandboxed control surface.",
+      "does_not_own": [
+        "Fabric fleet lifecycle",
+        "Local model routing policy",
+        "Commons persistence",
+        "MNCS conformance"
+      ],
+      "orientation": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md"
+    },
+    {
+      "id": "local-harness",
+      "name": "Local Harness",
+      "role": "model-tool-policy-and-deployment-acceptance",
+      "visibility": "deployment-private",
+      "responsibility": "Owns workspace meaning, model and tool routing, approvals, local agent loops, deployment-level result acceptance, and escalation while consuming persistent Fabric and Commons services.",
+      "does_not_own": [
+        "Fabric exact-target admission or transport",
+        "Commons truth or command authority",
+        "MNCS normative status"
+      ],
+      "orientation": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "control",
+      "to": "local-harness",
+      "kind": "bounded-adapter",
+      "description": "Control may expose Local Harness capabilities while preserving Harness routing, policy, and acceptance ownership."
+    },
+    {
+      "from": "control",
+      "to": "fabric",
+      "kind": "consumer",
+      "description": "Control consumes the persistent Fabric service and does not own the worker registry, trust material, or fleet lifecycle."
+    },
+    {
+      "from": "control",
+      "to": "commons",
+      "kind": "consumer",
+      "description": "Control consumes bounded Commons interfaces and does not own the Commons store or service lifecycle."
+    },
+    {
+      "from": "local-harness",
+      "to": "fabric",
+      "kind": "consumer",
+      "description": "Harness chooses or pins model/tool work; Fabric owns exact-target admission, transport, execution, and execution evidence."
+    },
+    {
+      "from": "local-harness",
+      "to": "commons",
+      "kind": "mediated-consumer",
+      "description": "Harness mediates bounded Commons tools for local and Fabric-backed models while retaining tool policy."
+    },
+    {
+      "from": "forge",
+      "to": "fabric",
+      "kind": "execution-consumer",
+      "description": "Forge may delegate bounded execution to Fabric while preserving evidence-workflow lineage and evaluator boundaries."
+    },
+    {
+      "from": "forge",
+      "to": "mncs",
+      "kind": "delegated-validation",
+      "description": "Forge does not self-promote results; governing validation remains with the authority declared by MNCS or MNCDS."
+    },
+    {
+      "from": "commons",
+      "to": "ravel",
+      "kind": "scoped-knowledge-input",
+      "description": "RAVEL may learn from governed Commons records without turning publication into truth."
+    },
+    {
+      "from": "commons",
+      "to": "mnel",
+      "kind": "scoped-knowledge-input",
+      "description": "MNEL may use scoped records and outcomes as experimental inputs while preserving their evidence status."
+    },
+    {
+      "from": "reference-studies",
+      "to": "mncs",
+      "kind": "empirical-challenge",
+      "description": "Reference Studies test bounded claims under frozen protocols; study outcomes do not silently rewrite the standard."
+    }
+  ],
+  "entry_points": [
+    {
+      "goal": "Understand acceptance, evidence semantics, or conformance",
+      "start_with": ["mncs"],
+      "note": "Read the governing standard before tool-specific documentation."
+    },
+    {
+      "goal": "Develop or evaluate a candidate with declared evidence workflows",
+      "start_with": ["forge", "mncs"],
+      "note": "Forge is non-normative; validators retain the authority assigned to them."
+    },
+    {
+      "goal": "Route local model and guarded tool work",
+      "start_with": ["local-harness"],
+      "note": "This is deployment policy, not MNCS conformance."
+    },
+    {
+      "goal": "Operate the development workspace remotely",
+      "start_with": ["control"],
+      "note": "Control is a protected workspace surface and service consumer."
+    },
+    {
+      "goal": "Run a bounded workload on an exact worker",
+      "start_with": ["fabric"],
+      "note": "Execution evidence does not itself establish conformance."
+    },
+    {
+      "goal": "Share durable findings, work, replications, or decisions",
+      "start_with": ["commons"],
+      "note": "Publication is not acceptance."
+    },
+    {
+      "goal": "Learn from governed outcomes or run bounded experiments",
+      "start_with": ["ravel", "mnel", "commons"],
+      "note": "Learning remains advisory until governed."
+    },
+    {
+      "goal": "Challenge claims empirically or validate supported records independently",
+      "start_with": ["reference-studies", "rust-validator", "mncs"],
+      "note": "Keep study-local and validator-local authority explicit."
     }
   ]
 }

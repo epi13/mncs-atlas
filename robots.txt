@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://epi13.github.io/mncs-atlas/sitemap.xml
