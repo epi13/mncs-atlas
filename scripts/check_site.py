@@ -4,20 +4,26 @@
 from __future__ import annotations
 
 import json
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
+CANONICAL_URL = "https://epi13.github.io/mncs-atlas/"
 
-MIRRORS = {
-    SITE / "index.html": ROOT / "index.html",
-    SITE / "404.html": ROOT / "404.html",
-    SITE / "atlas.json": ROOT / "atlas.json",
-    SITE / "assets" / "styles.css": ROOT / "assets" / "styles.css",
-    SITE / "assets" / "app.js": ROOT / "assets" / "app.js",
-}
+MIRROR_PATHS = (
+    "index.html",
+    "404.html",
+    "atlas.json",
+    "robots.txt",
+    "sitemap.xml",
+    "assets/styles.css",
+    "assets/app.js",
+    "schema/atlas.schema.json",
+)
+MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
 
 
 class LinkCollector(HTMLParser):
@@ -41,6 +47,90 @@ def load_html(path: Path) -> LinkCollector:
     parser = LinkCollector()
     parser.feed(path.read_text(encoding="utf-8"))
     return parser
+
+
+def load_json(path: Path, errors: list[str]) -> object | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        errors.append(f"{path.relative_to(ROOT)} is not valid JSON: {exc}")
+        return None
+
+
+def check_atlas(atlas: object, errors: list[str]) -> None:
+    if not isinstance(atlas, dict):
+        errors.append("site/atlas.json must contain a JSON object")
+        return
+
+    if atlas.get("non_normative") is not True:
+        errors.append("site/atlas.json must explicitly declare non_normative=true")
+    if atlas.get("authority") != "orientation-only":
+        errors.append("site/atlas.json must explicitly declare authority=orientation-only")
+    if not atlas.get("schema_version"):
+        errors.append("site/atlas.json is missing schema_version")
+    if atlas.get("canonical_human_guide") != CANONICAL_URL:
+        errors.append("site/atlas.json canonical_human_guide does not match the Pages URL")
+
+    projects = atlas.get("projects")
+    operator_components = atlas.get("operator_components")
+    relationships = atlas.get("relationships")
+    entry_points = atlas.get("entry_points")
+
+    if not isinstance(projects, list) or not projects:
+        errors.append("site/atlas.json must contain a non-empty projects list")
+        projects = []
+    if not isinstance(operator_components, list):
+        errors.append("site/atlas.json operator_components must be a list")
+        operator_components = []
+    if not isinstance(relationships, list):
+        errors.append("site/atlas.json relationships must be a list")
+        relationships = []
+    if not isinstance(entry_points, list):
+        errors.append("site/atlas.json entry_points must be a list")
+        entry_points = []
+
+    known_ids: set[str] = set()
+    for collection_name, collection in (("projects", projects), ("operator_components", operator_components)):
+        for index, component in enumerate(collection):
+            if not isinstance(component, dict):
+                errors.append(f"site/atlas.json {collection_name}[{index}] must be an object")
+                continue
+            component_id = component.get("id")
+            if not isinstance(component_id, str) or not component_id:
+                errors.append(f"site/atlas.json {collection_name}[{index}] is missing a stable id")
+                continue
+            if component_id in known_ids:
+                errors.append(f"site/atlas.json duplicate component id: {component_id}")
+            known_ids.add(component_id)
+            if not component.get("name") or not component.get("role") or not component.get("responsibility"):
+                errors.append(f"site/atlas.json component {component_id} is missing name, role, or responsibility")
+
+    for index, relation in enumerate(relationships):
+        if not isinstance(relation, dict):
+            errors.append(f"site/atlas.json relationships[{index}] must be an object")
+            continue
+        source = relation.get("from")
+        target = relation.get("to")
+        if source not in known_ids:
+            errors.append(f"site/atlas.json relationship references unknown source: {source}")
+        if target not in known_ids:
+            errors.append(f"site/atlas.json relationship references unknown target: {target}")
+        if not relation.get("kind") or not relation.get("description"):
+            errors.append(f"site/atlas.json relationship {source}->{target} is missing kind or description")
+
+    for index, entry in enumerate(entry_points):
+        if not isinstance(entry, dict):
+            errors.append(f"site/atlas.json entry_points[{index}] must be an object")
+            continue
+        starts = entry.get("start_with")
+        if not entry.get("goal") or not isinstance(starts, list) or not starts:
+            errors.append(f"site/atlas.json entry_points[{index}] must define goal and non-empty start_with")
+            continue
+        unknown = [component_id for component_id in starts if component_id not in known_ids]
+        if unknown:
+            errors.append(
+                f"site/atlas.json entry point {entry.get('goal')!r} references unknown component ids: {', '.join(unknown)}"
+            )
 
 
 def check() -> list[str]:
@@ -82,31 +172,43 @@ def check() -> list[str]:
                             f"{page.relative_to(ROOT)}: missing fragment #{fragment} in {target_page.relative_to(ROOT)}"
                         )
 
-    required = [
-        SITE / "index.html",
-        SITE / "404.html",
-        SITE / "atlas.json",
-        SITE / "assets" / "styles.css",
-        SITE / "assets" / "app.js",
-    ]
+    required = [SITE / relative for relative in MIRROR_PATHS]
     for path in required:
         if not path.is_file():
             errors.append(f"missing required site file: {path.relative_to(ROOT)}")
 
     atlas_path = SITE / "atlas.json"
     if atlas_path.is_file():
+        atlas = load_json(atlas_path, errors)
+        if atlas is not None:
+            check_atlas(atlas, errors)
+
+    schema_path = SITE / "schema" / "atlas.schema.json"
+    if schema_path.is_file():
+        schema = load_json(schema_path, errors)
+        if isinstance(schema, dict):
+            if schema.get("$id") != f"{CANONICAL_URL}schema/atlas.schema.json":
+                errors.append("site/schema/atlas.schema.json has an unexpected $id")
+            if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+                errors.append("site/schema/atlas.schema.json must declare JSON Schema draft 2020-12")
+
+    robots_path = SITE / "robots.txt"
+    if robots_path.is_file():
+        robots = robots_path.read_text(encoding="utf-8")
+        if f"Sitemap: {CANONICAL_URL}sitemap.xml" not in robots:
+            errors.append("site/robots.txt must advertise the canonical sitemap")
+
+    sitemap_path = SITE / "sitemap.xml"
+    if sitemap_path.is_file():
         try:
-            atlas = json.loads(atlas_path.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, OSError) as exc:
-            errors.append(f"site/atlas.json is not valid JSON: {exc}")
+            sitemap_root = ET.fromstring(sitemap_path.read_text(encoding="utf-8"))
+        except (ET.ParseError, OSError) as exc:
+            errors.append(f"site/sitemap.xml is not valid XML: {exc}")
         else:
-            if atlas.get("non_normative") is not True:
-                errors.append("site/atlas.json must explicitly declare non_normative=true")
-            if not atlas.get("schema_version"):
-                errors.append("site/atlas.json is missing schema_version")
-            projects = atlas.get("projects")
-            if not isinstance(projects, list) or not projects:
-                errors.append("site/atlas.json must contain a non-empty projects list")
+            namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+            locations = {node.text for node in sitemap_root.findall("sm:url/sm:loc", namespace)}
+            if CANONICAL_URL not in locations:
+                errors.append("site/sitemap.xml must contain the canonical Pages URL")
 
     if not (ROOT / ".nojekyll").is_file():
         errors.append("missing .nojekyll required for legacy main:/ Pages compatibility")
@@ -130,7 +232,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print("MNCS Atlas site checks passed, including root Pages compatibility mirror.")
+    print("MNCS Atlas site checks passed, including topology, discovery files, and root Pages compatibility mirror.")
     return 0
 
 
