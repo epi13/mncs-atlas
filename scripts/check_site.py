@@ -3,12 +3,21 @@
 
 from __future__ import annotations
 
+import json
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
+
+MIRRORS = {
+    SITE / "index.html": ROOT / "index.html",
+    SITE / "404.html": ROOT / "404.html",
+    SITE / "atlas.json": ROOT / "atlas.json",
+    SITE / "assets" / "styles.css": ROOT / "assets" / "styles.css",
+    SITE / "assets" / "app.js": ROOT / "assets" / "app.js",
+}
 
 
 class LinkCollector(HTMLParser):
@@ -75,12 +84,40 @@ def check() -> list[str]:
 
     required = [
         SITE / "index.html",
+        SITE / "404.html",
+        SITE / "atlas.json",
         SITE / "assets" / "styles.css",
         SITE / "assets" / "app.js",
     ]
     for path in required:
         if not path.is_file():
             errors.append(f"missing required site file: {path.relative_to(ROOT)}")
+
+    atlas_path = SITE / "atlas.json"
+    if atlas_path.is_file():
+        try:
+            atlas = json.loads(atlas_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError) as exc:
+            errors.append(f"site/atlas.json is not valid JSON: {exc}")
+        else:
+            if atlas.get("non_normative") is not True:
+                errors.append("site/atlas.json must explicitly declare non_normative=true")
+            if not atlas.get("schema_version"):
+                errors.append("site/atlas.json is missing schema_version")
+            projects = atlas.get("projects")
+            if not isinstance(projects, list) or not projects:
+                errors.append("site/atlas.json must contain a non-empty projects list")
+
+    if not (ROOT / ".nojekyll").is_file():
+        errors.append("missing .nojekyll required for legacy main:/ Pages compatibility")
+
+    for source, target in MIRRORS.items():
+        if not target.is_file():
+            errors.append(f"missing root Pages compatibility file: {target.relative_to(ROOT)}")
+        elif source.is_file() and source.read_bytes() != target.read_bytes():
+            errors.append(
+                f"root Pages compatibility mirror is stale: {target.relative_to(ROOT)} != {source.relative_to(ROOT)}"
+            )
 
     return errors
 
@@ -93,7 +130,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print("MNCS Atlas site checks passed.")
+    print("MNCS Atlas site checks passed, including root Pages compatibility mirror.")
     return 0
 
 
