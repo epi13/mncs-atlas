@@ -4,6 +4,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 ## A
 
+**Acceptance** — A scoped decision by the layer authorized to decide whether a result is sufficient for its workflow. Local Harness or another deployment can accept a result for that deployment without establishing formal MNCS conformance.
+
 **Agent** — A model-backed or software actor that can propose plans, code, hypotheses, tool requests, explanations, or candidate repairs. An agent is not automatically an evaluator or authority.
 
 **Atlas** — The MNCS family-level orientation and documentation map. Non-normative.
@@ -14,9 +16,11 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Candidate** — A particular proposed artifact, implementation, policy, configuration, or change under evaluation. Candidate identity and lineage should remain explicit.
 
-**Commons** — The MNCS structured coordination and knowledge-exchange layer. Publication does not imply trust or acceptance.
+**Commons** — The MNCS persistent structured coordination and knowledge-exchange layer. It can retain durable work and knowledge history; publication does not imply trust, execution permission, or acceptance.
 
-**Conformance** — Satisfaction of the applicable normative MNCS requirements under the required evidence and evaluation boundary. Tool success alone is not conformance.
+**Conformance** — Satisfaction of the applicable normative MNCS requirements under the required evidence and evaluation boundary. Tool success, deployment acceptance, or execution success alone is not conformance.
+
+**Control surface** — A bounded operator/client interface that exposes capabilities without automatically owning the services behind them. MNCS Control MCP is a deployment-specific control surface, not a source of conformance authority.
 
 **Controller** — A persistent coordinating service or process that owns a bounded control/execution state, such as Fabric's controller. A controller is not necessarily a semantic router or evaluator.
 
@@ -30,17 +34,23 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 ## F
 
-**Fabric** — MNCS persistent execution/evidence infrastructure for exact-target work, authenticated transport, capability/resource observation, and durable execution records.
+**Fabric** — MNCS persistent execution/evidence infrastructure for worker identity and presence, exact-target work, authenticated transport, capability/resource observation, retry/recovery, and durable execution records.
 
-**Forge** — Non-normative development/evidence orchestration for declared providers, checks, candidate lineage, and evaluator-mode boundaries.
+**Forge** — Non-normative development/evidence orchestration for declared providers, checks, candidate lineage, evidence gaps, and evaluator-mode boundaries.
 
 ## H
 
-**Harness** — A policy layer that arranges model/tool interactions and accepts or rejects results for a particular workspace/deployment. In current family architecture, a local harness may consume Fabric without owning Fabric.
+**Harness** — A policy layer that arranges model/tool interactions and accepts or rejects results for a particular workspace/deployment. In current family architecture, Local Harness consumes persistent Fabric and Commons services without owning their lifecycle.
+
+## L
+
+**Lifecycle owner** — The component authoritative for a declared persistent identity/history/recovery domain. Consumers do not inherit lifecycle ownership merely because they can query, invoke, or reconnect to that service.
 
 ## M
 
 **MNCS** — Machine-Native Complexity Standard. An open experimental standard for accepting generated or machine-optimized implementations through bounded evidence.
+
+**MNCS Control MCP** — A current deployment-specific protected remote-workspace control surface. It exposes authorized development capabilities and bounded adapters to MNCS services; it does not own Fabric fleet lifecycle, Harness routing policy, Commons persistence, or MNCS conformance.
 
 **MNCDS** — Machine-Native Complexity Development Standard. A separate development-process specification governing decomposition, candidate lifecycle, evidence flow, and related development controls.
 
@@ -52,6 +62,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **PASS / FAIL / UNKNOWN** — Core result semantics. Family-level aggregation is conservative: `FAIL > UNKNOWN > PASS`. Missing or unsupported evidence must not be silently converted to `PASS`.
 
+**Persistent service** — A long-lived component whose declared state and lifecycle survive individual client requests or disconnects. Persistence should have one explicit owner rather than being reconstructed independently by consumers.
+
 **Provider** — A replaceable tool or execution capability used to produce observations or evidence, such as a compiler, analyzer, benchmark, mutation system, runtime harness, or verifier adapter.
 
 **Provenance** — Traceable origin and transformation history for an artifact, claim, result, or knowledge record.
@@ -61,6 +73,10 @@ This index standardizes family-level usage. Project-specific specifications rema
 **RAVEL** — Recursive Adaptive Vector Execution Lattice. An adaptive evidence strategy and learning layer that reasons beneath MNCS/MNCDS authority.
 
 **Reference Study** — A controlled empirical study intended to test MNCS-related hypotheses against frozen workloads, upstream/reference behavior, or alternative implementations.
+
+## S
+
+**Service consumer** — A client that uses a service's public contract while leaving the service's private state, lifecycle, identity, and recovery authority with the service owner.
 
 ## V
 
@@ -75,6 +91,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 - Prefer **MNCS project family** or **MNCS ecosystem** for the collection of related repositories.
 - Use **MNCS** only for the standard/authority layer when ambiguity would matter.
 - Use **MNCDS** for the development-process specification rather than treating it as a synonym for MNCS.
+- Distinguish **deployment acceptance** from **MNCS conformance**.
+- Distinguish a **service consumer** from the **lifecycle owner** of that service.
 - Say **execution passed** when referring to execution checks; do not shorten that to **MNCS passed** unless formal MNCS validation is actually what occurred.
 - Use **independent** only when the relevant evaluator, custody, and control requirements are actually independent.
 - Treat **UNKNOWN** as an intentional result, not an error string to be optimized away.
