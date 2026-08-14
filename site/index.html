@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MNCS Atlas: a guide to the Machine-Native Complexity Standard project family, architecture, terminology, and contribution paths.">
+  <meta name="description" content="MNCS Atlas: a guide to the Machine-Native Complexity Standard project family, architecture, terminology, maturity, and contribution paths.">
   <meta name="theme-color" content="#0b1020">
+  <meta property="og:title" content="MNCS Atlas — Machine-Native Complexity Standard">
+  <meta property="og:description" content="Family-level map of the MNCS research ecosystem: authority, evidence, architecture, projects, and how to contribute.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://epi13.github.io/mncs-atlas/">
+  <meta name="twitter:card" content="summary_large_image">
   <title>MNCS Atlas — Machine-Native Complexity Standard</title>
   <link rel="stylesheet" href="assets/styles.css">
   <script defer src="assets/app.js"></script>
@@ -23,6 +28,7 @@
         <a href="#overview">Overview</a>
         <a href="#architecture">Architecture</a>
         <a href="#projects">Projects</a>
+        <a href="#status">Status</a>
         <a href="#terminology">Terminology</a>
         <a href="#contribute">Contribute</a>
       </nav>
@@ -83,7 +89,7 @@
           </div>
           <div class="flow-arrow" aria-hidden="true">↓</div>
           <div class="arch-layer work">
-            <span class="layer-label">Development & reasoning</span>
+            <span class="layer-label">Development &amp; reasoning</span>
             <div class="arch-card"><strong>Agents / models</strong><small>plans · code · hypotheses · repairs</small></div>
             <div class="arch-card"><strong>RAVEL</strong><small>strategy · memory · adaptive evidence selection</small></div>
             <div class="arch-card"><strong>MNEL</strong><small>bounded experiments · causal learning</small></div>
@@ -91,7 +97,7 @@
           </div>
           <div class="flow-arrow" aria-hidden="true">↓</div>
           <div class="arch-layer substrate">
-            <span class="layer-label">Execution & coordination substrate</span>
+            <span class="layer-label">Execution &amp; coordination substrate</span>
             <div class="arch-card featured"><strong>Fabric</strong><small>exact-target execution · transport · execution evidence</small></div>
             <div class="arch-card"><strong>Commons</strong><small>structured knowledge · work requests · replication</small></div>
             <div class="arch-card"><strong>Local harnesses</strong><small>routing · tools · policy · acceptance</small></div>
@@ -102,6 +108,20 @@
             <div class="arch-card"><strong>Reference Studies</strong><small>controlled comparisons · negative results · reproducibility</small></div>
             <div class="arch-card"><strong>MNCS Language</strong><small>verification-native semantics · language research</small></div>
           </div>
+        </div>
+
+        <div class="flow-section">
+          <h3 class="flow-heading">Representative end-to-end flow</h3>
+          <p class="flow-lede">A successful step does not automatically promote the next layer. Execution success is not verifier success; verifier success is not independent evaluation.</p>
+          <ol class="flow-steps" aria-label="Representative workflow steps">
+            <li><span class="flow-num">1</span><div><strong>Request</strong><p>Human or agent states a bounded goal.</p></div></li>
+            <li><span class="flow-num">2</span><div><strong>Orchestrate</strong><p>Local harness or Forge chooses a declared action and providers.</p></div></li>
+            <li><span class="flow-num">3</span><div><strong>Execute</strong><p>Fabric admits and runs an exact-target workload, recording execution evidence.</p></div></li>
+            <li><span class="flow-num">4</span><div><strong>Observe</strong><p>Providers, compilers, or verifiers emit scoped observations.</p></div></li>
+            <li><span class="flow-num">5</span><div><strong>Record</strong><p>Evidence, lineage, and status are kept explicit; gaps stay UNKNOWN.</p></div></li>
+            <li><span class="flow-num">6</span><div><strong>Share &amp; learn</strong><p>Commons may publish scoped knowledge; RAVEL/MNEL may update strategy under governance.</p></div></li>
+            <li><span class="flow-num">7</span><div><strong>Evaluate</strong><p>MNCS/MNCDS validators judge only the claims they are authorized to judge.</p></div></li>
+          </ol>
         </div>
 
         <div class="boundary-grid">
@@ -134,7 +154,67 @@
       </div>
     </section>
 
-    <section id="terminology" class="section section-soft">
+    <section id="status" class="section section-soft">
+      <div class="shell">
+        <div class="section-heading compact">
+          <p class="eyebrow">Status &amp; maturity</p>
+          <h2>Everything here is experimental. Treat claims as scoped, not universal.</h2>
+          <p>Atlas does not publish a scoreboard. The notes below are orientation aids only; each repository’s README and specs remain authoritative for current implementation reality.</p>
+        </div>
+
+        <div class="status-grid">
+          <article class="status-card">
+            <span class="status-badge experimental">Experimental</span>
+            <h3>MNCS / MNCDS</h3>
+            <p>Open experimental standards work. Non-accredited. Technical acceptance and development-process semantics live here; tools do not inherit that authority by association.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>MNCS Language</h3>
+            <p>Verification-native language and semantic representation research. Exploratory; not a required path to MNCS conformance.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Forge</h3>
+            <p>Non-normative control plane for declared workflows and evidence lineage. Actively developed; does not define conformance.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Fabric</h3>
+            <p>Persistent exact-target execution and evidence substrate. Operator-controlled; execution records are not MNCS status.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Commons</h3>
+            <p>Structured coordination and knowledge exchange. Publication is not acceptance; records stay untrusted by default.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>RAVEL &amp; MNEL</h3>
+            <p>Adaptive strategy and experimental learning beneath governing authority. Learning remains advisory until governed.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge research">Research</span>
+            <h3>Reference Studies</h3>
+            <p>Empirical companion for controlled comparisons and negative results. Protocols and claims are study-local.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge active">Active infrastructure</span>
+            <h3>Rust Validator</h3>
+            <p>Independent offline validation for supported subsets. Deliberately separate from the Python path and from execution.</p>
+          </article>
+          <article class="status-card">
+            <span class="status-badge orientation">Orientation</span>
+            <h3>Atlas</h3>
+            <p>Family map and contributor orientation only. Non-normative. Correct the map when project reality drifts.</p>
+          </article>
+        </div>
+
+        <p class="status-footnote">Maturity labels are descriptive, not ranked. Absence of a label does not imply readiness or incompleteness beyond what the owning repository states.</p>
+      </div>
+    </section>
+
+    <section id="terminology" class="section">
       <div class="shell terminology-layout">
         <div class="section-heading compact">
           <p class="eyebrow">Shared language</p>
@@ -152,10 +232,10 @@
       </div>
     </section>
 
-    <section id="contribute" class="section">
+    <section id="contribute" class="section section-soft">
       <div class="shell contribute-grid">
         <div>
-          <p class="eyebrow">For new contributors & agents</p>
+          <p class="eyebrow">For new contributors &amp; agents</p>
           <h2>Start with the map. Then read the owning project.</h2>
           <p class="lede-small">The fastest safe path into MNCS is not to read every repository. It is to identify the authority and responsibility boundary first.</p>
         </div>
@@ -167,6 +247,28 @@
           <li><span>5</span><div><strong>Contribute evidence</strong><p>Prefer narrow changes, explicit uncertainty, reproducible results, and versioned public contracts.</p></div></li>
         </ol>
       </div>
+
+      <div class="shell pathway-grid">
+        <article class="pathway-card">
+          <p class="card-kicker">Human contributors</p>
+          <h3>Prefer clarity over completeness</h3>
+          <p>Update Atlas when the family map drifts. Keep implementation detail in the owning repository. Surface UNKNOWN states instead of filling gaps with optimistic language.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md">Read CONTRIBUTING.md ↗</a>
+        </article>
+        <article class="pathway-card">
+          <p class="card-kicker">Coding &amp; research agents</p>
+          <h3>Establish authority before editing</h3>
+          <p>Follow the orientation sequence in AGENTS.md. Do not infer architecture from repository names alone. Prefer public interfaces and explicit provenance over cross-repo internal coupling.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Read AGENTS.md ↗</a>
+        </article>
+        <article class="pathway-card">
+          <p class="card-kicker">Cross-project changes</p>
+          <h3>Define the boundary first</h3>
+          <p>When a feature spans repositories, state which component owns the claim, which records move across the boundary, and what remains UNKNOWN. Prefer versioned public records over shared internals.</p>
+          <a class="text-link" href="https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md">Read ARCHITECTURE.md ↗</a>
+        </article>
+      </div>
+
       <div class="shell callout">
         <div><p class="card-kicker">Agent orientation</p><h3>Working with Codex, Grok, local models, or another coding agent?</h3><p><code>AGENTS.md</code> defines the family-level invariants an agent should establish before editing across MNCS repositories.</p></div>
         <a class="button primary" href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Read AGENTS.md</a>
@@ -176,8 +278,20 @@
 
   <footer class="site-footer">
     <div class="shell footer-grid">
-      <div><strong>MNCS Atlas</strong><p>The forest map for a machine-native research project family.</p></div>
-      <div><p>Atlas is non-normative documentation. MNCS is open, experimental, and non-accredited.</p><p>Apache-2.0 · <span id="year">2026</span></p></div>
+      <div>
+        <strong>MNCS Atlas</strong>
+        <p>The forest map for a machine-native research project family.</p>
+        <p class="footer-links">
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/PROJECTS.md">Projects</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md">Terminology</a>
+          <a href="https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md">Agents</a>
+        </p>
+      </div>
+      <div>
+        <p>Atlas is non-normative documentation. MNCS is open, experimental, and non-accredited.</p>
+        <p>Apache-2.0 · <span id="year">2026</span></p>
+      </div>
     </div>
   </footer>
 </body>
