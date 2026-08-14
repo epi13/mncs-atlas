@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epi13.github.io/mncs-atlas/schema/atlas.schema.json",
+  "title": "MNCS Atlas machine-readable orientation map",
+  "description": "Non-normative schema for the MNCS Atlas family orientation surface.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "name",
+    "non_normative",
+    "authority",
+    "canonical_human_guide",
+    "canonical_repository",
+    "invariants",
+    "projects",
+    "operator_components",
+    "relationships",
+    "entry_points"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "last_reviewed": {"type": "string", "format": "date"},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "non_normative": {"const": true},
+    "authority": {"const": "orientation-only"},
+    "canonical_human_guide": {"type": "string", "format": "uri"},
+    "canonical_repository": {"type": "string", "format": "uri"},
+    "documentation": {"type": "object"},
+    "invariants": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "projects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/component"},
+      "minItems": 1
+    },
+    "operator_components": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/operatorComponent"}
+    },
+    "relationships": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relationship"}
+    },
+    "entry_points": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/entryPoint"}
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "name", "repository", "role", "maturity", "responsibility"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "name": {"type": "string"},
+        "repository": {"type": "string", "format": "uri"},
+        "role": {"type": "string"},
+        "maturity": {"type": "string"},
+        "responsibility": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "operatorComponent": {
+      "type": "object",
+      "required": ["id", "name", "role", "visibility", "responsibility", "does_not_own"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "name": {"type": "string"},
+        "role": {"type": "string"},
+        "visibility": {"type": "string"},
+        "responsibility": {"type": "string"},
+        "does_not_own": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "relationship": {
+      "type": "object",
+      "required": ["from", "to", "kind", "description"],
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "kind": {"type": "string"},
+        "description": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "entryPoint": {
+      "type": "object",
+      "required": ["goal", "start_with"],
+      "properties": {
+        "goal": {"type": "string"},
+        "start_with": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}
