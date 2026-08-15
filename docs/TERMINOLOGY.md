@@ -4,7 +4,7 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 ## A
 
-**Acceptance** — A scoped decision by the layer authorized to decide whether a result is sufficient for its workflow. Local Harness or another deployment can accept a result for that deployment without establishing formal MNCS conformance.
+**Acceptance** — A scoped decision by the layer authorized to decide whether a result is sufficient for its workflow. MNCS Harness or another deployment can accept a result for that deployment without establishing formal MNCS conformance.
 
 **Agent** — A model-backed or software actor that can propose plans, code, hypotheses, tool requests, explanations, or candidate repairs. An agent is not automatically an evaluator or authority.
 
@@ -16,7 +16,7 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Candidate** — A particular proposed artifact, implementation, policy, configuration, or change under evaluation. Candidate identity and lineage should remain explicit.
 
-**Commons** — The MNCS persistent structured coordination and knowledge-exchange layer. It can retain durable work and knowledge history; publication does not imply trust, execution permission, or acceptance.
+**Commons** — The MNCS persistent structured coordination and knowledge-exchange layer. It provides durable shared/institutional memory; publication does not imply trust, execution permission, or acceptance.
 
 **Conformance** — Satisfaction of the applicable normative MNCS requirements under the required evidence and evaluation boundary. Tool success, deployment acceptance, or execution success alone is not conformance.
 
@@ -40,7 +40,7 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 ## H
 
-**Harness** — A policy layer that arranges model/tool interactions and accepts or rejects results for a particular workspace/deployment. In current family architecture, Local Harness consumes persistent Fabric and Commons services without owning their lifecycle.
+**Harness** — Reusable operator infrastructure that arranges model/tool interactions and accepts or rejects results for a particular workspace/deployment. In current family architecture, MNCS Harness consumes persistent Fabric and Commons services without owning their lifecycle. **Harness is not a normative MNCS requirement.**
 
 ## L
 
@@ -48,15 +48,21 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 ## M
 
-**MNCS** — Machine-Native Complexity Standard. An open experimental standard for accepting generated or machine-optimized implementations through bounded evidence.
+**MNCS** — Machine-Native Complexity Standard. An open experimental standard for accepting generated or machine-optimized implementations through bounded evidence. Normative implementation-evidence authority.
 
 **MNCS Control MCP** — A current deployment-specific protected remote-workspace control surface. It exposes authorized development capabilities and bounded adapters to MNCS services; it does not own Fabric fleet lifecycle, Harness routing policy, Commons persistence, or MNCS conformance.
 
-**MNCDS** — Machine-Native Complexity Development Standard. A separate development-process specification governing decomposition, candidate lifecycle, evidence flow, and related development controls.
+**MNCS Harness** — Reusable operator infrastructure for routing, governing, tool-enabling, approving, and accepting AI/model work. Published at https://github.com/epi13/mncs-harness. Not a normative MNCS requirement.
+
+**MNCDS** — Machine-Native Complexity Development Specification. An independently versioned development-process specification governing decomposition, candidate lifecycle, evidence flow, and related development controls.
 
 **MNEL** — Machine-Native Experimental Learning. An evidence-governed experimental learning framework using bounded interventions, causal attribution, and verified-experience distillation.
 
 **Machine-native** — Designed so machine actors can operate on explicit semantic structure, contracts, identities, evidence, and bounded interfaces without making human inspection impossible. It does not mean machine-exclusive.
+
+## O
+
+**Operator stack** — The reference deployment topology used to do work (Control, Harness, Forge, Fabric, Commons, and related services). Descriptive, not a normative MNCS requirement.
 
 ## P
 
@@ -74,6 +80,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Reference Study** — A controlled empirical study intended to test MNCS-related hypotheses against frozen workloads, upstream/reference behavior, or alternative implementations.
 
+**Reference deployment** — A concrete operator stack used to do family work. It is descriptive orientation, not a personal laboratory and not a conformance requirement.
+
 ## S
 
 **Service consumer** — A client that uses a service's public contract while leaving the service's private state, lifecycle, identity, and recovery authority with the service owner.
@@ -90,9 +98,11 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 - Prefer **MNCS project family** or **MNCS ecosystem** for the collection of related repositories.
 - Use **MNCS** only for the standard/authority layer when ambiguity would matter.
-- Use **MNCDS** for the development-process specification rather than treating it as a synonym for MNCS.
+- Use **MNCDS** for the independently versioned development-process specification rather than treating it as a synonym for MNCS or as a subdirectory of MNCS.
+- Distinguish **normative / specification authority** (MNCS, MNCDS) from **operator / development / research** components (Harness, Control, Fabric, Forge, Commons, Validator, Language, Reference Studies, RAVEL, MNEL, Atlas).
 - Distinguish **deployment acceptance** from **MNCS conformance**.
 - Distinguish a **service consumer** from the **lifecycle owner** of that service.
 - Say **execution passed** when referring to execution checks; do not shorten that to **MNCS passed** unless formal MNCS validation is actually what occurred.
 - Use **independent** only when the relevant evaluator, custody, and control requirements are actually independent.
 - Treat **UNKNOWN** as an intentional result, not an error string to be optimized away.
+- Prefer **reference deployment** or **operator stack** over laboratory or personal-lab language.

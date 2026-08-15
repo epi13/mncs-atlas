@@ -1,14 +1,28 @@
 # MNCS Project Directory
 
-This directory is intentionally concise. Follow each repository's README for current implementation details. Atlas distinguishes **public family projects** from **deployment/operator implementations** so a private or local control surface is not mistaken for a normative requirement.
+This directory is intentionally concise. Follow each repository's README for current implementation details. Atlas distinguishes **normative specification authority** from **operator, development, and research components** so reusable operator infrastructure is not mistaken for a normative requirement.
 
-## Standards and semantics
+## Normative / specification authority
 
 ### Machine-Native Complexity Standard
 
 Repository: https://github.com/epi13/machine-native-complexity-standard
 
-The standards repository for MNCS and the separate MNCDS development-process specification. It owns the primary technical authority, evidence/status semantics, claim boundaries, RFC work, schemas, examples, and release-candidate standards work.
+MNCS is the normative implementation-evidence standard. It owns technical acceptance, evidence and status semantics, claim boundaries, RFC work, schemas, examples, and release-candidate standards work.
+
+MNCS does **not** own the independently versioned MNCDS development-process specification.
+
+### Machine-Native Complexity Development Specification
+
+Repository: https://github.com/epi13/machine-native-complexity-development-specification
+
+MNCDS is the independently versioned development-process specification. It governs decomposition, candidate lifecycle, evidence flow, selection, release, monitoring, regeneration, replacement, and related development controls.
+
+MNCDS may bind to MNCS results through explicit versioned contracts. It does **not** share or rewrite MNCS normative meaning.
+
+## Operator / development / research
+
+The following components are part of the project family or reference operator stack. None of them is a source of MNCS or MNCDS conformance authority, and none is mandatory for MNCS conformance.
 
 ### MNCS Language
 
@@ -22,41 +36,41 @@ Repository: https://github.com/epi13/mncs-validator-rs
 
 An independent offline Rust validator for supported MNCS subsets. It is intentionally separate from the Python validator and does not execute evidence binaries.
 
-## Development and execution infrastructure
-
 ### MNCS Forge MCP
 
 Repository: https://github.com/epi13/mncs-forge-mcp
 
-A non-normative MCP/CLI development and evidence control plane. Forge runs declared provider workflows, records candidate/evidence lineage, exposes bounded micro-verifiers, and preserves evaluator-mode boundaries while delegating normative decisions to MNCS/MNCDS validators.
+A non-normative MCP/CLI development and evidence control plane. Forge determines and evaluates declared development workflows, evidence, experiments, and gaps. It records candidate/evidence lineage, exposes bounded micro-verifiers, and preserves evaluator-mode boundaries while delegating normative decisions to MNCS and MNCDS validators.
 
 ### MNCS Fabric
 
 Repository: https://github.com/epi13/mncs-fabric
 
-A persistent operator-controlled execution and evidence fabric. Fabric handles identified workers, authenticated transport, exact-target admission, bounded execution, resource/capability observations, retries, durable detached execution, and execution evidence. It does not choose tools, models, semantic routes, or result acceptance.
+A persistent operator-controlled execution and evidence fabric. Fabric gets work executed through the persistent distributed execution substrate: identified workers, authenticated transport, exact-target admission, bounded execution, resource/capability observations, retries, durable detached execution, and execution evidence. It does not choose tools, models, semantic routes, or result acceptance.
 
 ## Operator implementations
 
-The current laboratory has concrete operator components that matter to understanding the running system but are **deployment infrastructure rather than sources of MNCS authority**. Their implementation repositories may be private or environment-specific. Atlas documents the responsibility boundary, not an access promise.
+The reference operator stack has concrete operator components that matter to understanding the running system but are **operator infrastructure rather than sources of MNCS authority**. Some implementation repositories may be private or environment-specific. Atlas documents the responsibility boundary, not an access promise.
 
 ### MNCS Control MCP
 
 Current role: protected remote development control surface.
 
-MNCS Control MCP exposes an authorized development workspace, Git, processes, project operations, tools, and bounded MNCS adapters through a fail-closed sandboxed boundary. It can consume Local Harness, Fabric, Forge, and Commons interfaces without taking ownership of their service lifecycles or authority domains.
+MNCS Control MCP gets a human or external agent in and constrains where remote/operator actions may occur. It exposes an authorized development workspace, Git, processes, project operations, tools, and bounded MNCS adapters through a fail-closed sandboxed boundary. It can consume MNCS Harness, Fabric, Forge, and Commons interfaces without taking ownership of their service lifecycles or authority domains.
 
-It does **not** own Fabric worker presence or trust material, Local Harness routing policy, Commons persistence, or MNCS conformance.
+It does **not** own Fabric worker presence or trust material, MNCS Harness routing policy, Commons persistence, or MNCS conformance.
 
 See [OPERATING_MODEL.md](OPERATING_MODEL.md).
 
-### Local Harness
+### MNCS Harness
 
-Current role: model/tool policy and deployment-level result acceptance.
+Repository: https://github.com/epi13/mncs-harness
 
-Local Harness owns workspace meaning, model and tool routing, guarded agent/tool loops, approvals, deterministic verification/escalation, metrics, and deployment-level result acceptance. In the intended persistent-service deployment it consumes Fabric and Commons rather than starting or owning those services.
+Current role: reusable operator infrastructure for model/tool policy and deployment-level result acceptance.
 
-It does **not** own Fabric exact-target admission/transport, Commons truth or command authority, or MNCS normative status.
+MNCS Harness decides how AI/model work is routed, governed, tool-enabled, approved, and accepted. It owns workspace meaning, model and tool routing, guarded agent/tool loops, approvals, deterministic verification/escalation, metrics, and deployment-level result acceptance. In the intended persistent-service deployment it consumes Fabric and Commons rather than starting or owning those services.
+
+It does **not** own Fabric exact-target admission/transport, Commons truth or command authority, or MNCS normative status. **Harness is not a normative MNCS requirement.**
 
 See [OPERATING_MODEL.md](OPERATING_MODEL.md).
 
@@ -66,7 +80,7 @@ See [OPERATING_MODEL.md](OPERATING_MODEL.md).
 
 Repository: https://github.com/epi13/MNCS-Commons
 
-A persistent structured coordination and knowledge-exchange layer for agents and humans. Commons records observations, claims, work requests, replications, advisories, decisions, and durable work history with provenance and evidence. Contributions remain untrusted by default and Commons never turns publication into execution permission.
+A persistent structured coordination and knowledge-exchange layer for agents and humans. Commons provides durable shared/institutional memory: observations, claims, work requests, replications, advisories, decisions, and durable work history with provenance and evidence. Contributions remain untrusted by default and Commons never turns publication into execution permission.
 
 ### RAVEL
 
@@ -100,9 +114,10 @@ This repository. Atlas owns no technical conformance authority. Its job is to ma
 
 | If you want to… | Start with… |
 | --- | --- |
-| understand evidence/status semantics or conformance | MNCS / MNCDS |
+| understand evidence/status semantics or conformance | MNCS |
+| understand development-process governance or candidate lifecycle | MNCDS |
 | author or run declared development/evidence workflows | Forge |
-| route local-model and guarded tool work | Local Harness |
+| route model and guarded tool work | MNCS Harness |
 | operate the authorized development workspace remotely | MNCS Control MCP |
 | execute on an exact persistent worker | Fabric |
 | share findings, requests, replications, or decisions | Commons |

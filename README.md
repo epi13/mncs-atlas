@@ -4,6 +4,13 @@
 
 MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, distinguishes authority from operator topology, and gives humans and agents a reliable place to start.
 
+**Normative / specification authority** lives in two independently versioned repositories:
+
+- [MNCS](https://github.com/epi13/machine-native-complexity-standard) — Machine-Native Complexity Standard, the normative implementation-evidence standard.
+- [MNCDS](https://github.com/epi13/machine-native-complexity-development-specification) — Machine-Native Complexity Development Specification, the independently versioned development-process specification.
+
+Harness, Control, Fabric, Forge, Commons, RAVEL, MNEL, validators, language research, reference studies, and Atlas itself are operator, development, or research components. They are not mandatory for MNCS conformance.
+
 ## What Atlas is for
 
 Atlas should answer the questions that do not belong in any one project README:
@@ -12,7 +19,7 @@ Atlas should answer the questions that do not belong in any one project README:
 - What is the difference between MNCS and MNCDS?
 - Which repository owns which responsibility?
 - How do Forge, Fabric, Commons, RAVEL, MNEL, the language work, validators, and studies relate?
-- How do current operator components such as MNCS Control MCP and Local Harness fit without becoming normative requirements?
+- How do current operator components such as MNCS Control MCP and MNCS Harness fit without becoming normative requirements?
 - Where does authority live, and where does it explicitly *not* live?
 - Which persistent service owns worker presence, execution history, knowledge state, routing policy, or remote-control state?
 - What should a new human contributor or coding agent read before changing anything?
@@ -43,7 +50,7 @@ assets/                   generated root compatibility mirror of site/assets/
 .nojekyll                 disables legacy Jekyll rendering when Pages uses main:/
 docs/
   ARCHITECTURE.md         family-level authority and responsibility map
-  OPERATING_MODEL.md      current operator/runtime path and lifecycle ownership
+  OPERATING_MODEL.md      reference operator/runtime path and lifecycle ownership
   PROJECTS.md             project directory and responsibility boundaries
   TERMINOLOGY.md          shared terminology index
 AGENTS.md                 orientation contract for AI/coding agents
@@ -83,7 +90,7 @@ This dual-mode layout makes the public front door resilient while keeping `site/
 Atlas deliberately keeps two related views:
 
 - [Architecture](docs/ARCHITECTURE.md) answers **who is allowed to claim what?**
-- [Operating model](docs/OPERATING_MODEL.md) answers **how does the current MNCS laboratory actually get bounded work done?**
+- [Operating model](docs/OPERATING_MODEL.md) answers **how does the reference operator stack actually get bounded work done?**
 
 That distinction prevents protected remote control, model routing, persistent execution, knowledge storage, and normative evaluation from collapsing into one vague "control plane."
 
