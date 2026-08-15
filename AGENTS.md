@@ -10,7 +10,7 @@ Do not infer family architecture from repository names alone. Establish the owni
 
 1. Read this file.
 2. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) to establish family authority boundaries.
-3. If the task touches a running deployment, service ownership, model routing, remote control, Fabric, or Commons, read [docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
+3. If the task touches a running deployment, service ownership, model routing, remote control, Harness, Fabric, or Commons, read [docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
 4. Read [docs/PROJECTS.md](docs/PROJECTS.md) and identify the repository or deployment component that owns the requested behavior.
 5. Read that owning project's current README and relevant architecture/specification documents.
 6. If the change crosses a boundary, read the adjacent project's public contract before modifying either side.
@@ -20,7 +20,7 @@ For automated discovery, [site/atlas.json](site/atlas.json) provides a compact m
 
 ## Family-wide invariants
 
-- **MNCS defines technical acceptance/conformance semantics.** MNCDS separately governs the development process.
+- **MNCS defines technical acceptance/conformance semantics.** MNCDS is an independently versioned specification that separately governs the development process.
 - **No tool promotes itself.** A generator, agent, Forge workflow, Fabric execution, RAVEL policy, MNEL investigator, Commons record, Control action, or Harness result cannot silently turn its own output into governing truth.
 - **`FAIL > UNKNOWN > PASS`.** Missing, stale, unsupported, unavailable, or insufficient evidence must not be reported as `PASS`.
 - **Execution is not conformance.** Successfully running a bounded workload proves only the claims established by that execution record.
@@ -32,25 +32,26 @@ For automated discovery, [site/atlas.json](site/atlas.json) provides a compact m
 
 ## Responsibility shorthand
 
-### Governing and research family
+### Normative / specification authority
 
-- **MNCS / MNCDS:** authority, standards, evidence/status semantics, development governance.
-- **MNCS Language:** verification-native language and semantic representation research.
+- **MNCS:** normative implementation-evidence standard; technical acceptance, evidence/status semantics, and claim boundaries. Repository: https://github.com/epi13/machine-native-complexity-standard
+- **MNCDS:** independently versioned development-process specification; candidate lifecycle, evidence flow, and development governance. Repository: https://github.com/epi13/machine-native-complexity-development-specification
+
+### Operator / development / research
+
+- **MNCS Harness:** reusable operator infrastructure for model/tool routing, workspace policy, approvals, agent loops, verification/escalation, and deployment-level result acceptance. It consumes Fabric and Commons rather than owning their persistence. **Not a normative MNCS requirement.**
+- **MNCS Control MCP:** protected remote workspace, Git/process/project/tool surface, and bounded adapters to MNCS services. It is a consumer of Fabric/Commons service contracts, not their lifecycle owner.
 - **Forge:** bounded development/evidence control plane and provider orchestration.
 - **Fabric:** persistent exact-target execution, worker presence, transport, resource/capability observation, retry/recovery, and execution evidence.
-- **Commons:** persistent structured coordination, knowledge exchange, and durable work history.
+- **Commons:** durable shared/institutional memory; persistent structured coordination, knowledge exchange, and durable work history.
+- **Rust validator:** independent offline cross-implementation validation for supported MNCS subsets.
+- **MNCS Language:** verification-native language and semantic representation research.
+- **Reference Studies:** controlled empirical studies and reimplementations.
 - **RAVEL:** adaptive evidence strategy, memory, and learning beneath governing authority.
 - **MNEL:** evidence-governed experimental learning and causal experience distillation.
-- **Reference Studies:** controlled empirical studies and reimplementations.
-- **Rust validator:** independent offline cross-implementation validation for supported MNCS subsets.
 - **Atlas:** orientation only.
 
-### Current operator stack
-
-- **MNCS Control MCP:** protected remote workspace, Git/process/project/tool surface, and bounded adapters to MNCS services. It is a consumer of Fabric/Commons service contracts, not their lifecycle owner.
-- **Local Harness:** model/tool routing, workspace policy, approvals, local-agent loop, verification/escalation, and deployment-level result acceptance. It consumes Fabric and Commons rather than owning their persistence.
-
-Operator implementations may be private, local-only, or deployment-specific. Their presence in Atlas does not make them normative MNCS requirements.
+None of the operator, development, or research components is mandatory for MNCS conformance. Operator implementations may be private, local-only, or deployment-specific. Their presence in Atlas does not make them normative MNCS requirements.
 
 ## Before changing a cross-project integration
 

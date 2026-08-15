@@ -8,71 +8,73 @@ The operator model answers: *how does a human or agent currently get bounded wor
 
 This document is descriptive and non-normative. Deployment implementations may change faster than the standards. When this document disagrees with an owning repository's current contract, the owning repository wins and Atlas should be updated.
 
+Harness, Control, Fabric, Forge, Commons, RAVEL, and MNEL are not mandatory for MNCS conformance.
+
 ## Current operator path
 
-A representative deployment looks like:
+A representative reference deployment looks like:
 
 ```text
-human / ChatGPT / Codex / another client
+Human / external agent
                  |
                  v
           MNCS Control MCP
- protected workspace + tool boundary
+ constrains where remote/operator
+ actions may occur
                  |
         +--------+---------+
         |                  |
         v                  v
-   Local Harness          Forge
- model/tool routing       declared development +
- policy + acceptance      evidence workflows
+   MNCS Harness         MNCS Forge
+ routes, governs,       development workflows,
+ approves, accepts      evidence, experiments, gaps
         |                  |
         +--------+---------+
                  |
                  v
-              Fabric
- persistent exact-target execution
- fleet presence + execution evidence
+            MNCS Fabric
+ persistent distributed execution
+ substrate + execution evidence
                  |
                  v
-      identified worker / provider
- model · compiler · verifier · tool
-                 |
-        +--------+---------+
-        |                  |
-        v                  v
-     Commons          validators / studies
- durable scoped       bounded evaluation,
- knowledge + work     comparison, challenge
+      workers / providers / models
+
+                 Commons
+  durable shared/institutional memory
         |
         v
    RAVEL / MNEL
  governed learning and experiment strategy
+
+           validators / studies
+  bounded evaluation, comparison, challenge
 ```
 
-The drawing is representative, not a mandatory call graph. A client may use Forge without Local Harness, Local Harness may consume Fabric directly, and Control can expose bounded Fabric or Commons operations without owning those services.
+The drawing is representative, not a mandatory call graph. A client may use Forge without MNCS Harness, MNCS Harness may consume Fabric directly, and Control can expose bounded Fabric or Commons operations without owning those services.
 
 ## Component boundaries
 
 | Component | Owns in the operator model | Explicitly does not own |
 | --- | --- | --- |
 | **Client** | User intent, requested task, approvals supplied through its UI | MNCS conformance, worker trust, result truth |
-| **MNCS Control MCP** | Protected remote access to an authorized development workspace; filesystem, Git, process, project, and bounded MNCS integration surfaces | Fabric fleet lifecycle, model routing policy, Commons storage authority, MNCS conformance |
-| **Local Harness** | Workspace meaning, model/tool routing, policy, approvals, local agent loop, deployment-level result acceptance | Fabric transport/admission, Commons authority, MNCS normative status |
+| **MNCS Control MCP** | Protected remote access to an authorized development workspace; filesystem, Git, process, project, and bounded MNCS integration surfaces | Fabric fleet lifecycle, Harness routing policy, Commons storage authority, MNCS conformance |
+| **MNCS Harness** | Workspace meaning, model/tool routing, policy, approvals, agent loop, deployment-level result acceptance | Fabric transport/admission, Commons authority, MNCS normative status |
 | **Forge** | Declared development/evidence workflows, provider orchestration, lineage, evidence gaps, evaluator-mode boundaries | Distributed fleet lifecycle, hidden promotion of evidence into conformance |
 | **Fabric** | Worker identity/presence, exact-target admission, authenticated transport, bounded execution, retries, resource/capability observations, execution evidence | Semantic route selection, tool/model choice, calling-workflow result acceptance, MNCS conformance |
 | **Worker / provider** | The bounded computation or observation it was asked to perform | Permission to broaden scope or promote its own result |
 | **Commons** | Durable structured coordination, work records, observations, claims, replications, advisories, decisions, provenance-aware knowledge | Execution permission, automatic trust, consensus, conformance |
 | **RAVEL / MNEL** | Strategy, experiments, causal interpretation, reusable governed learning | Redefining the status of evidence they consume |
 | **Validators / Reference Studies** | Bounded validation or controlled empirical challenge within their declared protocol | Universal truth outside the supported claim/protocol |
-| **MNCS / MNCDS** | Governing technical acceptance/evidence semantics and development-process semantics | Operational ownership of every tool used to implement them |
+| **MNCS** | Governing implementation-evidence / technical acceptance semantics | Operational ownership of every tool used to implement the standard; MNCDS process semantics |
+| **MNCDS** | Independently versioned development-process semantics | Operational ownership of every tool used to implement the specification; MNCS evidence semantics |
 
-## Why Control and Local Harness are separate
+## Why Control and MNCS Harness are separate
 
-The current deployment uses two related but distinct operator surfaces.
+The reference operator stack uses two related but distinct operator surfaces.
 
 **MNCS Control MCP** is the protected remote development boundary. It exposes an authorized workspace through a real sandbox and composes bounded adapters to MNCS services. It is primarily about *where a remote client may act and which development capabilities are exposed*.
 
-**Local Harness** is the model-and-tool policy layer. It chooses or pins local model routes, mediates tool requests, applies workspace/command policy, records model/tool metrics, and decides whether a deployment-level result is acceptable or should escalate. It is primarily about *how local AI work is routed and governed*.
+**MNCS Harness** is reusable operator infrastructure for model-and-tool policy. It chooses or pins model routes, mediates tool requests, applies workspace/command policy, records model/tool metrics, and decides whether a deployment-level result is acceptable or should escalate. It is primarily about *how AI/model work is routed, governed, tool-enabled, approved, and accepted*. **Harness is not a normative MNCS requirement.**
 
 Neither owns the persistent Fabric controller. In service mode both are Fabric consumers. Neither owns the persistent Commons service. They consume its public bounded interfaces according to their own permissions.
 
@@ -86,10 +88,10 @@ client -> Control -> workspace files / Git / tests
 
 Use this when the task is ordinary bounded development and does not require a local model or distributed worker. Control's sandbox and workspace policy are the principal execution boundary.
 
-### 2. Local model-assisted work
+### 2. Model-assisted work
 
 ```text
-client -> Control or Local Harness -> Local Harness -> local model -> guarded tools -> verification
+client -> Control or MNCS Harness -> MNCS Harness -> model -> guarded tools -> verification
 ```
 
 The model proposes actions. Harness policy and deterministic checks decide what can run and whether the result is accepted or escalated.
@@ -133,7 +135,7 @@ The operator stack is intentionally moving away from short-lived clients secretl
 - **Fabric controller service owns Fabric state and worker presence.** Consumers connect to it; disconnecting a client does not imply a worker disappeared.
 - **Commons service owns Commons persistence.** Consumers query or publish through bounded service interfaces rather than opening the store directly.
 - **Control owns its own protected remote-control service state.** It does not copy Fabric worker registries or Commons storage state into its own authority domain.
-- **Local Harness owns routing/policy state and model-facing behavior.** It consumes Fabric and Commons rather than becoming their service manager.
+- **MNCS Harness owns routing/policy state and model-facing behavior.** It consumes Fabric and Commons rather than becoming their service manager.
 
 This split matters because persistence is not just an uptime feature. It determines which component is authoritative for identity, recovery, retries, history, and lifecycle.
 
@@ -152,6 +154,8 @@ Do not repair one layer's failure by silently claiming success at another layer.
 
 ## Deployment visibility
 
-Some operator implementations may be private, local-only, or specific to the current MNCS laboratory. Atlas documents their **family-level responsibility boundary** because that boundary matters to understanding the system, but it should not imply that every implementation repository is public or required for MNCS conformance.
+Some operator implementations may be private, local-only, or specific to a reference deployment. Atlas documents their **family-level responsibility boundary** because that boundary matters to understanding the system, but it should not imply that every implementation repository is public or required for MNCS conformance.
+
+MNCS Harness is reusable operator infrastructure published at https://github.com/epi13/mncs-harness. Its presence in the family map does not make it a normative MNCS requirement.
 
 The public standards and project repositories remain the source of truth for their own contracts. Atlas is the map between them.

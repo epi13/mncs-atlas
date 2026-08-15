@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "last_reviewed": "2026-08-14",
   "name": "MNCS Atlas",
-  "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its current operator stack.",
+  "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its reference operator stack.",
   "non_normative": true,
   "authority": "orientation-only",
   "canonical_human_guide": "https://epi13.github.io/mncs-atlas/",
@@ -31,11 +31,19 @@
   "projects": [
     {
       "id": "mncs",
-      "name": "MNCS / MNCDS",
+      "name": "MNCS",
       "repository": "https://github.com/epi13/machine-native-complexity-standard",
-      "role": "governing-standard",
+      "role": "normative-implementation-evidence-standard",
       "maturity": "experimental",
-      "responsibility": "Technical authority, evidence and status semantics, development governance, schemas, RFCs, and claim boundaries."
+      "responsibility": "Normative implementation-evidence standard: technical acceptance, evidence and status semantics, schemas, RFCs, and claim boundaries."
+    },
+    {
+      "id": "mncds",
+      "name": "MNCDS",
+      "repository": "https://github.com/epi13/machine-native-complexity-development-specification",
+      "role": "development-process-specification",
+      "maturity": "experimental",
+      "responsibility": "Independently versioned development-process specification governing decomposition, candidate lifecycle, evidence flow, selection, release, and related development controls."
     },
     {
       "id": "mncs-language",
@@ -119,18 +127,19 @@
       "responsibility": "Exposes an authorized development workspace, Git, process, project, tooling, and bounded MNCS adapters through a fail-closed sandboxed control surface.",
       "does_not_own": [
         "Fabric fleet lifecycle",
-        "Local model routing policy",
+        "Harness routing policy",
         "Commons persistence",
         "MNCS conformance"
       ],
       "orientation": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md"
     },
     {
-      "id": "local-harness",
-      "name": "Local Harness",
+      "id": "mncs-harness",
+      "name": "MNCS Harness",
+      "repository": "https://github.com/epi13/mncs-harness",
       "role": "model-tool-policy-and-deployment-acceptance",
       "visibility": "deployment-private",
-      "responsibility": "Owns workspace meaning, model and tool routing, approvals, local agent loops, deployment-level result acceptance, and escalation while consuming persistent Fabric and Commons services.",
+      "responsibility": "Reusable operator infrastructure for workspace meaning, model and tool routing, approvals, agent loops, deployment-level result acceptance, and escalation while consuming persistent Fabric and Commons services. Not a normative MNCS requirement.",
       "does_not_own": [
         "Fabric exact-target admission or transport",
         "Commons truth or command authority",
@@ -141,10 +150,16 @@
   ],
   "relationships": [
     {
+      "from": "mncds",
+      "to": "mncs",
+      "kind": "versioned-binding",
+      "description": "MNCDS may bind to MNCS implementation-evidence results through explicit versioned contracts without sharing or rewriting MNCS normative authority."
+    },
+    {
       "from": "control",
-      "to": "local-harness",
+      "to": "mncs-harness",
       "kind": "bounded-adapter",
-      "description": "Control may expose Local Harness capabilities while preserving Harness routing, policy, and acceptance ownership."
+      "description": "Control may expose MNCS Harness capabilities while preserving Harness routing, policy, and acceptance ownership."
     },
     {
       "from": "control",
@@ -159,13 +174,13 @@
       "description": "Control consumes bounded Commons interfaces and does not own the Commons store or service lifecycle."
     },
     {
-      "from": "local-harness",
+      "from": "mncs-harness",
       "to": "fabric",
       "kind": "consumer",
       "description": "Harness chooses or pins model/tool work; Fabric owns exact-target admission, transport, execution, and execution evidence."
     },
     {
-      "from": "local-harness",
+      "from": "mncs-harness",
       "to": "commons",
       "kind": "mediated-consumer",
       "description": "Harness mediates bounded Commons tools for local and Fabric-backed models while retaining tool policy."
@@ -180,7 +195,13 @@
       "from": "forge",
       "to": "mncs",
       "kind": "delegated-validation",
-      "description": "Forge does not self-promote results; governing validation remains with the authority declared by MNCS or MNCDS."
+      "description": "Forge does not self-promote results; governing implementation-evidence validation remains with MNCS."
+    },
+    {
+      "from": "forge",
+      "to": "mncds",
+      "kind": "delegated-validation",
+      "description": "Forge does not self-promote results; governing development-process validation remains with MNCDS."
     },
     {
       "from": "commons",
@@ -205,17 +226,22 @@
     {
       "goal": "Understand acceptance, evidence semantics, or conformance",
       "start_with": ["mncs"],
-      "note": "Read the governing standard before tool-specific documentation."
+      "note": "Read the governing MNCS standard before tool-specific documentation."
+    },
+    {
+      "goal": "Understand development-process governance or candidate lifecycle",
+      "start_with": ["mncds"],
+      "note": "MNCDS is independently versioned from MNCS."
     },
     {
       "goal": "Develop or evaluate a candidate with declared evidence workflows",
-      "start_with": ["forge", "mncs"],
+      "start_with": ["forge", "mncs", "mncds"],
       "note": "Forge is non-normative; validators retain the authority assigned to them."
     },
     {
-      "goal": "Route local model and guarded tool work",
-      "start_with": ["local-harness"],
-      "note": "This is deployment policy, not MNCS conformance."
+      "goal": "Route model and guarded tool work",
+      "start_with": ["mncs-harness"],
+      "note": "This is deployment policy, not MNCS conformance. Harness is not a normative MNCS requirement."
     },
     {
       "goal": "Operate the development workspace remotely",
