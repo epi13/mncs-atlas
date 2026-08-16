@@ -1,6 +1,8 @@
 # MNCS Project Directory
 
-This directory is intentionally concise. Follow each repository's README for current implementation details. Atlas distinguishes **normative specification authority** from **operator, development, and research components** so reusable operator infrastructure is not mistaken for a normative requirement.
+This directory is intentionally concise. Follow each repository's README for current implementation details. Atlas distinguishes **normative specification authority**, **incubating institutional specifications**, and **operator / development / research components** so family membership is not confused with conformance authority or runtime dependency.
+
+Maturity is descriptive, not ranked. See [MATURITY.md](MATURITY.md).
 
 ## Normative / specification authority
 
@@ -19,6 +21,22 @@ Repository: https://github.com/epi13/machine-native-complexity-development-speci
 MNCDS is the independently versioned development-process specification. It governs decomposition, candidate lifecycle, evidence flow, selection, release, monitoring, regeneration, replacement, and related development controls.
 
 MNCDS may bind to MNCS results through explicit versioned contracts. It does **not** share or rewrite MNCS normative meaning.
+
+## Incubating institutional specifications
+
+### MNCS Rights & Provenance
+
+Repository: https://github.com/epi13/mncs-rights-provenance
+
+Maturity: **Incubating**.
+
+MNCS Rights & Provenance develops machine-native vocabulary, schemas, evidence models, and reference validation for artifact origin, transformation lineage, contribution provenance, authorship uncertainty, rights basis, artifact licensing, and release-facing rights evidence.
+
+It is an official MNCS family project because those questions cross source code, Fabric receipts, Commons knowledge, Forge lineage, experiment artifacts, model outputs, future training corpora, and releases. Its current role is to **observe, model, experiment, and learn** from real MNCS workflows.
+
+It is deliberately not yet a new software license, does not replace Apache-2.0, does not determine copyrightability automatically, and is not a hard runtime dependency for Fabric, Forge, Commons, MNEL, MNCS, or MNCDS. Future adoption by governing specifications must be explicit and versioned.
+
+Core boundary: **provenance is evidence about origin and transformation; it is not by itself a conclusion about authorship, ownership, or copyrightability.**
 
 ## Operator / development / research
 
@@ -108,7 +126,7 @@ The empirical companion to the standards work. It contains controlled case studi
 
 Repository: https://github.com/epi13/mncs-atlas
 
-This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, contributor orientation, the current operator-model boundary, and links into authoritative project documentation.
+This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, maturity vocabulary, contributor orientation, the current operator-model boundary, and machine-readable relationships/entry points.
 
 ## Choosing where to start
 
@@ -116,6 +134,7 @@ This repository. Atlas owns no technical conformance authority. Its job is to ma
 | --- | --- |
 | understand evidence/status semantics or conformance | MNCS |
 | understand development-process governance or candidate lifecycle | MNCDS |
+| understand artifact provenance, rights basis, or authorship uncertainty | MNCS Rights & Provenance |
 | author or run declared development/evidence workflows | Forge |
 | route model and guarded tool work | MNCS Harness |
 | operate the authorized development workspace remotely | MNCS Control MCP |
@@ -132,6 +151,8 @@ A project belongs in this directory when it has a meaningful family-level role r
 
 1. its public repository or canonical home when one is available;
 2. one paragraph describing what it owns;
-3. one sentence describing what it explicitly does **not** own when that boundary matters;
-4. a visibility/deployment note when the implementation is private, local-only, or operator-specific;
-5. corresponding terminology/architecture/machine-map updates if the family model changes.
+3. an explicit maturity value and authority class;
+4. one sentence describing what it explicitly does **not** own when that boundary matters;
+5. a visibility/deployment note when the implementation is private, local-only, or operator-specific;
+6. explicit `atlas.json` relationship records for material cross-project boundaries;
+7. corresponding terminology/architecture/machine-map updates if the family model changes.

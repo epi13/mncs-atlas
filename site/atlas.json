@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.2.0",
-  "last_reviewed": "2026-08-14",
+  "schema_version": "0.3.0",
+  "last_reviewed": "2026-08-15",
   "name": "MNCS Atlas",
   "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its reference operator stack.",
   "non_normative": true,
@@ -13,6 +13,8 @@
     "operating_model": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md",
     "projects": "https://github.com/epi13/mncs-atlas/blob/main/docs/PROJECTS.md",
     "terminology": "https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md",
+    "maturity": "https://github.com/epi13/mncs-atlas/blob/main/docs/MATURITY.md",
+    "machine_orientation": "https://github.com/epi13/mncs-atlas/blob/main/docs/MACHINE_ORIENTATION.md",
     "agents": "https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md",
     "contributing": "https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md"
   },
@@ -20,12 +22,59 @@
     "policy": "Atlas is descriptive orientation. Verify implementation-sensitive claims against the owning repository before acting.",
     "status": "reviewed"
   },
+  "maturity_model": {
+    "semantics": "descriptive-not-ranked",
+    "policy": "Maturity describes the current kind of commitment a family component makes. It is not a universal quality score and does not grant authority.",
+    "levels": {
+      "incubating": {
+        "meaning": "Official family work whose problem and ownership are recognized but whose contracts, schemas, or conclusions are expected to change materially.",
+        "dependency_policy": "Do not make sibling systems require an incubating component unless an explicit versioned adoption decision says otherwise."
+      },
+      "research": {
+        "meaning": "Research work intended to discover, test, or characterize mechanisms and claims rather than provide a stable operational contract.",
+        "dependency_policy": "Consume research results as scoped evidence or proposals, not governing truth."
+      },
+      "experimental": {
+        "meaning": "A specification or system with a concrete usable contract that remains explicitly experimental and may change incompatibly.",
+        "dependency_policy": "Bind by explicit versions and preserve UNKNOWN for unsupported behavior."
+      },
+      "active-infrastructure": {
+        "meaning": "Infrastructure actively used in the reference operator environment while remaining non-normative unless separately specified.",
+        "dependency_policy": "Respect lifecycle ownership and public service boundaries; operational use does not create conformance authority."
+      },
+      "orientation": {
+        "meaning": "Documentation or discovery infrastructure whose purpose is to describe and route rather than govern implementation truth.",
+        "dependency_policy": "Verify implementation-sensitive claims at the owning project before acting."
+      }
+    }
+  },
+  "consumer_contract": {
+    "version": "0.1",
+    "purpose": "Defines how humans and agents should consume Atlas without confusing orientation data with project authority.",
+    "resolution_order": [
+      "identify the requested capability or claim",
+      "resolve the owning component by stable id and relationship records",
+      "check maturity and authority_class",
+      "follow the owning repository or governing specification",
+      "verify implementation-sensitive facts before acting",
+      "preserve UNKNOWN when evidence is missing or stale"
+    ],
+    "rules": [
+      "Atlas never overrides a governing specification or owning repository.",
+      "A relationship describes an explicit family boundary; it does not imply shared lifecycle ownership or transitive authority.",
+      "Maturity is descriptive and never grants normative authority.",
+      "Machine-readable provenance describes what is known about origin and transformation; it does not by itself decide authorship, ownership, or copyrightability.",
+      "If Atlas and an owning project disagree about current implementation, treat Atlas as stale orientation and update it."
+    ]
+  },
   "invariants": [
     "Capability is not authority.",
     "Execution success is not conformance.",
     "Transport is not trust.",
     "Publication is not acceptance.",
     "Learning remains governed.",
+    "Provenance is not authorship or ownership.",
+    "Rights uncertainty remains explicit.",
     "Missing or insufficient evidence remains UNKNOWN."
   ],
   "projects": [
@@ -35,6 +84,7 @@
       "repository": "https://github.com/epi13/machine-native-complexity-standard",
       "role": "normative-implementation-evidence-standard",
       "maturity": "experimental",
+      "authority_class": "normative-specification",
       "responsibility": "Normative implementation-evidence standard: technical acceptance, evidence and status semantics, schemas, RFCs, and claim boundaries."
     },
     {
@@ -43,7 +93,25 @@
       "repository": "https://github.com/epi13/machine-native-complexity-development-specification",
       "role": "development-process-specification",
       "maturity": "experimental",
+      "authority_class": "normative-specification",
       "responsibility": "Independently versioned development-process specification governing decomposition, candidate lifecycle, evidence flow, selection, release, and related development controls."
+    },
+    {
+      "id": "rights-provenance",
+      "name": "MNCS Rights & Provenance",
+      "repository": "https://github.com/epi13/mncs-rights-provenance",
+      "role": "machine-native-rights-and-provenance-specification",
+      "maturity": "incubating",
+      "authority_class": "non-normative-incubating-specification",
+      "responsibility": "Experimental family-level specification for artifact origin, transformation lineage, contribution provenance, authorship uncertainty, rights basis, artifact licensing, and release-facing rights evidence without manufacturing legal certainty.",
+      "integration_policy": "advisory-no-hard-runtime-dependency",
+      "does_not_own": [
+        "MNCS conformance",
+        "MNCDS development-process authority",
+        "Fabric execution lifecycle",
+        "Commons truth",
+        "automatic copyrightability or ownership determinations"
+      ]
     },
     {
       "id": "mncs-language",
@@ -51,6 +119,7 @@
       "repository": "https://github.com/epi13/mncs-language",
       "role": "language-research",
       "maturity": "research",
+      "authority_class": "research",
       "responsibility": "Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA."
     },
     {
@@ -59,6 +128,7 @@
       "repository": "https://github.com/epi13/mncs-forge-mcp",
       "role": "development-and-evidence-control-plane",
       "maturity": "active-infrastructure",
+      "authority_class": "non-normative-development-infrastructure",
       "responsibility": "Non-normative bounded development and evidence workflows, provider orchestration, lineage, evidence gaps, and evaluator-mode boundaries."
     },
     {
@@ -67,6 +137,7 @@
       "repository": "https://github.com/epi13/mncs-fabric",
       "role": "execution-substrate",
       "maturity": "active-infrastructure",
+      "authority_class": "operator-execution-infrastructure",
       "responsibility": "Persistent exact-target execution, authenticated transport, worker presence, capability and resource observations, retries, and execution evidence."
     },
     {
@@ -75,6 +146,7 @@
       "repository": "https://github.com/epi13/MNCS-Commons",
       "role": "coordination-and-knowledge-exchange",
       "maturity": "active-infrastructure",
+      "authority_class": "coordination-and-institutional-memory",
       "responsibility": "Structured provenance-aware knowledge exchange and durable work coordination for observations, claims, requests, replications, advisories, and decisions."
     },
     {
@@ -83,6 +155,7 @@
       "repository": "https://github.com/epi13/RAVEL",
       "role": "adaptive-intelligence",
       "maturity": "research",
+      "authority_class": "research-advisory",
       "responsibility": "Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS and MNCDS authority."
     },
     {
@@ -91,6 +164,7 @@
       "repository": "https://github.com/epi13/Machine-Native-Experimental-Learning",
       "role": "experimental-learning",
       "maturity": "research",
+      "authority_class": "research-advisory",
       "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
     },
     {
@@ -99,6 +173,7 @@
       "repository": "https://github.com/epi13/mncs-reference-studies",
       "role": "empirical-research",
       "maturity": "research",
+      "authority_class": "empirical-research",
       "responsibility": "Controlled empirical comparisons, case studies, reimplementations, reproducibility, and first-class negative results."
     },
     {
@@ -107,6 +182,7 @@
       "repository": "https://github.com/epi13/mncs-validator-rs",
       "role": "independent-validation",
       "maturity": "active-infrastructure",
+      "authority_class": "bounded-independent-validator",
       "responsibility": "Independent offline validation for supported MNCS subsets without wrapping the Python implementation or executing evidence."
     },
     {
@@ -115,6 +191,7 @@
       "repository": "https://github.com/epi13/mncs-atlas",
       "role": "family-orientation",
       "maturity": "orientation",
+      "authority_class": "orientation-only",
       "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, operator-model documentation, and machine-readable orientation."
     }
   ],
@@ -123,6 +200,7 @@
       "id": "control",
       "name": "MNCS Control MCP",
       "role": "protected-remote-workspace-control",
+      "authority_class": "deployment-operator-control",
       "visibility": "deployment-private",
       "responsibility": "Exposes an authorized development workspace, Git, process, project, tooling, and bounded MNCS adapters through a fail-closed sandboxed control surface.",
       "does_not_own": [
@@ -138,6 +216,7 @@
       "name": "MNCS Harness",
       "repository": "https://github.com/epi13/mncs-harness",
       "role": "model-tool-policy-and-deployment-acceptance",
+      "authority_class": "deployment-operator-policy",
       "visibility": "deployment-private",
       "responsibility": "Reusable operator infrastructure for workspace meaning, model and tool routing, approvals, agent loops, deployment-level result acceptance, and escalation while consuming persistent Fabric and Commons services. Not a normative MNCS requirement.",
       "does_not_own": [
@@ -220,6 +299,42 @@
       "to": "mncs",
       "kind": "empirical-challenge",
       "description": "Reference Studies test bounded claims under frozen protocols; study outcomes do not silently rewrite the standard."
+    },
+    {
+      "from": "fabric",
+      "to": "rights-provenance",
+      "kind": "provenance-evidence-source",
+      "description": "Fabric execution receipts can provide bounded origin, target, runtime, and transformation evidence to Rights & Provenance without making Fabric a legal evaluator or making Rights & Provenance a Fabric runtime dependency."
+    },
+    {
+      "from": "forge",
+      "to": "rights-provenance",
+      "kind": "provenance-analysis-source",
+      "description": "Forge lineage, source references, candidate history, and evidence-gap analysis can inform rights/provenance records while legal conclusions remain outside Forge authority."
+    },
+    {
+      "from": "commons",
+      "to": "rights-provenance",
+      "kind": "institutional-memory",
+      "description": "Commons may preserve rights findings, decisions, questions, provenance observations, and superseded interpretations; publication does not turn a legal assertion into truth."
+    },
+    {
+      "from": "rights-provenance",
+      "to": "mncs",
+      "kind": "advisory-specification-input",
+      "description": "Rights & Provenance may inform future MNCS release/evidence design only through explicit adoption; its incubating records are not MNCS conformance requirements."
+    },
+    {
+      "from": "rights-provenance",
+      "to": "mncds",
+      "kind": "advisory-specification-input",
+      "description": "Rights & Provenance may inform future contribution, release, and artifact-governance process rules only through explicit MNCDS adoption."
+    },
+    {
+      "from": "rights-provenance",
+      "to": "mnel",
+      "kind": "artifact-governance-input",
+      "description": "Rights/provenance classifications may describe experimental corpora and derived artifacts without making the Rights & Provenance project a gate for current MNEL operation."
     }
   ],
   "entry_points": [
@@ -232,6 +347,11 @@
       "goal": "Understand development-process governance or candidate lifecycle",
       "start_with": ["mncds"],
       "note": "MNCDS is independently versioned from MNCS."
+    },
+    {
+      "goal": "Understand artifact provenance, rights basis, authorship uncertainty, or machine-native contribution lineage",
+      "start_with": ["rights-provenance"],
+      "note": "Rights & Provenance is incubating and non-normative. Treat provenance as evidence, not an automatic legal conclusion."
     },
     {
       "goal": "Develop or evaluate a candidate with declared evidence workflows",
