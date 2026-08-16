@@ -9,7 +9,11 @@ MNCS Atlas is the front door for the wider MNCS project family. Individual repos
 - [MNCS](https://github.com/epi13/machine-native-complexity-standard) — Machine-Native Complexity Standard, the normative implementation-evidence standard.
 - [MNCDS](https://github.com/epi13/machine-native-complexity-development-specification) — Machine-Native Complexity Development Specification, the independently versioned development-process specification.
 
-Harness, Control, Fabric, Forge, Commons, RAVEL, MNEL, validators, language research, reference studies, and Atlas itself are operator, development, or research components. They are not mandatory for MNCS conformance.
+The family also contains non-normative specifications, operator infrastructure, research, learning, validation, and orientation projects. Family membership does not itself create runtime dependency or normative authority.
+
+[MNCS Rights & Provenance](https://github.com/epi13/mncs-rights-provenance) is now an official **Incubating** family project. It develops machine-native provenance and rights evidence for artifact origin, transformation lineage, contribution provenance, authorship uncertainty, rights basis, and artifact licensing while intentionally remaining non-normative and not replacing Apache-2.0.
+
+Harness, Control, Fabric, Forge, Commons, RAVEL, MNEL, validators, language research, reference studies, Rights & Provenance, and Atlas itself are not mandatory for MNCS conformance unless a future governing specification explicitly adopts a requirement.
 
 ## What Atlas is for
 
@@ -18,13 +22,13 @@ Atlas should answer the questions that do not belong in any one project README:
 - What is MNCS and what problem is the project family investigating?
 - What is the difference between MNCS and MNCDS?
 - Which repository owns which responsibility?
-- How do Forge, Fabric, Commons, RAVEL, MNEL, the language work, validators, and studies relate?
+- How do Forge, Fabric, Commons, RAVEL, MNEL, Rights & Provenance, the language work, validators, and studies relate?
 - How do current operator components such as MNCS Control MCP and MNCS Harness fit without becoming normative requirements?
 - Where does authority live, and where does it explicitly *not* live?
 - Which persistent service owns worker presence, execution history, knowledge state, routing policy, or remote-control state?
 - What should a new human contributor or coding agent read before changing anything?
 - Which terminology should mean the same thing across repositories?
-- What is the rough maturity posture of each family component?
+- What is the maturity posture and authority class of each family component?
 
 Atlas intentionally does **not** duplicate detailed implementation documentation. When a repository README, specification, RFC, schema, or source file is authoritative for a local question, Atlas links there instead.
 
@@ -53,6 +57,8 @@ docs/
   OPERATING_MODEL.md      reference operator/runtime path and lifecycle ownership
   PROJECTS.md             project directory and responsibility boundaries
   TERMINOLOGY.md          shared terminology index
+  MATURITY.md             family maturity vocabulary and dependency policy
+  MACHINE_ORIENTATION.md  contract for safe human/agent use of atlas.json
 AGENTS.md                 orientation contract for AI/coding agents
 CONTRIBUTING.md           contribution guidance for Atlas
 scripts/                  site integrity and Pages mirror tooling
@@ -92,20 +98,21 @@ Atlas deliberately keeps two related views:
 - [Architecture](docs/ARCHITECTURE.md) answers **who is allowed to claim what?**
 - [Operating model](docs/OPERATING_MODEL.md) answers **how does the reference operator stack actually get bounded work done?**
 
-That distinction prevents protected remote control, model routing, persistent execution, knowledge storage, and normative evaluation from collapsing into one vague "control plane."
+That distinction prevents protected remote control, model routing, persistent execution, knowledge storage, institutional provenance, and normative evaluation from collapsing into one vague "control plane."
 
 ## Machine-readable Atlas
 
-`site/atlas.json` is a non-normative orientation surface for agents and tooling. Version 0.2 adds:
+`site/atlas.json` is a non-normative orientation surface for agents and tooling. Version 0.3 adds:
 
-- stable IDs for public family projects;
-- explicit current operator components;
-- cross-component relationship records;
-- task-oriented entry points;
-- freshness guidance and review date;
-- a published JSON Schema at `site/schema/atlas.schema.json`.
+- `mncs-rights-provenance` as an official Incubating family project;
+- explicit `authority_class` metadata separate from maturity;
+- a machine-readable family maturity model and dependency policy;
+- a machine consumer contract describing safe resolution order and UNKNOWN behavior;
+- additional rights/provenance relationships across Fabric, Forge, Commons, MNCS, MNCDS, and MNEL;
+- data-driven website enhancement so the project registry and maturity presentation derive from the canonical machine map;
+- stable IDs, operator components, relationship records, entry points, freshness guidance, and the published JSON Schema.
 
-The machine map is deliberately orientation data rather than a conformance or authority source.
+The machine map is deliberately orientation data rather than a conformance or authority source. See [Machine Orientation Contract](docs/MACHINE_ORIENTATION.md).
 
 ## Family documentation
 
@@ -113,6 +120,8 @@ The machine map is deliberately orientation data rather than a conformance or au
 - [Operating model](docs/OPERATING_MODEL.md)
 - [Project directory](docs/PROJECTS.md)
 - [Terminology](docs/TERMINOLOGY.md)
+- [Maturity model](docs/MATURITY.md)
+- [Machine orientation contract](docs/MACHINE_ORIENTATION.md)
 - [Agent orientation](AGENTS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
@@ -125,7 +134,7 @@ python scripts/sync_pages_root.py --check
 python scripts/check_site.py
 ```
 
-These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, `.nojekyll`, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
+These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, maturity vocabulary, authority classes, consumer-contract structure, `.nojekyll`, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
 
 ## Documentation rule
 

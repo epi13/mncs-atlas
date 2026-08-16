@@ -8,9 +8,15 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Agent** — A model-backed or software actor that can propose plans, code, hypotheses, tool requests, explanations, or candidate repairs. An agent is not automatically an evaluator or authority.
 
+**Artifact rights basis** — The stated basis on which an artifact is believed to be distributable or otherwise usable, kept distinct from the technical description of how the artifact was produced.
+
 **Atlas** — The MNCS family-level orientation and documentation map. Non-normative.
 
 **Authority** — The explicitly bounded right of a component, specification, evaluator, operator, or policy to make a particular decision or claim. Capability is not authority.
+
+**Authority class** — Atlas metadata describing the bounded kind of authority a component has, kept separate from maturity. Maturity never grants authority by itself.
+
+**Authorship uncertainty** — An explicit state used when available evidence does not justify a definitive authorship characterization. It should not be collapsed into an ownership or public-domain claim.
 
 ## C
 
@@ -19,6 +25,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 **Commons** — The MNCS persistent structured coordination and knowledge-exchange layer. It provides durable shared/institutional memory; publication does not imply trust, execution permission, or acceptance.
 
 **Conformance** — Satisfaction of the applicable normative MNCS requirements under the required evidence and evaluation boundary. Tool success, deployment acceptance, or execution success alone is not conformance.
+
+**Consumer contract** — Atlas's machine-readable instructions for safely using family orientation data: resolve ownership, inspect maturity and authority, follow the owning project, verify freshness, and preserve UNKNOWN when evidence is insufficient.
 
 **Control surface** — A bounded operator/client interface that exposes capabilities without automatically owning the services behind them. MNCS Control MCP is a deployment-specific control surface, not a source of conformance authority.
 
@@ -42,17 +50,25 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Harness** — Reusable operator infrastructure that arranges model/tool interactions and accepts or rejects results for a particular workspace/deployment. In current family architecture, MNCS Harness consumes persistent Fabric and Commons services without owning their lifecycle. **Harness is not a normative MNCS requirement.**
 
+## I
+
+**Incubating** — Official family work whose problem and ownership are recognized but whose contracts, schemas, interfaces, or conclusions are expected to change materially. Incubating status is not a quality score or authority grant.
+
 ## L
 
 **Lifecycle owner** — The component authoritative for a declared persistent identity/history/recovery domain. Consumers do not inherit lifecycle ownership merely because they can query, invoke, or reconnect to that service.
 
 ## M
 
+**Maturity** — Descriptive Atlas metadata for the current kind of commitment a component makes. It is recorded separately from authority and is not a readiness ranking.
+
 **MNCS** — Machine-Native Complexity Standard. An open experimental standard for accepting generated or machine-optimized implementations through bounded evidence. Normative implementation-evidence authority.
 
 **MNCS Control MCP** — A current deployment-specific protected remote-workspace control surface. It exposes authorized development capabilities and bounded adapters to MNCS services; it does not own Fabric fleet lifecycle, Harness routing policy, Commons persistence, or MNCS conformance.
 
 **MNCS Harness** — Reusable operator infrastructure for routing, governing, tool-enabling, approving, and accepting AI/model work. Published at https://github.com/epi13/mncs-harness. Not a normative MNCS requirement.
+
+**MNCS Rights & Provenance** — Incubating family specification work for artifact origin, transformation lineage, contribution provenance, authorship uncertainty, rights basis, artifact licensing, and release-facing rights evidence. It is currently non-normative and does not replace Apache-2.0.
 
 **MNCDS** — Machine-Native Complexity Development Specification. An independently versioned development-process specification governing decomposition, candidate lifecycle, evidence flow, and related development controls.
 
@@ -72,7 +88,7 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **Provider** — A replaceable tool or execution capability used to produce observations or evidence, such as a compiler, analyzer, benchmark, mutation system, runtime harness, or verifier adapter.
 
-**Provenance** — Traceable origin and transformation history for an artifact, claim, result, or knowledge record.
+**Provenance** — Traceable origin and transformation history for an artifact, claim, result, or knowledge record. Provenance is evidence about process; it does not automatically determine authorship, ownership, copyrightability, or truth.
 
 ## R
 
@@ -81,6 +97,8 @@ This index standardizes family-level usage. Project-specific specifications rema
 **Reference Study** — A controlled empirical study intended to test MNCS-related hypotheses against frozen workloads, upstream/reference behavior, or alternative implementations.
 
 **Reference deployment** — A concrete operator stack used to do family work. It is descriptive orientation, not a personal laboratory and not a conformance requirement.
+
+**Rights provenance** — Evidence and assertions describing artifact origin, transformations, known third-party sources, rights basis, applicable licenses, uncertainty, and review state without manufacturing legal certainty.
 
 ## S
 
@@ -99,10 +117,13 @@ This index standardizes family-level usage. Project-specific specifications rema
 - Prefer **MNCS project family** or **MNCS ecosystem** for the collection of related repositories.
 - Use **MNCS** only for the standard/authority layer when ambiguity would matter.
 - Use **MNCDS** for the independently versioned development-process specification rather than treating it as a synonym for MNCS or as a subdirectory of MNCS.
-- Distinguish **normative / specification authority** (MNCS, MNCDS) from **operator / development / research** components (Harness, Control, Fabric, Forge, Commons, Validator, Language, Reference Studies, RAVEL, MNEL, Atlas).
+- Treat **MNCS Rights & Provenance** as an incubating, non-normative family specification until explicit governing adoption says otherwise.
+- Distinguish **normative / specification authority** (MNCS, MNCDS) from **incubating institutional specification work** and from **operator / development / research** components.
+- Distinguish **maturity** from **authority class**.
 - Distinguish **deployment acceptance** from **MNCS conformance**.
 - Distinguish a **service consumer** from the **lifecycle owner** of that service.
 - Say **execution passed** when referring to execution checks; do not shorten that to **MNCS passed** unless formal MNCS validation is actually what occurred.
 - Use **independent** only when the relevant evaluator, custody, and control requirements are actually independent.
 - Treat **UNKNOWN** as an intentional result, not an error string to be optimized away.
+- Treat provenance as evidence about origin/transformation, not as an automatic authorship, ownership, or copyrightability conclusion.
 - Prefer **reference deployment** or **operator stack** over laboratory or personal-lab language.

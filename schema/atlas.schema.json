@@ -11,6 +11,8 @@
     "authority",
     "canonical_human_guide",
     "canonical_repository",
+    "maturity_model",
+    "consumer_contract",
     "invariants",
     "projects",
     "operator_components",
@@ -27,6 +29,8 @@
     "canonical_human_guide": {"type": "string", "format": "uri"},
     "canonical_repository": {"type": "string", "format": "uri"},
     "documentation": {"type": "object"},
+    "maturity_model": {"$ref": "#/$defs/maturityModel"},
+    "consumer_contract": {"$ref": "#/$defs/consumerContract"},
     "invariants": {
       "type": "array",
       "items": {"type": "string"},
@@ -51,26 +55,63 @@
     }
   },
   "$defs": {
+    "maturityModel": {
+      "type": "object",
+      "required": ["semantics", "policy", "levels"],
+      "properties": {
+        "semantics": {"const": "descriptive-not-ranked"},
+        "policy": {"type": "string", "minLength": 1},
+        "levels": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "required": ["meaning", "dependency_policy"],
+            "properties": {
+              "meaning": {"type": "string", "minLength": 1},
+              "dependency_policy": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "consumerContract": {
+      "type": "object",
+      "required": ["version", "purpose", "resolution_order", "rules"],
+      "properties": {
+        "version": {"type": "string"},
+        "purpose": {"type": "string", "minLength": 1},
+        "resolution_order": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "rules": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+      },
+      "additionalProperties": false
+    },
     "component": {
       "type": "object",
-      "required": ["id", "name", "repository", "role", "maturity", "responsibility"],
+      "required": ["id", "name", "repository", "role", "maturity", "authority_class", "responsibility"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
         "name": {"type": "string"},
         "repository": {"type": "string", "format": "uri"},
         "role": {"type": "string"},
         "maturity": {"type": "string"},
-        "responsibility": {"type": "string"}
+        "authority_class": {"type": "string", "minLength": 1},
+        "responsibility": {"type": "string"},
+        "integration_policy": {"type": "string"},
+        "does_not_own": {"type": "array", "items": {"type": "string"}}
       },
       "additionalProperties": true
     },
     "operatorComponent": {
       "type": "object",
-      "required": ["id", "name", "role", "visibility", "responsibility", "does_not_own"],
+      "required": ["id", "name", "role", "authority_class", "visibility", "responsibility", "does_not_own"],
       "properties": {
         "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
         "name": {"type": "string"},
         "role": {"type": "string"},
+        "authority_class": {"type": "string", "minLength": 1},
         "visibility": {"type": "string"},
         "responsibility": {"type": "string"},
         "does_not_own": {"type": "array", "items": {"type": "string"}}

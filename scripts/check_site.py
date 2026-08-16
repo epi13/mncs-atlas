@@ -71,6 +71,33 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
     if atlas.get("canonical_human_guide") != CANONICAL_URL:
         errors.append("site/atlas.json canonical_human_guide does not match the Pages URL")
 
+    maturity_model = atlas.get("maturity_model")
+    if not isinstance(maturity_model, dict):
+        errors.append("site/atlas.json must define maturity_model")
+        maturity_levels: dict[str, object] = {}
+    else:
+        if maturity_model.get("semantics") != "descriptive-not-ranked":
+            errors.append("site/atlas.json maturity_model must declare semantics=descriptive-not-ranked")
+        maturity_levels = maturity_model.get("levels")
+        if not isinstance(maturity_levels, dict) or not maturity_levels:
+            errors.append("site/atlas.json maturity_model.levels must be a non-empty object")
+            maturity_levels = {}
+        else:
+            for maturity_id, maturity in maturity_levels.items():
+                if not isinstance(maturity, dict) or not maturity.get("meaning") or not maturity.get("dependency_policy"):
+                    errors.append(f"site/atlas.json maturity level {maturity_id!r} must define meaning and dependency_policy")
+
+    consumer_contract = atlas.get("consumer_contract")
+    if not isinstance(consumer_contract, dict):
+        errors.append("site/atlas.json must define consumer_contract")
+    else:
+        if not consumer_contract.get("version") or not consumer_contract.get("purpose"):
+            errors.append("site/atlas.json consumer_contract must define version and purpose")
+        for field in ("resolution_order", "rules"):
+            values = consumer_contract.get(field)
+            if not isinstance(values, list) or not values or not all(isinstance(value, str) and value for value in values):
+                errors.append(f"site/atlas.json consumer_contract.{field} must be a non-empty string list")
+
     projects = atlas.get("projects")
     operator_components = atlas.get("operator_components")
     relationships = atlas.get("relationships")
@@ -104,19 +131,33 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
             known_ids.add(component_id)
             if not component.get("name") or not component.get("role") or not component.get("responsibility"):
                 errors.append(f"site/atlas.json component {component_id} is missing name, role, or responsibility")
+            if not component.get("authority_class"):
+                errors.append(f"site/atlas.json component {component_id} is missing authority_class")
+            if collection_name == "projects":
+                maturity = component.get("maturity")
+                if maturity not in maturity_levels:
+                    errors.append(f"site/atlas.json project {component_id} uses undefined maturity level: {maturity}")
 
+    relation_keys: set[tuple[str, str, str]] = set()
     for index, relation in enumerate(relationships):
         if not isinstance(relation, dict):
             errors.append(f"site/atlas.json relationships[{index}] must be an object")
             continue
         source = relation.get("from")
         target = relation.get("to")
+        kind = relation.get("kind")
         if source not in known_ids:
             errors.append(f"site/atlas.json relationship references unknown source: {source}")
         if target not in known_ids:
             errors.append(f"site/atlas.json relationship references unknown target: {target}")
-        if not relation.get("kind") or not relation.get("description"):
+        if source == target:
+            errors.append(f"site/atlas.json relationship cannot self-reference: {source}")
+        if not kind or not relation.get("description"):
             errors.append(f"site/atlas.json relationship {source}->{target} is missing kind or description")
+        relation_key = (str(source), str(target), str(kind))
+        if relation_key in relation_keys:
+            errors.append(f"site/atlas.json duplicate relationship: {source}->{target} ({kind})")
+        relation_keys.add(relation_key)
 
     for index, entry in enumerate(entry_points):
         if not isinstance(entry, dict):
@@ -232,7 +273,7 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print("MNCS Atlas site checks passed, including topology, discovery files, and root Pages compatibility mirror.")
+    print("MNCS Atlas site checks passed, including topology, maturity, authority classes, consumer contract, discovery files, and root Pages compatibility mirror.")
     return 0
 
 
