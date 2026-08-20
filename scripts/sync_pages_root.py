@@ -17,10 +17,25 @@ MIRROR_PATHS = (
     "sitemap.xml",
     "assets/styles.css",
     "assets/app.js",
+    "assets/journal.css",
     "schema/atlas.schema.json",
 )
 
-MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
+MIRROR_TREES = (
+    "journal",
+)
+
+
+def iter_mirrors():
+    for relative in MIRROR_PATHS:
+        source = SITE / relative
+        yield source, ROOT / relative
+
+    for relative in MIRROR_TREES:
+        source_root = SITE / relative
+        for source in sorted(path for path in source_root.rglob("*") if path.is_file()):
+            target = ROOT / source.relative_to(SITE)
+            yield source, target
 
 
 def main() -> int:
@@ -28,8 +43,14 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="fail instead of writing when the mirror is stale")
     args = parser.parse_args()
 
+    for relative in MIRROR_TREES:
+        source_root = SITE / relative
+        if not source_root.is_dir():
+            print(f"missing canonical site directory: {source_root.relative_to(ROOT)}")
+            return 1
+
     stale: list[str] = []
-    for source, target in MIRRORS.items():
+    for source, target in iter_mirrors():
         if not source.is_file():
             print(f"missing canonical site file: {source.relative_to(ROOT)}")
             return 1
