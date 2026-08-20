@@ -1,3 +1,13 @@
+const atlasBaseUrl = (() => {
+  const script = document.currentScript;
+  if (script?.src) return new URL('../', script.src);
+  return new URL('./', window.location.href);
+})();
+
+function atlasUrl(path = '') {
+  return new URL(path, atlasBaseUrl).toString();
+}
+
 const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('#site-nav');
 
@@ -31,6 +41,55 @@ if (toggle && nav) {
 
 const year = document.querySelector('#year');
 if (year) year.textContent = String(new Date().getFullYear());
+
+function ensureJournalNavigation() {
+  if (!nav) return;
+  const alreadyLinked = [...nav.querySelectorAll('a')].some((link) => link.textContent.trim() === 'Journal');
+  if (alreadyLinked) return;
+
+  const link = document.createElement('a');
+  link.href = atlasUrl('journal/');
+  link.textContent = 'Journal';
+
+  const contribute = [...nav.querySelectorAll('a')].find((candidate) => candidate.getAttribute('href')?.includes('contribute'));
+  if (contribute) nav.insertBefore(link, contribute);
+  else nav.append(link);
+}
+
+function ensureJournalFooter() {
+  const footerLinks = document.querySelector('.footer-links');
+  if (!footerLinks) return;
+  const alreadyLinked = [...footerLinks.querySelectorAll('a')].some((link) => link.textContent.trim() === 'Journal');
+  if (alreadyLinked) return;
+
+  const link = document.createElement('a');
+  link.href = atlasUrl('journal/');
+  link.textContent = 'Journal';
+  footerLinks.append(link);
+}
+
+function renderJournalEntryPoint() {
+  const contribute = document.querySelector('#contribute');
+  if (!contribute || document.querySelector('#journal')) return;
+
+  const section = document.createElement('section');
+  section.id = 'journal';
+  section.className = 'section section-dark';
+  section.innerHTML = `
+    <div class="shell two-col intro-grid">
+      <div>
+        <p class="eyebrow">Development Journal</p>
+        <h2>The reasoning, experiments, wrong turns, and architectural shifts behind MNCS.</h2>
+      </div>
+      <div class="prose">
+        <p>Atlas explains where the MNCS project family stands. The Development Journal records how it gets there: decisions while they are still fresh, experiments that change the design, failures worth remembering, and ideas that may later become formal work.</p>
+        <p class="muted">Journal entries are dated snapshots and are deliberately non-normative. Current specifications and owning-repository documentation remain authoritative.</p>
+        <a class="button primary" href="${atlasUrl('journal/')}">Read the Development Journal</a>
+      </div>
+    </div>`;
+
+  contribute.insertAdjacentElement('beforebegin', section);
+}
 
 function humanize(value) {
   return String(value || '')
@@ -216,7 +275,7 @@ function renderInstitutionalLayer(atlas) {
 
 async function enhanceFromAtlas() {
   try {
-    const response = await fetch('atlas.json', { cache: 'no-cache' });
+    const response = await fetch(atlasUrl('atlas.json'), { cache: 'no-cache' });
     if (!response.ok) return;
     const atlas = await response.json();
 
@@ -238,4 +297,7 @@ async function enhanceFromAtlas() {
   }
 }
 
+ensureJournalNavigation();
+ensureJournalFooter();
+renderJournalEntryPoint();
 enhanceFromAtlas();
