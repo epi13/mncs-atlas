@@ -76,14 +76,14 @@ function renderJournalEntryPoint() {
   section.id = 'journal';
   section.className = 'section section-dark';
   section.innerHTML = `
-    <div class="shell two-col intro-grid">
+    <div class="shell two-col">
       <div>
         <p class="eyebrow">Development Journal</p>
         <h2>The reasoning, experiments, wrong turns, and architectural shifts behind MNCS.</h2>
       </div>
       <div class="prose">
         <p>Atlas explains where the MNCS project family stands. The Development Journal records how it gets there: decisions while they are still fresh, experiments that change the design, failures worth remembering, and ideas that may later become formal work.</p>
-        <p class="muted">Journal entries are dated snapshots and are deliberately non-normative. Current specifications and owning-repository documentation remain authoritative.</p>
+        <p>Journal entries are dated snapshots and are deliberately non-normative. Current specifications and owning-repository documentation remain authoritative.</p>
         <a class="button primary" href="${atlasUrl('journal/')}">Read the Development Journal</a>
       </div>
     </div>`;
