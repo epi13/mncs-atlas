@@ -59,6 +59,7 @@ docs/
   TERMINOLOGY.md          shared terminology index
   MATURITY.md             family maturity vocabulary and dependency policy
   MACHINE_ORIENTATION.md  contract for safe human/agent use of atlas.json
+  JOURNAL_MAINTAINER.md   bounded recurring Development Journal maintainer contract
 AGENTS.md                 orientation contract for AI/coding agents
 CONTRIBUTING.md           contribution guidance for Atlas
 scripts/                  site integrity and Pages mirror tooling
@@ -122,6 +123,7 @@ The machine map is deliberately orientation data rather than a conformance or au
 - [Terminology](docs/TERMINOLOGY.md)
 - [Maturity model](docs/MATURITY.md)
 - [Machine orientation contract](docs/MACHINE_ORIENTATION.md)
+- [Journal Maintainer contract](docs/JOURNAL_MAINTAINER.md)
 - [Agent orientation](AGENTS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
