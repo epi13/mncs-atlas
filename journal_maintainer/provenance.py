@@ -39,6 +39,11 @@ owning-repository contracts, experiment evidence, or Commons records.
 - **Commons consulted:** {_consulted(commons)}
 - **Experiment evidence consulted:** {_consulted(experiments)}
 - **Automatic merge eligible:** {auto}
+- **Promotion state:** {run.promotion_state}
+- **Exact evaluated head SHA:** {run.head_sha or "unknown (independent finalizer required)"}
+- **Synthesizer path:** {run.synthesizer_path or (run.draft.synthesizer if run.draft else "unknown")}
+- **Evidence bundle:** `{run.evidence_bundle_id or "unknown"}`
+- **Editor identity/type:** {(run.editor_identity or "none")}/{(run.editor_type or "none")}
 
 ### Evidence source classes
 

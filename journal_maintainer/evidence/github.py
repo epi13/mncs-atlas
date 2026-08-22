@@ -38,6 +38,7 @@ def gather_github(
         )
     items: list[EvidenceItem] = []
     errors: list[str] = []
+    repository_statuses: dict[str, SourceStatus] = {}
     retrieved = utcnow()
     for project in projects:
         if not project.owner or not project.repo:
@@ -47,22 +48,32 @@ def gather_github(
         issues: list[dict] = []
         commits: list[dict] = []
         releases: list[dict] = []
+        endpoint_errors: list[str] = []
         try:
             pulls = client.list_pulls(project.owner, project.repo, state="all", per_page=50)
         except HttpError as error:
-            errors.append(f"{repo_full} pulls: {error}")
+            message = f"{repo_full} pulls: {error}"; errors.append(message); endpoint_errors.append(message)
         try:
             issues = client.list_issues(project.owner, project.repo, state="all", per_page=20)
         except HttpError as error:
-            errors.append(f"{repo_full} issues: {error}")
+            message = f"{repo_full} issues: {error}"; errors.append(message); endpoint_errors.append(message)
         try:
             commits = client.list_commits(project.owner, project.repo, since=interval.start, until=interval.end)
         except HttpError as error:
-            errors.append(f"{repo_full} commits: {error}")
+            message = f"{repo_full} commits: {error}"; errors.append(message); endpoint_errors.append(message)
         try:
             releases = client.list_releases(project.owner, project.repo)
         except HttpError as error:
-            errors.append(f"{repo_full} releases: {error}")
+            message = f"{repo_full} releases: {error}"; errors.append(message); endpoint_errors.append(message)
+        records_present = bool(pulls or issues or commits or releases)
+        if len(endpoint_errors) == 4:
+            repository_statuses[repo_full] = SourceStatus.UNAVAILABLE
+        elif endpoint_errors:
+            repository_statuses[repo_full] = SourceStatus.PARTIAL
+        elif records_present:
+            repository_statuses[repo_full] = SourceStatus.AVAILABLE
+        else:
+            repository_statuses[repo_full] = SourceStatus.EMPTY
         if not pulls and not commits and not issues and not releases:
             continue
         merged = []
@@ -141,15 +152,21 @@ def gather_github(
                 )
             )
 
-    if not items and errors and len(errors) == len([p for p in projects if p.owner and p.repo]):
+    repo_count = len(repository_statuses)
+    unavailable_count = sum(status == SourceStatus.UNAVAILABLE for status in repository_statuses.values())
+    if repo_count and unavailable_count == repo_count:
         return EvidenceSourceResult(
             source_class=SourceClass.OWNING_REPOSITORY,
             status=SourceStatus.UNAVAILABLE,
             consulted=True,
             gap="GitHub family evidence could not be retrieved.",
             detail="; ".join(errors[:8]),
+            repository_statuses=repository_statuses,
         )
-    status = SourceStatus.AVAILABLE if items else SourceStatus.EMPTY
+    if errors:
+        status = SourceStatus.PARTIAL
+    else:
+        status = SourceStatus.AVAILABLE if items else SourceStatus.EMPTY
     gap = None
     if errors:
         names = sorted({error.split()[0] for error in errors if error})
@@ -164,6 +181,7 @@ def gather_github(
         items=_dedupe(items),
         gap=gap,
         detail=f"Inspected {len(projects)} Atlas-mapped repositories." if not gap else gap,
+        repository_statuses=repository_statuses,
     )
 
 
@@ -176,7 +194,12 @@ def _maybe_files(client: GitHubClient, project: FamilyProject, raw: dict) -> lis
     if is_noise_title(title):
         return []
     try:
-        return client.pull_files(project.owner, project.repo, number)[:80]
+        details = client.pull_file_details(project.owner, project.repo, number)[:80]
+        raw["_file_details"] = [
+            {"filename": detail.get("filename"), "patch": scrub_text(detail.get("patch"), limit=1200)}
+            for detail in details if isinstance(detail, dict)
+        ]
+        return [scrub_text(detail.get("filename"), limit=200) for detail in details if detail.get("filename")]
     except HttpError:
         return []
 
@@ -199,6 +222,14 @@ def _from_issue(
         for label in (raw.get("labels") or [])
     ]
     summary = summarize_body(raw.get("body"))
+    file_details = raw.get("_file_details") or []
+    doc_excerpts = [
+        f"{detail.get('filename')}: {detail.get('patch')}"
+        for detail in file_details
+        if isinstance(detail, dict) and detail.get("patch") and str(detail.get("filename", "")).lower().endswith((".md", ".rst", ".txt"))
+    ]
+    if doc_excerpts:
+        summary = (summary + " Documentation excerpts (untrusted evidence): " + " | ".join(doc_excerpts[:3]))[:3000]
     path_kind = classify_files(files)
     if path_kind is not None and kind in {EvidenceKind.MERGED_PR, EvidenceKind.OPEN_PR}:
         kind = path_kind

@@ -9,7 +9,7 @@ from pathlib import Path
 from .config import MaintainerConfig
 from .journal_html import load_journal_entries
 from .models import CANONICAL_PAGES_URL, PathCheckResult, RenderedEntry
-from .paths import classify_changed_paths, posix_relative
+from .paths import check_diff, classify_changed_paths, diff_paths, posix_relative, verify_append_only
 from .render import render_index, render_sitemap
 
 
@@ -81,10 +81,16 @@ def _sync_pages_root(root: Path) -> None:
     subprocess.run([sys.executable, str(script)], check=True, cwd=root)
 
 
-def git_changed_paths(root: Path, base: str | None = None) -> list[str]:
-    commands = [["git", "diff", "--name-only"], ["git", "diff", "--name-only", "--cached"]]
+def git_changed_paths(root: Path, base: str | None = None, head: str = "HEAD") -> list[str]:
+    """Return changed paths from an explicit PR range when a base is given.
+
+    Working-tree inspection remains available for local ``--prepare`` runs,
+    but CI/publication callers must pass a trusted base and exact head.
+    """
     if base:
-        commands.append(["git", "diff", "--name-only", base])
+        names, _ = diff_paths(root, base=base, head=head)
+        return names
+    commands = [["git", "diff", "--name-only"], ["git", "diff", "--name-only", "--cached"]]
     names: set[str] = set()
     for command in commands:
         result = subprocess.run(command, cwd=root, check=False, capture_output=True, text=True)
@@ -109,7 +115,11 @@ def git_changed_paths(root: Path, base: str | None = None) -> list[str]:
     return sorted(names)
 
 
-def check_changed_paths(root: Path, changed: list[str] | None = None) -> PathCheckResult:
+def check_changed_paths(
+    root: Path, changed: list[str] | None = None, *, base: str | None = None, head: str = "HEAD"
+) -> PathCheckResult:
+    if base:
+        return check_diff(root, base=base, head=head)
     paths = changed if changed is not None else git_changed_paths(root)
     authorized, unexpected = classify_changed_paths(root, paths)
     return PathCheckResult(

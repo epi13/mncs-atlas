@@ -31,10 +31,12 @@ class SourceClass(str, Enum):
 
 class SourceStatus(str, Enum):
     AVAILABLE = "available"
+    PARTIAL = "partial"
     UNAVAILABLE = "unavailable"
     SKIPPED = "skipped"
     EMPTY = "empty"
     MALFORMED = "malformed"
+    UNKNOWN = "unknown"
 
 
 class Confidence(str, Enum):
@@ -266,6 +268,9 @@ class EvidenceSourceResult:
     items: list[EvidenceItem] = field(default_factory=list)
     gap: str | None = None
     detail: str | None = None
+    # Completeness is tracked per owning source/repository so one endpoint
+    # failure cannot be mistaken for a complete empty result.
+    repository_statuses: dict[str, SourceStatus] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -275,6 +280,33 @@ class EvidenceSourceResult:
             "item_count": len(self.items),
             "gap": self.gap,
             "detail": self.detail,
+            "repository_statuses": {name: status.value for name, status in sorted(self.repository_statuses.items())},
+        }
+
+
+@dataclass(frozen=True)
+class EvidenceBundle:
+    """Bounded, inspectable handoff from Atlas collection to a capable editor."""
+
+    bundle_id: str
+    interval: CoveredInterval
+    previous_publication: PreviousPublication | None
+    sources: tuple[EvidenceSourceResult, ...]
+    items: tuple[EvidenceItem, ...]
+    unavailable_sources: tuple[str, ...] = ()
+    temporal_coverage: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=utcnow)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "bundle_id": self.bundle_id,
+            "interval": self.interval.to_dict(),
+            "previous_publication": self.previous_publication.to_dict() if self.previous_publication else None,
+            "sources": [source.to_dict() for source in self.sources],
+            "items": [item.to_dict() for item in self.items],
+            "unavailable_sources": list(self.unavailable_sources),
+            "temporal_coverage": dict(self.temporal_coverage),
+            "created_at": isoformat_utc(self.created_at),
         }
 
 
@@ -311,6 +343,7 @@ class DraftSection:
     heading: str
     paragraphs: list[str]
     note: str | None = None
+    evidence_ids: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -334,6 +367,10 @@ class DraftEntry:
     ambiguity_reason: str | None = None
     synthesizer: str = "heuristic"
     used_item_ids: list[str] = field(default_factory=list)
+    editor_identity: str | None = None
+    editor_type: str | None = None
+    editor_run_id: str | None = None
+    evidence_bundle_id: str | None = None
 
     @property
     def filename(self) -> str:
@@ -357,6 +394,10 @@ class DraftEntry:
             "ambiguity_reason": self.ambiguity_reason,
             "synthesizer": self.synthesizer,
             "used_item_ids": list(self.used_item_ids),
+            "editor_identity": self.editor_identity,
+            "editor_type": self.editor_type,
+            "editor_run_id": self.editor_run_id,
+            "evidence_bundle_id": self.evidence_bundle_id,
             "filename": self.filename,
         }
 
@@ -406,6 +447,10 @@ class PathCheckResult:
     changed: list[str]
     unexpected: list[str]
     authorized: list[str]
+    base: str | None = None
+    head: str | None = None
+    append_only: bool = True
+    history_errors: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -413,6 +458,10 @@ class PathCheckResult:
             "changed": list(self.changed),
             "unexpected": list(self.unexpected),
             "authorized": list(self.authorized),
+            "base": self.base,
+            "head": self.head,
+            "append_only": self.append_only,
+            "history_errors": list(self.history_errors),
         }
 
 
@@ -453,6 +502,12 @@ class JournalRun:
     retry_of: str | None = None
     notes: list[str] = field(default_factory=list)
     finished_at: datetime | None = None
+    evidence_bundle_id: str | None = None
+    synthesizer_path: str | None = None
+    editor_identity: str | None = None
+    editor_type: str | None = None
+    head_sha: str | None = None
+    promotion_state: str = "not-evaluated"
 
     def source_status(self, source_class: SourceClass) -> EvidenceSourceResult | None:
         for source in self.sources:
@@ -488,6 +543,12 @@ class JournalRun:
             "failure": None if self.failure is None else self.failure.to_dict(),
             "retry_of": self.retry_of,
             "notes": list(self.notes),
+            "evidence_bundle_id": self.evidence_bundle_id,
+            "synthesizer_path": self.synthesizer_path,
+            "editor_identity": self.editor_identity,
+            "editor_type": self.editor_type,
+            "head_sha": self.head_sha,
+            "promotion_state": self.promotion_state,
         }
 
 

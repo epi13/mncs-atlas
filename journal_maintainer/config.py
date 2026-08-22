@@ -38,6 +38,9 @@ class MaintainerConfig:
     hints_file: Path | None = None
     evidence_file: Path | None = None
     synthesizer: str = "heuristic"
+    mode: str = "pr-only"
+    github_app_token: str | None = None
+    github_app_slug: str | None = None
     user_agent: str = "mncs-atlas-journal-maintainer/0.1"
     extra_repositories: tuple[str, ...] = EXTRA_PUBLIC_REPOSITORIES
 
@@ -67,9 +70,11 @@ def load_config(
     hints_file: Path | None = None,
     evidence_file: Path | None = None,
     synthesizer: str = "heuristic",
+    mode: str = "pr-only",
 ) -> MaintainerConfig:
     resolved_root = (root or Path.cwd()).resolve()
-    token = github_token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    app_token = os.environ.get("MNCS_JOURNAL_APP_TOKEN") or os.environ.get("MNCS_JOURNAL_GITHUB_APP_TOKEN")
+    token = github_token or app_token or os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     commons = commons_url or os.environ.get("MNCS_COMMONS_URL")
     experiments = experiments_file
     if experiments is None and os.environ.get("MNCS_EXPERIMENT_SNAPSHOT"):
@@ -86,6 +91,9 @@ def load_config(
         hints_file=hints,
         evidence_file=evidence_file,
         synthesizer=synthesizer,
+        mode=mode,
+        github_app_token=app_token,
+        github_app_slug=os.environ.get("MNCS_JOURNAL_APP_SLUG"),
     )
 
 

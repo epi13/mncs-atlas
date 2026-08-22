@@ -26,7 +26,13 @@ def main() -> int:
 
 
 def check_paths() -> int:
-    result = check_changed_paths(ROOT)
+    import os
+    base = os.environ.get("JOURNAL_DIFF_BASE") or os.environ.get("GITHUB_BASE_SHA")
+    head = os.environ.get("JOURNAL_DIFF_HEAD") or os.environ.get("GITHUB_SHA") or "HEAD"
+    if base:
+        result = check_changed_paths(ROOT, base=base, head=head)
+    else:
+        result = check_changed_paths(ROOT)
     if result.changed:
         print("Changed paths:")
         for path in result.changed:
@@ -35,6 +41,8 @@ def check_paths() -> int:
         print("Unauthorized journal publication paths:")
         for path in result.unexpected:
             print(f"- {path}")
+        for error in result.history_errors:
+            print(f"- {error}")
         return 1
     print("Changed paths are within the authorized journal publication surface.")
     return 0

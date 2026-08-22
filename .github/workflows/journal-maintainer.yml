@@ -1,8 +1,9 @@
 name: Atlas Journal Maintainer
 
 # One maintainer implementation; this is an invocation surface.
-# Semantic synthesis uses the heuristic editorial pipeline unless an editor
-# draft is supplied. This workflow does not pretend to be a general LLM.
+# Collection/triage is deterministic Atlas infrastructure. A capable editor
+# may supply an EvidenceBundle-backed draft; this scheduled job defaults to
+# PR creation and never claims that the heuristic authored the narrative.
 
 on:
   schedule:
@@ -18,18 +19,32 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: atlas-journal-maintainer
+  cancel-in-progress: false
+
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 jobs:
   journal:
     runs-on: ubuntu-latest
     steps:
+      - name: Mint narrowly scoped GitHub App installation token
+        id: app-token
+        if: ${{ secrets.MNCS_JOURNAL_APP_ID != '' && secrets.MNCS_JOURNAL_APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MNCS_JOURNAL_APP_ID }}
+          private-key: ${{ secrets.MNCS_JOURNAL_APP_PRIVATE_KEY }}
+          owner: epi13
+          repositories: mncs-atlas
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN || github.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,7 +55,7 @@ jobs:
         id: mode
         run: |
           if [ "${GITHUB_EVENT_NAME}" = "schedule" ] || [ "${{ inputs.dry_run }}" = "false" ]; then
-            echo "args=run --publish --json" >> "$GITHUB_OUTPUT"
+            echo "args=run --publish --mode pr-only --json" >> "$GITHUB_OUTPUT"
           else
             echo "args=run --dry-run --json" >> "$GITHUB_OUTPUT"
           fi
@@ -52,9 +67,13 @@ jobs:
 
       - name: Run Journal Maintainer
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MNCS_JOURNAL_APP_TOKEN: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN }}
           MNCS_COMMONS_URL: ${{ secrets.MNCS_COMMONS_URL }}
-        run: python -m journal_maintainer ${{ steps.mode.outputs.args }} ${{ steps.mode.outputs.retry }}
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] || [ "${{ inputs.dry_run }}" = "false" ]; then
+            test -n "$MNCS_JOURNAL_APP_TOKEN" || { echo "MNCS_JOURNAL_APP_TOKEN is required for unattended PR creation"; exit 1; }
+          fi
+          python -m journal_maintainer ${{ steps.mode.outputs.args }} ${{ steps.mode.outputs.retry }}
 
       - name: Record no-op / provenance in the job summary
         if: always()
@@ -62,4 +81,4 @@ jobs:
           echo "Journal Maintainer invocation completed." >> "$GITHUB_STEP_SUMMARY"
           echo "This workflow invokes \`python -m journal_maintainer\`. It does not embed a second editorial implementation." >> "$GITHUB_STEP_SUMMARY"
           echo "Commons is consulted only when \`MNCS_COMMONS_URL\` is configured; otherwise the gap is recorded and repository evidence may still suffice." >> "$GITHUB_STEP_SUMMARY"
-          echo "Automatic merge is attempted only after the maintainer's local gate; GitHub required checks still apply." >> "$GITHUB_STEP_SUMMARY"
+          echo "This workflow creates/updates PRs only. Independent finalizer re-evaluates the exact head after Atlas CI; missing App configuration fails closed." >> "$GITHUB_STEP_SUMMARY"
