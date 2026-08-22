@@ -20,11 +20,34 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Compile site tooling
-        run: python -m py_compile scripts/check_site.py scripts/sync_pages_root.py
+      - name: Compile site and Journal Maintainer tooling
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import py_compile
+          files = [
+              "scripts/check_site.py",
+              "scripts/sync_pages_root.py",
+              "scripts/check_journal.py",
+              "scripts/journal_maintainer.py",
+          ]
+          files += [str(path) for path in Path("journal_maintainer").rglob("*.py")]
+          for path in files:
+              py_compile.compile(path, doraise=True)
+          PY
 
       - name: Check Pages root mirror
         run: python scripts/sync_pages_root.py --check
 
       - name: Check site links, assets, and machine map
         run: python scripts/check_site.py
+
+      - name: Check journal publication integrity
+        run: python scripts/check_journal.py
+
+      - name: Run Journal Maintainer tests
+        run: python -m unittest discover -s tests -t . -v
+
+      - name: Enforce journal path allow-list on maintainer PRs
+        if: startsWith(github.head_ref, 'journal/maintainer/') || startsWith(github.ref_name, 'journal/maintainer/')
+        run: python scripts/check_journal.py paths

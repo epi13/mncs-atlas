@@ -15,6 +15,8 @@
     "terminology": "https://github.com/epi13/mncs-atlas/blob/main/docs/TERMINOLOGY.md",
     "maturity": "https://github.com/epi13/mncs-atlas/blob/main/docs/MATURITY.md",
     "machine_orientation": "https://github.com/epi13/mncs-atlas/blob/main/docs/MACHINE_ORIENTATION.md",
+    "journal_maintainer": "https://github.com/epi13/mncs-atlas/blob/main/docs/JOURNAL_MAINTAINER.md",
+    "journal_maintainer_implementation": "https://github.com/epi13/mncs-atlas/blob/main/docs/JOURNAL_MAINTAINER_IMPLEMENTATION.md",
     "agents": "https://github.com/epi13/mncs-atlas/blob/main/AGENTS.md",
     "contributing": "https://github.com/epi13/mncs-atlas/blob/main/CONTRIBUTING.md"
   },
@@ -192,7 +194,7 @@
       "role": "family-orientation",
       "maturity": "orientation",
       "authority_class": "orientation-only",
-      "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, operator-model documentation, and machine-readable orientation."
+      "responsibility": "Family map, shared terminology, project boundaries, contributor pathways, operator-model documentation, machine-readable orientation, and the bounded non-normative Development Journal Maintainer."
     }
   ],
   "operator_components": [

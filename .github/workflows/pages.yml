@@ -40,6 +40,9 @@ jobs:
       - name: Validate Atlas site
         run: python scripts/check_site.py
 
+      - name: Validate journal publication
+        run: python scripts/check_journal.py
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

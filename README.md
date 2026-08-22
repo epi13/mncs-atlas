@@ -60,10 +60,14 @@ docs/
   MATURITY.md             family maturity vocabulary and dependency policy
   MACHINE_ORIENTATION.md  contract for safe human/agent use of atlas.json
   JOURNAL_MAINTAINER.md   bounded recurring Development Journal maintainer contract
+  JOURNAL_MAINTAINER_IMPLEMENTATION.md
+                          implemented maintainer architecture, CLI, and gates
 AGENTS.md                 orientation contract for AI/coding agents
 CONTRIBUTING.md           contribution guidance for Atlas
-scripts/                  site integrity and Pages mirror tooling
-.github/workflows/        GitHub Pages deployment + site integrity CI
+scripts/                  site integrity, Pages mirror, and Journal Maintainer CLI wrappers
+journal_maintainer/       bounded Development Journal Maintainer implementation
+tests/                    Journal Maintainer and publication checks
+.github/workflows/        GitHub Pages deployment, site integrity CI, Journal Maintainer schedule
 ```
 
 The `site/` tree is canonical. Do not hand-edit the root website mirror. After changing the canonical site, regenerate the root compatibility files with:
@@ -124,6 +128,7 @@ The machine map is deliberately orientation data rather than a conformance or au
 - [Maturity model](docs/MATURITY.md)
 - [Machine orientation contract](docs/MACHINE_ORIENTATION.md)
 - [Journal Maintainer contract](docs/JOURNAL_MAINTAINER.md)
+- [Journal Maintainer implementation](docs/JOURNAL_MAINTAINER_IMPLEMENTATION.md)
 - [Agent orientation](AGENTS.md)
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
@@ -134,9 +139,17 @@ The machine map is deliberately orientation data rather than a conformance or au
 ```bash
 python scripts/sync_pages_root.py --check
 python scripts/check_site.py
+python scripts/check_journal.py
+python -m unittest discover -s tests -t . -v
 ```
 
-These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, maturity vocabulary, authority classes, consumer-contract structure, `.nojekyll`, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
+These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, maturity vocabulary, authority classes, consumer-contract structure, `.nojekyll`, journal numbering/covered periods, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
+
+A dry-run of the Journal Maintainer (no repository mutation):
+
+```bash
+python -m journal_maintainer run --dry-run --output-dir /tmp/atlas-journal-dry-run
+```
 
 ## Documentation rule
 
