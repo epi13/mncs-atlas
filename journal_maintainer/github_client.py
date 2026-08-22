@@ -46,6 +46,20 @@ class GitHubClient:
         url = encode_query(f"{self.api}{path}", params or {})
         return self.fetcher(url, method="GET", headers=self._headers())
 
+    def _paged(self, path: str, params: dict[str, str], *, max_pages: int = 5) -> list[JsonObject]:
+        records: list[JsonObject] = []
+        for page in range(1, max_pages + 1):
+            page_params = dict(params)
+            page_params["page"] = str(page)
+            data = self.get(path, page_params)
+            if not isinstance(data, list):
+                break
+            batch = [item for item in data if isinstance(item, dict)]
+            records.extend(batch)
+            if len(batch) < int(params.get("per_page", "50")):
+                break
+        return records
+
     def post(self, path: str, payload: dict[str, Any]) -> Any:
         return self.fetcher(f"{self.api}{path}", method="POST", headers=self._headers(), payload=payload)
 
@@ -67,58 +81,61 @@ class GitHubClient:
     def list_commits(
         self, owner: str, repo: str, *, since: datetime, until: datetime, per_page: int = 40
     ) -> list[JsonObject]:
-        data = self.get(
+        return self._paged(
             f"/repos/{quote(owner)}/{quote(repo)}/commits",
-            {
-                "since": isoformat_utc(since) or "",
-                "until": isoformat_utc(until) or "",
-                "per_page": str(per_page),
-            },
+            {"since": isoformat_utc(since) or "", "until": isoformat_utc(until) or "", "per_page": str(per_page)},
+            max_pages=8,
         )
-        if not isinstance(data, list):
-            return []
-        return [item for item in data if isinstance(item, dict)]
 
     def list_pulls(
         self, owner: str, repo: str, *, state: str = "all", per_page: int = 50
     ) -> list[JsonObject]:
-        data = self.get(
+        return self._paged(
             f"/repos/{quote(owner)}/{quote(repo)}/pulls",
             {"state": state, "sort": "updated", "direction": "desc", "per_page": str(per_page)},
+            max_pages=5,
         )
-        if not isinstance(data, list):
-            return []
-        return [item for item in data if isinstance(item, dict)]
 
     def list_issues(
         self, owner: str, repo: str, *, state: str = "all", per_page: int = 30
     ) -> list[JsonObject]:
-        data = self.get(
+        return [item for item in self._paged(
             f"/repos/{quote(owner)}/{quote(repo)}/issues",
             {"state": state, "sort": "updated", "direction": "desc", "per_page": str(per_page)},
-        )
-        if not isinstance(data, list):
-            return []
-        return [item for item in data if isinstance(item, dict) and not item.get("pull_request")]
+            max_pages=5,
+        ) if not item.get("pull_request")]
 
     def list_releases(self, owner: str, repo: str, per_page: int = 10) -> list[JsonObject]:
-        data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/releases", {"per_page": str(per_page)})
-        if not isinstance(data, list):
-            return []
-        return [item for item in data if isinstance(item, dict)]
+        return self._paged(
+            f"/repos/{quote(owner)}/{quote(repo)}/releases", {"per_page": str(per_page)}, max_pages=3
+        )
 
     def pull_files(self, owner: str, repo: str, number: int) -> list[str]:
-        try:
-            data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/pulls/{number}/files", {"per_page": "100"})
-        except HttpError:
+        return [str(item.get("filename")) for item in self.pull_file_details(owner, repo, number) if item.get("filename")]
+
+    def pull_file_details(self, owner: str, repo: str, number: int) -> list[JsonObject]:
+        return self._paged(
+            f"/repos/{quote(owner)}/{quote(repo)}/pulls/{number}/files", {"per_page": "100"}, max_pages=3
+        )
+
+    def pull_reviews(self, owner: str, repo: str, number: int) -> list[JsonObject]:
+        return self._paged(
+            f"/repos/{quote(owner)}/{quote(repo)}/pulls/{number}/reviews", {"per_page": "100"}, max_pages=3
+        )
+
+    def check_runs(self, owner: str, repo: str, ref: str) -> list[JsonObject]:
+        data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/commits/{quote(ref)}/check-runs", {"per_page": "100"})
+        if not isinstance(data, dict):
             return []
-        if not isinstance(data, list):
-            return []
-        names: list[str] = []
-        for item in data:
-            if isinstance(item, dict) and item.get("filename"):
-                names.append(scrub_text(item["filename"], limit=200))
-        return names
+        return [item for item in (data.get("check_runs") or []) if isinstance(item, dict)]
+
+    def combined_status(self, owner: str, repo: str, ref: str) -> JsonObject:
+        data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/commits/{quote(ref)}/status")
+        return data if isinstance(data, dict) else {}
+
+    def branch_protection(self, owner: str, repo: str, branch: str) -> JsonObject:
+        data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/branches/{quote(branch)}/protection")
+        return data if isinstance(data, dict) else {}
 
     def repo_settings(self, owner: str, repo: str) -> JsonObject:
         data = self.get(f"/repos/{quote(owner)}/{quote(repo)}")
@@ -185,3 +202,6 @@ class GitHubClient:
     def pull_status(self, owner: str, repo: str, number: int) -> JsonObject:
         data = self.get(f"/repos/{quote(owner)}/{quote(repo)}/pulls/{number}")
         return data if isinstance(data, dict) else {}
+
+    def get_pull(self, owner: str, repo: str, number: int) -> JsonObject:
+        return self.pull_status(owner, repo, number)

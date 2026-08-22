@@ -13,12 +13,13 @@ from pathlib import Path
 
 from .checkpoint import branch_for_interval, determine_checkpoint
 from .config import MaintainerConfig, load_family_projects
-from .editorial import meaningful_development, synthesize
+from .editorial import build_evidence_bundle, meaningful_development, synthesize
 from .evidence.gather import gather_evidence
 from .gitops import (
     GitError,
     commit_authorized_paths,
     evaluate_auto_merge,
+    evaluate_github_promotion,
     open_or_update_pull_request,
     push_branch,
     run_git,
@@ -90,6 +91,17 @@ def execute_run(
         if project.owner and project.repo
     ]
     run.evidence_gaps = [source.gap for source in sources if source.gap]
+    bundle = build_evidence_bundle(
+        interval=checkpoint.covered,
+        previous=checkpoint.previous,
+        sources=sources,
+        items=items,
+    )
+    run.evidence_bundle_id = bundle.bundle_id
+    run.synthesizer_path = "editor-draft" if draft_file is not None else "heuristic"
+    if output_dir is not None:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "evidence-bundle.json").write_text(json.dumps(bundle.to_dict(), indent=2) + "\n", encoding="utf-8")
 
     github = run.source_status(SourceClass.OWNING_REPOSITORY)
     if github and github.status == SourceStatus.UNAVAILABLE:
@@ -102,18 +114,42 @@ def execute_run(
         return run
 
     existing = load_journal_entries(config.journal_dir)
-    clusters, draft = synthesize(
-        items=items,
-        sources=sources,
-        covered=checkpoint.covered,
-        previous=checkpoint.previous,
-        existing_entries=existing,
-        published=checkpoint.covered.end_date,
-        synthesizer=config.synthesizer,
-        draft_file=draft_file,
-    )
+    try:
+        clusters, draft = synthesize(
+            items=items,
+            sources=sources,
+            covered=checkpoint.covered,
+            previous=checkpoint.previous,
+            existing_entries=existing,
+            published=checkpoint.covered.end_date,
+            synthesizer=config.synthesizer,
+            draft_file=draft_file,
+            evidence_bundle_id=bundle.bundle_id,
+        )
+    except (ValueError, OSError, json.JSONDecodeError) as error:
+        run.outcome = RunOutcome.FAILED
+        run.failure = FailureState(code="INVALID_EDITOR_HANDOFF", message=str(error))
+        run.finished_at = utcnow()
+        return run
     run.clusters = clusters
     run.draft = draft
+    run.editor_identity = draft.editor_identity
+    run.editor_type = draft.editor_type
+    if draft.synthesizer == "editor-draft":
+        known_ids = {item.item_id for item in items}
+        missing_ids = [item_id for item_id in draft.used_item_ids if item_id not in known_ids]
+        section_ids = [item_id for section in draft.sections for item_id in section.evidence_ids]
+        missing_section_ids = [item_id for item_id in section_ids if item_id not in known_ids]
+        if not draft.used_item_ids or missing_ids or missing_section_ids:
+            run.outcome = RunOutcome.FAILED
+            detail = "editor draft must cite at least one collected evidence ID"
+            if missing_ids:
+                detail += "; unknown evidence IDs: " + ", ".join(missing_ids[:8])
+            if missing_section_ids:
+                detail += "; unknown section evidence IDs: " + ", ".join(missing_section_ids[:8])
+            run.failure = FailureState(code="INVALID_EDITOR_PROVENANCE", message=detail)
+            run.finished_at = utcnow()
+            return run
     run.omitted_uncertain = list(draft.omitted_topics)
     if draft.ambiguity:
         run.outcome = RunOutcome.AMBIGUOUS
@@ -211,13 +247,14 @@ def execute_run(
             start_ref = config.base_branch
         existing_remote = run_git(config.root, "rev-parse", "--verify", f"origin/{run.branch}", check=False)
         if existing_remote.returncode == 0:
+            if run_git(config.root, "merge-base", "--is-ancestor", start_ref, f"origin/{run.branch}", check=False).returncode != 0:
+                raise GitError(f"existing retry branch {run.branch} is not based on {start_ref}")
             start_ref = f"origin/{run.branch}"
         run_git(config.root, "worktree", "add", "-B", run.branch, str(worktree), start_ref)
         try:
             wt_config = replace(config, root=worktree)
             publish_to_site(wt_config, rendered)
             wt_paths = check_changed_paths(worktree)
-            run.path_check = wt_paths
             if not wt_paths.allowed:
                 raise GitError("worktree contained unexpected paths: " + ", ".join(wt_paths.unexpected))
             site_errors = validate_site(worktree)
@@ -228,6 +265,11 @@ def execute_run(
                 wt_paths.changed,
                 f"journal: {draft.filename} ({checkpoint.covered.key})",
             )
+            head_sha = run_git(worktree, "rev-parse", "HEAD").stdout.strip()
+            run.head_sha = head_sha
+            run.path_check = check_changed_paths(worktree, base=f"origin/{config.base_branch}", head=head_sha)
+            if not run.path_check.allowed:
+                raise GitError("complete PR diff failed the routine path/history gate: " + "; ".join(run.path_check.history_errors or run.path_check.unexpected))
             push_branch(worktree, run.branch)
         finally:
             run_git(config.root, "worktree", "remove", "--force", str(worktree), check=False)
@@ -240,38 +282,32 @@ def execute_run(
             body=pull_request_body(run),
         )
         run.pull_request_url = pull.get("html_url")
-        settings = {}
-        try:
-            settings = client.repo_settings(config.owner, config.atlas_repo)
-        except HttpError:
-            settings = {}
-        allows = settings.get("allow_auto_merge")
-        mergeable = pull.get("mergeable_state")
-        run.auto_merge = evaluate_auto_merge(
-            originated_from_maintainer=True,
-            path_check=run.path_check or path_check,
-            validation_ok=True,
-            ambiguity=False,
-            mergeable_state=str(mergeable) if mergeable else None,
-            reviews_request_changes=False,
-            repo_allows_auto_merge=bool(allows) if allows is not None else None,
-            human_hold=False,
-        )
-        if run.auto_merge.eligible:
-            enabled, detail = try_enable_auto_merge(client, pull)
-            run.notes.append(detail)
-            if not enabled:
-                run.auto_merge = AutoMergeEligibility(
-                    False,
-                    run.auto_merge.reasons + [detail],
-                    repository_permits_auto_merge=run.auto_merge.repository_permits_auto_merge,
+        if config.mode == "guarded-auto":
+            if not config.github_app_token:
+                run.auto_merge = AutoMergeEligibility(False, ["guarded-auto requires MNCS_JOURNAL_APP_TOKEN; absent, fail closed"])
+            else:
+                run.auto_merge = evaluate_github_promotion(
+                    client, config, pull, path_check=run.path_check or path_check,
+                    validation_ok=True, ambiguity=False,
                 )
-        elif allows is False:
-            run.notes.append(
-                "Repository auto-merge is disabled. Enable Settings → General → Pull Requests → Allow auto-merge."
+                if run.auto_merge.eligible:
+                    enabled, detail = try_enable_auto_merge(client, pull)
+                    run.notes.append(detail)
+                    if not enabled:
+                        run.auto_merge = AutoMergeEligibility(False, run.auto_merge.reasons + [detail], repository_permits_auto_merge=run.auto_merge.repository_permits_auto_merge)
+        else:
+            run.auto_merge = AutoMergeEligibility(False, [f"{config.mode} mode creates/updates the PR; independent finalizer owns promotion"])
+        run.promotion_state = "guarded-auto-enabled" if run.auto_merge.eligible else "pr-open-awaiting-independent-finalizer"
+        # The description is written after the gate snapshot so it cannot make
+        # stale claims about checks, head SHA, or promotion state.
+        if pull.get("number"):
+            client.update_pull_request(
+                config.owner, config.atlas_repo, int(pull["number"]),
+                title=f"journal: {draft.title}", body=pull_request_body(run),
             )
     except (GitError, HttpError, OSError) as error:
         run.outcome = RunOutcome.FAILED
         run.failure = FailureState(code="PUBLISH_FAILED", message=str(error))
+    run.promotion_state = "pr-created-awaiting-independent-gate"
     run.finished_at = utcnow()
     return run

@@ -9,6 +9,7 @@ Routine noise is omitted. Uncertainty and negative results are preserved.
 from __future__ import annotations
 
 import json
+import hashlib
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -20,6 +21,7 @@ from .models import (
     DraftEntry,
     DraftSection,
     EvidenceItem,
+    EvidenceBundle,
     EvidenceKind,
     EvidenceSourceResult,
     PreviousPublication,
@@ -62,7 +64,10 @@ def synthesize(
     published: date,
     synthesizer: str = "heuristic",
     draft_file: Path | None = None,
+    evidence_bundle_id: str | None = None,
 ) -> tuple[list[TopicCluster], DraftEntry]:
+    if synthesizer == "editor-draft" and draft_file is None:
+        raise ValueError("editor-draft requires a real editor draft file")
     if draft_file is not None:
         return _from_draft_file(
             draft_file,
@@ -71,6 +76,7 @@ def synthesize(
             covered=covered,
             existing_entries=existing_entries,
             published=published,
+            evidence_bundle_id=evidence_bundle_id,
         )
 
     clusters = cluster_topics(items, previous)
@@ -136,8 +142,10 @@ def synthesize(
         evidence_gaps=[gap for gap in gaps if gap],
         ambiguity=ambiguity[0],
         ambiguity_reason=ambiguity[1],
-        synthesizer=synthesizer,
+        # The deterministic path is never allowed to self-identify as a model.
+        synthesizer="heuristic",
         used_item_ids=used_ids,
+        evidence_bundle_id=evidence_bundle_id,
     )
     return clusters, draft
 
@@ -401,6 +409,8 @@ def _material_ambiguity(
     github = next((source for source in sources if source.source_class == SourceClass.OWNING_REPOSITORY), None)
     if github and github.status == SourceStatus.UNAVAILABLE:
         return True, "Owning-repository evidence was unavailable, so the interval cannot be synthesized confidently."
+    if github and github.status in {SourceStatus.PARTIAL, SourceStatus.UNKNOWN}:
+        return True, "Owning-repository evidence is incomplete; automatic promotion requires a complete retrieval."
     competing = [cluster for cluster in clusters if cluster.confidence == Confidence.UNKNOWN and not cluster.omitted]
     if len(competing) >= 2 and sum(len(cluster.items) for cluster in clusters if not cluster.omitted) < 3:
         return True, "Multiple material topics remain at UNKNOWN confidence with little supporting evidence."
@@ -422,10 +432,27 @@ def _from_draft_file(
     covered: CoveredInterval,
     existing_entries: list[PreviousPublication],
     published: date,
+    evidence_bundle_id: str | None,
 ) -> tuple[list[TopicCluster], DraftEntry]:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("editor draft must be a JSON object")
+    editor = payload.get("editor") if isinstance(payload.get("editor"), dict) else {}
+    editor_identity = str(editor.get("identity") or payload.get("editor_identity") or "").strip()
+    editor_type = str(editor.get("type") or payload.get("editor_type") or "").strip()
+    editor_run_id = str(editor.get("run_id") or payload.get("editor_run_id") or "").strip()
+    supplied_bundle = str(payload.get("evidence_bundle_id") or "").strip()
+    if not editor_identity or not editor_type or not supplied_bundle:
+        raise ValueError("editor draft requires editor identity/type and evidence_bundle_id")
+    if evidence_bundle_id and supplied_bundle != evidence_bundle_id:
+        raise ValueError("editor draft evidence_bundle_id does not match collected bundle")
     sections = [
-        DraftSection(heading=str(section["heading"]), paragraphs=[str(p) for p in section.get("paragraphs") or []])
+        DraftSection(
+            heading=str(section["heading"]),
+            paragraphs=[str(p) for p in section.get("paragraphs") or []],
+            note=str(section.get("note")) if section.get("note") else None,
+            evidence_ids=[str(item_id) for item_id in section.get("evidence_ids") or []],
+        )
         for section in payload.get("sections") or []
     ]
     number = int(payload.get("number") or next_journal_number(existing_entries))
@@ -445,9 +472,39 @@ def _from_draft_file(
         ambiguity=bool(payload.get("ambiguity")),
         ambiguity_reason=payload.get("ambiguity_reason"),
         synthesizer="editor-draft",
-        used_item_ids=[item.item_id for item in items[:20]],
+        used_item_ids=[str(item_id) for item_id in (payload.get("used_item_ids") or [])],
+        editor_identity=editor_identity,
+        editor_type=editor_type,
+        editor_run_id=editor_run_id or None,
+        evidence_bundle_id=supplied_bundle,
     )
     return [], draft
+
+
+def build_evidence_bundle(
+    *, interval: CoveredInterval, previous: PreviousPublication | None,
+    sources: list[EvidenceSourceResult], items: list[EvidenceItem],
+) -> EvidenceBundle:
+    """Create the stable, hashable editor input used by model/Control sessions."""
+    payload = {
+        "interval": interval.to_dict(),
+        "previous": previous.to_dict() if previous else None,
+        "sources": [source.to_dict() for source in sources],
+        "items": [item.to_dict() for item in items],
+    }
+    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return EvidenceBundle(
+        bundle_id=f"eb-{digest[:20]}",
+        interval=interval,
+        previous_publication=previous,
+        sources=tuple(sources),
+        items=tuple(items),
+        unavailable_sources=tuple(
+            source.source_class.value for source in sources
+            if source.status in {SourceStatus.UNAVAILABLE, SourceStatus.PARTIAL, SourceStatus.UNKNOWN, SourceStatus.MALFORMED}
+        ),
+        temporal_coverage={"start": interval.start.isoformat(), "end": interval.end.isoformat(), "bounded": True},
+    )
 
 
 def format_pretty_date(value: date) -> str:
