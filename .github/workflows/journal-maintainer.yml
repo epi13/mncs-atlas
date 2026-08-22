@@ -1,0 +1,65 @@
+name: Atlas Journal Maintainer
+
+# One maintainer implementation; this is an invocation surface.
+# Semantic synthesis uses the heuristic editorial pipeline unless an editor
+# draft is supplied. This workflow does not pretend to be a general LLM.
+
+on:
+  schedule:
+    - cron: "17 17 * * 5"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Gather and synthesize without opening a PR"
+        type: boolean
+        default: true
+      retry:
+        description: "Retry the current uncovered interval"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  journal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Determine invocation
+        id: mode
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] || [ "${{ inputs.dry_run }}" = "false" ]; then
+            echo "args=run --publish --json" >> "$GITHUB_OUTPUT"
+          else
+            echo "args=run --dry-run --json" >> "$GITHUB_OUTPUT"
+          fi
+          if [ "${{ inputs.retry }}" = "true" ]; then
+            echo "retry=--retry" >> "$GITHUB_OUTPUT"
+          else
+            echo "retry=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Journal Maintainer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MNCS_COMMONS_URL: ${{ secrets.MNCS_COMMONS_URL }}
+        run: python -m journal_maintainer ${{ steps.mode.outputs.args }} ${{ steps.mode.outputs.retry }}
+
+      - name: Record no-op / provenance in the job summary
+        if: always()
+        run: |
+          echo "Journal Maintainer invocation completed." >> "$GITHUB_STEP_SUMMARY"
+          echo "This workflow invokes \`python -m journal_maintainer\`. It does not embed a second editorial implementation." >> "$GITHUB_STEP_SUMMARY"
+          echo "Commons is consulted only when \`MNCS_COMMONS_URL\` is configured; otherwise the gap is recorded and repository evidence may still suffice." >> "$GITHUB_STEP_SUMMARY"
+          echo "Automatic merge is attempted only after the maintainer's local gate; GitHub required checks still apply." >> "$GITHUB_STEP_SUMMARY"

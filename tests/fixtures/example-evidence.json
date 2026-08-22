@@ -1,0 +1,49 @@
+{
+  "sources": [
+    {
+      "source_class": "owning-repository",
+      "status": "available",
+      "consulted": true,
+      "items": [
+        {
+          "item_id": "merged-pr:epi13/mncs-atlas:8",
+          "kind": "merged-pr",
+          "title": "Define bounded Atlas Journal Maintainer workflow",
+          "summary": "Atlas owns a recurring journal maintainer contract without becoming a new authority layer.",
+          "repository": "epi13/mncs-atlas",
+          "project_id": "atlas",
+          "signal": 9,
+          "files": ["docs/JOURNAL_MAINTAINER.md"],
+          "url": "https://github.com/epi13/mncs-atlas/pull/8",
+          "provenance": {"locator": "https://github.com/epi13/mncs-atlas/pull/8"}
+        },
+        {
+          "item_id": "merged-pr:epi13/mncs-atlas:9",
+          "kind": "architecture",
+          "title": "Document the Family Record Spine and Concept Reconstruction Experiment flow",
+          "summary": "Producer-owned records stay in native semantics; Commons indexes rather than owns truth.",
+          "repository": "epi13/mncs-atlas",
+          "project_id": "atlas",
+          "signal": 9,
+          "files": ["docs/family-record-spine.md"],
+          "url": "https://github.com/epi13/mncs-atlas/pull/9",
+          "provenance": {"locator": "https://github.com/epi13/mncs-atlas/pull/9"}
+        }
+      ]
+    },
+    {
+      "source_class": "commons",
+      "status": "unavailable",
+      "consulted": false,
+      "gap": "Commons public interface was not configured.",
+      "items": []
+    },
+    {
+      "source_class": "experiment",
+      "status": "unavailable",
+      "consulted": false,
+      "gap": "No experiment snapshot was provided.",
+      "items": []
+    }
+  ]
+}

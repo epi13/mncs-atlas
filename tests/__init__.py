@@ -1,0 +1,1 @@
+"""Atlas Journal Maintainer tests."""

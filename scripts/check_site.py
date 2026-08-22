@@ -21,9 +21,17 @@ MIRROR_PATHS = (
     "sitemap.xml",
     "assets/styles.css",
     "assets/app.js",
+    "assets/journal.css",
     "schema/atlas.schema.json",
 )
+MIRROR_TREES = ("journal",)
 MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
+for _tree in MIRROR_TREES:
+    _source_root = SITE / _tree
+    if _source_root.is_dir():
+        for _source in _source_root.rglob("*"):
+            if _source.is_file():
+                MIRRORS[_source] = ROOT / _source.relative_to(SITE)
 
 
 class LinkCollector(HTMLParser):

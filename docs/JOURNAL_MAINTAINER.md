@@ -1,6 +1,6 @@
 # Atlas Journal Maintainer Contract
 
-**Status:** Proposed implementation contract  
+**Status:** Adopted implementation contract (see also [JOURNAL_MAINTAINER_IMPLEMENTATION.md](JOURNAL_MAINTAINER_IMPLEMENTATION.md))  
 **Authority:** Non-normative Atlas editorial/automation policy  
 **Applies to:** MNCS Development Journal maintenance in `mncs-atlas`
 
@@ -100,7 +100,9 @@ Normally permitted:
 
 - `site/journal/<date>-<slug>.html` for the new entry;
 - `site/journal/index.html` to add the new entry;
-- generated root compatibility mirror files produced by `python scripts/sync_pages_root.py` for the corresponding canonical site changes;
+- `site/sitemap.xml` when adding or updating journal discovery URLs;
+- generated root compatibility mirror files produced by `python scripts/sync_pages_root.py` for the corresponding canonical site changes (`journal/**` and `sitemap.xml`);
+- compact non-normative provenance JSON embedded in the new journal HTML entry (not a separate authority record);
 - narrowly scoped journal metadata/discovery files if the Atlas publishing implementation later requires them and the contract is updated accordingly.
 
 ### Contract and implementation changes
@@ -250,6 +252,8 @@ A future implementation may add a compact machine-readable provenance record for
 - Refine editorial style, evidence selection, branch naming, PR metadata, and failure behavior.
 - Keep human merge/review available while the path is being validated.
 
+**Current status:** contract adopted. The implementation package, CLI, dry-run, and tests exist; see [JOURNAL_MAINTAINER_IMPLEMENTATION.md](JOURNAL_MAINTAINER_IMPLEMENTATION.md).
+
 ### Phase 2 — Scheduled PR generation
 
 - Create a recurring scheduled task, nominally weekly.
@@ -257,12 +261,16 @@ A future implementation may add a compact machine-readable provenance record for
 - Prefer MNCS Control MCP for bounded workspace operations and local Atlas validation.
 - Automatically produce a PR but do not require automatic merge yet.
 
+**Current status:** `.github/workflows/journal-maintainer.yml` invokes the same CLI weekly and on `workflow_dispatch`. Default dispatch is dry-run. Schedule publishes a PR when the gate would allow it.
+
 ### Phase 3 — Guarded auto-merge
 
 - Enforce authorized-path checking in the workflow and/or CI.
 - Require successful Atlas CI.
 - Enable GitHub auto-merge for qualifying journal-only PRs.
 - Leave any ambiguous, failed, conflicted, or expanded PR open.
+
+**Current status:** path allow-list is enforced in the maintainer and in CI for `journal/maintainer/*` branches. Auto-merge is requested only after the local gate; GitHub repository **Allow auto-merge** plus required checks still have to be enabled by a human operator.
 
 ### Phase 4 — Stronger machine-native provenance
 

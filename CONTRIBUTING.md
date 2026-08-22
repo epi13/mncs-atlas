@@ -53,6 +53,8 @@ Run the dependency-free checks before opening a PR:
 ```bash
 python scripts/sync_pages_root.py --check
 python scripts/check_site.py
+python scripts/check_journal.py
+python -m unittest discover -s tests -t . -v
 ```
 
 Check at minimum:
