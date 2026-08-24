@@ -1,9 +1,9 @@
 name: Atlas Journal Maintainer Finalizer
 
 on:
-  workflow_run:
-    workflows: ["Atlas CI"]
-    types: [completed]
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
 
 permissions:
   contents: read
