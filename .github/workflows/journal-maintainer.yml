@@ -1,14 +1,7 @@
 name: Atlas Journal Maintainer
 
 on:
-  schedule:
-    - cron: "17 17 * * 5"
   workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
 
 jobs:
   journal:
