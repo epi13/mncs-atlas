@@ -16,6 +16,7 @@ def pull_request_body(run: JournalRun) -> str:
         sources.append(f"- `{source.source_class.value}`: {mark}" + (f" — {source.gap}" if source.gap else ""))
     commons = run.source_status(SourceClass.COMMONS)
     experiments = run.source_status(SourceClass.EXPERIMENT)
+    operator_context = run.source_status(SourceClass.OPERATOR_CONTEXT)
     auto = "no"
     if run.auto_merge and run.auto_merge.eligible:
         auto = "yes"
@@ -38,6 +39,7 @@ owning-repository contracts, experiment evidence, or Commons records.
 - **Inspected repositories:** {repos}
 - **Commons consulted:** {_consulted(commons)}
 - **Experiment evidence consulted:** {_consulted(experiments)}
+- **Control journal context consulted:** {_consulted(operator_context)}
 - **Automatic merge eligible:** {auto}
 - **Promotion state:** {run.promotion_state}
 - **Exact evaluated head SHA:** {run.head_sha or "unknown (independent finalizer required)"}

@@ -78,7 +78,15 @@ def _index_summary(html: str, fallback: str) -> str:
 
 def _sync_pages_root(root: Path) -> None:
     script = root / "scripts" / "sync_pages_root.py"
-    subprocess.run([sys.executable, str(script)], check=True, cwd=root)
+    # Output is captured so `--json` consumers get clean machine-readable
+    # stdout; failures still surface via the non-zero exit code.
+    subprocess.run(
+        [sys.executable, str(script)],
+        check=True,
+        cwd=root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+    )
 
 
 def git_changed_paths(root: Path, base: str | None = None, head: str = "HEAD") -> list[str]:

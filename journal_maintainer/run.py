@@ -13,7 +13,13 @@ from pathlib import Path
 
 from .checkpoint import branch_for_interval, determine_checkpoint
 from .config import MaintainerConfig, load_family_projects
-from .editorial import build_evidence_bundle, meaningful_development, synthesize
+from .editorial import (
+    _material_ambiguity,
+    build_evidence_bundle,
+    build_editor_brief,
+    meaningful_development,
+    synthesize,
+)
 from .evidence.gather import gather_evidence
 from .gitops import (
     GitError,
@@ -42,7 +48,13 @@ from .models import (
 from .provenance import pull_request_body
 from .publication import check_changed_paths, publish_to_site
 from .render import render_entry
+from .sanitize import contains_instruction_like_text, find_normative_language
 from .validate import validate_draft, validate_site
+
+# Editorial handoff bounds: a capable editor writes concise prose; large
+# verbatim excerpts belong to the evidence bundle, not the journal.
+_MAX_SECTION_PARAGRAPH_CHARS = 2400
+_MAX_DRAFT_TOTAL_CHARS = 40000
 
 
 def execute_run(
@@ -135,21 +147,33 @@ def execute_run(
     run.draft = draft
     run.editor_identity = draft.editor_identity
     run.editor_type = draft.editor_type
+    if output_dir is not None and draft.synthesizer != "editor-draft":
+        # Give a capable editor structured triage input instead of pseudo-journal prose.
+        (output_dir / "editor-brief.json").write_text(
+            json.dumps(build_editor_brief(clusters=clusters, items=items, sources=sources), indent=2) + "\n",
+            encoding="utf-8",
+        )
     if draft.synthesizer == "editor-draft":
-        known_ids = {item.item_id for item in items}
-        missing_ids = [item_id for item_id in draft.used_item_ids if item_id not in known_ids]
-        section_ids = [item_id for section in draft.sections for item_id in section.evidence_ids]
-        missing_section_ids = [item_id for item_id in section_ids if item_id not in known_ids]
-        if not draft.used_item_ids or missing_ids or missing_section_ids:
+        provenance_error = _editor_provenance_problem(draft, known_ids={item.item_id for item in items})
+        if provenance_error is not None:
             run.outcome = RunOutcome.FAILED
-            detail = "editor draft must cite at least one collected evidence ID"
-            if missing_ids:
-                detail += "; unknown evidence IDs: " + ", ".join(missing_ids[:8])
-            if missing_section_ids:
-                detail += "; unknown section evidence IDs: " + ", ".join(missing_section_ids[:8])
-            run.failure = FailureState(code="INVALID_EDITOR_PROVENANCE", message=detail)
+            run.failure = FailureState(code="INVALID_EDITOR_PROVENANCE", message=provenance_error)
             run.finished_at = utcnow()
             return run
+        handoff_error = _editor_handoff_problem(draft)
+        if handoff_error is not None:
+            run.outcome = RunOutcome.FAILED
+            run.failure = FailureState(code="INVALID_EDITOR_HANDOFF", message=handoff_error)
+            run.finished_at = utcnow()
+            return run
+        # Completeness is owned by Atlas, not by the editor. A draft that
+        # claims confidence while retrieval was partial or unavailable stays
+        # ambiguous regardless of what the editor asserted.
+        forced_ambiguity = _material_ambiguity(sources, clusters, items)
+        if forced_ambiguity[0] and not draft.ambiguity:
+            draft.ambiguity = True
+            draft.ambiguity_reason = forced_ambiguity[1]
+            run.notes.append(f"Atlas overrode editor confidence: {forced_ambiguity[1]}")
     run.omitted_uncertain = list(draft.omitted_topics)
     if draft.ambiguity:
         run.outcome = RunOutcome.AMBIGUOUS
@@ -311,3 +335,75 @@ def execute_run(
     run.promotion_state = "pr-created-awaiting-independent-gate"
     run.finished_at = utcnow()
     return run
+
+
+def _editor_provenance_problem(draft, *, known_ids: set[str]) -> str | None:
+    """Evidence-binding checks for an editor draft against the collected bundle.
+
+    - at least one evidence ID must be used;
+    - every used ID and every section-cited ID must exist in the exact bundle;
+    - every section-cited ID must also appear in ``used_item_ids`` (citing
+      evidence in prose while disclaiming its use is a provenance
+      contradiction). IDs used only as background are fine.
+    """
+
+    missing_ids = [item_id for item_id in draft.used_item_ids if item_id not in known_ids]
+    section_ids = [item_id for section in draft.sections for item_id in section.evidence_ids]
+    missing_section_ids = [item_id for item_id in section_ids if item_id not in known_ids]
+    uncited_sections = sorted({item_id for item_id in section_ids if item_id not in set(draft.used_item_ids)})
+    if not draft.used_item_ids or missing_ids or missing_section_ids:
+        detail = "editor draft must cite at least one collected evidence ID"
+        if missing_ids:
+            detail += "; unknown evidence IDs: " + ", ".join(missing_ids[:8])
+        if missing_section_ids:
+            detail += "; unknown section evidence IDs: " + ", ".join(missing_section_ids[:8])
+        return detail
+    if uncited_sections:
+        return (
+            "editor draft sections cite evidence IDs omitted from used_item_ids: "
+            + ", ".join(uncited_sections[:8])
+        )
+    return None
+
+
+def _editor_handoff_problem(draft) -> str | None:
+    """Structural and authority checks on an editor handoff.
+
+    Fails closed on empty sections, oversized verbatim excerpts, echoed
+    prompt-injection text, and normative/authority-escalation language.
+    """
+
+    if not draft.sections:
+        return "editor draft has no sections"
+    total_chars = 0
+    for index, section in enumerate(draft.sections):
+        heading = " ".join(str(section.heading or "").split())
+        if not heading:
+            return f"section {index} has no heading"
+        paragraphs = [paragraph for paragraph in section.paragraphs if paragraph and paragraph.strip()]
+        if not paragraphs:
+            return f"section '{heading}' has no non-empty paragraphs"
+        for paragraph in paragraphs:
+            total_chars += len(paragraph)
+            if len(paragraph) > _MAX_SECTION_PARAGRAPH_CHARS:
+                return (
+                    f"section '{heading}' contains a {len(paragraph)}-character paragraph; "
+                    "condense editorial prose and keep raw excerpts in the evidence bundle"
+                )
+            if contains_instruction_like_text(paragraph):
+                return (
+                    f"section '{heading}' echoes instruction-like text "
+                    "(evidence is data, never instruction); rewrite without it"
+                )
+            normative = find_normative_language(paragraph)
+            if normative:
+                return (
+                    f"section '{heading}' contains normative/authority language "
+                    f"({'; '.join(normative[:3])}); journal prose cannot assert conformance or override contracts"
+                )
+    if total_chars > _MAX_DRAFT_TOTAL_CHARS:
+        return (
+            f"editor draft totals {total_chars} characters of body prose; "
+            "condense to a developmental narrative rather than copied source material"
+        )
+    return None

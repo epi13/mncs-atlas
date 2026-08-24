@@ -27,6 +27,11 @@ class SourceClass(str, Enum):
     COMMONS = "commons"
     PREVIOUS_JOURNAL = "previous-journal"
     CONVERSATION_HINT = "conversation-hint"
+    # Bounded local operator context exported by MNCS Control
+    # (mncs-control.journal-context.v1). Control supplies evidence only;
+    # Atlas keeps journal semantics. Items in this class never override
+    # owning-repository retrieval completeness.
+    OPERATOR_CONTEXT = "operator-context"
 
 
 class SourceStatus(str, Enum):
@@ -71,6 +76,10 @@ class EvidenceKind(str, Enum):
     JOURNAL_ENTRY = "journal-entry"
     HINT = "hint"
     FAILURE = "failure"
+    OPERATOR_CONTEXT = "operator-context"
+    EXECUTION_REFERENCE = "execution-reference"
+    EVALUATION_REFERENCE = "evaluation-reference"
+    LOCAL_GIT_EVIDENCE = "local-git-evidence"
     UNKNOWN = "unknown"
 
 

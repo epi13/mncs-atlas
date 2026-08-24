@@ -10,7 +10,10 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  # write: the finalizer records its gate result into the PR body and, only
+  # when every independent condition holds for the exact head SHA, requests
+  # GitHub auto-merge. It never merges directly.
+  pull-requests: write
 
 jobs:
   finalize:
