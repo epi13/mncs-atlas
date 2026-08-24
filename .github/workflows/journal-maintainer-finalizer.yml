@@ -21,10 +21,18 @@ jobs:
     steps:
       - name: Mint narrowly scoped GitHub App installation token
         id: app-token
+        # The secrets context is NOT valid inside step-level if: expressions;
+        # using it there makes GitHub reject the whole workflow file at parse
+        # time (silent startup failure on every push). Map secrets to env
+        # first; the env context is valid in if:.
+        env:
+          MNCS_JOURNAL_APP_ID: ${{ secrets.MNCS_JOURNAL_APP_ID }}
+          MNCS_JOURNAL_APP_PRIVATE_KEY: ${{ secrets.MNCS_JOURNAL_APP_PRIVATE_KEY }}
+        if: env.MNCS_JOURNAL_APP_ID != '' && env.MNCS_JOURNAL_APP_PRIVATE_KEY != ''
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.MNCS_JOURNAL_APP_ID }}
-          private-key: ${{ secrets.MNCS_JOURNAL_APP_PRIVATE_KEY }}
+          app-id: ${{ env.MNCS_JOURNAL_APP_ID }}
+          private-key: ${{ env.MNCS_JOURNAL_APP_PRIVATE_KEY }}
           owner: epi13
           repositories: mncs-atlas
       - name: Checkout trusted Atlas base
