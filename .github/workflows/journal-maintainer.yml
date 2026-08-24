@@ -47,7 +47,6 @@ jobs:
     steps:
       - name: Mint narrowly scoped GitHub App installation token
         id: app-token
-        if: ${{ secrets.MNCS_JOURNAL_APP_ID != '' && secrets.MNCS_JOURNAL_APP_PRIVATE_KEY != '' }}
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ secrets.MNCS_JOURNAL_APP_ID }}
