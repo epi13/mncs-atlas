@@ -45,20 +45,11 @@ jobs:
   journal:
     runs-on: ubuntu-latest
     steps:
-      - name: Mint narrowly scoped GitHub App installation token
-        id: app-token
-        if: ${{ secrets.MNCS_JOURNAL_APP_ID != '' && secrets.MNCS_JOURNAL_APP_PRIVATE_KEY != '' }}
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.MNCS_JOURNAL_APP_ID }}
-          private-key: ${{ secrets.MNCS_JOURNAL_APP_PRIVATE_KEY }}
-          owner: epi13
-          repositories: mncs-atlas
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN || github.token }}
+          token: ${{ github.token }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -96,7 +87,7 @@ jobs:
 
       - name: Run Journal Maintainer
         env:
-          MNCS_JOURNAL_APP_TOKEN: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN }}
+          MNCS_JOURNAL_APP_TOKEN: ${{ github.token }}
           MNCS_COMMONS_URL: ${{ secrets.MNCS_COMMONS_URL }}
         run: |
           if [ "${GITHUB_EVENT_NAME}" = "schedule" ] || [ "${{ inputs.dry_run }}" = "false" ]; then
