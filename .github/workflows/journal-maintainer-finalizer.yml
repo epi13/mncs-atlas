@@ -3,14 +3,53 @@ name: Atlas Journal Maintainer Finalizer
 on:
   pull_request_target:
     types: [opened, reopened, synchronize]
+  workflow_run:
+    workflows: ["Atlas CI"]
+    types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: read
+  # write: the finalizer records its gate result into the PR body and, only
+  # when every independent condition holds for the exact head SHA, requests
+  # GitHub auto-merge. It never merges directly.
   pull-requests: write
 
 jobs:
   finalize:
     runs-on: ubuntu-latest
     steps:
-      - name: probe
-        run: echo hi
+      - name: Mint narrowly scoped GitHub App installation token
+        id: app-token
+        if: ${{ secrets.MNCS_JOURNAL_APP_ID != '' && secrets.MNCS_JOURNAL_APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MNCS_JOURNAL_APP_ID }}
+          private-key: ${{ secrets.MNCS_JOURNAL_APP_PRIVATE_KEY }}
+          owner: epi13
+          repositories: mncs-atlas
+      - name: Checkout trusted Atlas base
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN || github.token }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Re-evaluate open maintainer PRs after CI
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN }}
+          MNCS_JOURNAL_APP_TOKEN: ${{ steps.app-token.outputs.token || secrets.MNCS_JOURNAL_APP_TOKEN }}
+        run: |
+          test -n "$MNCS_JOURNAL_APP_TOKEN" || { echo "MNCS_JOURNAL_APP_TOKEN is absent; finalizer fails closed"; exit 0; }
+          gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName --limit 50 |
+            python -c 'import json,sys; [print(item["number"]) for item in json.load(sys.stdin) if str(item.get("headRefName", "")).startswith("journal/maintainer/")]' |
+            while read -r number; do
+              test -n "$number" || continue
+              gh api --paginate "/repos/$GITHUB_REPOSITORY/pulls/$number" --jq '.head.sha' | head -n 1 | xargs -r git fetch origin
+              python -m journal_maintainer finalize --pr-number "$number" --json || true
+            done
