@@ -16,10 +16,26 @@ _CONTROL_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 _MULTI_SPACE = re.compile(r"[ \t]{2,}")
 _INSTRUCTION_PATTERNS = (
     re.compile(r"ignore (all|any|previous|prior) instructions", re.I),
+    re.compile(r"(ignore|disregard)\b.{0,60}\b(instructions|rules)", re.I),
     re.compile(r"you are now", re.I),
     re.compile(r"system prompt", re.I),
     re.compile(r"disregard (the|these|previous) (rules|instructions)", re.I),
     re.compile(r"<(script|iframe|object|embed|link)\b", re.I),
+)
+
+# Patterns that must never appear in published journal prose. They either
+# echo untrusted instructions back as text or assert authority the journal
+# does not have.
+_NORMATIVE_PATTERNS = (
+    re.compile(r"ignore (all|any|previous|prior) (instructions|rules)", re.I),
+    re.compile(r"disregard (the|these|previous|all) (rules|instructions|guidance)", re.I),
+    re.compile(r"(this entry|this journal|this record) (now )?(overrides|supersedes|repeals)", re.I),
+    re.compile(r"(is|are|becomes?) (now )?(normative|mandatory|required by specification)", re.I),
+    re.compile(r"(hereby|is hereby) (declared|established|ratified|accepted)", re.I),
+    re.compile(r"conformance (is|has been) (proven|verified|confirmed|achieved)", re.I),
+    re.compile(r"(passes?|meets?|satisfies) (all |the )?(mncs|mncds) (conformance|requirements|standard)", re.I),
+    re.compile(r"(specification|standard) (now )?(states|requires|mandates)", re.I),
+    re.compile(r"accepted as (normative|governing|authoritative)", re.I),
 )
 _SHELL_UNSAFE = re.compile(r"[`$\\;&|<>\n\r]")
 _SLUG_SAFE = re.compile(r"[^a-z0-9-]+")
@@ -49,6 +65,25 @@ def evidence_as_data(value: object, *, limit: int = 2000) -> str:
             text = f"[untrusted evidence; instruction-like text neutralized] {text}"
             break
     return text
+
+
+def contains_instruction_like_text(value: object) -> bool:
+    """Detect instruction-like text that must not pass through into prose."""
+
+    text = scrub_text(value, limit=20000)
+    return any(pattern.search(text) for pattern in _INSTRUCTION_PATTERNS)
+
+
+def find_normative_language(value: object) -> list[str]:
+    """Return the normative/authority-escalation phrases found in text."""
+
+    text = scrub_text(value, limit=40000)
+    matches: list[str] = []
+    for pattern in _NORMATIVE_PATTERNS:
+        found = pattern.search(text)
+        if found:
+            matches.append(found.group(0))
+    return matches
 
 
 def escape_html(value: object) -> str:

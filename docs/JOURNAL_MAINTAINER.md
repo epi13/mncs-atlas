@@ -302,7 +302,22 @@ These are extensions, not prerequisites for useful weekly maintenance.
 
 ### Public experiment adapter boundary
 
-The scheduled workflow does not read Harness, Fabric, Forge, or Control private stores. An editor/Control-driven run may provide a bounded public experiment export through `--experiments-file` / `MNCS_EXPERIMENT_SNAPSHOT`. A sibling follow-up is still required if the family wants a stable live export: the owning project must publish a versioned, inspectable snapshot contract (experiment identity, interval, result/status, evidence references, and provenance). Atlas will consume that public adapter only; it will not import sibling internals or invent a cross-project record schema.
+The scheduled workflow does not read Harness, Fabric, Forge, or Control private stores. An editor/Control-driven run may provide a bounded public experiment export through `--experiments-file` / `MNCS_EXPERIMENT_SNAPSHOT`, or — preferred since the Control journal-context integration — through an exported MNCS Control journal-context bundle (`--journal-context-file` / `MNCS_JOURNAL_CONTEXT_FILE`), which carries durable experiment state, local-only Git work, Fabric/Forge references, redacted Control activity, and Commons records as one bounded, immutable handoff.
+
+### Control journal context (implemented)
+
+MNCS Control exposes `journal_context_status` / `journal_context_collect` / `journal_context_get` over MCP. The operator or editor collects a bundle for the uncovered interval and exports it to a file; Atlas consumes that file through the `operator-context` evidence source. Boundaries:
+
+- Atlas never opens Control private state, Fabric sockets, Forge state, or the Commons store. The exported `mncs-control.journal-context.v1` bundle is the only contract.
+- Bundle items are untrusted inert data, re-scrubbed locally. Instruction-like text is neutralized.
+- Control-provided evidence enriches the record but never substitutes for owning-repository retrieval completeness; a missing bundle stays an explicit gap.
+- Control supplies evidence; Atlas keeps journal semantics and editorial authority.
+
+### GitHub authentication tiers
+
+- **Journal Maintainer App identity** (`MNCS_JOURNAL_APP_TOKEN` / minted App installation token): required for unattended PR creation in CI and for any guarded promotion. Only this identity can ever satisfy auto-promotion provenance.
+- **Operator credentials** (`GITHUB_TOKEN`, `GH_TOKEN`, or an already-authenticated `gh` CLI session discovered via `gh auth token`): used for interactive/local collection so normal runs do not degrade to anonymous API access. Recorded as `github_token_source` and never treated as the App identity.
+- Anonymous access: last resort; expected to produce partial/unavailable repository evidence and fail closed on publication.
 
 ## Why Atlas owns this contract
 

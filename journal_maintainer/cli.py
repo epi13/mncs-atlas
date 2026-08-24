@@ -33,6 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--evidence-file", type=Path, help="Use recorded evidence instead of live GitHub")
     run.add_argument("--experiments-file", type=Path, help="Public experiment snapshot JSON")
     run.add_argument("--hints-file", type=Path, help="Optional conversation-hint JSON")
+    run.add_argument("--journal-context-file", type=Path, help="Exported MNCS Control journal-context bundle (mncs-control.journal-context.v1)")
     run.add_argument("--draft-file", type=Path, help="Editor-supplied draft JSON, skipping heuristic synthesis")
     run.add_argument("--commons-url", help="Public Commons Agent Exchange base URL")
     run.add_argument("--synthesizer", default="heuristic", choices=["heuristic", "editor-draft"])
@@ -120,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
         experiments_file=args.experiments_file,
         hints_file=args.hints_file,
         evidence_file=args.evidence_file,
+        journal_context_file=args.journal_context_file,
         synthesizer=args.synthesizer,
         mode=args.mode,
     )

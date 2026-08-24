@@ -43,6 +43,28 @@ GitHub App installation, branch protection with required Atlas checks, and the
 repository's Allow auto-merge setting. If the token or any state is missing,
 the finalizer refuses promotion.
 
+### Editor handoff with live collection
+
+Live collection stamps retrieval time into evidence, so bundle identity changes
+on every fresh collection. The supported editor workflow is therefore:
+
+1. Pass one (collection): `run --dry-run --output-dir DIR` writes
+   `evidence-bundle.json` plus an `editor-brief.json` triage summary.
+2. The capable editor writes `draft.json` bound to that exact `eb-…` id.
+3. Pass two (validation/publication): replay the recorded bundle for stable
+   identity —
+   `run --publish --evidence-file DIR/evidence-bundle.json --draft-file draft.json --synthesizer editor-draft --now <pass-one-interval-end>`.
+   The recorded bundle is accepted directly by `--evidence-file`, so interval,
+   source statuses, and evidence IDs are byte-stable between passes.
+
+### GitHub token discovery
+
+Token priority: explicit argument → `MNCS_JOURNAL_APP_TOKEN` /
+`MNCS_JOURNAL_GITHUB_APP_TOKEN` (App identity) → `GITHUB_TOKEN` / `GH_TOKEN`
+→ an authenticated local `gh` CLI (`gh auth token`). Only App tokens satisfy
+guarded-promotion provenance; operator credentials are recorded as
+`github_token_source: gh-cli|env|explicit` and never masquerade as the App.
+
 The App must be configured by an operator with only the repository permissions
 needed to read checks, create/update the maintainer PR, push its branch, and
 request auto-merge. Prefer repository secrets `MNCS_JOURNAL_APP_ID` and
@@ -109,10 +131,12 @@ bounded changed-file patches for high-signal documentation. Each owning repo
 tracks endpoint completeness explicitly. A total owning-repository outage is
 `UNAVAILABLE` and fails closed; mixed endpoint/repository retrieval is
 `PARTIAL` and remains uncertain; an intact no-record interval is `EMPTY`.
-Commons and experiments remain public/configured adapters only. Atlas does not
-open sibling stores or import Control/Fabric/Forge internals. A stable live
-experiment export remains a narrow sibling follow-up owned by the experiment
-producer.
+Commons and experiments remain public/configured adapters only; the MNCS
+Control journal-context bundle (`--journal-context-file`) is the supported
+bounded local surface for durable experiment state, local-only Git work,
+Fabric/Forge references, redacted Control activity, and local notes, mapped to
+the explicit `operator-context` source class with its own completeness status.
+Atlas does not open sibling stores or import Control/Fabric/Forge internals.
 
 ## PR creation versus promotion
 

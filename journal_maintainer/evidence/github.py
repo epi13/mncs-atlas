@@ -221,15 +221,17 @@ def _from_issue(
         scrub_text(label.get("name") if isinstance(label, dict) else label, limit=40)
         for label in (raw.get("labels") or [])
     ]
-    summary = summarize_body(raw.get("body"))
+    # Triage summaries stay short. Raw patches live in the evidence bundle;
+    # only a tightly bounded hint of documentation changes reaches prose.
+    summary = summarize_body(raw.get("body"), limit=280)
     file_details = raw.get("_file_details") or []
     doc_excerpts = [
-        f"{detail.get('filename')}: {detail.get('patch')}"
+        f"{detail.get('filename')}: {scrub_text(detail.get('patch'), limit=240)}"
         for detail in file_details
         if isinstance(detail, dict) and detail.get("patch") and str(detail.get("filename", "")).lower().endswith((".md", ".rst", ".txt"))
     ]
     if doc_excerpts:
-        summary = (summary + " Documentation excerpts (untrusted evidence): " + " | ".join(doc_excerpts[:3]))[:3000]
+        summary = (summary + " Doc changes (untrusted evidence): " + " | ".join(doc_excerpts[:2]))[:900]
     path_kind = classify_files(files)
     if path_kind is not None and kind in {EvidenceKind.MERGED_PR, EvidenceKind.OPEN_PR}:
         kind = path_kind
