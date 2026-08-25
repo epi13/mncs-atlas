@@ -70,6 +70,8 @@ MNCS and MNCDS are sibling specifications with separate repositories, versioning
 
 MNCDS may bind to MNCS results through explicit versioned contracts. Neither specification silently owns or rewrites the other. Neither Forge nor another tool is required for conformance unless a future normative specification says otherwise.
 
+The implemented family record flow now runs: Control/Harness/Language/Fabric/Forge produce native evidence identities, a Concept Experiment envelope coordinates them, an MNCDS development record validates the resulting development process (experimental `0.2-alpha.1` producer-binding surface), and Commons preserves the validated record as a `DevelopmentRecord` projection keyed by the record's exact identity and digest. Each layer references lower-layer identities; no layer rewrites another's semantics. See [family-record-spine.md](family-record-spine.md).
+
 ### Operator control surfaces
 
 Operator-specific control surfaces sit between external clients and project infrastructure. They are operator infrastructure, not a new normative layer.

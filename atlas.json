@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3.0",
-  "last_reviewed": "2026-08-15",
+  "last_reviewed": "2026-08-25",
   "name": "MNCS Atlas",
   "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its reference operator stack.",
   "non_normative": true,
@@ -337,6 +337,12 @@
       "to": "mnel",
       "kind": "artifact-governance-input",
       "description": "Rights/provenance classifications may describe experimental corpora and derived artifacts without making the Rights & Provenance project a gate for current MNEL operation."
+    },
+    {
+      "from": "commons",
+      "to": "mncds",
+      "kind": "producer-record-preservation",
+      "description": "Commons preserves validated MNCDS development records as DevelopmentRecord projections carrying the exact record identity, digest, and tri-state status; MNCDS retains all development-process semantics."
     }
   ],
   "entry_points": [
