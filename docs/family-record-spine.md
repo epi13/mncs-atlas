@@ -1,6 +1,6 @@
 # MNCS Family Record Spine and Concept Reconstruction Experiments
 
-Status: descriptive architecture proposal
+Status: descriptive architecture; bootstrap spine implemented through the MNCDS boundary
 
 ## Overview
 
@@ -21,29 +21,38 @@ Control ---------- durable experiment identity ----+
 Forge ------------ evaluator / verifier records ---+
                                                    |
                                                    v
+                                    Concept Experiment envelope (Commons)
+                                                   |
+                                                   v
+                                                 MNCDS
+                        governed development record (0.2-alpha producer bindings;
+                        validated by the independent MNCDS reference validator)
+                                                   |
+                                                   v
                                               MNCS Commons
-                                         coordination / record graph
+                       DevelopmentRecord projection: exact record id + digest,
+                       tri-state status preserved, supersession chain, typed
+                       references back to every lower-layer identity
                                                    |
                          +-------------------------+-----------------------+
                          |                                                 |
                          v                                                 v
                  future MNEL analysis                             future RAVEL learning
-                         |                                                 |
-                         +-------------------------+-----------------------+
-                                                   v
-                                                 MNCDS
-                                      governed development history
                                                    |
                                                    v
-                                                  MNCS
+                                             future MNCS
                                       assurance / conformance semantics
+
+The implemented exercise path is:
+Control -> Harness -> Language -> Fabric -> Forge -> Concept Experiment ->
+MNCDS validation -> Commons; see MNCS-Commons scripts/exercise_family_record_spine.py.
 ```
 
 RAVEL and MNEL are intentionally not prerequisites for the first CREs. Ordinary models can temporarily serve explicit investigator and adaptive-critic roles through Harness/Fabric while preserving their actual producer identity.
 
 ## Ownership map
 
-- **Commons**: shared record graph, exchange, lifecycle projections, bounded queries and producer compatibility. Not correctness authority.
+- **Commons**: shared record graph, exchange, lifecycle projections, bounded queries and producer compatibility. Not correctness authority. Commons stores validated MNCDS development records as `DevelopmentRecord` projections with the exact record identity/digest and tri-state status; storage confers no semantic authority.
 - **Control**: durable Concept Experiment lifecycle and coordination identity. Not scientific/evaluation authority.
 - **Harness**: exact model/worker/tool routing and declared experiment roles. A role is not a project identity.
 - **Fabric**: distributed execution, environment and receipt evidence. Execution success is not conformance.
@@ -51,7 +60,7 @@ RAVEL and MNEL are intentionally not prerequisites for the first CREs. Ordinary 
 - **MNCS Language**: source legality, semantics, compiler stages, lowering and translation-validation records.
 - **MNEL**: future scientific experiment interpretation/causal attribution.
 - **RAVEL**: future adaptive strategy and retained learning.
-- **MNCDS**: governed candidate lineage, feedback, selection, release/regeneration/replacement history.
+- **MNCDS**: governed candidate lineage, feedback eligibility, selection, release/regeneration/replacement history. Its experimental `0.2-alpha.1` surface binds family-native evidence through versioned producer references while keeping every producer's semantics in its owning repository.
 - **MNCS**: assurance, evidence acceptance and conformance semantics.
 
 ## Concept Reconstruction Experiments
