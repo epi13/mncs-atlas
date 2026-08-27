@@ -48,6 +48,12 @@ Repository: https://github.com/epi13/mncs-language
 
 Research and reference implementation for a general-purpose verification-native programming language built around MNCS principles. It explores canonical semantics, contracts, effects, capabilities, assumptions, evidence, IR/SSA, and machine-intent-aware transformations.
 
+### MNCS Language Service
+
+Repository: https://github.com/epi13/mncs-language-service
+
+Language-server and MCP tooling for MNCS Language consumers. It exposes tooling surfaces without owning language or conformance semantics.
+
 ### Independent Rust Validator
 
 Repository: https://github.com/epi13/mncs-validator-rs
@@ -111,6 +117,18 @@ Recursive Adaptive Vector Execution Lattice: an adaptive intelligence layer for 
 Repository: https://github.com/epi13/Machine-Native-Experimental-Learning
 
 An evidence-governed experimental learning framework. MNEL uses investigators, bounded experiments, causal attribution, negative memory, and verified-experience distillation to explore learning from persistent machine-readable experience.
+
+### MNCS TUI
+
+Repository: https://github.com/epi13/mncs-tui
+
+Terminal UI pressure-test consumer for MNCS-native layouts and bounded interaction surfaces.
+
+### MNCS Lineage
+
+Repository: https://github.com/epi13/mncs-lineage
+
+Experimental research into generational improvement, successor synthesis, and controlled model replacement under evidence-governed boundaries.
 
 ## Empirical validation
 
