@@ -125,6 +125,15 @@
       "responsibility": "Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA."
     },
     {
+      "id": "mncs-language-service",
+      "name": "MNCS Language Service",
+      "repository": "https://github.com/epi13/mncs-language-service",
+      "role": "language-tooling",
+      "maturity": "experimental",
+      "authority_class": "language-tooling",
+      "responsibility": "Language-server and MCP tooling for MNCS Language consumers; it exposes tooling surfaces without owning language or conformance semantics."
+    },
+    {
       "id": "forge",
       "name": "Forge",
       "repository": "https://github.com/epi13/mncs-forge-mcp",
@@ -168,6 +177,24 @@
       "maturity": "research",
       "authority_class": "research-advisory",
       "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
+    },
+    {
+      "id": "mncs-tui",
+      "name": "MNCS TUI",
+      "repository": "https://github.com/epi13/mncs-tui",
+      "role": "terminal-ui-consumer",
+      "maturity": "experimental",
+      "authority_class": "consumer-research",
+      "responsibility": "Terminal UI pressure-test consumer for MNCS-native layouts and bounded interaction surfaces."
+    },
+    {
+      "id": "mncs-lineage",
+      "name": "MNCS Lineage",
+      "repository": "https://github.com/epi13/mncs-lineage",
+      "role": "lineage-research",
+      "maturity": "research",
+      "authority_class": "research-advisory",
+      "responsibility": "Experimental research into generational improvement, successor synthesis, and controlled model replacement under evidence-governed boundaries."
     },
     {
       "id": "reference-studies",
