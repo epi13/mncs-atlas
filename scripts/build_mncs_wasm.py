@@ -81,7 +81,7 @@ def git_output(root: Path, *arguments: str) -> str | None:
         text=True,
         check=False,
     )
-    if environment.get("MNCS_TIMINGS") and completed.stderr:
+    if os.environ.get("MNCS_TIMINGS") and completed.stderr:
         print(completed.stderr, end="", file=sys.stderr)
     if completed.returncode != 0:
         return None
