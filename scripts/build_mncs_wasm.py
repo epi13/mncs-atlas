@@ -81,9 +81,11 @@ def git_output(root: Path, *arguments: str) -> str | None:
         text=True,
         check=False,
     )
+    if os.environ.get("MNCS_TIMINGS") and completed.stderr:
+        print(completed.stderr, end="", file=sys.stderr)
     if completed.returncode != 0:
         return None
-    return completed.stdout.strip()
+    return completed.stdout.rstrip()
 
 
 def is_derived_atlas_output(relative: str) -> bool:
@@ -264,6 +266,25 @@ def materialize_artifact(
     failures = [case for case in cases if not isinstance(case, dict) or case.get("expectation_met") is not True]
     if failures:
         raise RuntimeError(f"{name}: corpus expectations were not met: {failures!r}")
+    stateful_cases = result.get("stateful_cases", [])
+    if not isinstance(stateful_cases, list):
+        raise RuntimeError(f"{name}: stateful_cases is not a list")
+    if name == "atlas-model" and not stateful_cases:
+        raise RuntimeError(f"{name}: production model corpus has no stateful cases")
+    stateful_failures = [
+        case
+        for case in stateful_cases
+        if not isinstance(case, dict)
+        or case.get("step_expectations_met") is not True
+        or case.get("final_expectation_met") is False
+        or case.get("final_status_met") is False
+        or case.get("call_bound_met") is not True
+        or case.get("step_bound_met") is False
+    ]
+    if stateful_failures:
+        raise RuntimeError(
+            f"{name}: stateful corpus expectations were not met: {stateful_failures!r}"
+        )
 
     artifact = result.get("artifact")
     if not isinstance(artifact, dict) or artifact.get("artifact_kind") != "wasm_module":
@@ -300,6 +321,18 @@ def materialize_artifact(
                 "expectation_met": case.get("expectation_met"),
             }
             for case in cases
+            if isinstance(case, dict)
+        ],
+        "stateful_cases": [
+            {
+                "id": case.get("case_id"),
+                "step_expectations_met": case.get("step_expectations_met"),
+                "final_expectation_met": case.get("final_expectation_met"),
+                "final_status_met": case.get("final_status_met"),
+                "call_bound_met": case.get("call_bound_met"),
+                "step_bound_met": case.get("step_bound_met"),
+            }
+            for case in stateful_cases
             if isinstance(case, dict)
         ],
     }
@@ -352,6 +385,11 @@ def validate_manifest(manifest: dict[str, object], staged_asset_dir: Path) -> No
                 raise RuntimeError(f"{name}: {field} provenance is missing")
             if reference["sha256"] != metadata[f"{field}_sha256"]:
                 raise RuntimeError(f"{name}: {field} provenance hash is contradictory")
+        stateful_cases = metadata.get("stateful_cases", [])
+        if name == "atlas-model" and (
+            not isinstance(stateful_cases, list) or not stateful_cases
+        ):
+            raise RuntimeError(f"{name}: manifest has no stateful corpus evidence")
         compiler = metadata.get("compiler")
         if (
             not isinstance(compiler, dict)

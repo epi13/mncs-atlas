@@ -16,6 +16,7 @@
       { "id": "malformed-utf8-atlas", "mutation": "replace_first_string_byte_with_c0_af", "expected": "invalid" },
       { "id": "escaped-unicode", "mutation": "replace_project_name_with_valid_unicode_escape", "expected": "valid_and_complete" },
       { "id": "surrogate-pair", "mutation": "replace_project_name_with_valid_surrogate_pair_escape", "expected": "valid_and_complete" },
+      { "id": "lone-surrogate", "mutation": "replace_project_name_with_lone_surrogate_escape", "expected": "invalid" },
       { "id": "long-unknown-key", "mutation": "insert_unknown_key_longer_than_matcher_window", "expected": "valid_and_complete" },
       { "id": "missing-required-sections", "mutation": "remove_relationships_section", "expected": "invalid" },
       { "id": "malformed-project-record", "mutation": "replace_project_id_with_wrong_scalar_type", "expected": "invalid" },

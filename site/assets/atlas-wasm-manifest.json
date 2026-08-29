@@ -7,7 +7,7 @@
     "mode": "cargo experiment run",
     "command": "cargo run -q --manifest-path <mncs-language>/Cargo.toml -p mncs-cli -- experiment run <source.mncs> --backend mncs-portable-wasm-mvp --corpus <corpus.json> --output-dir <staging> --validation-profile artifact-build",
     "language_root": "../mncs-language",
-    "language_revision_lock": "90459ec7c3b3cb78600ebafd1cf1e8d4b92d700a",
+    "language_revision_lock": "25e60cd656c5cdd3a411fa542a350459aa73c65d",
     "artifact_set": [
       "atlas-json-scan",
       "atlas-json-projection",
@@ -17,7 +17,7 @@
   "provenance": {
     "atlas": {
       "name": "mncs-atlas",
-      "commit": "c4f73df3e1d677ef50f74c56cd372be20ce7ae92",
+      "commit": "340466152ddb7adb4df934e7dea22907cdb29024",
       "working_tree": "clean",
       "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "ignored_derived_paths": [],
@@ -25,7 +25,7 @@
     },
     "mncs_language": {
       "name": "mncs-language",
-      "commit": "90459ec7c3b3cb78600ebafd1cf1e8d4b92d700a",
+      "commit": "25e60cd656c5cdd3a411fa542a350459aa73c65d",
       "working_tree": "clean",
       "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "ignored_derived_paths": [],
@@ -197,7 +197,7 @@
         "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
         "compiler_schema_version": "0.1",
         "experiment_schema_version": "0.1",
-        "selected_ssa_identity": "mncs:compiler:compiler-artifact:e0dafec6cd9b4ad3d3c1d4cf3b759795b30450f780af589aa159bbf76dbfb3b3"
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:c24ed3876b60f3836ae824cdd1bf0f2e98379caa52b5b247c8f592feefa7dd66"
       },
       "exports": [
         "atlas_scan_chunk",
@@ -226,7 +226,8 @@
           "id": "valid-small-object",
           "expectation_met": true
         }
-      ]
+      ],
+      "stateful_cases": []
     },
     "atlas-json-projection": {
       "path": "assets/atlas-json-projection.wasm",
@@ -251,7 +252,7 @@
         "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
         "compiler_schema_version": "0.1",
         "experiment_schema_version": "0.1",
-        "selected_ssa_identity": "mncs:compiler:compiler-artifact:0648fff8613c44a7a1d9421ad27b4e65027499c7112b788083f86d1dfd3e28e9"
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:62342f5cf54d4c551bf855a84c8d96ddf7a8a37bc28900e86fe6137cd5b9fd8f"
       },
       "exports": [
         "atlas_project_chunk",
@@ -277,7 +278,8 @@
           "id": "one-maturity-match",
           "expectation_met": true
         }
-      ]
+      ],
+      "stateful_cases": []
     },
     "atlas-model": {
       "path": "assets/atlas-model.wasm",
@@ -293,16 +295,16 @@
       "corpus": {
         "repository": "mncs-atlas",
         "path": "tests/fixtures/atlas-model-corpus.json",
-        "sha256": "1ec4b6c6c4b183b79e98331e09cd3c7aa20fb4ec004a31aa9443d811536d8e6e"
+        "sha256": "575fae2267e617dbd67a937f062839d76cf3188f6b81100e77309283f22c19e8"
       },
-      "corpus_sha256": "1ec4b6c6c4b183b79e98331e09cd3c7aa20fb4ec004a31aa9443d811536d8e6e",
+      "corpus_sha256": "575fae2267e617dbd67a937f062839d76cf3188f6b81100e77309283f22c19e8",
       "compiler": {
         "language_profile": "0.10",
         "compiler_identity": "mncs:compiler:compiler:f862227638ca7fbc716123d8378cddfef4f76a9ef10ab0e99cc791e65207e45d",
         "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
         "compiler_schema_version": "0.1",
         "experiment_schema_version": "0.1",
-        "selected_ssa_identity": "mncs:compiler:compiler-artifact:d62bab2dada4c46e945df578a6963623ea1ba9081ed4e2c7f0c9ba50c21ac183"
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:1da721a9cce062f8c2e2d85f7be3ce523782759c84568f8db812e2faa1f5407c"
       },
       "exports": [
         "all_levels",
@@ -424,6 +426,16 @@
         {
           "id": "one-experimental-project",
           "expectation_met": true
+        }
+      ],
+      "stateful_cases": [
+        {
+          "id": "empty-model-state-init-finish",
+          "step_expectations_met": true,
+          "final_expectation_met": null,
+          "final_status_met": true,
+          "call_bound_met": true,
+          "step_bound_met": null
         }
       ]
     }

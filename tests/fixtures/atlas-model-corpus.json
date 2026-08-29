@@ -37,5 +37,33 @@
       "expected": [{ "integer": { "value": 1001, "type": { "bits": 64, "signed": true } } }],
       "expected_status": "returned"
     }
+  ],
+  "stateful_cases": [
+    {
+      "id": "empty-model-state-init-finish",
+      "steps": [
+        {
+          "id": "init",
+          "target": { "module": "mncs_atlas.model", "function": "atlas_model_init" },
+          "arguments": [],
+          "step_budget": 1000000,
+          "policy": { "effects": "unsupported" },
+          "expected_status": "returned"
+        },
+        {
+          "id": "finish",
+          "target": { "module": "mncs_atlas.model", "function": "atlas_model_finish" },
+          "arguments": [
+            { "previous_result": { "step_id": "init", "result_index": 0 } }
+          ],
+          "step_budget": 1000000,
+          "policy": { "effects": "unsupported" },
+          "expected_status": "returned",
+          "observe_returned": true
+        }
+      ],
+      "maximum_calls": 2,
+      "expected_final_status": "returned"
+    }
   ]
 }
