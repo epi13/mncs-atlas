@@ -133,6 +133,7 @@ The machine map is deliberately orientation data rather than a conformance or au
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
 - [Atlas schema](site/schema/atlas.schema.json)
+- [Experimental Atlas MNCS/WASM migration record](docs/ATLAS-WASM-MIGRATION.md)
 
 ## Site checks
 

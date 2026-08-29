@@ -1,0 +1,35 @@
+mncs 0.10;
+
+// Experimental Atlas adapter: schema-shaped projections over atlas.json.
+// Selector meanings are data-shape questions, not a JavaScript parser:
+// 0 maturity-field count, 1..5 maturity member counts, 6 relationship count via from keys.
+module mncs_atlas.experimental_json_projection;
+
+use mncs.std.json_projection.v1;
+
+fn atlas_project_chunk(state: i64, input: [byte; up_to 64], selector: byte) -> (result: i64) {
+    let zeros: [byte; 32] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let maturity: [byte; 32] = [109, 97, 116, 117, 114, 105, 116, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let experimental: [byte; 32] = [101, 120, 112, 101, 114, 105, 109, 101, 110, 116, 97, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let research: [byte; 32] = [114, 101, 115, 101, 97, 114, 99, 104, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let active: [byte; 32] = [97, 99, 116, 105, 118, 101, 45, 105, 110, 102, 114, 97, 115, 116, 114, 117, 99, 116, 117, 114, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let incubating: [byte; 32] = [105, 110, 99, 117, 98, 97, 116, 105, 110, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let orientation: [byte; 32] = [111, 114, 105, 101, 110, 116, 97, 116, 105, 111, 110, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let from_key: [byte; 32] = [102, 114, 111, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    if selector == 0 { return project_chunk(state, input, maturity, 8, zeros, 0); }
+    if selector == 1 { return project_chunk(state, input, maturity, 8, experimental, 12); }
+    if selector == 2 { return project_chunk(state, input, maturity, 8, research, 8); }
+    if selector == 3 { return project_chunk(state, input, maturity, 8, active, 21); }
+    if selector == 4 { return project_chunk(state, input, maturity, 8, incubating, 10); }
+    if selector == 5 { return project_chunk(state, input, maturity, 8, orientation, 11); }
+    return project_chunk(state, input, from_key, 4, zeros, 0);
+}
+
+fn atlas_project_count(state: i64, selector: byte) -> (result: i64) {
+    if selector == 0 || selector == 6 { return projection_key_hits(state); }
+    return projection_member_hits(state);
+}
+
+fn atlas_projection_probe(input: [byte; up_to 64]) -> (result: i64) {
+    return atlas_project_count(atlas_project_chunk(0, input, 1), 1);
+}

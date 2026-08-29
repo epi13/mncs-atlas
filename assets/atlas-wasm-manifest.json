@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1",
+  "kind": "mncs-atlas-experimental-wasm",
+  "authority": "orientation-only",
+  "backend": "mncs-portable-wasm-mvp",
+  "input": {
+    "atlas_data": "atlas.json",
+    "transport": "fetch-arraybuffer-to-Uint8Array",
+    "json_semantics": "owned by MNCS/WASM substrate; JavaScript does not parse atlas.json"
+  },
+  "chunking": {
+    "max_bytes": 64,
+    "host_may_stream": true
+  },
+  "view_descriptor": {
+    "type": "i64",
+    "offset_bits": "low32",
+    "length_bits": "high32"
+  },
+  "host_view_offset": 900000,
+  "memory_export": "memory",
+  "artifacts": {
+    "atlas-json-scan": {
+      "path": "assets/atlas-json-scan.wasm",
+      "sha256": "fd144bd32d1cf82b85f923922daba9e5f468b6e3d8ccbd8591052316723c5746",
+      "bytes": 4776,
+      "status": "UNKNOWN",
+      "exports": [
+        "atlas_scan_chunk",
+        "atlas_scan_finish",
+        "atlas_scan_init",
+        "atlas_scan_probe",
+        "depth",
+        "escape_mode",
+        "feed",
+        "feed_chunk",
+        "finish",
+        "init",
+        "pack",
+        "stack",
+        "stack_weight",
+        "started",
+        "string_mode"
+      ],
+      "corpus_cases": [
+        {
+          "id": "valid-small-object",
+          "expectation_met": true
+        }
+      ]
+    },
+    "atlas-json-projection": {
+      "path": "assets/atlas-json-projection.wasm",
+      "sha256": "e9115becb3c65f3b4f4f40506c67d2e69f7336ca1fac18e747c83c921262564e",
+      "bytes": 10649,
+      "status": "UNKNOWN",
+      "exports": [
+        "atlas_project_chunk",
+        "atlas_project_count",
+        "atlas_projection_probe",
+        "count_key",
+        "count_member",
+        "is_space",
+        "project_chunk",
+        "projection_escaped",
+        "projection_key_hits",
+        "projection_key_match",
+        "projection_member_hits",
+        "projection_mode",
+        "projection_pack",
+        "projection_position",
+        "projection_step",
+        "projection_string_step",
+        "projection_value_match"
+      ],
+      "corpus_cases": [
+        {
+          "id": "one-maturity-match",
+          "expectation_met": true
+        }
+      ]
+    }
+  }
+}

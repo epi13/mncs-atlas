@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Experimental MNCS/WASM browser path for the non-normative MNCS Atlas.">
+  <meta name="robots" content="noindex">
+  <title>Experimental MNCS/WASM Atlas path</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/atlas-wasm.css">
+  <script type="module" src="assets/atlas-wasm.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="index.html" aria-label="MNCS Atlas home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span><strong>MNCS</strong> Atlas</span>
+      </a>
+      <nav class="site-nav" aria-label="Experimental page navigation">
+        <a href="index.html">Atlas home</a>
+        <a href="atlas.json">atlas.json</a>
+        <a href="https://github.com/epi13/mncs-language">MNCS Language ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wasm-hero">
+      <div class="shell wasm-shell">
+        <p class="eyebrow">Experimental browser path</p>
+        <h1>Atlas bytes can travel through <span>MNCS/WASM</span>.</h1>
+        <p class="lede">This page fetches <code>atlas.json</code> as bytes, streams bounded views into real WASM modules, and renders only their scalar observations. The page is an experiment in moving data semantics toward MNCS while keeping Atlas orientation-only.</p>
+        <p class="wasm-boundary">The production Atlas remains the safe static fallback. This page does not change conformance, maturity, authority, or the meaning of any project record.</p>
+      </div>
+    </section>
+
+    <section class="section wasm-panel">
+      <div class="shell wasm-shell">
+        <div class="wasm-card" data-authority="orientation-only">
+          <p id="atlas-wasm-status" class="wasm-status" role="status">Loading experimental WASM path…</p>
+          <div id="atlas-wasm-fallback">
+            <h2>Static Atlas fallback remains available.</h2>
+            <p>The browser could not activate the experimental modules. Continue with the canonical human guide or open the machine-readable map directly.</p>
+            <p id="atlas-wasm-error" class="wasm-error"></p>
+            <a class="button dark" href="index.html">Return to Atlas home</a>
+          </div>
+
+          <div id="atlas-wasm-output" hidden>
+            <h2>Browser-side observations</h2>
+            <p>These values are bounded observations from the fetched Atlas byte stream. They are useful for orientation and smoke testing, not for normative acceptance.</p>
+            <div id="atlas-wasm-metrics" class="wasm-metrics" aria-live="polite"></div>
+            <div class="wasm-copy">
+              <article>
+                <h3>Host boundary</h3>
+                <p>JavaScript owns fetch, memory writes, chunk scheduling, and DOM rendering. MNCS/WASM owns the structural stream and schema-shaped projections.</p>
+              </article>
+              <article>
+                <h3>Authority boundary</h3>
+                <p>Atlas remains non-normative and orientation-only. Execution of a WASM function is not MNCS conformance, publication, or acceptance.</p>
+              </article>
+            </div>
+            <pre class="wasm-code"><code>atlas.json bytes → 64-byte view → MNCS/WASM state → scalar observations</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer wasm-footer">
+    <div class="shell footer-grid">
+      <div>
+        <strong>MNCS Atlas</strong>
+        <p>Experimental path only. The canonical Atlas is the static guide at <a href="index.html">index.html</a>.</p>
+      </div>
+      <div>
+        <p>Atlas is non-normative. WASM execution is bounded research evidence.</p>
+        <p>Apache-2.0 · <span>2026</span></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
