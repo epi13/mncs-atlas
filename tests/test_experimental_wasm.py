@@ -178,6 +178,38 @@ console.log("full-atlas-plan-ok");
         )
         self.assertEqual(manifest["validation"]["status"], "UNKNOWN")
 
+    def test_full_model_differential_fixture_declares_required_edge_cases(self):
+        fixture = json.loads(
+            (ROOT / "tests/fixtures/atlas-model-differential-corpus.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        case_ids = {case["id"] for case in fixture["full_input"]["cases"]}
+        self.assertTrue(
+            {
+                "complete-atlas",
+                "truncated-atlas",
+                "truncated-at-chunk-boundaries",
+                "malformed-json-structure",
+                "malformed-utf8-atlas",
+                "escaped-unicode",
+                "surrogate-pair",
+                "long-unknown-key",
+                "missing-required-sections",
+                "malformed-project-record",
+                "malformed-relationship",
+                "capacity-boundary",
+                "one-over-capacity",
+                "reordered-object-members",
+                "unknown-fields",
+                "incomplete-root",
+                "empty-collections",
+            }.issubset(case_ids)
+        )
+        self.assertEqual(fixture["full_input"]["chunk_bytes"], 64)
+        self.assertIn(65536, fixture["full_input"]["chunk_boundaries"])
+        self.assertEqual(fixture["status"], "UNKNOWN")
+
     def test_root_pages_mirror_is_current(self):
         for relative in (
             "index.html",
