@@ -7,7 +7,7 @@
     "mode": "cargo experiment run",
     "command": "cargo run -q --manifest-path <mncs-language>/Cargo.toml -p mncs-cli -- experiment run <source.mncs> --backend mncs-portable-wasm-mvp --corpus <corpus.json> --output-dir <staging> --validation-profile artifact-build",
     "language_root": "../mncs-language",
-    "language_revision_lock": "712c99c12283978c72f4b6659c230ca5f2932c9e",
+    "language_revision_lock": "25e60cd656c5cdd3a411fa542a350459aa73c65d",
     "artifact_set": [
       "atlas-json-scan",
       "atlas-json-projection",
@@ -17,18 +17,15 @@
   "provenance": {
     "atlas": {
       "name": "mncs-atlas",
-      "commit": "f78e83f6198172e92a76d7262333325df4db1687",
+      "commit": "340466152ddb7adb4df934e7dea22907cdb29024",
       "working_tree": "clean",
       "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "ignored_derived_paths": [
-        "assets/atlas-wasm-manifest.json",
-        "site/assets/atlas-wasm-manifest.json"
-      ],
+      "ignored_derived_paths": [],
       "reproducibility": "reproducible"
     },
     "mncs_language": {
       "name": "mncs-language",
-      "commit": "712c99c12283978c72f4b6659c230ca5f2932c9e",
+      "commit": "25e60cd656c5cdd3a411fa542a350459aa73c65d",
       "working_tree": "clean",
       "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "ignored_derived_paths": [],

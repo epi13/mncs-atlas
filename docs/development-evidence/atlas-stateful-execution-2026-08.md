@@ -7,7 +7,7 @@ cutover decision.
 ## Reproducible inputs
 
 - `mncs-language` producer: `25e60cd656c5cdd3a411fa542a350459aa73c65d`
-- `mncs-atlas` consumer before generated outputs: `f78e83f6198172e92a76d7262333325df4db1687`
+- `mncs-atlas` consumer before generated outputs: `340466152ddb7adb4df934e7dea22907cdb29024`
 - execution corpus schema: `0.3`
 - declared full edge cases: 18
 - generated stateful traces: 21 (the three declared chunk-boundary mutations
