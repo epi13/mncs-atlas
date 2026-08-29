@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Experimental MNCS/WASM browser path for the non-normative MNCS Atlas.">
+  <meta name="description" content="MNCS/WASM diagnostics for the non-normative MNCS Atlas.">
   <meta name="robots" content="noindex">
-  <title>Experimental MNCS/WASM Atlas path</title>
+  <title>MNCS/WASM Atlas diagnostics</title>
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/atlas-wasm.css">
   <script type="module" src="assets/atlas-wasm.js"></script>
@@ -29,10 +29,10 @@
   <main id="main">
     <section class="hero wasm-hero">
       <div class="shell wasm-shell">
-        <p class="eyebrow">Experimental browser path</p>
-        <h1>The Atlas model can travel through <span>MNCS/WASM</span>.</h1>
-        <p class="lede">This page fetches <code>atlas.json</code> as bytes, streams bounded views into real WASM modules, reconstructs typed project records, and interprets a structured render plan. It is an experiment in moving Atlas application semantics toward MNCS while keeping Atlas orientation-only.</p>
-        <p class="wasm-boundary">The production Atlas remains the safe static fallback. This page does not change conformance, maturity, authority, or the meaning of any project record.</p>
+        <p class="eyebrow">MNCS/WASM diagnostics</p>
+        <h1>The production Atlas model travels through <span>MNCS/WASM</span>.</h1>
+        <p class="lede">The production page uses the same bounded byte stream, typed model, and structured render plan exercised here. This diagnostics view makes the transport, ABI, and evidence boundary visible while keeping Atlas orientation-only.</p>
+        <p class="wasm-boundary">This page does not change conformance, maturity, authority, or the meaning of any project record.</p>
       </div>
     </section>
 
@@ -42,7 +42,7 @@
           <p id="atlas-wasm-status" class="wasm-status" role="status">Loading typed MNCS/WASM model…</p>
           <div id="atlas-wasm-fallback">
             <h2>Static Atlas fallback remains available.</h2>
-            <p>The browser could not activate the experimental modules. Continue with the canonical human guide or open the machine-readable map directly.</p>
+            <p>The browser could not activate the MNCS/WASM enhancement. Continue with the canonical human guide or open the machine-readable map directly.</p>
             <p id="atlas-wasm-error" class="wasm-error"></p>
             <a class="button dark" href="index.html">Return to Atlas home</a>
           </div>
@@ -67,6 +67,13 @@
               </div>
               <div id="atlas-wasm-status-grid" class="status-grid"></div>
             </section>
+            <section class="wasm-atlas-section" aria-labelledby="wasm-maturity-heading">
+              <div class="wasm-section-heading">
+                <p class="eyebrow">Maturity model</p>
+                <h3 id="wasm-maturity-heading">Descriptive lifecycle signals, never authority</h3>
+              </div>
+              <div id="atlas-wasm-maturity-model" class="runtime-notes"></div>
+            </section>
 
             <div id="atlas-maturity-legend" class="wasm-legend" aria-label="Maturity labels">
               <span data-code="1" data-class="experimental">Experimental</span>
@@ -75,6 +82,21 @@
               <span data-code="4" data-class="research">Incubating</span>
               <span data-code="5" data-class="orientation">Orientation</span>
             </div>
+
+            <section class="wasm-atlas-section" aria-labelledby="wasm-contract-heading">
+              <div class="wasm-section-heading">
+                <p class="eyebrow">Consumer contract</p>
+                <h3 id="wasm-contract-heading">Resolve ownership before acting</h3>
+              </div>
+              <div id="atlas-wasm-consumer-contract" class="runtime-notes"></div>
+            </section>
+            <section class="wasm-atlas-section" aria-labelledby="wasm-institution-heading">
+              <div class="wasm-section-heading">
+                <p class="eyebrow">Institutional layer</p>
+                <h3 id="wasm-institution-heading">Rights and provenance remain explicit</h3>
+              </div>
+              <div id="atlas-wasm-institutional-layer"></div>
+            </section>
 
             <div class="wasm-copy">
               <article>
@@ -105,7 +127,7 @@
     <div class="shell footer-grid">
       <div>
         <strong>MNCS Atlas</strong>
-        <p>Experimental path only. The canonical Atlas is the static guide at <a href="index.html">index.html</a>.</p>
+            <p>Diagnostics view. The canonical Atlas is <a href="index.html">index.html</a>.</p>
       </div>
       <div>
         <p>Atlas is non-normative. WASM execution is bounded research evidence.</p>

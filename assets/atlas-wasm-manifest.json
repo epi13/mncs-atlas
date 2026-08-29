@@ -1,12 +1,13 @@
 {
   "schema_version": "0.1",
-  "kind": "mncs-atlas-experimental-wasm",
+  "kind": "mncs-atlas-wasm",
   "authority": "orientation-only",
   "backend": "mncs-portable-wasm-mvp",
   "input": {
     "atlas_data": "atlas.json",
     "transport": "fetch-arraybuffer-to-Uint8Array",
-    "json_semantics": "owned by MNCS/WASM substrate; JavaScript does not parse atlas.json"
+    "json_semantics": "owned by MNCS/WASM substrate; JavaScript does not parse atlas.json",
+    "application_semantics": "owned by mncs_atlas.model; the host interprets only typed render commands"
   },
   "chunking": {
     "max_bytes": 64,
@@ -28,7 +29,7 @@
     "reuse": "scalar consumers reset after each call; the typed model retains immutable state cells and must not reset until its instance is dropped"
   },
   "typed_model_abi": {
-    "module": "mncs_atlas.experimental_model",
+    "module": "mncs_atlas.model",
     "stream_functions": [
       "atlas_model_init",
       "atlas_model_chunk",
@@ -42,7 +43,13 @@
         "start",
         "utf8_valid"
       ],
-      "representation": "borrowed byte span into the original atlas.json input"
+      "representation": "borrowed byte span into the original atlas.json input",
+      "layout": {
+        "encoded": 0,
+        "length": 8,
+        "start": 16,
+        "utf8_valid": 24
+      }
     },
     "render_plan": {
       "fields": [
@@ -54,18 +61,60 @@
         "relationship_count",
         "valid"
       ],
+      "layout": {
+        "complete": 0,
+        "maturity_counts": 8,
+        "node_count": 16,
+        "nodes": 24,
+        "project_count": 32,
+        "relationship_count": 40,
+        "valid": 48
+      },
       "node_operations": {
-        "1": "append_card",
+        "1": "append_project_and_status",
         "2": "clear_target",
-        "3": "render_summary"
+        "3": "render_summary",
+        "4": "render_maturity_level",
+        "5": "render_consumer_contract_header",
+        "6": "render_consumer_contract_resolution_step",
+        "7": "render_consumer_contract_rule",
+        "8": "render_institutional_layer"
       },
       "targets": {
         "1": "project_grid",
         "2": "status_grid",
-        "3": "summary"
+        "3": "summary",
+        "4": "project_and_status_pair",
+        "5": "maturity_model",
+        "6": "consumer_contract_header",
+        "7": "consumer_contract_resolution_order",
+        "8": "consumer_contract_rules",
+        "9": "institutional_layer"
+      },
+      "node_layout": {
+        "stride_bytes": 88,
+        "operation": 0,
+        "primary": 8,
+        "quaternary": 16,
+        "secondary": 24,
+        "slot": 32,
+        "target": 40,
+        "tertiary": 48,
+        "value": 56,
+        "value_aux": 64,
+        "value_text": 72,
+        "value_text_aux": 80
       }
     },
-    "max_input_bytes": 24576,
+    "capacities": {
+      "projects": 32,
+      "operator_components": 8,
+      "relationships": 64,
+      "maturity_levels": 5,
+      "consumer_contract_items": 8,
+      "render_nodes": 64
+    },
+    "max_input_bytes": 65536,
     "arena_pages": 512,
     "arena_bytes": 33554432
   },
@@ -74,11 +123,13 @@
     "automated_checks": [
       "wasm_magic",
       "sha256",
-      "corpus_expectations"
+      "corpus_expectations",
+      "bounded_capacity_declarations",
+      "production_static_fallback"
     ],
     "unresolved": [
-      "cross-backend equivalence for the Atlas model",
-      "formal cutover review"
+      "cross-backend equivalence for the full Atlas model",
+      "formal conformance/cutover review"
     ]
   },
   "memory_export": "memory",
@@ -150,10 +201,19 @@
     },
     "atlas-model": {
       "path": "assets/atlas-model.wasm",
-      "sha256": "0ab32aaff8e2e0a6eca5510ee7882dffcb876f8a5be14210d9cc2c7621d52bd1",
-      "bytes": 53066,
+      "sha256": "2163419cb83d09f85f6213dac757744a1fb25e13a4a6e46c0d5d06914a2f4f74",
+      "bytes": 142251,
       "status": "UNKNOWN",
       "exports": [
+        "all_levels",
+        "all_operators",
+        "all_projects",
+        "all_relationships",
+        "append_byte",
+        "append_level_if",
+        "append_node",
+        "append_project_if",
+        "append_text_if",
         "atlas_model_chunk",
         "atlas_model_finish",
         "atlas_model_init",
@@ -161,37 +221,68 @@
         "atlas_render",
         "blank_node",
         "bump_counts",
+        "bytes_equal",
+        "classify_key",
+        "clear_capture",
         "closed_container",
         "closed_key",
         "closed_value",
         "empty",
+        "empty_contract",
+        "empty_level",
         "empty_model",
+        "empty_operator",
         "empty_project",
+        "empty_relationship",
         "empty_state",
         "end",
         "feed_byte",
         "feed_chunk",
+        "find_project_name",
+        "has_project_id",
         "init",
         "is_decodable",
         "is_empty",
         "is_hex",
         "is_utf8_continuation",
         "is_valid",
-        "key_authority",
+        "key_authority_class",
+        "key_consumer_contract",
+        "key_dependency_policy",
+        "key_description",
         "key_from",
         "key_id",
-        "key_kind",
+        "key_kind_value",
         "key_last_reviewed",
+        "key_levels",
         "key_maturity",
+        "key_maturity_model",
+        "key_meaning",
         "key_name",
+        "key_operator_components",
         "key_projects",
+        "key_purpose",
         "key_relationships",
         "key_repository",
+        "key_resolution_order",
         "key_responsibility",
         "key_role",
+        "key_rules",
         "key_schema_version",
-        "make_card",
+        "key_to",
+        "key_version",
+        "key_visibility",
+        "level_complete",
+        "link_projects",
+        "linked_project",
+        "make_contract_header",
+        "make_contract_text",
+        "make_institution_node",
+        "make_level_node",
+        "make_project_node",
+        "mark_invalid",
         "matches16",
+        "matches32",
         "maturity_active",
         "maturity_experimental",
         "maturity_incubating",
@@ -199,10 +290,20 @@
         "maturity_orientation",
         "maturity_research",
         "maturity_step",
+        "model_complete",
+        "nonempty",
         "opened_container",
+        "operator_complete",
         "pop",
+        "project_complete",
         "push",
-        "set_project_field",
+        "relationship_complete",
+        "set_contract",
+        "set_contract_item",
+        "set_level",
+        "set_operator",
+        "set_project",
+        "set_relationship",
         "span",
         "stack_weight",
         "started_string",
@@ -211,7 +312,7 @@
         "string_content",
         "top",
         "utf8_lead_need",
-        "zero_bytes16",
+        "zero_bytes32",
         "zero_key"
       ],
       "corpus_cases": [

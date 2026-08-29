@@ -7,7 +7,7 @@
       "id": "one-experimental-project",
       "request": {
         "schema_version": "0.1",
-        "target": { "module": "mncs_atlas.experimental_model", "function": "atlas_model_probe" },
+        "target": { "module": "mncs_atlas.model", "function": "atlas_model_probe" },
         "arguments": [{ "sequence": { "values": [
           { "byte": { "value": 123 } }, { "byte": { "value": 34 } },
           { "byte": { "value": 112 } }, { "byte": { "value": 114 } },
@@ -31,7 +31,7 @@
           { "byte": { "value": 34 } }, { "byte": { "value": 125 } },
           { "byte": { "value": 93 } }, { "byte": { "value": 125 } }
         ] } }],
-        "step_budget": 2000000,
+        "step_budget": 1000000,
         "policy": { "effects": "unsupported" }
       },
       "expected": [{ "integer": { "value": 1001, "type": { "bits": 64, "signed": true } } }],
