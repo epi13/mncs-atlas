@@ -30,7 +30,10 @@ intent. The reusable host contract is documented in
 
 `atlas-json-projection.wasm` is retained as a raw projection witness and
 diagnostic fixture. It is not part of the production page's semantic path and
-is not silently treated as a second Atlas model.
+is not silently treated as a second Atlas model. The differential runner now
+uses MNCS execution-corpus schema `0.3` to represent the typed model as
+`init → chunk* → finish`, including the full edge-case fixture and its declared
+chunk-boundary mutations.
 
 ## ABI and bounded budgets
 
@@ -102,7 +105,7 @@ The following remain explicitly `UNKNOWN`:
 - a claim that the compiler's exact cost or the generated artifact is
   production-grade beyond this bounded research envelope.
 
-Run the bounded cross-backend attempt with:
+Run the bounded/stateful cross-backend attempt with:
 
 ```bash
 python scripts/run_atlas_model_differential.py \
@@ -111,5 +114,9 @@ python scripts/run_atlas_model_differential.py \
   --binary ../mncs-language/target/debug/mncs
 ```
 
-The report separates empirical bounded probe agreement from the unresolved
-full-stream cases. It must not be read as a conformance result.
+The report separates bounded probe observations from stateful full-stream
+observations. It is `PASS` only when all five executable backends return the
+same logical statuses, returned-value digests, selected model facts, and
+effects for every generated stateful case while meeting every expectation. A
+failed or unavailable backend remains `UNKNOWN`; the report is never upgraded
+because a process merely returned. It must not be read as a conformance result.

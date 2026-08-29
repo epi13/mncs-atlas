@@ -1,4 +1,5 @@
 import json
+import importlib.util
 from pathlib import Path
 import subprocess
 import unittest
@@ -8,6 +9,27 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class AtlasWasmTests(unittest.TestCase):
+    def test_stateful_differential_generator_covers_full_fixture(self):
+        script = ROOT / "scripts/run_atlas_model_differential.py"
+        spec = importlib.util.spec_from_file_location("atlas_differential", script)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        fixture = json.loads(
+            (ROOT / "tests/fixtures/atlas-model-differential-corpus.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        corpus = module.make_corpus(fixture, ROOT)
+        self.assertEqual(corpus["schema_version"], "0.3")
+        self.assertEqual(len(corpus["cases"]), len(fixture["bounded_probe"]["cases"]))
+        stateful_ids = {case["id"] for case in corpus["stateful_cases"]}
+        self.assertIn("complete-atlas", stateful_ids)
+        self.assertIn("lone-surrogate", stateful_ids)
+        self.assertTrue(all(case["steps"][0]["id"] == "init" for case in corpus["stateful_cases"]))
+        self.assertTrue(all(case["steps"][-1]["id"] == "finish" for case in corpus["stateful_cases"]))
+
     def test_production_page_invokes_shared_runtime_with_static_surface(self):
         page = (ROOT / "site/index.html").read_text(encoding="utf-8")
         self.assertIn('<script type="module" src="assets/app.js"></script>', page)
@@ -176,6 +198,7 @@ console.log("full-atlas-plan-ok");
         self.assertEqual(
             manifest["typed_model_abi"]["render_plan"]["node_layout"]["stride_bytes"], 88
         )
+        self.assertTrue(manifest["artifacts"]["atlas-model"]["stateful_cases"])
         self.assertEqual(manifest["validation"]["status"], "UNKNOWN")
 
     def test_full_model_differential_fixture_declares_required_edge_cases(self):
@@ -194,6 +217,7 @@ console.log("full-atlas-plan-ok");
                 "malformed-utf8-atlas",
                 "escaped-unicode",
                 "surrogate-pair",
+                "lone-surrogate",
                 "long-unknown-key",
                 "missing-required-sections",
                 "malformed-project-record",
