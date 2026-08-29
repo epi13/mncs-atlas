@@ -175,8 +175,17 @@ def main() -> int:
             "type": "i64",
             "offset_bits": "low32",
             "length_bits": "high32",
+            "internal_byte_cell_marker": "low32 bit0; masked before host-visible byte reads",
         },
-        "host_view_offset": 900000,
+        "host_buffer_abi": {
+            "function": "mncs_host_buffer",
+            "reset_function": "mncs_host_buffer_reset",
+            "version": "mncs.host-buffer.v1",
+            "parameter": "i32 capacity",
+            "result": "i64 packed low32=offset high32=capacity",
+            "lifetime": "reserved region remains host-owned until module instance is dropped",
+            "reuse": "host calls reset_function after each consumer call; target allocations are then recycled after the region",
+        },
         "memory_export": "memory",
         "artifacts": built,
     }

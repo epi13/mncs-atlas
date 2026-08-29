@@ -1,7 +1,4 @@
 const CHUNK_BYTES = 64;
-// Keep the host view above the current bounded arena's immutable-array
-// allocations. A future allocator contract can replace this reserved slot.
-const DATA_OFFSET = 900000;
 
 const SELECTORS = [
   [0, "Maturity fields", "raw key count"],
@@ -32,12 +29,20 @@ function prepareMemory(memory) {
   if (!memory || !(memory instanceof WebAssembly.Memory)) {
     throw new Error("The MNCS/WASM artifact did not export linear memory");
   }
-  const requiredBytes = DATA_OFFSET + CHUNK_BYTES;
-  const missingBytes = requiredBytes - memory.buffer.byteLength;
-  if (missingBytes > 0) {
-    memory.grow(Math.ceil(missingBytes / 65536));
+  return memory;
+}
+
+function hostBuffer(exports, memory, capacity) {
+  if (typeof exports.mncs_host_buffer !== "function") {
+    throw new Error("The MNCS/WASM artifact did not export the host-buffer ABI");
   }
-  return new Uint8Array(memory.buffer);
+  const packed = exports.mncs_host_buffer(capacity);
+  const offset = Number(packed & 0xffffffffn);
+  const allocated = Number((packed >> 32n) & 0xffffffffn);
+  if (allocated < capacity || offset + allocated > memory.buffer.byteLength) {
+    throw new Error("The MNCS/WASM host-buffer ABI returned an invalid region");
+  }
+  return { offset, capacity: allocated, view: new Uint8Array(memory.buffer) };
 }
 
 function descriptor(offset, length) {
@@ -54,30 +59,32 @@ function chunks(bytes, callback) {
 function scanAtlas(instance, atlasBytes) {
   const exports = instance.exports;
   const memory = prepareMemory(exports.memory);
+  const host = hostBuffer(exports, memory, CHUNK_BYTES);
   let state = exports.atlas_scan_init();
   chunks(atlasBytes, (chunk) => {
-    memory.set(chunk, DATA_OFFSET);
-    state = exports.atlas_scan_chunk(state, descriptor(DATA_OFFSET, chunk.length));
+    host.view.set(chunk, host.offset);
+    state = exports.atlas_scan_chunk(state, descriptor(host.offset, chunk.length));
+    exports.mncs_host_buffer_reset();
   });
   return Number(exports.atlas_scan_finish(state));
 }
 
 async function projectAtlas(moduleBytes, atlasBytes) {
+  const { instance } = await WebAssembly.instantiate(moduleBytes, {});
+  const exports = instance.exports;
+  const memory = prepareMemory(exports.memory);
+  const host = hostBuffer(exports, memory, CHUNK_BYTES);
   const values = [];
   for (const [selector, label, detail] of SELECTORS) {
-    // The current portable lowering materializes immutable target arrays in
-    // the arena. Keep selectors isolated until that allocator is reusable.
-    const { instance } = await WebAssembly.instantiate(moduleBytes, {});
-    const exports = instance.exports;
-    const memory = prepareMemory(exports.memory);
     let state = 0n;
     chunks(atlasBytes, (chunk) => {
-      memory.set(chunk, DATA_OFFSET);
+      host.view.set(chunk, host.offset);
       state = exports.atlas_project_chunk(
         state,
-        descriptor(DATA_OFFSET, chunk.length),
+        descriptor(host.offset, chunk.length),
         selector,
       );
+      exports.mncs_host_buffer_reset();
     });
     values.push({
       detail,
@@ -102,7 +109,7 @@ function renderMetrics(scanResult, projections, atlasBytes) {
   scanValue.textContent = scanResult === 1 ? "Complete" : `Code ${scanResult}`;
   scanCard.append(scanValue);
   const scanDetail = document.createElement("small");
-  scanDetail.textContent = `Validated ${atlasBytes.length} bytes in ${Math.ceil(atlasBytes.length / CHUNK_BYTES)} chunks`;
+  scanDetail.textContent = `Scanned ${atlasBytes.length} bytes in ${Math.ceil(atlasBytes.length / CHUNK_BYTES)} chunks`;
   scanCard.append(scanDetail);
   metrics.append(scanCard);
 
@@ -122,7 +129,7 @@ function renderMetrics(scanResult, projections, atlasBytes) {
     metrics.append(card);
   }
 
-  status.textContent = "WASM path active · Atlas bytes stayed outside JavaScript JSON semantics";
+  status.textContent = "WASM path active · structural stream complete · Atlas bytes stayed outside JavaScript JSON semantics";
   output.hidden = false;
   document.querySelector("#atlas-wasm-fallback").hidden = true;
 }
@@ -137,6 +144,9 @@ async function run() {
       fetchBytes(new URL("atlas-json-projection.wasm", import.meta.url)),
     ]);
     const scanResult = scanAtlas(scan.instance, atlasBytes);
+    if (scanResult !== 1) {
+      throw new Error(`Structural stream rejected atlas.json (code ${scanResult})`);
+    }
     const projections = await projectAtlas(projectionBytes, atlasBytes);
     renderMetrics(scanResult, projections, atlasBytes);
   } catch (caught) {

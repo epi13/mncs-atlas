@@ -15,15 +15,24 @@
   "view_descriptor": {
     "type": "i64",
     "offset_bits": "low32",
-    "length_bits": "high32"
+    "length_bits": "high32",
+    "internal_byte_cell_marker": "low32 bit0; masked before host-visible byte reads"
   },
-  "host_view_offset": 900000,
+  "host_buffer_abi": {
+    "function": "mncs_host_buffer",
+    "reset_function": "mncs_host_buffer_reset",
+    "version": "mncs.host-buffer.v1",
+    "parameter": "i32 capacity",
+    "result": "i64 packed low32=offset high32=capacity",
+    "lifetime": "reserved region remains host-owned until module instance is dropped",
+    "reuse": "host calls reset_function after each consumer call; target allocations are then recycled after the region"
+  },
   "memory_export": "memory",
   "artifacts": {
     "atlas-json-scan": {
       "path": "assets/atlas-json-scan.wasm",
-      "sha256": "fd144bd32d1cf82b85f923922daba9e5f468b6e3d8ccbd8591052316723c5746",
-      "bytes": 4776,
+      "sha256": "fcca761e6ef4d4b268232b55ebff007a6a521f919c05ede5c86d4c874cf67998",
+      "bytes": 6657,
       "status": "UNKNOWN",
       "exports": [
         "atlas_scan_chunk",
@@ -36,11 +45,16 @@
         "feed_chunk",
         "finish",
         "init",
+        "is_hex",
+        "is_non_space",
+        "is_space",
         "pack",
+        "root_complete",
         "stack",
         "stack_weight",
         "started",
-        "string_mode"
+        "string_mode",
+        "unicode_remaining"
       ],
       "corpus_cases": [
         {
@@ -51,8 +65,8 @@
     },
     "atlas-json-projection": {
       "path": "assets/atlas-json-projection.wasm",
-      "sha256": "e9115becb3c65f3b4f4f40506c67d2e69f7336ca1fac18e747c83c921262564e",
-      "bytes": 10649,
+      "sha256": "ebe9a18522cef05c1cf76a9c173465762f83762ab4800d9f8df40710fb38f0c6",
+      "bytes": 10760,
       "status": "UNKNOWN",
       "exports": [
         "atlas_project_chunk",
