@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.1",
+  "name": "atlas-model-multi-backend-differential",
+  "description": "Bounded Atlas model probes plus explicit full-stream cases for every executable backend.",
+  "source": "mncs/atlas-model.mncs",
+  "full_input": {
+    "path": "site/atlas.json",
+    "chunk_bytes": 64,
+    "interface": ["atlas_model_init", "atlas_model_chunk", "atlas_model_finish"],
+    "cases": [
+      { "id": "complete-atlas", "expected": "valid_and_complete" },
+      { "id": "truncated-atlas", "mutation": "remove_last_byte", "expected": "incomplete_or_invalid" },
+      { "id": "malformed-utf8-atlas", "mutation": "replace_first_string_byte_with_c0_af", "expected": "invalid" }
+    ]
+  },
+  "bounded_probe": {
+    "module": "mncs_atlas.model",
+    "function": "atlas_model_probe",
+    "cases": [
+      {
+        "id": "one-experimental-project",
+        "text": "{\"projects\":[{\"maturity\":\"experimental\"}]}",
+        "expected": 1001
+      },
+      {
+        "id": "empty-object",
+        "text": "{}",
+        "expected": 1
+      },
+      {
+        "id": "truncated-project-object",
+        "text": "{\"projects\":[{\"maturity\":\"experimental\"}]",
+        "expected": 1000
+      },
+      {
+        "id": "malformed-utf8",
+        "hex": "7b2270726f6a65637473223a22c0af227d",
+        "expected": 0
+      }
+    ]
+  },
+  "backends": [
+    "mncs-portable-wasm-mvp",
+    "mncs-research-bytecode",
+    "mncs-llvm-ir",
+    "mncs-c11",
+    "mncs-cranelift"
+  ],
+  "status": "UNKNOWN",
+  "unresolved": [
+    "The current experiment request ABI accepts one [byte; up_to64] value, so it cannot represent the full streamed Atlas model input.",
+    "Full-stream malformed/truncated cases need an equivalent stateful runner for every backend.",
+    "Agreement across bounded probes is empirical evidence, not a conformance or cutover decision."
+  ]
+}

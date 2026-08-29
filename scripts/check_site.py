@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
@@ -188,6 +189,135 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
             )
 
 
+def check_wasm_manifest(manifest: object, errors: list[str]) -> None:
+    if not isinstance(manifest, dict):
+        errors.append("site/assets/atlas-wasm-manifest.json must contain a JSON object")
+        return
+    if manifest.get("schema_version") != "0.2":
+        errors.append("site/assets/atlas-wasm-manifest.json has an unsupported schema_version")
+    if manifest.get("kind") != "mncs-atlas-wasm" or manifest.get("authority") != "orientation-only":
+        errors.append("site/assets/atlas-wasm-manifest.json has contradictory identity metadata")
+
+    lock_revision: object = None
+    build = manifest.get("build")
+    if not isinstance(build, dict):
+        errors.append("WASM manifest is missing build provenance")
+    else:
+        lock_path = ROOT / "mncs/mncs-language.lock.json"
+        lock = load_json(lock_path, errors) if lock_path.is_file() else None
+        lock_revision = lock.get("revision") if isinstance(lock, dict) else None
+        if not isinstance(lock_revision, str):
+            errors.append("mncs/mncs-language.lock.json must declare a revision")
+        if build.get("language_revision_lock") != lock_revision:
+            errors.append("WASM manifest language revision does not match mncs-language.lock.json")
+        if build.get("artifact_set") != [
+            "atlas-json-scan",
+            "atlas-json-projection",
+            "atlas-model",
+        ]:
+            errors.append("WASM manifest build artifact_set is contradictory")
+
+    provenance = manifest.get("provenance")
+    if not isinstance(provenance, dict):
+        errors.append("WASM manifest is missing provenance")
+    else:
+        states = []
+        for producer in ("atlas", "mncs_language"):
+            value = provenance.get(producer)
+            if not isinstance(value, dict) or not value.get("commit"):
+                errors.append(f"WASM manifest is missing {producer} commit provenance")
+                continue
+            state = value.get("working_tree")
+            states.append(state)
+            if state not in {"clean", "dirty", "unknown"}:
+                errors.append(f"WASM manifest has invalid {producer} working_tree state")
+        library = provenance.get("standard_library")
+        if not isinstance(library, dict) or not isinstance(library.get("sha256"), str) or len(library["sha256"]) != 64:
+            errors.append("WASM manifest is missing standard-library source identity")
+        reproducibility = provenance.get("reproducibility")
+        if not isinstance(reproducibility, dict):
+            errors.append("WASM manifest is missing reproducibility status")
+        else:
+            if len(states) != 2 or "unknown" in states:
+                expected = "unknown"
+            elif states == ["clean", "clean"]:
+                expected = "reproducible"
+            else:
+                expected = "uncertain"
+            if reproducibility.get("status") != expected:
+                errors.append("WASM manifest reproducibility status contradicts producer tree state")
+
+        language_revision = (
+            provenance.get("mncs_language", {}).get("commit")
+            if isinstance(provenance.get("mncs_language"), dict)
+            else None
+        )
+        if isinstance(lock_revision, str) and language_revision != lock_revision:
+            errors.append("WASM manifest mncs-language commit does not match the producer lock")
+
+    artifacts = manifest.get("artifacts")
+    expected_artifacts = {"atlas-json-scan", "atlas-json-projection", "atlas-model"}
+    if not isinstance(artifacts, dict) or set(artifacts) != expected_artifacts:
+        errors.append("WASM manifest artifact set is incomplete or contains unknown artifacts")
+        return
+    for name in sorted(expected_artifacts):
+        value = artifacts[name]
+        if not isinstance(value, dict):
+            errors.append(f"WASM manifest entry {name} is not an object")
+            continue
+        relative = value.get("path")
+        if relative != f"assets/{name}.wasm":
+            errors.append(f"WASM manifest entry {name} has a contradictory path")
+            continue
+        artifact = SITE / relative
+        if not artifact.is_file():
+            errors.append(f"WASM manifest entry {name} points to a missing file")
+            continue
+        digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        if value.get("sha256") != digest:
+            errors.append(f"WASM manifest entry {name} has a stale SHA-256")
+        if value.get("bytes") != artifact.stat().st_size:
+            errors.append(f"WASM manifest entry {name} has a stale byte count")
+        if not isinstance(value.get("source_sha256"), str) or len(value["source_sha256"]) != 64:
+            errors.append(f"WASM manifest entry {name} is missing source SHA-256")
+        if not isinstance(value.get("corpus_sha256"), str) or len(value["corpus_sha256"]) != 64:
+            errors.append(f"WASM manifest entry {name} is missing corpus SHA-256")
+        for field, digest_field in (("source", "source_sha256"), ("corpus", "corpus_sha256")):
+            reference = value.get(field)
+            if (
+                not isinstance(reference, dict)
+                or not isinstance(reference.get("repository"), str)
+                or not isinstance(reference.get("path"), str)
+                or not isinstance(reference.get("sha256"), str)
+                or len(reference["sha256"]) != 64
+            ):
+                errors.append(f"WASM manifest entry {name} is missing {field} provenance")
+            elif reference["sha256"] != value.get(digest_field):
+                errors.append(f"WASM manifest entry {name} has contradictory {field} hashes")
+            elif reference["repository"] == "mncs-atlas":
+                referenced = (ROOT / reference["path"]).resolve()
+                try:
+                    referenced.relative_to(ROOT.resolve())
+                except ValueError:
+                    errors.append(f"WASM manifest entry {name} {field} escapes Atlas root")
+                else:
+                    if not referenced.is_file():
+                        errors.append(f"WASM manifest entry {name} points to a missing {field} file")
+                    elif hashlib.sha256(referenced.read_bytes()).hexdigest() != reference["sha256"]:
+                        errors.append(f"WASM manifest entry {name} has a stale {field} hash")
+        compiler = value.get("compiler")
+        if (
+            not isinstance(compiler, dict)
+            or not compiler.get("language_profile")
+            or not compiler.get("compiler_identity")
+            or not compiler.get("pipeline_identity")
+            or not compiler.get("compiler_schema_version")
+            or not compiler.get("experiment_schema_version")
+            or not compiler.get("selected_ssa_identity")
+        ):
+            errors.append(f"WASM manifest entry {name} is missing compiler identity")
+
+
 def check() -> list[str]:
     errors: list[str] = []
     html_files = sorted(SITE.rglob("*.html"))
@@ -237,6 +367,12 @@ def check() -> list[str]:
         atlas = load_json(atlas_path, errors)
         if atlas is not None:
             check_atlas(atlas, errors)
+
+    manifest_path = SITE / "assets" / "atlas-wasm-manifest.json"
+    if manifest_path.is_file():
+        manifest = load_json(manifest_path, errors)
+        if manifest is not None:
+            check_wasm_manifest(manifest, errors)
 
     schema_path = SITE / "schema" / "atlas.schema.json"
     if schema_path.is_file():

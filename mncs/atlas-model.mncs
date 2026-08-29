@@ -501,6 +501,7 @@ fn has_project_id(projects: [Project; 32], count: u64, wanted: [byte; 32], wante
 }
 
 fn linked_project(value: Project, relationships: [Relationship; 64], count: u64) -> (result: Project) {
+    if count == 0 { return value; }
     iterate relationship_index over relationships carrying links: u64 = 0 {
         let relation: Relationship = relationships[relationship_index];
         let hit: bool = relationship_index < count && (bytes_equal(value.id_bytes, value.id_length, relation.from_bytes, relation.from_length) || bytes_equal(value.id_bytes, value.id_length, relation.to_bytes, relation.to_length));
@@ -509,9 +510,15 @@ fn linked_project(value: Project, relationships: [Relationship; 64], count: u64)
     return Project { ..value, relationship_count: links };
 }
 
+fn link_project_if(projects: [Project; 32], source: [Project; 32], relationships: [Relationship; 64], index: u64, count: u64) -> (result: [Project; 32]) {
+    if index >= count { return projects; }
+    return replace(projects, index, linked_project(source[index], relationships, count));
+}
+
 fn link_projects(projects: [Project; 32], relationships: [Relationship; 64], count: u64) -> (result: [Project; 32]) {
+    if count == 0 { return projects; }
     iterate project_index over projects carrying linked: [Project; 32] = projects {
-        next linked = replace(linked, project_index, linked_project(projects[project_index], relationships, count));
+        next linked = link_project_if(linked, projects, relationships, project_index, count);
     }
     return linked;
 }
@@ -570,9 +577,53 @@ fn atlas_model_finish(state: ModelState) -> (result: AtlasModel) {
     return AtlasModel { ..model, complete: model_complete(ModelState { ..state, model: model }) };
 }
 
+record ProbeState {
+    cursor: Cursor,
+    collection: byte,
+    collection_depth: u64,
+    pending_key: byte,
+    project_count: u64,
+    relationship_count: u64,
+    valid: bool
+}
+
+fn probe_key(key: [byte; 32], length: u64) -> (result: byte) {
+    if text.matches32(key, length, key_projects(), 8) { return 1; }
+    if text.matches32(key, length, key_relationships(), 13) { return 2; }
+    return 0;
+}
+
+fn probe_step(state: ProbeState, value: byte) -> (result: ProbeState) {
+    if state.valid {
+        let observed: Cursor = feed_byte(state.cursor, value);
+        if observed.valid {
+            if observed.event == 2 { return ProbeState { ..state, cursor: observed, pending_key: probe_key(observed.key, observed.key_length) }; }
+            if observed.event == 6 && state.pending_key != 0 {
+                return ProbeState { ..state, cursor: observed, collection: state.pending_key, collection_depth: observed.depth as u64, pending_key: 0 };
+            }
+            if observed.event == 5 && state.collection != 0 && observed.depth as u64 == state.collection_depth + 1 {
+                if state.collection == 1 { return ProbeState { ..state, cursor: observed, project_count: state.project_count + 1 }; }
+                return ProbeState { ..state, cursor: observed, relationship_count: state.relationship_count + 1 };
+            }
+            if observed.event == 8 && state.collection != 0 && observed.depth as u64 + 1 == state.collection_depth {
+                return ProbeState { ..state, cursor: observed, collection: 0, collection_depth: 0, pending_key: 0 };
+            }
+            return ProbeState { ..state, cursor: observed };
+        }
+        return ProbeState { ..state, cursor: observed, valid: false };
+    }
+    return state;
+}
+
 fn atlas_model_probe(input: [byte; up_to 64]) -> (result: i64) {
-    let model: AtlasModel = atlas_model_finish(atlas_model_chunk(atlas_model_init(), input));
-    return (model.project_count *% 1000 +% model.relationship_count *% 10 +% (model.valid as u64)) as i64;
+    // This scalar probe intentionally reports the incremental parse summary
+    // through a compact state. Full topology linking and render-plan
+    // construction remain owned by atlas_model_finish/atlas_render and are
+    // exercised by the browser path.
+    let initial: ProbeState = ProbeState { cursor: init(), collection: 0, collection_depth: 0, pending_key: 0, project_count: 0, relationship_count: 0, valid: true };
+    iterate i over input carrying state: ProbeState = initial { next state = probe_step(state, input[i]); }
+    let structurally_valid: bool = state.valid && is_valid(state.cursor);
+    return (state.project_count *% 1000 +% state.relationship_count *% 10 +% (structurally_valid as u64)) as i64;
 }
 
 fn blank_node() -> (result: RenderNode) {

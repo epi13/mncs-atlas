@@ -121,6 +121,16 @@ def make_atlas_tree(tmp: Path, *, with_opening_journal: bool = True) -> Path:
     (tmp / "scripts").mkdir(parents=True, exist_ok=True)
     shutil.copy2(ROOT / "scripts" / "check_site.py", tmp / "scripts" / "check_site.py")
     shutil.copy2(ROOT / "scripts" / "sync_pages_root.py", tmp / "scripts" / "sync_pages_root.py")
+    for relative in (
+        "mncs/atlas-json-scan.mncs",
+        "mncs/atlas-json-projection.mncs",
+        "mncs/atlas-model.mncs",
+        "mncs/mncs-language.lock.json",
+        "tests/fixtures/atlas-model-corpus.json",
+    ):
+        destination = tmp / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / relative, destination)
     (tmp / ".nojekyll").write_text("", encoding="utf-8")
     return tmp
 

@@ -9,6 +9,88 @@ permissions:
   contents: read
 
 jobs:
+  wasm-reproducibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Atlas
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read locked MNCS language revision
+        id: language-lock
+        shell: bash
+        run: |
+          revision=$(python -c 'import json; print(json.load(open("mncs/mncs-language.lock.json"))["revision"])')
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout locked MNCS language producer
+        uses: actions/checkout@v4
+        with:
+          repository: epi13/mncs-language
+          ref: ${{ steps.language-lock.outputs.revision }}
+          path: mncs-language
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Regenerate the locked WASM artifact set
+        run: |
+          python scripts/build_mncs_wasm.py \
+            --atlas-root "$GITHUB_WORKSPACE" \
+            --language-root "$GITHUB_WORKSPACE/mncs-language"
+
+      - name: Verify reproducible bytes and manifest
+        run: |
+          python scripts/sync_pages_root.py --check
+          python scripts/check_site.py
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          manifest = json.loads(Path("site/assets/atlas-wasm-manifest.json").read_text())
+          for name, metadata in manifest["artifacts"].items():
+              expected = metadata["sha256"]
+              for root in (Path("site/assets"), Path("assets")):
+                  artifact = root / f"{name}.wasm"
+                  actual = hashlib.sha256(artifact.read_bytes()).hexdigest()
+                  assert actual == expected, f"{artifact}: {actual} != {expected}"
+          PY
+          # The manifest records the exact source commit at generation time;
+          # its commit field is intentionally not byte-compared after CI
+          # regenerates tracked derived files. The WASM set itself must match.
+          git diff --exit-code -- \
+            site/assets/atlas-json-scan.wasm \
+            site/assets/atlas-json-projection.wasm \
+            site/assets/atlas-model.wasm \
+            assets/atlas-json-scan.wasm \
+            assets/atlas-json-projection.wasm \
+            assets/atlas-model.wasm
+
+      - name: Verify Unicode cursor corpus
+        env:
+          MNCS_LIBRARY_PATH: ${{ github.workspace }}/mncs-language/library
+        run: |
+          cargo run -q --manifest-path mncs-language/Cargo.toml -p mncs-cli -- \
+            experiment run mncs-language/examples/source/json-cursor-probe.mncs \
+            --backend mncs-portable-wasm-mvp \
+            --corpus mncs-language/examples/execution/json-cursor-corpus.json \
+            --validation-profile artifact-build > /tmp/json-cursor-result.json
+          python - <<'PY'
+          import json
+          result = json.load(open('/tmp/json-cursor-result.json'))
+          assert all(case['expectation_met'] is True for case in result['cases'])
+          assert len(result['cases']) >= 11
+          PY
+
   site-integrity:
     runs-on: ubuntu-latest
     steps:

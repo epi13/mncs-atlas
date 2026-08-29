@@ -1,8 +1,45 @@
 {
-  "schema_version": "0.1",
+  "schema_version": "0.2",
   "kind": "mncs-atlas-wasm",
   "authority": "orientation-only",
   "backend": "mncs-portable-wasm-mvp",
+  "build": {
+    "mode": "cargo experiment run",
+    "command": "cargo run -q --manifest-path <mncs-language>/Cargo.toml -p mncs-cli -- experiment run <source.mncs> --backend mncs-portable-wasm-mvp --corpus <corpus.json> --output-dir <staging> --validation-profile artifact-build",
+    "language_root": "../mncs-language",
+    "language_revision_lock": "90459ec7c3b3cb78600ebafd1cf1e8d4b92d700a",
+    "artifact_set": [
+      "atlas-json-scan",
+      "atlas-json-projection",
+      "atlas-model"
+    ]
+  },
+  "provenance": {
+    "atlas": {
+      "name": "mncs-atlas",
+      "commit": "c4f73df3e1d677ef50f74c56cd372be20ce7ae92",
+      "working_tree": "clean",
+      "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ignored_derived_paths": [],
+      "reproducibility": "reproducible"
+    },
+    "mncs_language": {
+      "name": "mncs-language",
+      "commit": "90459ec7c3b3cb78600ebafd1cf1e8d4b92d700a",
+      "working_tree": "clean",
+      "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ignored_derived_paths": [],
+      "reproducibility": "reproducible"
+    },
+    "standard_library": {
+      "path": "library",
+      "sha256": "5f07e15d51c1d1a15b4494c7cde63fd17bf807b485be042699157bdd8112caed"
+    },
+    "reproducibility": {
+      "status": "reproducible",
+      "reason": "Both producer working trees were clean at build time"
+    }
+  },
   "input": {
     "atlas_data": "atlas.json",
     "transport": "fetch-arraybuffer-to-Uint8Array",
@@ -125,7 +162,10 @@
       "sha256",
       "corpus_expectations",
       "bounded_capacity_declarations",
-      "production_static_fallback"
+      "production_static_fallback",
+      "staged_publication",
+      "manifest_internal_hashes",
+      "producer_provenance"
     ],
     "unresolved": [
       "cross-backend equivalence for the full Atlas model",
@@ -139,6 +179,26 @@
       "sha256": "922d388fa7bade218d3f59b50f7680d0d7e3c9257c4570658e821a1303c5d3c0",
       "bytes": 6658,
       "status": "UNKNOWN",
+      "source": {
+        "repository": "mncs-atlas",
+        "path": "mncs/atlas-json-scan.mncs",
+        "sha256": "6318c45af7feda2541dcd7eb5abbc7ef89ae8941fa10a74acd79a937f958ef85"
+      },
+      "source_sha256": "6318c45af7feda2541dcd7eb5abbc7ef89ae8941fa10a74acd79a937f958ef85",
+      "corpus": {
+        "repository": "mncs-language",
+        "path": "examples/execution/atlas-json-scan-corpus.json",
+        "sha256": "c7e04424a10e958cd0fc9434dda598df87a2ee42df570c9f3062e3ad0a08fe88"
+      },
+      "corpus_sha256": "c7e04424a10e958cd0fc9434dda598df87a2ee42df570c9f3062e3ad0a08fe88",
+      "compiler": {
+        "language_profile": "0.10",
+        "compiler_identity": "mncs:compiler:compiler:f862227638ca7fbc716123d8378cddfef4f76a9ef10ab0e99cc791e65207e45d",
+        "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
+        "compiler_schema_version": "0.1",
+        "experiment_schema_version": "0.1",
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:e0dafec6cd9b4ad3d3c1d4cf3b759795b30450f780af589aa159bbf76dbfb3b3"
+      },
       "exports": [
         "atlas_scan_chunk",
         "atlas_scan_finish",
@@ -173,6 +233,26 @@
       "sha256": "eec36d4e9d4155997e24fd1c308dae67f6b7f4d92d6cee2f5e2c90eb73524c35",
       "bytes": 10761,
       "status": "UNKNOWN",
+      "source": {
+        "repository": "mncs-atlas",
+        "path": "mncs/atlas-json-projection.mncs",
+        "sha256": "4281c6a38630ad5f4e12dab70b2658ad1d8984dd4b0fa3bdc54b3e93b8ec968e"
+      },
+      "source_sha256": "4281c6a38630ad5f4e12dab70b2658ad1d8984dd4b0fa3bdc54b3e93b8ec968e",
+      "corpus": {
+        "repository": "mncs-language",
+        "path": "examples/execution/atlas-json-projection-corpus.json",
+        "sha256": "df14472e678b0a659eebb4a5e65ea3dca497fbbefc890f81a71d522283499080"
+      },
+      "corpus_sha256": "df14472e678b0a659eebb4a5e65ea3dca497fbbefc890f81a71d522283499080",
+      "compiler": {
+        "language_profile": "0.10",
+        "compiler_identity": "mncs:compiler:compiler:f862227638ca7fbc716123d8378cddfef4f76a9ef10ab0e99cc791e65207e45d",
+        "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
+        "compiler_schema_version": "0.1",
+        "experiment_schema_version": "0.1",
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:0648fff8613c44a7a1d9421ad27b4e65027499c7112b788083f86d1dfd3e28e9"
+      },
       "exports": [
         "atlas_project_chunk",
         "atlas_project_count",
@@ -201,9 +281,29 @@
     },
     "atlas-model": {
       "path": "assets/atlas-model.wasm",
-      "sha256": "2163419cb83d09f85f6213dac757744a1fb25e13a4a6e46c0d5d06914a2f4f74",
-      "bytes": 142251,
+      "sha256": "6f2692220644bf6804c55ef246561fe7d180038e836ecdf323ea5212ed259a04",
+      "bytes": 153696,
       "status": "UNKNOWN",
+      "source": {
+        "repository": "mncs-atlas",
+        "path": "mncs/atlas-model.mncs",
+        "sha256": "09f398e117c16df91e554b45eda0fd176f5325fadf924eab8021d69278f3320c"
+      },
+      "source_sha256": "09f398e117c16df91e554b45eda0fd176f5325fadf924eab8021d69278f3320c",
+      "corpus": {
+        "repository": "mncs-atlas",
+        "path": "tests/fixtures/atlas-model-corpus.json",
+        "sha256": "1ec4b6c6c4b183b79e98331e09cd3c7aa20fb4ec004a31aa9443d811536d8e6e"
+      },
+      "corpus_sha256": "1ec4b6c6c4b183b79e98331e09cd3c7aa20fb4ec004a31aa9443d811536d8e6e",
+      "compiler": {
+        "language_profile": "0.10",
+        "compiler_identity": "mncs:compiler:compiler:f862227638ca7fbc716123d8378cddfef4f76a9ef10ab0e99cc791e65207e45d",
+        "pipeline_identity": "mncs:compiler:pass-pipeline:95cfa1b3b0a540659ed1b7735465c35f8ada62806dc2238f32ee65a3d8e0cc4b",
+        "compiler_schema_version": "0.1",
+        "experiment_schema_version": "0.1",
+        "selected_ssa_identity": "mncs:compiler:compiler-artifact:d62bab2dada4c46e945df578a6963623ea1ba9081ed4e2c7f0c9ba50c21ac183"
+      },
       "exports": [
         "all_levels",
         "all_operators",
@@ -240,6 +340,7 @@
         "feed_chunk",
         "find_project_name",
         "has_project_id",
+        "hex_value",
         "init",
         "is_decodable",
         "is_empty",
@@ -273,6 +374,7 @@
         "key_version",
         "key_visibility",
         "level_complete",
+        "link_project_if",
         "link_projects",
         "linked_project",
         "make_contract_header",
@@ -295,6 +397,8 @@
         "opened_container",
         "operator_complete",
         "pop",
+        "probe_key",
+        "probe_step",
         "project_complete",
         "push",
         "relationship_complete",
@@ -311,6 +415,7 @@
         "string_byte",
         "string_content",
         "top",
+        "utf8_first_continuation_valid",
         "utf8_lead_need",
         "zero_bytes32",
         "zero_key"
