@@ -17,16 +17,11 @@
   "provenance": {
     "atlas": {
       "name": "mncs-atlas",
-      "commit": "92b1823033910814dbed2bd3210d1158042b5918",
-      "working_tree": "dirty",
-      "working_tree_hash": "1a5923e68923ef1d29a9e355c525ac0d35f19281ba161794a7841877e58a5ea9",
-      "ignored_derived_paths": [
-        "assets/atlas-model.wasm",
-        "assets/atlas-wasm-manifest.json",
-        "site/assets/atlas-model.wasm",
-        "site/assets/atlas-wasm-manifest.json"
-      ],
-      "reproducibility": "uncertain"
+      "commit": "b0026ca3d2e1688c8042755b0ab7617c9efafb36",
+      "working_tree": "clean",
+      "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ignored_derived_paths": [],
+      "reproducibility": "reproducible"
     },
     "mncs_language": {
       "name": "mncs-language",
@@ -41,8 +36,8 @@
       "sha256": "5f07e15d51c1d1a15b4494c7cde63fd17bf807b485be042699157bdd8112caed"
     },
     "reproducibility": {
-      "status": "uncertain",
-      "reason": "At least one producer working tree was dirty or unavailable; exact regeneration is not certified"
+      "status": "reproducible",
+      "reason": "Both producer working trees were clean at build time"
     }
   },
   "input": {
