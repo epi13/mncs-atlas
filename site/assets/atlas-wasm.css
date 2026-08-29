@@ -14,6 +14,20 @@
 .wasm-metric-label { color: #486176; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .wasm-metric strong { margin-top: auto; color: #15253a; font-size: 2rem; letter-spacing: -.04em; }
 .wasm-metric small { color: #687c8f; font-size: .78rem; }
+.wasm-atlas-section { margin-top: 42px; padding-top: 34px; border-top: 1px solid #d2d9e2; }
+.wasm-section-heading { margin-bottom: 20px; }
+.wasm-section-heading .eyebrow { margin-bottom: 8px; }
+.wasm-section-heading h3 { margin: 0; font-size: 1.45rem; }
+.wasm-atlas-section .project-grid, .wasm-atlas-section .status-grid { margin-top: 0; }
+.wasm-atlas-section .project-card, .wasm-atlas-section .status-card { min-height: 0; }
+.wasm-atlas-section .project-card { min-height: 230px; }
+.status-card-meta { display: block; margin-top: 17px; color: #687c8f; font: .76rem/1.4 ui-monospace, monospace; }
+.wasm-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.wasm-legend span { padding: 6px 10px; border: 1px solid #d9e0e8; border-radius: 999px; color: #52677c; font-size: .75rem; }
+.wasm-legend [data-class="experimental"] { background: #f3e8d2; color: #7a5a12; }
+.wasm-legend [data-class="research"] { background: #e4ecfb; color: #2f4f8f; }
+.wasm-legend [data-class="active"] { background: #e5f5f0; color: #2f6f63; }
+.wasm-legend [data-class="orientation"] { background: #eceff4; color: #4a5568; }
 .wasm-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
 .wasm-copy article { padding: 22px; border-radius: 15px; background: #eef2f6; border: 1px solid #d9e0e8; }
 .wasm-copy h3 { margin: 0 0 8px; font-size: 1.05rem; }

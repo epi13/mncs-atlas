@@ -1,0 +1,417 @@
+mncs 0.10;
+
+// Atlas application model and structured render plan.
+//
+// This module is intentionally bounded: the current Atlas schema admits up to
+// fifteen project records and nineteen relationship records in this artifact.
+// Text is represented as borrowed UTF-8 spans into the input byte stream. No
+// JSON DOM, hidden allocator, or Atlas-specific host callback is required.
+module mncs_atlas.experimental_model;
+
+use mncs.std.json_cursor.v1;
+use mncs.std.text_view.v1 as text;
+
+record Project {
+    id: TextView,
+    name: TextView,
+    role: TextView,
+    maturity: TextView,
+    maturity_code: byte,
+    authority_class: TextView,
+    responsibility: TextView,
+    repository: TextView
+}
+
+record AtlasModel {
+    schema_version: TextView,
+    last_reviewed: TextView,
+    projects: [Project; 15],
+    project_count: u64,
+    relationship_count: u64,
+    maturity_counts: [u64; 5],
+    valid: bool,
+    complete: bool
+}
+
+record ModelState {
+    cursor: Cursor,
+    model: AtlasModel,
+    projects_depth: u64,
+    relationships_depth: u64,
+    in_projects: bool,
+    in_relationships: bool,
+    project_object: bool,
+    relationship_object: bool,
+    current_project: u64,
+    pending_key: byte,
+    capture_kind: byte,
+    value_start: u64,
+    value_encoded: bool,
+    maturity_mask: byte,
+    maturity_length: u64
+}
+
+record RenderNode {
+    operation: byte,
+    target: byte,
+    slot: byte,
+    value: u64,
+    primary: TextView,
+    secondary: TextView,
+    tertiary: TextView,
+    quaternary: TextView
+}
+
+record RenderPlan {
+    nodes: [RenderNode; 64],
+    node_count: u64,
+    project_count: u64,
+    relationship_count: u64,
+    maturity_counts: [u64; 5],
+    valid: bool,
+    complete: bool
+}
+
+fn zero_bytes16() -> (result: [byte; 16]) {
+    return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+
+fn empty_project() -> (result: Project) {
+    let blank_text: TextView = text.empty();
+    return Project {
+        id: blank_text,
+        name: blank_text,
+        role: blank_text,
+        maturity: blank_text,
+        maturity_code: 0,
+        authority_class: blank_text,
+        responsibility: blank_text,
+        repository: blank_text
+    };
+}
+
+fn empty_model() -> (result: AtlasModel) {
+    let project: Project = empty_project();
+    let projects: [Project; 15] = [project, project, project, project, project, project, project, project, project, project, project, project, project, project, project];
+    let counts: [u64; 5] = [0, 0, 0, 0, 0];
+    let blank_text: TextView = text.empty();
+    return AtlasModel {
+        schema_version: blank_text,
+        last_reviewed: blank_text,
+        projects: projects,
+        project_count: 0,
+        relationship_count: 0,
+        maturity_counts: counts,
+        valid: true,
+        complete: false
+    };
+}
+
+fn key_id() -> (result: [byte; 16]) { return [105, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_name() -> (result: [byte; 16]) { return [110, 97, 109, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_role() -> (result: [byte; 16]) { return [114, 111, 108, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_maturity() -> (result: [byte; 16]) { return [109, 97, 116, 117, 114, 105, 116, 121, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_authority() -> (result: [byte; 16]) { return [97, 117, 116, 104, 111, 114, 105, 116, 121, 95, 99, 108, 97, 115, 115, 0]; }
+fn key_responsibility() -> (result: [byte; 16]) { return [114, 101, 115, 112, 111, 110, 115, 105, 98, 105, 108, 105, 116, 121, 0, 0]; }
+fn key_repository() -> (result: [byte; 16]) { return [114, 101, 112, 111, 115, 105, 116, 111, 114, 121, 0, 0, 0, 0, 0, 0]; }
+fn key_projects() -> (result: [byte; 16]) { return [112, 114, 111, 106, 101, 99, 116, 115, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_relationships() -> (result: [byte; 16]) { return [114, 101, 108, 97, 116, 105, 111, 110, 115, 104, 105, 112, 115, 0, 0, 0]; }
+fn key_from() -> (result: [byte; 16]) { return [102, 114, 111, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn key_schema_version() -> (result: [byte; 16]) { return [115, 99, 104, 101, 109, 97, 95, 118, 101, 114, 115, 105, 111, 110, 0, 0]; }
+fn key_last_reviewed() -> (result: [byte; 16]) { return [108, 97, 115, 116, 95, 114, 101, 118, 105, 101, 119, 101, 100, 0, 0, 0]; }
+
+// Key kind is the only schema-specific part of the cursor consumer. The
+// matcher itself is reusable and lives in mncs.std.text_view.
+fn key_kind(key: [byte; 16], length: u64) -> (result: byte) {
+    if text.matches16(key, length, key_id(), 2) { return 1; }
+    if text.matches16(key, length, key_name(), 4) { return 2; }
+    if text.matches16(key, length, key_role(), 4) { return 3; }
+    if text.matches16(key, length, key_maturity(), 8) { return 4; }
+    if text.matches16(key, length, key_authority(), 15) { return 5; }
+    if text.matches16(key, length, key_responsibility(), 14) { return 6; }
+    if text.matches16(key, length, key_repository(), 10) { return 7; }
+    if text.matches16(key, length, key_projects(), 8) { return 8; }
+    if text.matches16(key, length, key_relationships(), 13) { return 9; }
+    if text.matches16(key, length, key_from(), 4) { return 10; }
+    if text.matches16(key, length, key_schema_version(), 14) { return 11; }
+    if text.matches16(key, length, key_last_reviewed(), 13) { return 12; }
+    return 0;
+}
+
+fn maturity_experimental() -> (result: [byte; 21]) { return [101, 120, 112, 101, 114, 105, 109, 101, 110, 116, 97, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn maturity_research() -> (result: [byte; 21]) { return [114, 101, 115, 101, 97, 114, 99, 104, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn maturity_active() -> (result: [byte; 21]) { return [97, 99, 116, 105, 118, 101, 45, 105, 110, 102, 114, 97, 115, 116, 114, 117, 99, 116, 117, 114, 101]; }
+fn maturity_incubating() -> (result: [byte; 21]) { return [105, 110, 99, 117, 98, 97, 116, 105, 110, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+fn maturity_orientation() -> (result: [byte; 21]) { return [111, 114, 105, 101, 110, 116, 97, 116, 105, 111, 110, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; }
+
+fn maturity_step(mask: byte, position: u64, value: byte) -> (result: byte) {
+    let safe: u64 = select(position < 21, position, 20);
+    let a: bool = position < 12 && value == maturity_experimental()[safe];
+    let b: bool = position < 8 && value == maturity_research()[safe];
+    let c: bool = position < 21 && value == maturity_active()[safe];
+    let d: bool = position < 10 && value == maturity_incubating()[safe];
+    let e: bool = position < 11 && value == maturity_orientation()[safe];
+    let bit_a: byte = select(a, 1, 0);
+    let bit_b: byte = select(b, 2, 0);
+    let bit_c: byte = select(c, 4, 0);
+    let bit_d: byte = select(d, 8, 0);
+    let bit_e: byte = select(e, 16, 0);
+    return mask & (bit_a | bit_b | bit_c | bit_d | bit_e);
+}
+
+fn maturity_kind(mask: byte, length: u64) -> (result: byte) {
+    if mask == 1 && length == 12 { return 1; }
+    if mask == 2 && length == 8 { return 2; }
+    if mask == 4 && length == 21 { return 3; }
+    if mask == 8 && length == 10 { return 4; }
+    if mask == 16 && length == 11 { return 5; }
+    return 0;
+}
+
+fn bump_counts(counts: [u64; 5], kind: byte) -> (result: [u64; 5]) {
+    if kind == 1 { return replace(counts, 0, counts[0] + 1); }
+    if kind == 2 { return replace(counts, 1, counts[1] + 1); }
+    if kind == 3 { return replace(counts, 2, counts[2] + 1); }
+    if kind == 4 { return replace(counts, 3, counts[3] + 1); }
+    if kind == 5 { return replace(counts, 4, counts[4] + 1); }
+    return counts;
+}
+
+fn set_project_field(projects: [Project; 15], index: u64, field: byte, value: TextView, maturity_code: byte) -> (result: [Project; 15]) {
+    if index >= 15 { return projects; }
+    let current: Project = projects[index];
+    if field == 1 { return replace(projects, index, Project { ..current, id: value }); }
+    if field == 2 { return replace(projects, index, Project { ..current, name: value }); }
+    if field == 3 { return replace(projects, index, Project { ..current, role: value }); }
+    if field == 4 { return replace(projects, index, Project { ..current, maturity: value, maturity_code: maturity_code }); }
+    if field == 5 { return replace(projects, index, Project { ..current, authority_class: value }); }
+    if field == 6 { return replace(projects, index, Project { ..current, responsibility: value }); }
+    if field == 7 { return replace(projects, index, Project { ..current, repository: value }); }
+    return projects;
+}
+
+fn empty_state() -> (result: ModelState) {
+    return ModelState {
+        cursor: init(),
+        model: empty_model(),
+        projects_depth: 0,
+        relationships_depth: 0,
+        in_projects: false,
+        in_relationships: false,
+        project_object: false,
+        relationship_object: false,
+        current_project: 0,
+        pending_key: 0,
+        capture_kind: 0,
+        value_start: 0,
+        value_encoded: false,
+        maturity_mask: 31,
+        maturity_length: 0
+    };
+}
+
+fn opened_container(state: ModelState, observed: Cursor) -> (result: ModelState) {
+    if observed.event == 6 && state.pending_key == 8 {
+        return ModelState { ..state, cursor: observed, in_projects: true, projects_depth: observed.depth as u64 };
+    }
+    if observed.event == 6 && state.pending_key == 9 {
+        return ModelState { ..state, cursor: observed, in_relationships: true, relationships_depth: observed.depth as u64 };
+    }
+    if observed.event == 5 {
+        let project_start: bool = state.in_projects && (state.cursor.depth as u64) == state.projects_depth;
+        let relationship_start: bool = state.in_relationships && (state.cursor.depth as u64) == state.relationships_depth;
+        let index: u64 = state.model.project_count;
+        if project_start && index >= 15 {
+            return ModelState {
+                ..state,
+                cursor: observed,
+                model: AtlasModel { ..state.model, valid: false },
+                project_object: true,
+                relationship_object: relationship_start,
+                current_project: index
+            };
+        }
+        if project_start {
+            return ModelState {
+                ..state,
+                cursor: observed,
+                model: AtlasModel { ..state.model, project_count: index + 1 },
+                project_object: true,
+                relationship_object: relationship_start,
+                current_project: index
+            };
+        }
+        return ModelState {
+            ..state,
+            cursor: observed,
+            model: state.model,
+            project_object: project_start,
+            relationship_object: relationship_start,
+            current_project: index
+        };
+    }
+    return ModelState { ..state, cursor: observed };
+}
+
+fn closed_container(state: ModelState, observed: Cursor) -> (result: ModelState) {
+    if observed.event == 7 && state.project_object {
+        return ModelState { ..state, cursor: observed, project_object: false, pending_key: 0, capture_kind: 0 };
+    }
+    if observed.event == 7 && state.relationship_object {
+        return ModelState { ..state, cursor: observed, relationship_object: false, pending_key: 0 };
+    }
+    if observed.event == 8 && state.in_projects && (observed.depth as u64) + 1 == state.projects_depth {
+        return ModelState { ..state, cursor: observed, in_projects: false, pending_key: 0 };
+    }
+    if observed.event == 8 && state.in_relationships && (observed.depth as u64) + 1 == state.relationships_depth {
+        return ModelState { ..state, cursor: observed, in_relationships: false, pending_key: 0 };
+    }
+    return ModelState { ..state, cursor: observed };
+}
+
+fn started_string(state: ModelState, observed: Cursor) -> (result: ModelState) {
+    let kind: byte = select(observed.event == 3, state.pending_key, 0);
+    let relevant: bool = kind >= 1 && kind <= 7 && state.project_object;
+    let metadata: bool = kind == 11 || kind == 12;
+    return ModelState {
+        ..state,
+        cursor: observed,
+        capture_kind: select(relevant || metadata, kind, 0),
+        value_start: observed.string_start,
+        value_encoded: false,
+        maturity_mask: 31,
+        maturity_length: 0
+    };
+}
+
+fn closed_key(state: ModelState, observed: Cursor) -> (result: ModelState) {
+    let kind: byte = key_kind(observed.key, observed.key_length);
+    let relation_hit: bool = state.relationship_object && kind == 10;
+    if relation_hit {
+        return ModelState { ..state, cursor: observed, model: AtlasModel { ..state.model, relationship_count: state.model.relationship_count + 1 }, pending_key: kind };
+    }
+    return ModelState { ..state, cursor: observed, pending_key: kind };
+}
+
+fn closed_value(state: ModelState, observed: Cursor) -> (result: ModelState) {
+    let span: TextView = text.span(state.value_start, observed.string_end - state.value_start, state.value_encoded, observed.valid);
+    let code: byte = maturity_kind(state.maturity_mask, state.maturity_length);
+    if state.project_object && state.capture_kind >= 1 && state.capture_kind <= 7 {
+        let updated_projects: [Project; 15] = set_project_field(state.model.projects, state.current_project, state.capture_kind, span, code);
+        let project_model: AtlasModel = AtlasModel { ..state.model, projects: updated_projects };
+        if state.capture_kind == 4 {
+            return ModelState { ..state, cursor: observed, model: AtlasModel { ..project_model, maturity_counts: bump_counts(state.model.maturity_counts, code) }, pending_key: 0, capture_kind: 0, value_encoded: false, maturity_length: 0 };
+        }
+        return ModelState { ..state, cursor: observed, model: project_model, pending_key: 0, capture_kind: 0, value_encoded: false, maturity_length: 0 };
+    }
+    if state.capture_kind == 11 {
+        return ModelState { ..state, cursor: observed, model: AtlasModel { ..state.model, schema_version: span }, pending_key: 0, capture_kind: 0, value_encoded: false, maturity_length: 0 };
+    }
+    if state.capture_kind == 12 {
+        return ModelState { ..state, cursor: observed, model: AtlasModel { ..state.model, last_reviewed: span }, pending_key: 0, capture_kind: 0, value_encoded: false, maturity_length: 0 };
+    }
+    return ModelState { ..state, cursor: observed, pending_key: 0, capture_kind: 0, value_encoded: false, maturity_length: 0 };
+}
+
+fn string_content(state: ModelState, observed: Cursor, value: byte) -> (result: ModelState) {
+    let maturity: bool = state.capture_kind == 4;
+    let escaped: bool = value == 92;
+    let next_mask: byte = select(maturity && escaped, 0, maturity_step(state.maturity_mask, state.maturity_length, value));
+    return ModelState {
+        ..state,
+        cursor: observed,
+        value_encoded: state.value_encoded || escaped,
+        maturity_mask: next_mask,
+        maturity_length: state.maturity_length + (maturity as u64)
+    };
+}
+
+fn step(state: ModelState, value: byte) -> (result: ModelState) {
+    let observed: Cursor = feed_byte(state.cursor, value);
+    if select(observed.valid, false, true) {
+        return ModelState { ..state, cursor: observed, model: AtlasModel { ..state.model, valid: false } };
+    }
+    if observed.event == 5 || observed.event == 6 { return opened_container(state, observed); }
+    if observed.event == 7 || observed.event == 8 { return closed_container(state, observed); }
+    if observed.event == 1 || observed.event == 3 { return started_string(state, observed); }
+    if observed.event == 2 { return closed_key(state, observed); }
+    if observed.event == 4 { return closed_value(state, observed); }
+    if state.cursor.in_string && observed.in_string { return string_content(state, observed, value); }
+    return ModelState { ..state, cursor: observed };
+}
+
+fn atlas_model_init() -> (result: ModelState) {
+    return empty_state();
+}
+
+fn atlas_model_chunk(state: ModelState, input: [byte; up_to 64]) -> (result: ModelState) {
+    iterate i over input carrying current: ModelState = state {
+        next current = step(current, input[i]);
+    }
+    return current;
+}
+
+fn atlas_model_finish(state: ModelState) -> (result: AtlasModel) {
+    return AtlasModel { ..state.model, complete: is_valid(state.cursor) };
+}
+
+// Scalar witness used by the corpus runner. The browser consumes the typed
+// `AtlasModel`/`RenderPlan` returns below; this probe keeps the artifact's
+// execution corpus independent of the composite-cell inspection code.
+fn atlas_model_probe(input: [byte; up_to 64]) -> (result: i64) {
+    let state: ModelState = atlas_model_chunk(atlas_model_init(), input);
+    let model: AtlasModel = atlas_model_finish(state);
+    return (model.project_count *% 1000 +% model.relationship_count *% 10 +% (model.valid as u64)) as i64;
+}
+
+fn blank_node() -> (result: RenderNode) {
+    let blank_text: TextView = text.empty();
+    return RenderNode {
+        operation: 0,
+        target: 0,
+        slot: 0,
+        value: 0,
+        primary: blank_text,
+        secondary: blank_text,
+        tertiary: blank_text,
+        quaternary: blank_text
+    };
+}
+
+fn make_card(project: Project, target: byte, slot: u64) -> (result: RenderNode) {
+    return RenderNode {
+        operation: 1,
+        target: target,
+        slot: slot as byte,
+        value: project.maturity_code as u64,
+        primary: project.name,
+        secondary: project.role,
+        tertiary: project.responsibility,
+        quaternary: project.repository
+    };
+}
+
+fn atlas_render(state: ModelState) -> (result: RenderPlan) {
+    let blank: RenderNode = blank_node();
+    let nodes: [RenderNode; 64] = [blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank, blank];
+    let clear_projects: RenderNode = RenderNode { ..blank, operation: 2, target: 1 };
+    let clear_status: RenderNode = RenderNode { ..blank, operation: 2, target: 2 };
+    let summary: RenderNode = RenderNode { ..blank, operation: 3, target: 3, value: state.model.relationship_count };
+    let seeded: [RenderNode; 64] = replace(replace(replace(nodes, 0, clear_projects), 1, clear_status), 2, summary);
+    let projects: [Project; 15] = state.model.projects;
+    iterate i over projects carrying current: [RenderNode; 64] = seeded {
+        let project: Project = projects[i];
+        let project_card: RenderNode = make_card(project, 1, i + 3);
+        let status_card: RenderNode = make_card(project, 2, i + 18);
+        next current = replace(replace(current, i + 3, project_card), i + 18, status_card);
+    }
+    return RenderPlan {
+        nodes: current,
+        node_count: 33,
+        project_count: state.model.project_count,
+        relationship_count: state.model.relationship_count,
+        maturity_counts: state.model.maturity_counts,
+        valid: state.model.valid,
+        complete: is_valid(state.cursor)
+    };
+}

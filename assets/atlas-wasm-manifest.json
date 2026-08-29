@@ -25,14 +25,68 @@
     "parameter": "i32 capacity",
     "result": "i64 packed low32=offset high32=capacity",
     "lifetime": "reserved region remains host-owned until module instance is dropped",
-    "reuse": "host calls reset_function after each consumer call; target allocations are then recycled after the region"
+    "reuse": "scalar consumers reset after each call; the typed model retains immutable state cells and must not reset until its instance is dropped"
+  },
+  "typed_model_abi": {
+    "module": "mncs_atlas.experimental_model",
+    "stream_functions": [
+      "atlas_model_init",
+      "atlas_model_chunk",
+      "atlas_model_finish"
+    ],
+    "render_function": "atlas_render",
+    "text_view": {
+      "fields": [
+        "encoded",
+        "length",
+        "start",
+        "utf8_valid"
+      ],
+      "representation": "borrowed byte span into the original atlas.json input"
+    },
+    "render_plan": {
+      "fields": [
+        "complete",
+        "maturity_counts",
+        "node_count",
+        "nodes",
+        "project_count",
+        "relationship_count",
+        "valid"
+      ],
+      "node_operations": {
+        "1": "append_card",
+        "2": "clear_target",
+        "3": "render_summary"
+      },
+      "targets": {
+        "1": "project_grid",
+        "2": "status_grid",
+        "3": "summary"
+      }
+    },
+    "max_input_bytes": 24576,
+    "arena_pages": 512,
+    "arena_bytes": 33554432
+  },
+  "validation": {
+    "status": "UNKNOWN",
+    "automated_checks": [
+      "wasm_magic",
+      "sha256",
+      "corpus_expectations"
+    ],
+    "unresolved": [
+      "cross-backend equivalence for the Atlas model",
+      "formal cutover review"
+    ]
   },
   "memory_export": "memory",
   "artifacts": {
     "atlas-json-scan": {
       "path": "assets/atlas-json-scan.wasm",
-      "sha256": "fcca761e6ef4d4b268232b55ebff007a6a521f919c05ede5c86d4c874cf67998",
-      "bytes": 6657,
+      "sha256": "922d388fa7bade218d3f59b50f7680d0d7e3c9257c4570658e821a1303c5d3c0",
+      "bytes": 6658,
       "status": "UNKNOWN",
       "exports": [
         "atlas_scan_chunk",
@@ -65,8 +119,8 @@
     },
     "atlas-json-projection": {
       "path": "assets/atlas-json-projection.wasm",
-      "sha256": "ebe9a18522cef05c1cf76a9c173465762f83762ab4800d9f8df40710fb38f0c6",
-      "bytes": 10760,
+      "sha256": "eec36d4e9d4155997e24fd1c308dae67f6b7f4d92d6cee2f5e2c90eb73524c35",
+      "bytes": 10761,
       "status": "UNKNOWN",
       "exports": [
         "atlas_project_chunk",
@@ -90,6 +144,79 @@
       "corpus_cases": [
         {
           "id": "one-maturity-match",
+          "expectation_met": true
+        }
+      ]
+    },
+    "atlas-model": {
+      "path": "assets/atlas-model.wasm",
+      "sha256": "0ab32aaff8e2e0a6eca5510ee7882dffcb876f8a5be14210d9cc2c7621d52bd1",
+      "bytes": 53066,
+      "status": "UNKNOWN",
+      "exports": [
+        "atlas_model_chunk",
+        "atlas_model_finish",
+        "atlas_model_init",
+        "atlas_model_probe",
+        "atlas_render",
+        "blank_node",
+        "bump_counts",
+        "closed_container",
+        "closed_key",
+        "closed_value",
+        "empty",
+        "empty_model",
+        "empty_project",
+        "empty_state",
+        "end",
+        "feed_byte",
+        "feed_chunk",
+        "init",
+        "is_decodable",
+        "is_empty",
+        "is_hex",
+        "is_utf8_continuation",
+        "is_valid",
+        "key_authority",
+        "key_from",
+        "key_id",
+        "key_kind",
+        "key_last_reviewed",
+        "key_maturity",
+        "key_name",
+        "key_projects",
+        "key_relationships",
+        "key_repository",
+        "key_responsibility",
+        "key_role",
+        "key_schema_version",
+        "make_card",
+        "matches16",
+        "maturity_active",
+        "maturity_experimental",
+        "maturity_incubating",
+        "maturity_kind",
+        "maturity_orientation",
+        "maturity_research",
+        "maturity_step",
+        "opened_container",
+        "pop",
+        "push",
+        "set_project_field",
+        "span",
+        "stack_weight",
+        "started_string",
+        "step",
+        "string_byte",
+        "string_content",
+        "top",
+        "utf8_lead_need",
+        "zero_bytes16",
+        "zero_key"
+      ],
+      "corpus_cases": [
+        {
+          "id": "one-experimental-project",
           "expectation_met": true
         }
       ]

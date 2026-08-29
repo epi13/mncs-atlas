@@ -24,6 +24,11 @@ ARTIFACTS = (
         Path("mncs/atlas-json-projection.mncs"),
         Path("examples/execution/atlas-json-projection-corpus.json"),
     ),
+    (
+        "atlas-model",
+        Path("mncs/atlas-model.mncs"),
+        Path("tests/fixtures/atlas-model-corpus.json"),
+    ),
 )
 
 
@@ -151,7 +156,8 @@ def main() -> int:
         temporary_root = Path(temporary)
         for name, source_relative, corpus_relative in ARTIFACTS:
             source = atlas_root / source_relative
-            corpus = language_root / corpus_relative
+            atlas_corpus = atlas_root / corpus_relative
+            corpus = atlas_corpus if atlas_corpus.is_file() else language_root / corpus_relative
             result = run_experiment(
                 language_root,
                 source,
@@ -184,7 +190,29 @@ def main() -> int:
             "parameter": "i32 capacity",
             "result": "i64 packed low32=offset high32=capacity",
             "lifetime": "reserved region remains host-owned until module instance is dropped",
-            "reuse": "host calls reset_function after each consumer call; target allocations are then recycled after the region",
+            "reuse": "scalar consumers reset after each call; the typed model retains immutable state cells and must not reset until its instance is dropped",
+        },
+        "typed_model_abi": {
+            "module": "mncs_atlas.experimental_model",
+            "stream_functions": ["atlas_model_init", "atlas_model_chunk", "atlas_model_finish"],
+            "render_function": "atlas_render",
+            "text_view": {
+                "fields": ["encoded", "length", "start", "utf8_valid"],
+                "representation": "borrowed byte span into the original atlas.json input",
+            },
+            "render_plan": {
+                "fields": ["complete", "maturity_counts", "node_count", "nodes", "project_count", "relationship_count", "valid"],
+                "node_operations": {"1": "append_card", "2": "clear_target", "3": "render_summary"},
+                "targets": {"1": "project_grid", "2": "status_grid", "3": "summary"},
+            },
+            "max_input_bytes": 24576,
+            "arena_pages": 512,
+            "arena_bytes": 33554432,
+        },
+        "validation": {
+            "status": "UNKNOWN",
+            "automated_checks": ["wasm_magic", "sha256", "corpus_expectations"],
+            "unresolved": ["cross-backend equivalence for the Atlas model", "formal cutover review"],
         },
         "memory_export": "memory",
         "artifacts": built,
