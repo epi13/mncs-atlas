@@ -85,7 +85,7 @@ def git_output(root: Path, *arguments: str) -> str | None:
         print(completed.stderr, end="", file=sys.stderr)
     if completed.returncode != 0:
         return None
-    return completed.stdout.strip()
+    return completed.stdout.rstrip()
 
 
 def is_derived_atlas_output(relative: str) -> bool:
