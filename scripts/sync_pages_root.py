@@ -11,12 +11,18 @@ SITE = ROOT / "site"
 
 MIRROR_PATHS = (
     "index.html",
+    "experimental-atlas.html",
     "404.html",
     "atlas.json",
     "robots.txt",
     "sitemap.xml",
     "assets/styles.css",
     "assets/app.js",
+    "assets/atlas-wasm.css",
+    "assets/atlas-wasm.js",
+    "assets/atlas-json-scan.wasm",
+    "assets/atlas-json-projection.wasm",
+    "assets/atlas-wasm-manifest.json",
     "assets/journal.css",
     "schema/atlas.schema.json",
 )

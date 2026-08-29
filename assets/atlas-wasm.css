@@ -1,0 +1,32 @@
+.wasm-shell { max-width: 1060px; }
+.section:not(.section-dark) .button.ghost { border-color: #c9d3df; color: #24354a; background: transparent; }
+.wasm-hero { padding-bottom: 72px; }
+.wasm-boundary { color: #bac4d6; max-width: 710px; }
+.wasm-panel { margin-top: -42px; position: relative; z-index: 1; }
+.wasm-card { padding: 30px; border: 1px solid var(--line-light); border-radius: 20px; background: white; box-shadow: 0 20px 50px rgba(31,45,67,.1); }
+.wasm-card h2 { font-size: clamp(1.7rem, 3vw, 2.6rem); margin-bottom: 12px; }
+.wasm-card p { color: var(--muted); }
+.wasm-status { display: inline-flex; padding: 7px 11px; border-radius: 999px; background: #f3e8d2; color: #7a5a12; font: 800 .75rem/1.2 ui-monospace, monospace; }
+.wasm-error { color: #9a3e3e !important; font: .82rem/1.5 ui-monospace, monospace; overflow-wrap: anywhere; }
+.wasm-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+.wasm-metric { min-height: 128px; padding: 18px; border-radius: 15px; background: #f2f6f9; border: 1px solid #dbe4eb; display: flex; flex-direction: column; }
+.wasm-metric-wide { grid-column: span 2; background: #e8f7f2; border-color: #bfe0d6; }
+.wasm-metric-label { color: #486176; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.wasm-metric strong { margin-top: auto; color: #15253a; font-size: 2rem; letter-spacing: -.04em; }
+.wasm-metric small { color: #687c8f; font-size: .78rem; }
+.wasm-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
+.wasm-copy article { padding: 22px; border-radius: 15px; background: #eef2f6; border: 1px solid #d9e0e8; }
+.wasm-copy h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.wasm-copy p { margin: 0; font-size: .92rem; }
+.wasm-code { margin-top: 26px; padding: 18px; background: #0d1424; color: #c9d6e8; border-radius: 13px; overflow-x: auto; font: .8rem/1.6 ui-monospace, monospace; }
+.wasm-code code { color: inherit; }
+.wasm-footer { margin-top: 50px; }
+@media (max-width: 820px) {
+  .wasm-metrics { grid-template-columns: repeat(2, 1fr); }
+  .wasm-metric-wide { grid-column: span 2; }
+}
+@media (max-width: 560px) {
+  .wasm-card { padding: 22px; }
+  .wasm-metrics, .wasm-copy { grid-template-columns: 1fr; }
+  .wasm-metric-wide { grid-column: auto; }
+}

@@ -1,0 +1,24 @@
+mncs 0.10;
+
+// Experimental Atlas adapter: chunked JSON structural validation.
+// JSON meaning remains in the reusable MNCS stream module; this file only
+// exposes a browser-sized scalar/view boundary.
+module mncs_atlas.experimental_json_scan;
+
+use mncs.std.json_stream.v1;
+
+fn atlas_scan_init() -> (result: i64) {
+    return init();
+}
+
+fn atlas_scan_chunk(state: i64, input: [byte; up_to 64]) -> (result: i64) {
+    return feed_chunk(state, input);
+}
+
+fn atlas_scan_finish(state: i64) -> (result: i64) {
+    return finish(state);
+}
+
+fn atlas_scan_probe(input: [byte; up_to 64]) -> (result: i64) {
+    return atlas_scan_finish(atlas_scan_chunk(atlas_scan_init(), input));
+}
