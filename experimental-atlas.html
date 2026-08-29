@@ -30,8 +30,8 @@
     <section class="hero wasm-hero">
       <div class="shell wasm-shell">
         <p class="eyebrow">Experimental browser path</p>
-        <h1>Atlas bytes can travel through <span>MNCS/WASM</span>.</h1>
-        <p class="lede">This page fetches <code>atlas.json</code> as bytes, streams bounded views into real WASM modules, and renders only their scalar observations. The page is an experiment in moving data semantics toward MNCS while keeping Atlas orientation-only.</p>
+        <h1>The Atlas model can travel through <span>MNCS/WASM</span>.</h1>
+        <p class="lede">This page fetches <code>atlas.json</code> as bytes, streams bounded views into real WASM modules, reconstructs typed project records, and interprets a structured render plan. It is an experiment in moving Atlas application semantics toward MNCS while keeping Atlas orientation-only.</p>
         <p class="wasm-boundary">The production Atlas remains the safe static fallback. This page does not change conformance, maturity, authority, or the meaning of any project record.</p>
       </div>
     </section>
@@ -39,7 +39,7 @@
     <section class="section wasm-panel">
       <div class="shell wasm-shell">
         <div class="wasm-card" data-authority="orientation-only">
-          <p id="atlas-wasm-status" class="wasm-status" role="status">Loading experimental WASM path…</p>
+          <p id="atlas-wasm-status" class="wasm-status" role="status">Loading typed MNCS/WASM model…</p>
           <div id="atlas-wasm-fallback">
             <h2>Static Atlas fallback remains available.</h2>
             <p>The browser could not activate the experimental modules. Continue with the canonical human guide or open the machine-readable map directly.</p>
@@ -48,20 +48,53 @@
           </div>
 
           <div id="atlas-wasm-output" hidden>
-            <h2>Browser-side observations</h2>
-            <p>These values are bounded observations from the fetched Atlas byte stream. They are useful for orientation and smoke testing, not for normative acceptance.</p>
+            <h2>Typed Atlas model</h2>
+            <p>These cards are produced from bounded MNCS records and structured render commands. JavaScript supplies the browser syscalls; it does not parse the Atlas document.</p>
             <div id="atlas-wasm-metrics" class="wasm-metrics" aria-live="polite"></div>
+
+            <section class="wasm-atlas-section" aria-labelledby="wasm-project-heading">
+              <div class="wasm-section-heading">
+                <p class="eyebrow">Project map</p>
+                <h3 id="wasm-project-heading">The family components Atlas routes humans toward</h3>
+              </div>
+              <div id="atlas-wasm-project-grid" class="project-grid"></div>
+            </section>
+
+            <section class="wasm-atlas-section" aria-labelledby="wasm-status-heading">
+              <div class="wasm-section-heading">
+                <p class="eyebrow">Status and maturity</p>
+                <h3 id="wasm-status-heading">Descriptive lifecycle signals, never authority</h3>
+              </div>
+              <div id="atlas-wasm-status-grid" class="status-grid"></div>
+            </section>
+
+            <div id="atlas-maturity-legend" class="wasm-legend" aria-label="Maturity labels">
+              <span data-code="1" data-class="experimental">Experimental</span>
+              <span data-code="2" data-class="research">Research</span>
+              <span data-code="3" data-class="active">Active infrastructure</span>
+              <span data-code="4" data-class="research">Incubating</span>
+              <span data-code="5" data-class="orientation">Orientation</span>
+            </div>
+
             <div class="wasm-copy">
               <article>
+                <h3>Relationship surface</h3>
+                <p>The typed model counts explicit relationship records and presents them as routing context. A relationship does not create transitive authority or shared lifecycle ownership.</p>
+              </article>
+              <article>
+                <h3>Consumer contract</h3>
+                <p>Resolve the owning component, check maturity and authority class, follow the owning repository, verify implementation-sensitive facts, and preserve UNKNOWN when evidence is missing or stale.</p>
+              </article>
+              <article>
                 <h3>Host boundary</h3>
-                <p>JavaScript owns fetch, memory writes, chunk scheduling, and DOM rendering. MNCS/WASM owns the structural stream and schema-shaped projections.</p>
+                <p>JavaScript owns fetch, linear-memory writes, chunk scheduling, safe DOM construction, and external links. MNCS/WASM owns JSON structure, typed records, bounded text spans, counts, and render intent.</p>
               </article>
               <article>
                 <h3>Authority boundary</h3>
-                <p>Atlas remains non-normative and orientation-only. Execution of a WASM function is not MNCS conformance, publication, or acceptance.</p>
+                <p>Atlas remains non-normative and orientation-only. Successful WASM execution is research evidence, not MNCS conformance, publication, acceptance, or a status decision.</p>
               </article>
             </div>
-            <pre class="wasm-code"><code>atlas.json bytes → 64-byte view → MNCS/WASM state → scalar observations</code></pre>
+            <pre class="wasm-code"><code>atlas.json bytes → 64-byte view → MNCS typed model → render plan → browser host ABI</code></pre>
           </div>
         </div>
       </div>

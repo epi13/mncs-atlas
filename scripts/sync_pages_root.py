@@ -22,6 +22,7 @@ MIRROR_PATHS = (
     "assets/atlas-wasm.js",
     "assets/atlas-json-scan.wasm",
     "assets/atlas-json-projection.wasm",
+    "assets/atlas-model.wasm",
     "assets/atlas-wasm-manifest.json",
     "assets/journal.css",
     "schema/atlas.schema.json",
