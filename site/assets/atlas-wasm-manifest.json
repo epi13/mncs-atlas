@@ -17,7 +17,7 @@
   "provenance": {
     "atlas": {
       "name": "mncs-atlas",
-      "commit": "b0026ca3d2e1688c8042755b0ab7617c9efafb36",
+      "commit": "bebe5be53eab1a41e8148002677f5e0e1e2f7547",
       "working_tree": "clean",
       "working_tree_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "ignored_derived_paths": [],
