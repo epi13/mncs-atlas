@@ -27,8 +27,44 @@ class AtlasWasmTests(unittest.TestCase):
         stateful_ids = {case["id"] for case in corpus["stateful_cases"]}
         self.assertIn("complete-atlas", stateful_ids)
         self.assertIn("lone-surrogate", stateful_ids)
+        self.assertEqual(len(corpus["stateful_cases"]), 22)
         self.assertTrue(all(case["steps"][0]["id"] == "init" for case in corpus["stateful_cases"]))
         self.assertTrue(all(case["steps"][-1]["id"] == "finish" for case in corpus["stateful_cases"]))
+
+    def test_differential_comparison_ignores_backend_trace_provenance(self):
+        script = ROOT / "scripts/run_atlas_model_differential.py"
+        spec = importlib.util.spec_from_file_location("atlas_differential_compare", script)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        base = {
+            "observations": [{"case_id": "probe", "status": "returned", "expectation_met": True}],
+            "stateful_observations": [
+                {
+                    "case_id": "stream",
+                    "status": "returned",
+                    "returned": {"shape": "AtlasModel", "valid": True},
+                    "final_returned_digest": "digest",
+                    "calls": [{"step_id": "finish", "status": "returned", "returned_digest": "digest", "effects": []}],
+                    "final_expectation_met": None,
+                    "final_status_met": True,
+                    "step_expectations_met": True,
+                    "call_bound_met": True,
+                    "step_bound_met": None,
+                },
+            ],
+            "all_expectations_met": True,
+        }
+        left = {**base, "backend": "left"}
+        right = {
+            **base,
+            "backend": "right",
+            "stateful_observations": [
+                {**base["stateful_observations"][0], "trace_identity": "backend-specific"}
+            ],
+        }
+        self.assertEqual(module.compare([left, right, {**base, "backend": "third"}, {**base, "backend": "fourth"}, {**base, "backend": "fifth"}])["status"], "PASS")
 
     def test_production_page_invokes_shared_runtime_with_static_surface(self):
         page = (ROOT / "site/index.html").read_text(encoding="utf-8")

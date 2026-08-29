@@ -10,8 +10,8 @@ cutover decision.
 - `mncs-atlas` consumer before generated outputs: `340466152ddb7adb4df934e7dea22907cdb29024`
 - execution corpus schema: `0.3`
 - declared full edge cases: 18
-- generated stateful traces: 21 (the three declared chunk-boundary mutations
-  expand into one trace per boundary)
+- generated stateful traces: 22 (the declared truncation-boundary mutation
+  expands into five traces for boundaries present in the 20,413-byte input)
 - stateful transition sequence: `init → chunk* → finish`
 - maximum chunk input: 64 bytes
 
@@ -54,10 +54,27 @@ step expectations, and produced the same stateful transition signature:
 4b45a1eda3d87ed56dd83926634f75171db14ef23d5e92f66d5714626fec0174
 ```
 
-The larger `complete-atlas` trace also completed on portable WASM, LLVM, and
-C11 in the optimized differential smoke. Research bytecode and Cranelift
-remained time-bounded at the 300-second smoke ceiling; those results remain
-`UNKNOWN`, not `PASS`.
+The final full bounded run used the complete fixture with a 900-second timeout
+per backend. Portable WASM, LLVM, and C11 each returned all four bounded probes
+and all 22 stateful traces; every returned-status, per-step, and call-bound
+expectation was met, and their logical observations were identical after
+excluding only backend-specific `trace_identity` provenance. Research bytecode
+and Cranelift each exceeded the 900-second bound, so the five-backend report
+remains `UNKNOWN`, not `PASS`.
+
+```text
+python scripts/run_atlas_model_differential.py \
+  --atlas-root . \
+  --language-root ../mncs-language \
+  --binary ../mncs-language/target/release/mncs \
+  --timeout-seconds 900 \
+  --output /tmp/atlas-full-release-20260829.json
+```
+
+Observed final backend statuses: `mncs-portable-wasm-mvp=completed`,
+`mncs-llvm-ir=completed`, `mncs-c11=completed`,
+`mncs-research-bytecode=UNKNOWN (timeout)`, and
+`mncs-cranelift=UNKNOWN (timeout)`.
 
 ## Timing evidence
 
