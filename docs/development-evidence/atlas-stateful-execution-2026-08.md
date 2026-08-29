@@ -6,7 +6,7 @@ cutover decision.
 
 ## Reproducible inputs
 
-- `mncs-language` producer: `712c99c12283978c72f4b6659c230ca5f2932c9e`
+- `mncs-language` producer: `25e60cd656c5cdd3a411fa542a350459aa73c65d`
 - `mncs-atlas` consumer before generated outputs: `f78e83f6198172e92a76d7262333325df4db1687`
 - execution corpus schema: `0.3`
 - declared full edge cases: 18
