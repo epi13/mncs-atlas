@@ -6,11 +6,26 @@
   "full_input": {
     "path": "site/atlas.json",
     "chunk_bytes": 64,
+    "chunk_boundaries": [1, 63, 64, 65, 4096, 20480, 65535, 65536],
     "interface": ["atlas_model_init", "atlas_model_chunk", "atlas_model_finish"],
     "cases": [
       { "id": "complete-atlas", "expected": "valid_and_complete" },
       { "id": "truncated-atlas", "mutation": "remove_last_byte", "expected": "incomplete_or_invalid" },
-      { "id": "malformed-utf8-atlas", "mutation": "replace_first_string_byte_with_c0_af", "expected": "invalid" }
+      { "id": "truncated-at-chunk-boundaries", "mutation": "remove_last_byte_at_each_declared_chunk_boundary", "expected": "incomplete_or_invalid" },
+      { "id": "malformed-json-structure", "mutation": "replace_projects_array_with_object", "expected": "invalid" },
+      { "id": "malformed-utf8-atlas", "mutation": "replace_first_string_byte_with_c0_af", "expected": "invalid" },
+      { "id": "escaped-unicode", "mutation": "replace_project_name_with_valid_unicode_escape", "expected": "valid_and_complete" },
+      { "id": "surrogate-pair", "mutation": "replace_project_name_with_valid_surrogate_pair_escape", "expected": "valid_and_complete" },
+      { "id": "long-unknown-key", "mutation": "insert_unknown_key_longer_than_matcher_window", "expected": "valid_and_complete" },
+      { "id": "missing-required-sections", "mutation": "remove_relationships_section", "expected": "invalid" },
+      { "id": "malformed-project-record", "mutation": "replace_project_id_with_wrong_scalar_type", "expected": "invalid" },
+      { "id": "malformed-relationship", "mutation": "remove_relationship_endpoint", "expected": "invalid" },
+      { "id": "capacity-boundary", "mutation": "generate_exactly_maximum_projects_relationships_and_render_nodes", "expected": "valid_or_bounded" },
+      { "id": "one-over-capacity", "mutation": "generate_one_more_than_each_declared_capacity", "expected": "invalid_or_bounded" },
+      { "id": "reordered-object-members", "mutation": "permute_object_members_without_changing_values", "expected": "valid_and_complete" },
+      { "id": "unknown-fields", "mutation": "insert_unknown_fields_at_each_supported_object_level", "expected": "valid_and_complete" },
+      { "id": "incomplete-root", "mutation": "remove_root_closing_delimiter", "expected": "incomplete_or_invalid" },
+      { "id": "empty-collections", "mutation": "replace_projects_and_relationships_with_empty_arrays", "expected": "valid_or_bounded" }
     ]
   },
   "bounded_probe": {
