@@ -64,7 +64,7 @@ docs/
                           implemented maintainer architecture, CLI, and gates
 AGENTS.md                 orientation contract for AI/coding agents
 CONTRIBUTING.md           contribution guidance for Atlas
-scripts/                  site integrity, Pages mirror, and Journal Maintainer CLI wrappers
+scripts/                  site integrity, Pages mirror, WASM builder/differential runner, and Journal Maintainer CLI wrappers
 journal_maintainer/       bounded Development Journal Maintainer implementation
 tests/                    Journal Maintainer and publication checks
 .github/workflows/        GitHub Pages deployment, site integrity CI, Journal Maintainer schedule
@@ -133,7 +133,8 @@ The machine map is deliberately orientation data rather than a conformance or au
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
 - [Atlas schema](site/schema/atlas.schema.json)
-- [Experimental Atlas MNCS/WASM migration record](docs/ATLAS-WASM-MIGRATION.md)
+- [Atlas MNCS/WASM conversion record](docs/ATLAS-WASM-MIGRATION.md)
+- [MNCS browser host boundary](docs/MNCS-BROWSER-HOST.md)
 
 ## Site checks
 

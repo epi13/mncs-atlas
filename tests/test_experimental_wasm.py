@@ -158,6 +158,16 @@ console.log("full-atlas-plan-ok");
             (ROOT / "site/assets/atlas-wasm-manifest.json").read_text(encoding="utf-8")
         )
         self.assertEqual(manifest["kind"], "mncs-atlas-wasm")
+        self.assertEqual(manifest["schema_version"], "0.2")
+        lock = json.loads(
+            (ROOT / "mncs/mncs-language.lock.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["build"]["language_revision_lock"], lock["revision"])
+        self.assertEqual(manifest["provenance"]["mncs_language"]["commit"], lock["revision"])
+        self.assertIn("compiler_identity", manifest["artifacts"]["atlas-model"]["compiler"])
+        self.assertEqual(
+            manifest["artifacts"]["atlas-model"]["source"]["repository"], "mncs-atlas"
+        )
         self.assertEqual(manifest["typed_model_abi"]["module"], "mncs_atlas.model")
         self.assertEqual(manifest["typed_model_abi"]["render_function"], "atlas_render")
         self.assertEqual(manifest["typed_model_abi"]["max_input_bytes"], 65536)

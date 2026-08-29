@@ -124,6 +124,13 @@ function readU64(view, address) {
 
 function decodeEscaped(bytes) {
   const decoder = new TextDecoder("utf-8", { fatal: true });
+  const decodeCodeUnit = (start) => {
+    if (start + 4 > bytes.length) throw new Error("Truncated JSON Unicode escape");
+    const digits = String.fromCharCode(...bytes.subarray(start, start + 4));
+    const code = Number.parseInt(digits, 16);
+    if (Number.isNaN(code)) throw new Error("Invalid JSON Unicode escape");
+    return code;
+  };
   let result = "";
   let segmentStart = 0;
 
@@ -151,25 +158,27 @@ function decodeEscaped(bytes) {
       continue;
     }
 
-    if (index + 5 >= bytes.length) throw new Error("Truncated JSON Unicode escape");
-    const code = Number.parseInt(String.fromCharCode(...bytes.subarray(index + 2, index + 6)), 16);
-    if (Number.isNaN(code)) throw new Error("Invalid JSON Unicode escape");
+    const code = decodeCodeUnit(index + 2);
     index += 5;
 
-    if (code >= 0xd800 && code <= 0xdbff &&
-        index + 6 < bytes.length &&
-        bytes[index + 1] === 92 &&
-        bytes[index + 2] === 117) {
-      const low = Number.parseInt(String.fromCharCode(...bytes.subarray(index + 3, index + 7)), 16);
-      if (low >= 0xdc00 && low <= 0xdfff) {
-        result += String.fromCodePoint(0x10000 + ((code - 0xd800) << 10) + low - 0xdc00);
-        index += 6;
-        segmentStart = index + 1;
-        continue;
+    if (code >= 0xdc00 && code <= 0xdfff) {
+      throw new Error("Lone low surrogate in JSON Unicode escape");
+    }
+    if (code >= 0xd800 && code <= 0xdbff) {
+      if (index + 6 >= bytes.length || bytes[index + 1] !== 92 || bytes[index + 2] !== 117) {
+        throw new Error("High surrogate is not followed by a low surrogate");
       }
+      const low = decodeCodeUnit(index + 3);
+      if (low < 0xdc00 || low > 0xdfff) {
+        throw new Error("High surrogate is not followed by a low surrogate");
+      }
+      result += String.fromCodePoint(0x10000 + ((code - 0xd800) << 10) + low - 0xdc00);
+      index += 6;
+      segmentStart = index + 1;
+      continue;
     }
 
-    result += String.fromCharCode(code);
+    result += String.fromCodePoint(code);
     segmentStart = index + 1;
   }
 
@@ -185,7 +194,9 @@ function readText(view, pointer, atlasBytes) {
     throw new Error("MNCS text view escaped the supplied Atlas byte stream");
   }
   const bytes = atlasBytes.subarray(start, start + length);
-  if (readU32(view, pointer + TEXT.utf8Valid) === 0) return "[invalid UTF-8]";
+  if (readU32(view, pointer + TEXT.utf8Valid) === 0) {
+    throw new Error("MNCS text view contains invalid UTF-8");
+  }
   return readU32(view, pointer + TEXT.encoded) === 0
     ? new TextDecoder("utf-8", { fatal: true }).decode(bytes)
     : decodeEscaped(bytes);
