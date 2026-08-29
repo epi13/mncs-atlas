@@ -96,6 +96,13 @@ checked-in artifacts:
 - bounded publication rollback tests; and
 - Joern control-flow/call/reachability snapshots before and after edits.
 
+The two-step `empty-model-state-init-finish` stateful smoke has also returned
+matching transition signatures on research bytecode, portable WASM, C11, LLVM,
+and Cranelift. The larger `complete-atlas` smoke completed on portable WASM,
+LLVM, and C11; research bytecode and Cranelift exceeded the bounded smoke
+timeout. See the dated [stateful execution evidence record](development-evidence/atlas-stateful-execution-2026-08.md)
+for the exact commands, digests, timings, and Joern limitations.
+
 The following remain explicitly `UNKNOWN`:
 
 - full-model equivalence across portable WASM, research bytecode, LLVM IR,
