@@ -15,6 +15,18 @@ adapters and the reusable `mncs.std.json_stream.v1` and
 3. run raw-key/member projections for maturity and relationship observations;
 4. render only scalar results through a small DOM host adapter.
 
+Each module exports the typed `mncs_host_buffer(i32) -> i64` ABI plus
+`mncs_host_buffer_reset()`. The host reserves one byte region from the module
+allocator, decodes its packed `low32=offset/high32=capacity` descriptor, and
+reuses that region for every chunk; reset recycles target-array allocations
+after each consumer call. Projection selectors share one instantiated module;
+they are no longer isolated by repeated instantiation. The adapter gates
+projections and DOM output on a structural scan result of `1`.
+
+Compiler-internal byte views derived from exact cell sequences use the aligned
+address low bit as a stride marker; the host-buffer ABI always returns aligned
+addresses and the marker is removed before host-visible reads.
+
 The checked-in artifacts are built by `scripts/build_mncs_wasm.py`, which runs
 the language experiment CLI, refuses corpus mismatches, and records artifact
 hashes and unresolved status in `site/assets/atlas-wasm-manifest.json`.
@@ -52,16 +64,16 @@ python3 -m http.server 8000 --directory site
 
 Then open `http://localhost:8000/experimental-atlas.html`. A native Node host
 smoke test also instantiates both `.wasm` files, uses their exported `memory`,
-passes i64 low-offset/high-length descriptors, and reproduces the observations
-above without parsing JSON in JavaScript.
+passes i64 low-offset/high-length descriptors from the host-buffer ABI, and
+reproduces the observations above without parsing JSON in JavaScript.
 
 ## Language pressure and next tranche
 
 The experiment exposed and generalized several missing pieces in
 `mncs-language`: a complete bounded JSON scanner, a streaming structural JSON
 envelope, raw schema projections, byte-view layout, named browser memory
-exports, byte-width WASM loads, and packed byte-view marshaling. It also found
-the need for a stable typed host-buffer/allocator contract, UTF-8/text APIs,
+exports, byte-width WASM loads, packed byte-view marshaling, and the first
+stable typed host-buffer/allocator contract. It still needs UTF-8/text APIs,
 structured render commands, event/fetch capabilities, and independent browser
 runtime validation before a default-site migration is credible.
 
