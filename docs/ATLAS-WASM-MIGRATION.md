@@ -74,9 +74,12 @@ python scripts/check_site.py
 ```
 
 CI repeats the build from the locked language revision and fails if the
-checked-in artifact bytes or manifest differ. A build made from dirty producer
-trees is marked `uncertain`; a clean, matching rebuild is the reproducible
-path. No generated manifest is a certification artifact.
+checked-in artifact bytes differ or the regenerated manifest fails its
+internal hash/provenance checks. The manifest records the exact source commit
+used to produce the checked-in bytes, so its self-referential commit metadata
+is not byte-compared after regeneration. A build made from dirty producer
+inputs is marked `uncertain`; a clean, matching rebuild is the reproducible
+path. The generated manifest is evidence, not a conformance certification.
 
 ## Evidence and remaining UNKNOWNs
 
