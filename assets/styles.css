@@ -117,6 +117,19 @@ h3 { line-height: 1.2; }
 .runtime-notes .card-kicker { color: #3a7b6e; margin-bottom: 10px; }
 .runtime-notes h3 { margin: 0 0 9px; }
 .runtime-notes p:last-child { color: var(--muted); margin: 0; }
+.wasm-status { display: inline-flex; padding: 7px 11px; border-radius: 999px; background: #f3e8d2; color: #7a5a12; font: 800 .75rem/1.2 ui-monospace, monospace; }
+.wasm-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 28px; }
+.wasm-metric { min-height: 112px; padding: 18px; border-radius: 15px; background: #f2f6f9; border: 1px solid #dbe4eb; display: flex; flex-direction: column; }
+.wasm-metric-wide { grid-column: span 2; background: #e8f7f2; border-color: #bfe0d6; }
+.wasm-metric-label { color: #486176; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.wasm-metric strong { margin-top: auto; color: #15253a; font-size: 2rem; letter-spacing: -.04em; }
+.wasm-metric small { color: #687c8f; font-size: .78rem; }
+.status-badge[data-maturity-code="1"] { background: #f3e8d2; color: #7a5a12; }
+.status-badge[data-maturity-code="2"] { background: #e4ecfb; color: #2f4f8f; }
+.status-badge[data-maturity-code="3"] { background: #e5f5f0; color: #2f6f63; }
+.status-badge[data-maturity-code="4"] { background: #f0e7f8; color: #6e477f; }
+.status-badge[data-maturity-code="5"] { background: #eceff4; color: #4a5568; }
+#atlas-runtime-institutional { margin-top: 28px; }
 
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
 .project-card { min-height: 260px; padding: 25px; border: 1px solid var(--line-light); border-radius: var(--radius); text-decoration: none; background: white; display: flex; flex-direction: column; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
@@ -187,7 +200,7 @@ a.project-card:hover, a.project-card:focus-visible { transform: translateY(-3px)
 
 @media (max-width: 980px) {
   .hero-grid, .two-col, .terminology-layout, .contribute-grid { grid-template-columns: 1fr; gap: 42px; }
-  .project-grid, .status-grid, .pathway-grid, .runtime-notes { grid-template-columns: repeat(2, 1fr); }
+  .project-grid, .status-grid, .pathway-grid, .runtime-notes, .wasm-metrics { grid-template-columns: repeat(2, 1fr); }
   .operator-grid { grid-template-columns: 1fr 1fr; }
   .boundary-grid { grid-template-columns: repeat(2, 1fr); }
   .arch-layer { grid-template-columns: repeat(2, 1fr); }
@@ -211,7 +224,8 @@ a.project-card:hover, a.project-card:focus-visible { transform: translateY(-3px)
   .hero { padding: 70px 0 62px; }
   h1 { font-size: clamp(2.6rem, 13vw, 4.4rem); }
   .section { padding: 68px 0; }
-  .entry-grid, .project-grid, .operator-grid, .boundary-grid, .footer-grid, .status-grid, .pathway-grid, .runtime-notes, .runtime-flow { grid-template-columns: 1fr; }
+  .entry-grid, .project-grid, .operator-grid, .boundary-grid, .footer-grid, .status-grid, .pathway-grid, .runtime-notes, .runtime-flow, .wasm-metrics { grid-template-columns: 1fr; }
+  .wasm-metric-wide { grid-column: auto; }
   .entry-card, .project-card { min-height: 0; }
   .arch-layer { grid-template-columns: 1fr; }
   .term-list div { grid-template-columns: 1fr; gap: 5px; }

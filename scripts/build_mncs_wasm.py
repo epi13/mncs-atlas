@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the experimental Atlas MNCS/WASM artifacts from the sibling language checkout."""
+"""Build the production Atlas MNCS/WASM artifacts from the sibling language checkout."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -62,7 +63,10 @@ def run_experiment(
         env=environment,
         capture_output=True,
         text=True,
-        timeout=360,
+        # The bounded Atlas model is intentionally larger than the small
+        # language fixtures; keep the build bounded without making a cold
+        # compiler run fail before it can materialize the artifact.
+        timeout=900,
         check=False,
     )
     if completed.returncode != 0:
@@ -168,13 +172,14 @@ def main() -> int:
 
     manifest = {
         "schema_version": "0.1",
-        "kind": "mncs-atlas-experimental-wasm",
+        "kind": "mncs-atlas-wasm",
         "authority": "orientation-only",
         "backend": BACKEND,
         "input": {
             "atlas_data": "atlas.json",
             "transport": "fetch-arraybuffer-to-Uint8Array",
             "json_semantics": "owned by MNCS/WASM substrate; JavaScript does not parse atlas.json",
+            "application_semantics": "owned by mncs_atlas.model; the host interprets only typed render commands",
         },
         "chunking": {"max_bytes": 64, "host_may_stream": True},
         "view_descriptor": {
@@ -193,32 +198,97 @@ def main() -> int:
             "reuse": "scalar consumers reset after each call; the typed model retains immutable state cells and must not reset until its instance is dropped",
         },
         "typed_model_abi": {
-            "module": "mncs_atlas.experimental_model",
+            "module": "mncs_atlas.model",
             "stream_functions": ["atlas_model_init", "atlas_model_chunk", "atlas_model_finish"],
             "render_function": "atlas_render",
             "text_view": {
                 "fields": ["encoded", "length", "start", "utf8_valid"],
                 "representation": "borrowed byte span into the original atlas.json input",
+                "layout": {"encoded": 0, "length": 8, "start": 16, "utf8_valid": 24},
             },
             "render_plan": {
                 "fields": ["complete", "maturity_counts", "node_count", "nodes", "project_count", "relationship_count", "valid"],
-                "node_operations": {"1": "append_card", "2": "clear_target", "3": "render_summary"},
-                "targets": {"1": "project_grid", "2": "status_grid", "3": "summary"},
+                "layout": {
+                    "complete": 0,
+                    "maturity_counts": 8,
+                    "node_count": 16,
+                    "nodes": 24,
+                    "project_count": 32,
+                    "relationship_count": 40,
+                    "valid": 48,
+                },
+                "node_operations": {
+                    "1": "append_project_and_status",
+                    "2": "clear_target",
+                    "3": "render_summary",
+                    "4": "render_maturity_level",
+                    "5": "render_consumer_contract_header",
+                    "6": "render_consumer_contract_resolution_step",
+                    "7": "render_consumer_contract_rule",
+                    "8": "render_institutional_layer",
+                },
+                "targets": {
+                    "1": "project_grid",
+                    "2": "status_grid",
+                    "3": "summary",
+                    "4": "project_and_status_pair",
+                    "5": "maturity_model",
+                    "6": "consumer_contract_header",
+                    "7": "consumer_contract_resolution_order",
+                    "8": "consumer_contract_rules",
+                    "9": "institutional_layer",
+                },
+                "node_layout": {
+                    "stride_bytes": 88,
+                    "operation": 0,
+                    "primary": 8,
+                    "quaternary": 16,
+                    "secondary": 24,
+                    "slot": 32,
+                    "target": 40,
+                    "tertiary": 48,
+                    "value": 56,
+                    "value_aux": 64,
+                    "value_text": 72,
+                    "value_text_aux": 80,
+                },
             },
-            "max_input_bytes": 24576,
+            "capacities": {
+                "projects": 32,
+                "operator_components": 8,
+                "relationships": 64,
+                "maturity_levels": 5,
+                "consumer_contract_items": 8,
+                "render_nodes": 64,
+            },
+            "max_input_bytes": 65536,
             "arena_pages": 512,
             "arena_bytes": 33554432,
         },
         "validation": {
             "status": "UNKNOWN",
-            "automated_checks": ["wasm_magic", "sha256", "corpus_expectations"],
-            "unresolved": ["cross-backend equivalence for the Atlas model", "formal cutover review"],
+            "automated_checks": [
+                "wasm_magic",
+                "sha256",
+                "corpus_expectations",
+                "bounded_capacity_declarations",
+                "production_static_fallback",
+            ],
+            "unresolved": [
+                "cross-backend equivalence for the full Atlas model",
+                "formal conformance/cutover review",
+            ],
         },
         "memory_export": "memory",
         "artifacts": built,
     }
     (asset_dir / "atlas-wasm-manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+    )
+    subprocess.run(
+        [sys.executable, str(atlas_root / "scripts/sync_pages_root.py")],
+        cwd=atlas_root,
+        check=True,
     )
     print(json.dumps(manifest, indent=2))
     return 0

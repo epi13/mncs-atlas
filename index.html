@@ -29,7 +29,7 @@
     "codeRepository": "https://github.com/epi13/mncs-atlas"
   }
   </script>
-  <script defer src="assets/app.js"></script>
+  <script type="module" src="assets/app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -222,6 +222,7 @@
             <div class="arch-card"><strong>MNCS Language</strong><small>verification-native semantics · language research</small></div>
           </div>
         </div>
+        <div id="atlas-runtime-institutional" aria-label="Institutional layer"></div>
 
         <div class="boundary-grid">
           <article><span>01</span><h3>Execution is not conformance</h3><p>Fabric can establish that an identified bounded execution occurred under recorded conditions. That does not make the workload formally MNCS-conformant.</p></article>
@@ -270,7 +271,7 @@
 
         <div class="hero-actions">
           <a class="button dark" href="https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md">Read the full operating model ↗</a>
-          <a class="button ghost" href="experimental-atlas.html">Open experimental MNCS/WASM path</a>
+          <a class="button ghost" href="experimental-atlas.html">Open MNCS/WASM diagnostics</a>
         </div>
       </div>
     </section>
@@ -283,7 +284,9 @@
           <p>Public project repositories are linked directly. Operator components are documented separately so reusable operator infrastructure is not mistaken for a normative MNCS or MNCDS requirement.</p>
         </div>
 
-        <div class="project-grid">
+        <p id="atlas-runtime-status" class="wasm-status" role="status">Loading typed MNCS/WASM Atlas model…</p>
+        <div id="atlas-runtime-metrics" class="wasm-metrics" aria-live="polite"></div>
+        <div id="atlas-runtime-project-grid" class="project-grid">
           <a class="project-card" href="https://github.com/epi13/machine-native-complexity-standard"><span class="project-type">Standard</span><h3>MNCS</h3><p>Normative implementation-evidence standard: technical acceptance, evidence/status semantics, schemas, RFCs, and claim boundaries.</p><span class="repo-link">machine-native-complexity-standard ↗</span></a>
           <a class="project-card" href="https://github.com/epi13/machine-native-complexity-development-specification"><span class="project-type">Specification</span><h3>MNCDS</h3><p>Independently versioned development-process specification for candidate lifecycle, evidence flow, selection, release, and related development controls.</p><span class="repo-link">machine-native-complexity-development-specification ↗</span></a>
           <a class="project-card" href="https://github.com/epi13/mncs-language"><span class="project-type">Language</span><h3>MNCS Language</h3><p>Verification-native language and semantic representation research, including contracts, effects, evidence, HIR, and SSA.</p><span class="repo-link">mncs-language ↗</span></a>
@@ -330,7 +333,7 @@
           <p>Atlas does not publish a readiness scoreboard. These labels orient; each owning repository remains authoritative for current implementation reality.</p>
         </div>
 
-        <div class="status-grid">
+        <div id="atlas-runtime-status-grid" class="status-grid">
           <article class="status-card"><span class="status-badge experimental">Experimental</span><h3>MNCS</h3><p>Open implementation-evidence standard. Non-accredited. Technical acceptance and status semantics live here.</p></article>
           <article class="status-card"><span class="status-badge experimental">Experimental</span><h3>MNCDS</h3><p>Independently versioned development-process specification. Non-accredited. Candidate lifecycle and evidence-flow semantics live here.</p></article>
           <article class="status-card"><span class="status-badge research">Research</span><h3>MNCS Language</h3><p>Verification-native language and semantic representation research. Not required for MNCS conformance.</p></article>
@@ -343,6 +346,7 @@
           <article class="status-card"><span class="status-badge active">Active infrastructure</span><h3>Rust Validator</h3><p>Independent offline validation for supported subsets.</p></article>
           <article class="status-card"><span class="status-badge orientation">Orientation</span><h3>Atlas</h3><p>Family map, operator orientation, and machine-readable discovery only.</p></article>
         </div>
+        <div id="atlas-runtime-maturity" class="runtime-notes" data-atlas-maturity-model aria-label="Maturity model"></div>
 
         <p class="status-footnote">Maturity labels are descriptive, not ranked. Atlas machine metadata records its own review date so agents can detect that orientation data may need re-checking.</p>
       </div>
@@ -368,6 +372,7 @@
     </section>
 
     <section id="contribute" class="section">
+      <div id="atlas-runtime-contract" class="shell runtime-notes" data-atlas-consumer-contract aria-label="Machine consumer contract"></div>
       <div class="shell contribute-grid">
         <div>
           <p class="eyebrow">For new contributors &amp; agents</p>
