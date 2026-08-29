@@ -64,8 +64,8 @@
   ],
   "status": "UNKNOWN",
   "unresolved": [
-    "The current experiment request ABI accepts one [byte; up_to64] value, so it cannot represent the full streamed Atlas model input.",
-    "Full-stream malformed/truncated cases need an equivalent stateful runner for every backend.",
+    "Research bytecode and Cranelift exceeded the 900-second bound in the full 18-case/22-trace stateful run.",
+    "Full five-backend equivalence remains UNKNOWN because two executable backends did not produce observations.",
     "Agreement across bounded probes is empirical evidence, not a conformance or cutover decision."
   ]
 }

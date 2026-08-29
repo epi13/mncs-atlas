@@ -429,11 +429,7 @@ def compare(results: list[dict[str, Any]]) -> dict[str, Any]:
             "reason": "At least one executable backend did not produce usable bounded and stateful observations.",
         }
     signatures = {
-        json.dumps(
-            (result["observations"], result["stateful_observations"]),
-            sort_keys=True,
-            separators=(",", ":"),
-        )
+        logical_observation_signature(result)
         for result in usable
     }
     if len(signatures) != 1:
@@ -445,6 +441,24 @@ def compare(results: list[dict[str, Any]]) -> dict[str, Any]:
         "status": "PASS",
             "reason": "All five executable backends returned the same bounded and stateful logical observations and met every expectation.",
     }
+
+
+def logical_observation_signature(result: dict[str, Any]) -> str:
+    """Compare behavior while retaining backend-specific trace provenance."""
+
+    stateful = [
+        {
+            key: value
+            for key, value in observation.items()
+            if key != "trace_identity"
+        }
+        for observation in result["stateful_observations"]
+    ]
+    return json.dumps(
+        (result["observations"], stateful),
+        sort_keys=True,
+        separators=(",", ":"),
+    )
 
 
 def main() -> int:

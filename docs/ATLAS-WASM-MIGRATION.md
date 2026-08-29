@@ -98,16 +98,19 @@ checked-in artifacts:
 
 The two-step `empty-model-state-init-finish` stateful smoke has also returned
 matching transition signatures on research bytecode, portable WASM, C11, LLVM,
-and Cranelift. The larger `complete-atlas` smoke completed on portable WASM,
-LLVM, and C11; research bytecode and Cranelift exceeded the bounded smoke
-timeout. See the dated [stateful execution evidence record](development-evidence/atlas-stateful-execution-2026-08.md)
-for the exact commands, digests, timings, and Joern limitations.
+and Cranelift. The final full 18-case/22-trace run completed all traces on
+portable WASM, LLVM, and C11 with identical logical observations; research
+bytecode and Cranelift exceeded the 900-second per-backend bound. See the dated
+[stateful execution evidence record](development-evidence/atlas-stateful-execution-2026-08.md)
+for the exact command, digests, timings, and Joern limitations.
 
 The following remain explicitly `UNKNOWN`:
 
-- full-model equivalence across portable WASM, research bytecode, LLVM IR,
-  C11, and Cranelift for the stateful streamed interface;
-- malformed/truncated full-Atlas differential execution on every backend;
+- full five-backend equivalence across portable WASM, research bytecode, LLVM
+  IR, C11, and Cranelift for the stateful streamed interface (research bytecode
+  and Cranelift timed out in the final run);
+- malformed/truncated full-Atlas differential execution on the timed-out
+  backends;
 - independent conformance or formal cutover review; and
 - a claim that the compiler's exact cost or the generated artifact is
   production-grade beyond this bounded research envelope.
