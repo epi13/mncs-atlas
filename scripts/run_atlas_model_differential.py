@@ -27,6 +27,11 @@ BACKENDS = (
     "mncs-cranelift",
 )
 
+# The Atlas finalizer is intentionally a large bounded aggregate computation;
+# keep its per-call resource budget explicit rather than allowing an unbounded
+# interpreter run.
+ATLAS_EXECUTION_STEP_BUDGET = 8_000_000
+
 
 def byte_values(value: bytes) -> list[dict[str, dict[str, int]]]:
     return [{"byte": {"value": item}} for item in value]
@@ -50,7 +55,7 @@ def stateful_case(case_id: str, payload: bytes, chunk_bytes: int = 64) -> dict[s
             "id": "init",
             "target": {"module": "mncs_atlas.model", "function": "atlas_model_init"},
             "arguments": [],
-            "step_budget": 1_000_000,
+            "step_budget": ATLAS_EXECUTION_STEP_BUDGET,
             "policy": {"effects": "unsupported"},
             "expected_status": "returned",
         }
@@ -67,7 +72,7 @@ def stateful_case(case_id: str, payload: bytes, chunk_bytes: int = 64) -> dict[s
                     previous(last),
                     literal({"sequence": {"values": byte_values(chunk)}}),
                 ],
-                "step_budget": 1_000_000,
+                "step_budget": ATLAS_EXECUTION_STEP_BUDGET,
                 "policy": {"effects": "unsupported"},
                 "expected_status": "returned",
             }
@@ -78,7 +83,7 @@ def stateful_case(case_id: str, payload: bytes, chunk_bytes: int = 64) -> dict[s
             "id": "finish",
             "target": {"module": "mncs_atlas.model", "function": "atlas_model_finish"},
             "arguments": [previous(last)],
-            "step_budget": 1_000_000,
+            "step_budget": ATLAS_EXECUTION_STEP_BUDGET,
             "policy": {"effects": "unsupported"},
             "expected_status": "returned",
             "observe_returned": True,
@@ -245,7 +250,7 @@ def make_corpus(
                     "schema_version": "0.1",
                     "target": {"module": probe["module"], "function": probe["function"]},
                     "arguments": [{"sequence": {"values": byte_values(payload)}}],
-                    "step_budget": 1_000_000,
+                    "step_budget": ATLAS_EXECUTION_STEP_BUDGET,
                     "policy": {"effects": "unsupported"},
                 },
                 "expected": expected_value(case["expected"]),
@@ -351,6 +356,13 @@ def run_backend(
                 "stderr": stderr[-4000:],
                 "command": command,
             }
+        cost_report_path = Path(output_dir) / "cost-report.json"
+        cost_report = None
+        if cost_report_path.is_file():
+            try:
+                cost_report = json.loads(cost_report_path.read_text())
+            except json.JSONDecodeError:
+                cost_report = {"status": "UNKNOWN", "reason": "invalid cost-report.json"}
         observations = [
             {
                 "case_id": case.get("case_id"),
@@ -411,6 +423,7 @@ def run_backend(
             "stateful_observations": stateful_observations,
             "all_expectations_met": all_expectations_met and stateful_expectations_met,
             "unresolved_reasons": result.get("unresolved_reasons", []),
+            "cost_report": cost_report,
             "command": command,
         }
 
