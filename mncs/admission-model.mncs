@@ -1,0 +1,106 @@
+mncs 0.10;
+
+// Admission and capability-broker shapes for MNCS Atlas.
+// Orientation data only: Atlas grants entry, not trust. Authority stays
+// with the owning subsystems; this module expresses the session,
+// capability, decision, and denial records so MNCS-side tooling can parse
+// and project them without re-deciding policy.
+//
+// Pressure note (recorded, not silently worked around): MNCS 0.10 expresses
+// closed record shapes well, but conditional grants with expiry, dynamic
+// authority dispatch, and open-ended evidence sets have no clean encoding
+// yet. The Python admission package remains the evaluation runtime; this
+// file is the shape contract both sides conform to. See docs/ADMISSION.md.
+module mncs_atlas.admission_model;
+
+use mncs.std.json_cursor.v1;
+use mncs.std.text_view.v1 as text;
+
+// Admission progression: OUTSIDE -> KNOWN -> ADMITTED -> SCOPED, then
+// per-capability CONFORMANT_FOR_CAPABILITY. There is no global trusted flag.
+record Participant {
+    identity: TextView,
+    kind: byte,
+    kind_text: TextView,
+    provenance: TextView
+}
+
+// One scoped capability grant held by a session.
+record Grant {
+    capability: TextView,
+    scope: TextView,
+    condition_count: u64,
+    conditions: [TextView; 8],
+    expires: TextView,
+    evidence_count: u64,
+    evidence: [TextView; 8],
+    granted_by: TextView
+}
+
+// Session/admission context: what MNCS knows about the participant.
+record SessionContext {
+    schema_tag: TextView,
+    participant: Participant,
+    state: byte,
+    state_text: TextView,
+    atlas_version: TextView,
+    repository_context: TextView,
+    purpose: TextView,
+    scope: TextView,
+    grants: [Grant; 16],
+    grant_count: u64,
+    conformant_count: u64,
+    conformant_for: [TextView; 16],
+    evidence_count: u64,
+    evidence: [TextView; 16]
+}
+
+// Capability catalog entry: ownership, sensitivity, and the conformant path.
+record CapabilityEntry {
+    id: TextView,
+    description: TextView,
+    owner: TextView,
+    component: TextView,
+    sensitivity: byte,
+    sensitivity_text: TextView,
+    scope_kind: TextView,
+    default_posture: byte,
+    posture_text: TextView,
+    grant_at_state: byte,
+    grant_at_state_text: TextView,
+    evidence_count: u64,
+    evidence: [TextView; 8],
+    path_count: u64,
+    conformant_path: [TextView; 8]
+}
+
+// Broker decision: composed findings with the deciding authority named.
+record CapabilityDecision {
+    schema_tag: TextView,
+    capability: TextView,
+    status: byte,
+    status_text: TextView,
+    verdict: TextView,
+    authority: TextView,
+    decided_count: u64,
+    decided_by: [TextView; 8],
+    reason: TextView,
+    missing_count: u64,
+    missing: [TextView; 8],
+    scope: TextView
+}
+
+// Structured denial: a refused operation that teaches the conformant route.
+record Denial {
+    schema_tag: TextView,
+    requested: TextView,
+    reason: TextView,
+    authority: TextView,
+    missing_count: u64,
+    missing: [TextView; 8],
+    evidence_count: u64,
+    evidence_required: [TextView; 8],
+    path_count: u64,
+    conformant_path: [TextView; 8],
+    scope: TextView
+}

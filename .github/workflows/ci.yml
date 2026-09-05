@@ -112,6 +112,8 @@ jobs:
           files = [
               "scripts/check_site.py",
               "scripts/sync_pages_root.py",
+              "scripts/sync_admission.py",
+              "scripts/mncs-project-check.py",
               "scripts/check_journal.py",
               "scripts/journal_maintainer.py",
           ]
@@ -125,6 +127,9 @@ jobs:
 
       - name: Check site links, assets, and machine map
         run: python scripts/check_site.py
+
+      - name: Check admission documents match the vocabulary
+        run: python scripts/sync_admission.py --check
 
       - name: Check journal publication integrity
         run: python scripts/check_journal.py

@@ -19,6 +19,7 @@ MIRROR_PATHS = (
     "experimental-atlas.html",
     "404.html",
     "atlas.json",
+    "admission.json",
     "robots.txt",
     "sitemap.xml",
     "assets/styles.css",
@@ -30,6 +31,7 @@ MIRROR_PATHS = (
     "assets/atlas-wasm-manifest.json",
     "assets/journal.css",
     "schema/atlas.schema.json",
+    "schema/admission.schema.json",
 )
 MIRROR_TREES = ("journal",)
 MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
@@ -187,6 +189,84 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
             errors.append(
                 f"site/atlas.json entry point {entry.get('goal')!r} references unknown component ids: {', '.join(unknown)}"
             )
+
+    check_admission(atlas, known_ids, errors)
+
+
+def check_admission(atlas: dict, known_ids: set[str], errors: list[str]) -> None:
+    admission = atlas.get("admission")
+    if not isinstance(admission, dict):
+        errors.append("site/atlas.json must define an admission pointer")
+        return
+    if admission.get("document") != "admission.json":
+        errors.append("site/atlas.json admission.document must point at admission.json")
+    if admission.get("authority") != "orientation-only":
+        errors.append("site/atlas.json admission.authority must be orientation-only")
+    if not admission.get("version"):
+        errors.append("site/atlas.json admission pointer is missing version")
+    admission_path = SITE / "admission.json"
+    if not admission_path.is_file():
+        errors.append("site/admission.json is missing (see scripts/sync_admission.py)")
+        return
+    document = load_json(admission_path, errors)
+    if not isinstance(document, dict):
+        errors.append("site/admission.json must contain a JSON object")
+        return
+    if document.get("schema_version") != "mncs.atlas-admission-map/1":
+        errors.append("site/admission.json has an unsupported schema_version")
+    if document.get("authority") != "orientation-only":
+        errors.append("site/admission.json authority must be orientation-only")
+    if document.get("version") != admission.get("version"):
+        errors.append("site/admission.json version drifts from the atlas.json admission pointer")
+    states = document.get("states")
+    if states != ["OUTSIDE", "KNOWN", "ADMITTED", "SCOPED", "CONFORMANT_FOR_CAPABILITY"]:
+        errors.append("site/admission.json states must follow the admission progression")
+    ladder = document.get("sensitivity_ladder")
+    if not isinstance(ladder, list) or set(ladder) != {"open", "scoped", "protected", "governance"}:
+        errors.append("site/admission.json sensitivity_ladder must list the four sensitivity rungs")
+    capabilities = document.get("capabilities")
+    if not isinstance(capabilities, list) or not capabilities:
+        errors.append("site/admission.json capabilities must be a non-empty list")
+        return
+    seen: set[str] = set()
+    for index, capability in enumerate(capabilities):
+        if not isinstance(capability, dict):
+            errors.append(f"site/admission.json capabilities[{index}] must be an object")
+            continue
+        capability_id = capability.get("id")
+        if not isinstance(capability_id, str) or not capability_id:
+            errors.append(f"site/admission.json capabilities[{index}] is missing an id")
+            continue
+        if capability_id in seen:
+            errors.append(f"site/admission.json duplicate admission capability: {capability_id}")
+        seen.add(capability_id)
+        for field in ("description", "owner", "scope_kind"):
+            if not capability.get(field):
+                errors.append(f"site/admission.json capability {capability_id} is missing {field}")
+        if capability.get("sensitivity") not in ("open", "scoped", "protected", "governance"):
+            errors.append(f"site/admission.json capability {capability_id} has unknown sensitivity")
+        if capability.get("default_posture") not in ("grantable", "conditional", "denied"):
+            errors.append(f"site/admission.json capability {capability_id} has unknown default_posture")
+        component = capability.get("component")
+        if component not in known_ids:
+            errors.append(
+                f"site/admission.json capability {capability_id} references unknown component: {component}"
+            )
+        grant_state = capability.get("grant_at_state")
+        if grant_state is not None and grant_state not in (
+            "OUTSIDE", "KNOWN", "ADMITTED", "SCOPED", "CONFORMANT_FOR_CAPABILITY",
+        ):
+            errors.append(f"site/admission.json capability {capability_id} has unknown grant_at_state")
+    for section in ("rights_scopes", "lifecycle_gate"):
+        mapping = document.get(section, {})
+        if not isinstance(mapping, dict):
+            errors.append(f"site/admission.json {section} must be an object")
+            continue
+        for capability_id in mapping:
+            if capability_id not in seen:
+                errors.append(
+                    f"site/admission.json {section} references unknown capability: {capability_id}"
+                )
 
 
 def check_wasm_manifest(manifest: object, errors: list[str]) -> None:

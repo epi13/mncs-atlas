@@ -1,6 +1,14 @@
 # MNCS Atlas
 
+[![MNCS checks](docs/mncs-badge.svg)](docs/mncs-badge.json)
+
 **A family-level guide to the Machine-Native Complexity Standard (MNCS) project ecosystem.**
+
+The MNCS checks badge is rendered by `mncs-actions` from the aggregate
+verdict over the repository's bounded check suite (site integrity,
+admission sync, mirror freshness, unit tests, journal integrity) under the
+`atlas-mncs-checks` boundary. It is committed by CI on `main`, never
+hand-edited; see `.github/workflows/mncs-family.yml`.
 
 MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, distinguishes authority from operator topology, and gives humans and agents a reliable place to start.
 
@@ -118,6 +126,21 @@ That distinction prevents protected remote control, model routing, persistent ex
 - stable IDs, operator components, relationship records, entry points, freshness guidance, and the published JSON Schema.
 
 The machine map is deliberately orientation data rather than a conformance or authority source. See [Machine Orientation Contract](docs/MACHINE_ORIENTATION.md).
+
+## Admission and capability brokerage
+
+Atlas is the front door for participants that need to act, not just read.
+`site/admission.json` (generated from `admission/vocabulary.py` via
+`python scripts/sync_admission.py`) publishes the participant lifecycle
+(`OUTSIDE → KNOWN → ADMITTED → SCOPED → CONFORMANT_FOR_CAPABILITY`), the
+capability catalog with owning-subsystem authority, sensitivity classes,
+evidence requirements, and conformant paths for denied operations. The
+`admission/` package implements sessions, broker routing across subsystem
+authorities, structured denials, bypass observation, and machine/human
+orientation from one shared state. See [ADMISSION.md](docs/ADMISSION.md).
+
+**Atlas grants entry, not trust.** Capability decisions always name the
+owning subsystem; Atlas itself owns only orientation data.
 
 ## Family documentation
 

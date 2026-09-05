@@ -53,3 +53,24 @@ A provenance record can describe origin and transformation without deciding auth
 Atlas includes a review date and a freshness policy. An agent should treat stale orientation as a reason to verify the owning repository, not as permission to guess.
 
 When an owning repository contradicts Atlas about its current implementation, the owning repository wins and Atlas should be updated.
+
+## Admission and capability discovery
+
+Participants that need to act — not just read — continue from the family
+map into admission:
+
+1. Read `atlas.json -> admission` for the admission document name and
+   pinned version (`admission.json`, currently `0.4.0`).
+2. Load `admission.json` for the capability catalog: admission states,
+   per-capability owners, sensitivity, scope kinds, default posture,
+   evidence requirements, conformant paths, rights-scope bindings, and
+   lifecycle gates.
+3. Establish a session (`OUTSIDE -> KNOWN -> ADMITTED -> SCOPED`) and query
+   capabilities through the broker (`admission/` package). Every decision
+   names its owning authority; Atlas itself only owns orientation data.
+4. On denial, follow `conformant_path` and supply `missing` evidence;
+   understanding the map never grants authority.
+
+The full contract is [ADMISSION.md](ADMISSION.md). The Python
+`admission` package is the reference broker implementation;
+`site/admission.json` is its generated machine projection.

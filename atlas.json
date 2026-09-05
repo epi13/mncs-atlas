@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.3.0",
+  "schema_version": "0.4.0",
   "last_reviewed": "2026-08-25",
   "name": "MNCS Atlas",
   "description": "Non-normative, machine-readable orientation map for the Machine-Native Complexity Standard project family and its reference operator stack.",
@@ -79,6 +79,12 @@
     "Rights uncertainty remains explicit.",
     "Missing or insufficient evidence remains UNKNOWN."
   ],
+    "admission": {
+    "document": "admission.json",
+    "version": "0.4.0",
+    "authority": "orientation-only",
+    "note": "Participant admission and capability orientation."
+  },
   "projects": [
     {
       "id": "mncs",
@@ -215,6 +221,15 @@
       "responsibility": "Independent offline validation for supported MNCS subsets without wrapping the Python implementation or executing evidence."
     },
     {
+      "id": "mncs-actions",
+      "name": "MNCS Actions",
+      "repository": "https://github.com/epi13/mncs-actions",
+      "role": "verification-and-conformance-tooling",
+      "maturity": "active-infrastructure",
+      "authority_class": "non-normative-development-infrastructure",
+      "responsibility": "Reusable verification, aggregate verdicts, deterministic conformance badges, family coherence checks, and promotion-gate tooling. Actions compose owner-produced evidence; the badge is presentation bound to evidence digests, never evidence itself."
+    },
+    {
       "id": "atlas",
       "name": "Atlas",
       "repository": "https://github.com/epi13/mncs-atlas",
@@ -257,6 +272,12 @@
     }
   ],
   "relationships": [
+    {
+      "from": "mncs-actions",
+      "to": "mncs",
+      "kind": "verification-composition",
+      "description": "MNCS Actions composes owner-produced check evidence into aggregate verdicts and deterministic badges without becoming a conformance authority itself."
+    },
     {
       "from": "mncds",
       "to": "mncs",

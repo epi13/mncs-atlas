@@ -27,7 +27,10 @@ class AtlasWasmTests(unittest.TestCase):
         stateful_ids = {case["id"] for case in corpus["stateful_cases"]}
         self.assertIn("complete-atlas", stateful_ids)
         self.assertIn("lone-surrogate", stateful_ids)
-        self.assertEqual(len(corpus["stateful_cases"]), 22)
+        # Derived from the live map: the count grows by one whenever the
+        # file crosses another fixture chunk boundary (currently 23 with the
+        # mncs-actions project and admission pointer included).
+        self.assertEqual(len(corpus["stateful_cases"]), 23)
         self.assertTrue(all(case["steps"][0]["id"] == "init" for case in corpus["stateful_cases"]))
         self.assertTrue(all(case["steps"][-1]["id"] == "finish" for case in corpus["stateful_cases"]))
 
@@ -176,7 +179,7 @@ const plan = e.atlas_render(state);
 const view = new DataView(memory.buffer);
 const u32 = (address) => view.getUint32(address, true);
 const u64 = (address) => Number(view.getBigUint64(address, true));
-if (u32(plan) !== 1 || u64(plan + 16) !== 36 || u64(plan + 32) !== 15 || u64(plan + 40) !== 19) process.exit(2);
+if (u32(plan) !== 1 || u64(plan + 16) !== 37 || u64(plan + 32) !== 16 || u64(plan + 40) !== 20) process.exit(2);
 const nodes = u32(plan + 24);
 const operations = [];
 for (let index = 0; index < u64(plan + 16); index += 1) {
@@ -184,9 +187,9 @@ for (let index = 0; index < u64(plan + 16); index += 1) {
   operations.push(u32(node));
 }
 const counts = (code) => operations.filter((value) => value === code).length;
-if (counts(1) !== 15 || counts(3) !== 1 || counts(4) !== 5 || counts(5) !== 1 || counts(6) !== 6 || counts(7) !== 5 || counts(8) !== 1) process.exit(3);
+if (counts(1) !== 16 || counts(3) !== 1 || counts(4) !== 5 || counts(5) !== 1 || counts(6) !== 6 || counts(7) !== 5 || counts(8) !== 1) process.exit(3);
 const first = u32(nodes + 3 * 8);
-if (u64(first + 56) !== 4 || u64(first + 64) !== 1) process.exit(4);
+if (u64(first + 56) !== 5 || u64(first + 64) !== 1) process.exit(4);
 const text = (pointer) => {
   const length = u64(pointer + 8);
   const start = u64(pointer + 16);
