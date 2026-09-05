@@ -1,0 +1,793 @@
+mncs 0.10;
+
+// mncs_atlas.admission — canonical admission, session, capability-broker,
+// denial, bypass, and orientation semantics for MNCS Atlas.
+//
+// Atlas grants entry, not trust. This module owns the composition
+// mechanism: admission states, the capability table, verdict composition
+// over owner-produced findings, structured denials, bypass
+// classification, and orientation summaries. It does NOT re-implement the
+// owning subsystems; live findings arrive as Status values through Query,
+// and the bundled reference adapters below encode only the routing-table
+// rules Atlas publishes. Reference findings must never be mistaken for
+// owner-produced evidence (see docs/ADMISSION.md).
+//
+// Code tables (all i64):
+//   state:        0 OUTSIDE, 1 KNOWN, 2 ADMITTED, 3 SCOPED, 4 CONFORMANT
+//   capability:   0 orientation.read, 1 ecosystem.inspect, 2 repo.read,
+//                 3 change.propose, 4 repo.edit, 5 tests.execute,
+//                 6 artifact.create, 7 network.fetch, 8 worker.dispatch,
+//                 9 evidence.attest, 10 change.validate, 11 change.sign,
+//                 12 change.merge, 13 release.publish, 14 validator.modify,
+//                 15 policy.modify, 16 capability.grant
+//   sensitivity:  0 open, 1 scoped, 2 protected, 3 governance
+//   posture:      0 grantable, 1 conditional, 2 denied
+//   owner:        0 atlas, 1 fabric, 2 rights-provenance, 3 mncs-actions,
+//                 4 mncds, 5 forge, 6 commons, 7 mncs, 8 owning-repo
+//   scope kind:   0 ecosystem, 1 repo, 2 execution-target, 3 change-set,
+//                 4 validator, 5 policy, 6 capability
+//   lifecycle:    0 proposal, 1 validation, 2 confirmation, 3 promotion,
+//                 4 release
+//   rights scope: -1 none, 0 may_propose, 1 may_provide_evidence,
+//                 2 may_evaluate, 3 may_attest, 4 may_approve,
+//                 5 may_promote, 6 may_modify_repository,
+//                 7 may_approve_change_class
+//   evidence bit: 0 session.scope, 1 execution.target, 2 network.declared,
+//                 3 action.declared, 4 actions.conformant,
+//                 5 provenance.complete, 6 tests.passed, 7 forge.evaluation
+//   status:       0 granted, 1 conditional, 2 denied
+// Participant identity is a host-interned i64 starting at 1; only
+// equality is observed (self-attestation exclusion). The host string
+// table is boundary glue, documented in docs/ADMISSION.md.
+module mncs_atlas.admission;
+
+use mncs.core.status as status;
+
+record Session {
+    state: i64,
+    kind: i64,
+    scope_bound: bool,
+    identity: i64,
+    evidence: i64,
+    conformant: i64
+}
+
+record CapEntry {
+    owner: i64,
+    sensitivity: i64,
+    posture: i64,
+    grant_state: i64,
+    scope_kind: i64,
+    rights_scope: i64,
+    lifecycle_gate: i64,
+    evidence_mask: i64
+}
+
+record Query {
+    cap: i64,
+    session: Session,
+    evidence: i64,
+    lifecycle: i64,
+    action_present: bool,
+    proposed_by: i64,
+    change_id: i64,
+    validating_change_id: i64,
+    attest0: i64,
+    attest1: i64,
+    attest2: i64,
+    attest3: i64,
+    attest_count: i64,
+    exec_target: bool,
+    net_declared: bool
+}
+
+record Finding {
+    status: status.Status,
+    missing: i64,
+    need_confirmations: bool,
+    reason: i64
+}
+
+record Decision {
+    status: i64,
+    verdict: status.Status,
+    malformed: bool,
+    authority: i64,
+    missing: i64,
+    need_confirmations: bool,
+    reason: i64
+}
+
+record Denial {
+    cap: i64,
+    authority: i64,
+    missing: i64,
+    need_confirmations: bool,
+    path0: i64,
+    path1: i64,
+    path2: i64,
+    path3: i64,
+    path_count: i64,
+    reason: i64
+}
+
+record Event {
+    kind: i64,
+    actor: i64,
+    flags: i64
+}
+
+record BypassFinding {
+    code: i64,
+    severity: i64,
+    authority: i64,
+    route0: i64,
+    route1: i64,
+    route2: i64,
+    route_count: i64
+}
+
+record Orientation {
+    state: i64,
+    granted: i64,
+    conditional: i64,
+    denied: i64,
+    pack: i64
+}
+
+// Canonical capability table. Code assignments and every scalar semantic
+// field live here; prose lives in admission.vocabulary and
+// site/admission.json. The table is pinned by model-derived corpus
+// expectations (mncs/admission-corpus.json): drift fails per capability.
+// The default arm is the capability.grant row, reached only for index 16
+// after cap_invalid validation at every entry point.
+fn capability_entry(index: i64) -> (result: CapEntry) {
+    if index == 0 { return CapEntry { owner: 0, sensitivity: 0, posture: 0, grant_state: 1, scope_kind: 0, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 0 }; }
+    if index == 1 { return CapEntry { owner: 0, sensitivity: 0, posture: 0, grant_state: 1, scope_kind: 0, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 0 }; }
+    if index == 2 { return CapEntry { owner: 8, sensitivity: 1, posture: 0, grant_state: 2, scope_kind: 1, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 0 }; }
+    if index == 3 { return CapEntry { owner: 4, sensitivity: 1, posture: 0, grant_state: 2, scope_kind: 1, rights_scope: 0, lifecycle_gate: 0, evidence_mask: 0 }; }
+    if index == 4 { return CapEntry { owner: 8, sensitivity: 1, posture: 0, grant_state: 3, scope_kind: 1, rights_scope: 6, lifecycle_gate: (0 - 1), evidence_mask: 1 }; }
+    if index == 5 { return CapEntry { owner: 1, sensitivity: 1, posture: 0, grant_state: 3, scope_kind: 2, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 3 }; }
+    if index == 6 { return CapEntry { owner: 1, sensitivity: 1, posture: 0, grant_state: 3, scope_kind: 1, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 1 }; }
+    if index == 7 { return CapEntry { owner: 1, sensitivity: 1, posture: 1, grant_state: 255, scope_kind: 2, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 5 }; }
+    if index == 8 { return CapEntry { owner: 1, sensitivity: 1, posture: 1, grant_state: 255, scope_kind: 2, rights_scope: (0 - 1), lifecycle_gate: (0 - 1), evidence_mask: 3 }; }
+    if index == 9 { return CapEntry { owner: 6, sensitivity: 1, posture: 0, grant_state: 3, scope_kind: 1, rights_scope: 1, lifecycle_gate: (0 - 1), evidence_mask: 1 }; }
+    if index == 10 { return CapEntry { owner: 3, sensitivity: 1, posture: 0, grant_state: 3, scope_kind: 3, rights_scope: 2, lifecycle_gate: 1, evidence_mask: 8 }; }
+    if index == 11 { return CapEntry { owner: 2, sensitivity: 2, posture: 1, grant_state: 255, scope_kind: 3, rights_scope: 3, lifecycle_gate: 1, evidence_mask: 32 }; }
+    if index == 12 { return CapEntry { owner: 2, sensitivity: 2, posture: 1, grant_state: 255, scope_kind: 1, rights_scope: 5, lifecycle_gate: 2, evidence_mask: 112 }; }
+    if index == 13 { return CapEntry { owner: 7, sensitivity: 2, posture: 1, grant_state: 255, scope_kind: 1, rights_scope: 5, lifecycle_gate: 3, evidence_mask: 48 }; }
+    if index == 14 { return CapEntry { owner: 7, sensitivity: 3, posture: 1, grant_state: 255, scope_kind: 4, rights_scope: 7, lifecycle_gate: (0 - 1), evidence_mask: 176 }; }
+    if index == 15 { return CapEntry { owner: 5, sensitivity: 3, posture: 1, grant_state: 255, scope_kind: 5, rights_scope: 7, lifecycle_gate: (0 - 1), evidence_mask: 160 }; }
+    return CapEntry { owner: 2, sensitivity: 3, posture: 2, grant_state: 255, scope_kind: 6, rights_scope: 4, lifecycle_gate: (0 - 1), evidence_mask: 0 };
+}
+
+fn capability_count() -> (result: i64) {
+    return 17;
+}
+
+fn capability_valid(index: i64) -> (result: bool) {
+    return index >= 0 && index < 17;
+}
+
+// Powers of two for bit positions 0 through 16. The language spells bit
+// tests arithmetically, so this table is the canonical bit vocabulary.
+fn pow2(bit: i64) -> (result: i64) {
+    if bit == 0 { return 1; }
+    if bit == 1 { return 2; }
+    if bit == 2 { return 4; }
+    if bit == 3 { return 8; }
+    if bit == 4 { return 16; }
+    if bit == 5 { return 32; }
+    if bit == 6 { return 64; }
+    if bit == 7 { return 128; }
+    if bit == 8 { return 256; }
+    if bit == 9 { return 512; }
+    if bit == 10 { return 1024; }
+    if bit == 11 { return 2048; }
+    if bit == 12 { return 4096; }
+    if bit == 13 { return 8192; }
+    if bit == 14 { return 16384; }
+    if bit == 15 { return 32768; }
+    return 65536;
+}
+
+// Bit test as 0/1 over non-negative masks.
+fn has_bit(mask: i64, bit: i64) -> (result: i64) {
+    return (mask / pow2(bit)) % 2;
+}
+
+fn bit_or_at(left: i64, right: i64, bit: i64) -> (result: i64) {
+    if has_bit(left, bit) == 1 || has_bit(right, bit) == 1 {
+        return pow2(bit);
+    }
+    return 0;
+}
+
+// Bitwise OR over 8-bit evidence masks.
+fn bitor8(left: i64, right: i64) -> (result: i64) {
+    return bit_or_at(left, right, 0) +% bit_or_at(left, right, 1) +% bit_or_at(left, right, 2) +% bit_or_at(left, right, 3) +% bit_or_at(left, right, 4) +% bit_or_at(left, right, 5) +% bit_or_at(left, right, 6) +% bit_or_at(left, right, 7);
+}
+
+// Participant lifecycle. Participant kind: 0 human, 1 agent, 2 service,
+// 3 unknown. Transition reasons: 1 identify needs OUTSIDE, 2 admit needs
+// KNOWN, 3 bind needs ADMITTED, 4 scope must be bound explicitly, 5 bad
+// participant kind. Illegal transitions are refused, never skipped.
+enum TransResult { Ok { session: Session }, Err { reason: i64 } }
+
+fn session_new(identity: i64) -> (result: Session) {
+    return Session { state: 0, kind: 3, scope_bound: false, identity: identity, evidence: 0, conformant: 0 };
+}
+
+fn identify(session: Session, identity: i64, kind: i64) -> (result: TransResult) {
+    if session.state != 0 { return TransResult.Err { reason: 1 }; }
+    if kind < 0 || kind > 3 { return TransResult.Err { reason: 5 }; }
+    return TransResult.Ok {
+        session: Session {
+            state: 1,
+            kind: kind,
+            scope_bound: false,
+            identity: identity,
+            evidence: 0,
+            conformant: 0
+        }
+    };
+}
+
+fn admit(session: Session) -> (result: TransResult) {
+    if session.state != 1 { return TransResult.Err { reason: 2 }; }
+    return TransResult.Ok {
+        session: Session { ..session, state: 2 }
+    };
+}
+
+fn bind_scope(session: Session, bound: bool) -> (result: TransResult) {
+    if session.state != 2 { return TransResult.Err { reason: 3 }; }
+    if bound {
+        return TransResult.Ok {
+            session: Session { ..session, state: 3, scope_bound: true }
+        };
+    }
+    return TransResult.Err { reason: 4 };
+}
+
+fn record_evidence(session: Session, bits: i64) -> (result: Session) {
+    return Session { ..session, evidence: bitor8(session.evidence, bits % 256) };
+}
+
+fn cap_invalid(index: i64) -> (result: bool) {
+    if capability_valid(index) { return false; }
+    return true;
+}
+
+fn mark_conformant(session: Session, cap: i64) -> (result: Session) {
+    if cap_invalid(cap) { return session; }
+    let flag: i64 = pow2(cap);
+    let conformant: i64 = session.conformant +% select(has_bit(session.conformant, cap) == 1, 0, flag);
+    if session.state == 3 {
+        return Session { ..session, state: 4, conformant: conformant };
+    }
+    return Session { ..session, conformant: conformant };
+}
+
+fn is_conformant(session: Session, cap: i64) -> (result: bool) {
+    if cap_invalid(cap) { return false; }
+    return has_bit(session.conformant, cap) == 1;
+}
+
+// Finding reasons. The composed decision carries the FIRST blocking
+// adapter's reason in canonical adapter order
+// (posture, rights, lifecycle, forge, commons, fabric, actions).
+// 0 ok/defer, 1 needs admission state, 2 needs scope,
+// 3 needs provenance.complete, 4 governance confirmations insufficient,
+// 5 independent confirmations missing, 6 lifecycle too early (refused),
+// 7 lifecycle too early (advance first), 8 needs forge evaluation,
+// 9 self-validation refused, 10 never granted by state,
+// 11 needs execution target, 12 undeclared network use,
+// 13 needs declared action, 14 action not conformant,
+// 15 needs passing tests, 16 unknown capability, 17 unknown lifecycle,
+// 18 undeclared execution scope.
+fn all_evidence(query: Query) -> (result: i64) {
+    return bitor8(query.session.evidence, query.evidence % 256);
+}
+
+fn pass_finding() -> (result: Finding) {
+    return Finding { status: status.Status.PASS, missing: 0, need_confirmations: false, reason: 0 };
+}
+
+// Atlas admission posture: what admission state alone establishes. Never
+// grants conditional or denied-posture capabilities.
+fn posture_finding(entry: CapEntry, session: Session) -> (result: Finding) {
+    if entry.posture == 2 {
+        return Finding { status: status.Status.FAIL, missing: entry.evidence_mask, need_confirmations: true, reason: 10 };
+    }
+    if entry.posture == 1 {
+        return pass_finding();
+    }
+    if session.state < entry.grant_state {
+        return Finding { status: status.Status.UNKNOWN, missing: 0, need_confirmations: false, reason: 1 };
+    }
+    if entry.sensitivity != 0 {
+        if session.scope_bound {
+            return pass_finding();
+        }
+        return Finding { status: status.Status.UNKNOWN, missing: 1, need_confirmations: false, reason: 2 };
+    }
+    return pass_finding();
+}
+
+fn independent_count(query: Query) -> (result: i64) {
+    let requestor: i64 = query.session.identity;
+    let proposer: i64 = query.proposed_by;
+    let c0: i64 = select(query.attest_count > 0 && query.attest0 != requestor && query.attest0 != proposer, 1, 0);
+    let c1: i64 = select(query.attest_count > 1 && query.attest1 != requestor && query.attest1 != proposer, 1, 0);
+    let c2: i64 = select(query.attest_count > 2 && query.attest2 != requestor && query.attest2 != proposer, 1, 0);
+    let c3: i64 = select(query.attest_count > 3 && query.attest3 != requestor && query.attest3 != proposer, 1, 0);
+    return c0 +% c1 +% c2 +% c3;
+}
+
+// Rights/provenance: scopes attach to actions, never to bare identity.
+// Self-attestation never counts toward independence.
+fn rights_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if entry.rights_scope == (0 - 1) {
+        return pass_finding();
+    }
+    let evidence: i64 = all_evidence(query);
+    if has_bit(entry.evidence_mask, 5) == 1 && has_bit(evidence, 5) == 0 {
+        return Finding { status: status.Status.UNKNOWN, missing: 32, need_confirmations: false, reason: 3 };
+    }
+    if entry.sensitivity == 3 {
+        if independent_count(query) < 2 {
+            return Finding { status: status.Status.FAIL, missing: 0, need_confirmations: true, reason: 4 };
+        }
+        return pass_finding();
+    }
+    if query.cap == 12 {
+        if independent_count(query) < 2 {
+            return Finding { status: status.Status.UNKNOWN, missing: 0, need_confirmations: true, reason: 5 };
+        }
+    }
+    return pass_finding();
+}
+
+// MNCDS lifecycle: a proposal is never a promotion.
+fn lifecycle_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if entry.lifecycle_gate == (0 - 1) {
+        return pass_finding();
+    }
+    if query.lifecycle < entry.lifecycle_gate {
+        if query.cap == 12 || query.cap == 13 {
+            return Finding { status: status.Status.FAIL, missing: 0, need_confirmations: false, reason: 6 };
+        }
+        return Finding { status: status.Status.UNKNOWN, missing: 0, need_confirmations: false, reason: 7 };
+    }
+    return pass_finding();
+}
+
+// Forge: protected transitions need evaluation on record; a change can
+// never validate itself.
+fn forge_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if query.cap != 13 && query.cap != 14 && query.cap != 15 {
+        return pass_finding();
+    }
+    if (query.cap == 14 || query.cap == 15) && query.change_id != 0 && query.change_id == query.validating_change_id {
+        return Finding { status: status.Status.FAIL, missing: 0, need_confirmations: false, reason: 9 };
+    }
+    if has_bit(all_evidence(query), 7) == 0 {
+        return Finding { status: status.Status.UNKNOWN, missing: 128, need_confirmations: false, reason: 8 };
+    }
+    return pass_finding();
+}
+
+// Commons: independent confirmations accumulate here; Atlas never
+// manufactures them.
+fn commons_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if query.cap != 12 && query.cap != 13 && query.cap != 14 && query.cap != 15 && query.cap != 16 {
+        return pass_finding();
+    }
+    if independent_count(query) >= 2 {
+        return pass_finding();
+    }
+    return Finding { status: status.Status.UNKNOWN, missing: 0, need_confirmations: true, reason: 5 };
+}
+
+// Fabric: execution needs a bound scope, a declared target, and declared
+// network use. Placement itself stays Fabric's decision.
+fn fabric_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if query.cap != 5 && query.cap != 6 && query.cap != 7 && query.cap != 8 {
+        return pass_finding();
+    }
+    if session_scope_of(query) == 0 {
+        return Finding { status: status.Status.FAIL, missing: 1, need_confirmations: false, reason: 18 };
+    }
+    if query.cap == 5 || query.cap == 8 {
+        if query.exec_target {
+            return pass_finding();
+        }
+        return Finding { status: status.Status.UNKNOWN, missing: 2, need_confirmations: false, reason: 11 };
+    }
+    if query.cap == 7 {
+        if query.net_declared {
+            return pass_finding();
+        }
+        return Finding { status: status.Status.FAIL, missing: 4, need_confirmations: false, reason: 12 };
+    }
+    return pass_finding();
+}
+
+fn session_scope_of(query: Query) -> (result: i64) {
+    if query.session.scope_bound {
+        return 1;
+    }
+    return 0;
+}
+
+// mncs-actions: consequential effects travel through declared actions.
+fn actions_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    if query.cap != 10 && query.cap != 11 && query.cap != 12 && query.cap != 13 && query.cap != 14 && query.cap != 15 {
+        return pass_finding();
+    }
+    if query.action_present {
+        return actions_declared_finding(entry, query);
+    }
+    if query.cap == 12 || query.cap == 13 || query.cap == 14 || query.cap == 15 {
+        return Finding { status: status.Status.FAIL, missing: 8, need_confirmations: false, reason: 13 };
+    }
+    return Finding { status: status.Status.UNKNOWN, missing: 8, need_confirmations: false, reason: 13 };
+}
+
+fn actions_declared_finding(entry: CapEntry, query: Query) -> (result: Finding) {
+    let evidence: i64 = all_evidence(query);
+    if (query.cap == 12 || query.cap == 13) && has_bit(evidence, 4) == 0 {
+        return Finding { status: status.Status.UNKNOWN, missing: 16, need_confirmations: false, reason: 14 };
+    }
+    if has_bit(entry.evidence_mask, 6) == 1 && has_bit(evidence, 6) == 0 {
+        return Finding { status: status.Status.UNKNOWN, missing: 64, need_confirmations: false, reason: 15 };
+    }
+    return pass_finding();
+}
+
+fn blocked(finding: Finding) -> (result: bool) {
+    return status_code(finding.status) != 0;
+}
+
+fn first_reason(f0: Finding, f1: Finding, f2: Finding, f3: Finding, f4: Finding, f5: Finding, f6: Finding) -> (result: i64) {
+    if blocked(f0) { return f0.reason; }
+    if blocked(f1) { return f1.reason; }
+    if blocked(f2) { return f2.reason; }
+    if blocked(f3) { return f3.reason; }
+    if blocked(f4) { return f4.reason; }
+    if blocked(f5) { return f5.reason; }
+    if blocked(f6) { return f6.reason; }
+    return 0;
+}
+
+fn malformed_decision(authority: i64, reason: i64) -> (result: Decision) {
+    return Decision { status: 2, verdict: status.Status.FAIL, malformed: true, authority: authority, missing: 0, need_confirmations: false, reason: reason };
+}
+
+fn fold_verdict(current: status.Status, observed: status.Status) -> (result: status.Status) {
+    return status.dominate(current, observed);
+}
+
+fn status_code(verdict: status.Status) -> (result: i64) {
+    return match verdict {
+        status.Status.PASS => 0,
+        status.Status.FAIL => 1,
+        status.Status.UNKNOWN => 2,
+    };
+}
+
+// Composed capability decision. Consumes owner-produced findings encoded
+// in the query (evidence, attestations, lifecycle, action declaration);
+// the composition mechanism is machine-native, the authorities are not.
+fn compose_findings(query: Query) -> (result: Decision) {
+    if cap_invalid(query.cap) {
+        return malformed_decision(0, 16);
+    }
+    if query.lifecycle < 0 || query.lifecycle > 4 {
+        return malformed_decision(capability_entry(query.cap).owner, 17);
+    }
+    let entry: CapEntry = capability_entry(query.cap);
+    let f0: Finding = posture_finding(entry, query.session);
+    let f1: Finding = rights_finding(entry, query);
+    let f2: Finding = lifecycle_finding(entry, query);
+    let f3: Finding = forge_finding(entry, query);
+    let f4: Finding = commons_finding(entry, query);
+    let f5: Finding = fabric_finding(entry, query);
+    let f6: Finding = actions_finding(entry, query);
+    let v01: status.Status = fold_verdict(f0.status, f1.status);
+    let v23: status.Status = fold_verdict(f2.status, f3.status);
+    let v45: status.Status = fold_verdict(f4.status, f5.status);
+    let v0123: status.Status = fold_verdict(v01, v23);
+    let v456: status.Status = fold_verdict(v45, f6.status);
+    let verdict: status.Status = fold_verdict(v0123, v456);
+    let verdict_code: i64 = status_code(verdict);
+    let decision_status: i64 = select(verdict_code == 0, 0, select(verdict_code == 1, 2, 1));
+    return Decision {
+        status: decision_status,
+        verdict: verdict,
+        malformed: false,
+        authority: entry.owner,
+        missing: bitor8(bitor8(bitor8(bitor8(bitor8(bitor8(f0.missing, f1.missing), f2.missing), f3.missing), f4.missing), f5.missing), f6.missing),
+        need_confirmations: f0.need_confirmations || f1.need_confirmations || f2.need_confirmations || f3.need_confirmations || f4.need_confirmations || f5.need_confirmations || f6.need_confirmations,
+        reason: first_reason(f0, f1, f2, f3, f4, f5, f6)
+    };
+}
+
+// Conformant-path steps. 0 none, 1 change.propose, 2 validate,
+// 3 provide evidence, 4 promotion, 5 declare execution target,
+// 6 worker.dispatch, 7 tests.execute, 8 declare network use,
+// 9 declare intent as MNCS action, 10 change.validate,
+// 11 record provenance, 12 change.sign, 13 promotion decision,
+// 14 release.publish, 15 forge evaluation, 16 independent confirmation,
+// 17 request capability, 18 owning-authority review, 19 scoped grant,
+// 20 fabric placement, 21 re-attach provenance, 22 re-validate,
+// 23 reproduce the artifact, 24 re-record evidence,
+// 25 declare cross-repository action, 26 per-repo authority review,
+// 27 re-enable the check, 28 record governed exception,
+// 29 advance through validation, 30 independent forge evaluation,
+// 31 record transformation lineage.
+fn denial_paths(cap: i64) -> (result: Denial) {
+    if cap == 3 { return Denial { cap: 3, authority: 4, missing: 0, need_confirmations: false, path0: 1, path1: 2, path2: 3, path3: 4, path_count: 4, reason: 0 }; }
+    if cap == 4 { return Denial { cap: 4, authority: 8, missing: 0, need_confirmations: false, path0: 1, path1: 2, path2: 3, path3: 4, path_count: 4, reason: 0 }; }
+    if cap == 5 { return Denial { cap: 5, authority: 1, missing: 0, need_confirmations: false, path0: 5, path1: 6, path2: 7, path3: 0, path_count: 3, reason: 0 }; }
+    if cap == 7 { return Denial { cap: 7, authority: 1, missing: 0, need_confirmations: false, path0: 8, path1: 6, path2: 0, path3: 0, path_count: 2, reason: 0 }; }
+    if cap == 8 { return Denial { cap: 8, authority: 1, missing: 0, need_confirmations: false, path0: 5, path1: 20, path2: 6, path3: 0, path_count: 3, reason: 0 }; }
+    if cap == 10 { return Denial { cap: 10, authority: 3, missing: 0, need_confirmations: false, path0: 9, path1: 10, path2: 0, path3: 0, path_count: 2, reason: 0 }; }
+    if cap == 11 { return Denial { cap: 11, authority: 2, missing: 0, need_confirmations: false, path0: 1, path1: 2, path2: 11, path3: 12, path_count: 4, reason: 0 }; }
+    if cap == 12 { return Denial { cap: 12, authority: 2, missing: 0, need_confirmations: false, path0: 1, path1: 2, path2: 3, path3: 4, path_count: 4, reason: 0 }; }
+    if cap == 13 { return Denial { cap: 13, authority: 7, missing: 0, need_confirmations: false, path0: 13, path1: 14, path2: 0, path3: 0, path_count: 2, reason: 0 }; }
+    if cap == 14 { return Denial { cap: 14, authority: 7, missing: 0, need_confirmations: false, path0: 1, path1: 15, path2: 16, path3: 4, path_count: 4, reason: 0 }; }
+    if cap == 15 { return Denial { cap: 15, authority: 5, missing: 0, need_confirmations: false, path0: 1, path1: 15, path2: 16, path3: 4, path_count: 4, reason: 0 }; }
+    if cap == 16 { return Denial { cap: 16, authority: 2, missing: 0, need_confirmations: false, path0: 17, path1: 18, path2: 19, path3: 0, path_count: 3, reason: 0 }; }
+    return Denial { cap: cap, authority: 0, missing: 0, need_confirmations: false, path0: 0, path1: 0, path2: 0, path3: 0, path_count: 0, reason: 0 };
+}
+
+// Structured denial for a denied decision. A denial without a conformant
+// path records path_count 0 explicitly; paths are never invented.
+fn denial_for_decision(cap: i64, decision: Decision) -> (result: Denial) {
+    let shape: Denial = denial_paths(cap);
+    return Denial {
+        cap: cap,
+        authority: decision.authority,
+        missing: decision.missing,
+        need_confirmations: decision.need_confirmations,
+        path0: shape.path0,
+        path1: shape.path1,
+        path2: shape.path2,
+        path3: shape.path3,
+        path_count: shape.path_count,
+        reason: decision.reason
+    };
+}
+
+// Bypass classification. Event kinds: 0 mutation, 1 evidence,
+// 2 execution, 3 governance. Flags bit: 0 action declared,
+// 1 self-validating ids, 2 provenance stripped, 3 digest malformed,
+// 4 multi-repo, 5 network used, 6 network declared, 7 worker dispatched,
+// 8 execution target present, 9 CI disabled, 10 promoted,
+// 11 lifecycle sufficient, 12 protected paths touched.
+// Finding codes: 0 none, 1 direct protected mutation,
+// 2 self-validation, 3 provenance stripping, 4 fabricated evidence,
+// 5 undeclared cross-repo mutation, 6 undeclared network use,
+// 7 unauthorized worker dispatch, 8 CI/conformance disabling,
+// 9 promotion outside lifecycle. Severity: 1 medium, 2 high.
+fn classify_event(event: Event) -> (result: BypassFinding) {
+    let none: BypassFinding = BypassFinding { code: 0, severity: 0, authority: 0, route0: 0, route1: 0, route2: 0, route_count: 0 };
+    if event.kind == 0 {
+        if has_bit(event.flags, 0) == 1 {
+            if has_bit(event.flags, 1) == 1 {
+                return BypassFinding { code: 2, severity: 2, authority: 5, route0: 30, route1: 16, route2: 4, route_count: 3 };
+            }
+            return none;
+        }
+        if has_bit(event.flags, 12) == 1 {
+            return BypassFinding { code: 1, severity: 2, authority: 3, route0: 9, route1: 10, route2: 3, route_count: 3 };
+        }
+        if has_bit(event.flags, 4) == 1 {
+            return BypassFinding { code: 5, severity: 1, authority: 3, route0: 25, route1: 26, route2: 0, route_count: 2 };
+        }
+        return none;
+    }
+    if event.kind == 1 {
+        if has_bit(event.flags, 2) == 1 {
+            return BypassFinding { code: 3, severity: 2, authority: 2, route0: 31, route1: 21, route2: 22, route_count: 3 };
+        }
+        if has_bit(event.flags, 3) == 1 {
+            return BypassFinding { code: 4, severity: 2, authority: 2, route0: 23, route1: 24, route2: 0, route_count: 2 };
+        }
+        return none;
+    }
+    if event.kind == 2 {
+        if has_bit(event.flags, 5) == 1 && has_bit(event.flags, 6) == 0 {
+            return BypassFinding { code: 6, severity: 1, authority: 1, route0: 8, route1: 6, route2: 0, route_count: 2 };
+        }
+        if has_bit(event.flags, 7) == 1 && has_bit(event.flags, 8) == 0 {
+            return BypassFinding { code: 7, severity: 1, authority: 1, route0: 5, route1: 20, route2: 6, route_count: 3 };
+        }
+        return none;
+    }
+    if event.kind == 3 {
+        if has_bit(event.flags, 9) == 1 {
+            return BypassFinding { code: 8, severity: 2, authority: 3, route0: 27, route1: 28, route2: 0, route_count: 2 };
+        }
+        if has_bit(event.flags, 10) == 1 && has_bit(event.flags, 11) == 0 {
+            return BypassFinding { code: 9, severity: 2, authority: 4, route0: 29, route1: 16, route2: 4, route_count: 3 };
+        }
+        return none;
+    }
+    return none;
+}
+
+record OrientAcc {
+    session: Session,
+    granted: i64,
+    conditional: i64,
+    denied: i64,
+    pack: i64,
+    place: i64
+}
+
+fn bare_query(cap: i64, session: Session) -> (result: Query) {
+    return Query {
+        cap: cap,
+        session: session,
+        evidence: 0,
+        lifecycle: 0,
+        action_present: false,
+        proposed_by: session.identity,
+        change_id: 0,
+        validating_change_id: 0,
+        attest0: 0,
+        attest1: 0,
+        attest2: 0,
+        attest3: 0,
+        attest_count: 0,
+        exec_target: false,
+        net_declared: false
+    };
+}
+
+fn orient_step(acc: OrientAcc, index: i64) -> (result: OrientAcc) {
+    let decision: Decision = compose_findings(bare_query(index, acc.session));
+    let granted: i64 = acc.granted +% select(decision.status == 0, 1, 0);
+    let conditional: i64 = acc.conditional +% select(decision.status == 1, 1, 0);
+    let denied: i64 = acc.denied +% select(decision.status == 2, 1, 0);
+    let pack: i64 = acc.pack +% decision.status *% acc.place;
+    return OrientAcc {
+        session: acc.session,
+        granted: granted,
+        conditional: conditional,
+        denied: denied,
+        pack: pack,
+        place: acc.place *% 4
+    };
+}
+
+// Machine orientation: per-capability statuses packed two bits each over
+// the 17 capabilities (34 bits) plus outcome counts. Bare context, so the
+// same query any participant can run.
+fn orient(session: Session) -> (result: Orientation) {
+    let indices: [i64; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let initial: OrientAcc = OrientAcc { session: session, granted: 0, conditional: 0, denied: 0, pack: 0, place: 1 };
+    iterate i over indices carrying acc: OrientAcc = initial {
+        next acc = orient_step(acc, indices[i]);
+    }
+    return Orientation {
+        state: session.state,
+        granted: acc.granted,
+        conditional: acc.conditional,
+        denied: acc.denied,
+        pack: acc.pack
+    };
+}
+
+// Session packing for the scalar ABI. Layout: state 0-2, kind 3-4,
+// scope 5, identity 6-29 (24 bits, host-interned), evidence 30-37,
+// conformant 38-54. Transition results extend it: ok 55, reason 56-58.
+fn session_pack(session: Session) -> (result: i64) {
+    let packed: i64 = session.state +% session.kind *% 8 +% select(session.scope_bound, 32, 0) +% (session.identity % 16777216) *% 64 +% (session.evidence % 256) *% 1073741824 +% (session.conformant % 131072) *% 274877906944;
+    return packed;
+}
+
+fn session_unpack(packed: i64) -> (result: Session) {
+    return Session {
+        state: packed % 8,
+        kind: (packed / 8) % 4,
+        scope_bound: (packed / 32) % 2 == 1,
+        identity: (packed / 64) % 16777216,
+        evidence: (packed / 1073741824) % 256,
+        conformant: (packed / 274877906944) % 131072
+    };
+}
+
+fn trans_pack(outcome: TransResult, prior: Session) -> (result: i64) {
+    return match outcome {
+        TransResult.Ok { session } => session_pack(session) +% 36028797018963968,
+        TransResult.Err { reason } => session_pack(prior) +% reason *% 72057594037927936,
+    };
+}
+
+fn abi_identify(session_packed: i64, identity: i64, kind: i64) -> (result: i64) {
+    let session: Session = session_unpack(session_packed);
+    return trans_pack(identify(session, identity, kind), session);
+}
+
+fn abi_admit(session_packed: i64) -> (result: i64) {
+    let session: Session = session_unpack(session_packed);
+    return trans_pack(admit(session), session);
+}
+
+fn abi_bind_scope(session_packed: i64, bound: i64) -> (result: i64) {
+    let session: Session = session_unpack(session_packed);
+    let flag: bool = bound != 0;
+    return trans_pack(bind_scope(session, flag), session);
+}
+
+fn abi_record_evidence(session_packed: i64, bits: i64) -> (result: i64) {
+    return session_pack(record_evidence(session_unpack(session_packed), bits));
+}
+
+fn abi_mark_conformant(session_packed: i64, cap: i64) -> (result: i64) {
+    return session_pack(mark_conformant(session_unpack(session_packed), cap));
+}
+
+// Decision packing. Layout: status 0-1, verdict 2-3, malformed 4,
+// authority 5-8, missing 9-16, need_confirmations 17, reason 18-22.
+fn decision_pack(decision: Decision) -> (result: i64) {
+    let packed: i64 = decision.status +% status_code(decision.verdict) *% 4 +% select(decision.malformed, 16, 0) +% (decision.authority % 16) *% 32 +% (decision.missing % 256) *% 512 +% select(decision.need_confirmations, 131072, 0) +% (decision.reason % 32) *% 262144;
+    return packed;
+}
+
+fn abi_query(cap: i64, session_packed: i64, evidence: i64, lifecycle: i64, action: i64, proposer: i64, change_id: i64, validating_change_id: i64, attest0: i64, attest1: i64, attest2: i64, attest3: i64, attest_count: i64, exec_target: i64, net_declared: i64) -> (result: i64) {
+    let present: bool = action != 0;
+    let target: bool = exec_target != 0;
+    let declared: bool = net_declared != 0;
+    let query: Query = Query {
+        cap: cap,
+        session: session_unpack(session_packed),
+        evidence: evidence,
+        lifecycle: lifecycle,
+        action_present: present,
+        proposed_by: proposer,
+        change_id: change_id,
+        validating_change_id: validating_change_id,
+        attest0: attest0,
+        attest1: attest1,
+        attest2: attest2,
+        attest3: attest3,
+        attest_count: attest_count,
+        exec_target: target,
+        net_declared: declared
+    };
+    return decision_pack(compose_findings(query));
+}
+
+// Orientation packing. Layout: state 0-2, granted 3-7, conditional 8-12,
+// denied 13-17, status pack 18-51 (two bits per capability).
+fn abi_orient(session_packed: i64) -> (result: i64) {
+    let summary: Orientation = orient(session_unpack(session_packed));
+    let packed: i64 = summary.state +% summary.granted *% 8 +% summary.conditional *% 256 +% summary.denied *% 8192 +% summary.pack *% 262144;
+    return packed;
+}
+
+// Denial packing. Layout: capability 0-4, authority 5-8, missing 9-16,
+// need_confirmations 17, reason 18-22, path steps 23-42 (4 x 5 bits),
+// path count 43-44.
+fn abi_denial(cap: i64, decision_packed: i64) -> (result: i64) {
+    let authority: i64 = (decision_packed / 32) % 16;
+    let missing: i64 = (decision_packed / 512) % 256;
+    let need: i64 = (decision_packed / 131072) % 2;
+    let reason: i64 = (decision_packed / 262144) % 32;
+    let denial: Denial = denial_for_decision(cap, Decision { status: 2, verdict: status.Status.FAIL, malformed: false, authority: authority, missing: missing, need_confirmations: need == 1, reason: reason });
+    let packed: i64 = (cap % 32) +% (denial.authority % 16) *% 32 +% (denial.missing % 256) *% 512 +% select(denial.need_confirmations, 131072, 0) +% (denial.reason % 32) *% 262144 +% (denial.path0 % 32) *% 8388608 +% (denial.path1 % 32) *% 268435456 +% (denial.path2 % 32) *% 8589934592 +% (denial.path3 % 32) *% 274877906944 +% denial.path_count *% 8796093022208;
+    return packed;
+}
+
+// Bypass packing. Layout: code 0-3, severity 4-5, authority 6-9,
+// routes 10-27 (3 x 6 bits), route count 28-29.
+fn abi_bypass(kind: i64, actor: i64, flags: i64) -> (result: i64) {
+    let finding: BypassFinding = classify_event(Event { kind: kind, actor: actor, flags: flags });
+    let packed: i64 = (finding.code % 16) +% (finding.severity % 4) *% 16 +% (finding.authority % 16) *% 64 +% (finding.route0 % 64) *% 1024 +% (finding.route1 % 64) *% 65536 +% (finding.route2 % 64) *% 4194304 +% finding.route_count *% 268435456;
+    return packed;
+}
