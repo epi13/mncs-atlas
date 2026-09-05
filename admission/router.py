@@ -14,6 +14,8 @@ with :class:`Router`. The decision shape is unchanged.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass, field
 
 from .model import Session
@@ -29,6 +31,22 @@ from .vocabulary import (
 _STATE_ORDER = {"OUTSIDE": 0, "KNOWN": 1, "ADMITTED": 2, "SCOPED": 3,
                 "CONFORMANT_FOR_CAPABILITY": 4}
 _LIFECYCLE_ORDER = {name: index for index, name in enumerate(LIFECYCLE_STATES)}
+
+#: Digest binding every capability decision to its exact issued content.
+#: v1 canonical form: UTF-8 JSON with sorted keys and compact separators,
+#: computed over the decision mapping *without* ``decision_digest``.
+#: Downstream verifiers (mncs-harness, mncs-language) recompute this
+#: byte-identically; any post-issuance edit breaks the digest.
+DECISION_DIGEST_ALG = "sha256:canonical-json-v1"
+
+
+def canonical_decision_bytes(decision: dict) -> bytes:
+    body = {key: value for key, value in decision.items() if key != "decision_digest"}
+    return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+
+
+def decision_digest(decision: dict) -> str:
+    return hashlib.sha256(canonical_decision_bytes(decision)).hexdigest()
 
 GOVERNANCE_CAPABILITIES = frozenset(
     cap_id for cap_id, cap in CAPABILITIES.items()
@@ -458,7 +476,7 @@ class Router:
                 if item not in missing:
                     missing.append(item)
         reasons = "; ".join(f"{item.authority}: {item.reason}" for item in findings)
-        return {
+        decision = {
             "schema_version": "mncs.atlas-capability-decision/1",
             "capability": capability_id,
             "status": status,
@@ -470,4 +488,15 @@ class Router:
             "evidence_required": list(cap.evidence),
             "conformant_path": list(cap.conformant_path),
             "scope": request.scope,
+            # Provenance binding (epi13/mncs-atlas#28): echo the admitted
+            # context the decision was issued for, so downstream enforcement
+            # can tie the grant to a session instead of trusting bare shape.
+            "session": {
+                "participant": request.session.participant.identity,
+                "scope": request.scope,
+            },
+            "execution_target": request.execution_target,
+            "decision_digest_alg": DECISION_DIGEST_ALG,
         }
+        decision["decision_digest"] = decision_digest(decision)
+        return decision
