@@ -14,6 +14,7 @@ MIRROR_PATHS = (
     "experimental-atlas.html",
     "404.html",
     "atlas.json",
+    "admission.json",
     "robots.txt",
     "sitemap.xml",
     "assets/styles.css",
@@ -26,6 +27,7 @@ MIRROR_PATHS = (
     "assets/atlas-wasm-manifest.json",
     "assets/journal.css",
     "schema/atlas.schema.json",
+    "schema/admission.schema.json",
 )
 
 MIRROR_TREES = (

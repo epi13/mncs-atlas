@@ -1,0 +1,338 @@
+{
+  "schema_version": "mncs.atlas-admission-map/1",
+  "version": "0.4.0",
+  "authority": "orientation-only",
+  "note": "Participant admission and capability orientation. Atlas grants entry, context, discovery, and access to capability requests; it does not grant trust and never overrides owning subsystems.",
+  "states": [
+    "OUTSIDE",
+    "KNOWN",
+    "ADMITTED",
+    "SCOPED",
+    "CONFORMANT_FOR_CAPABILITY"
+  ],
+  "state_policy": "OUTSIDE -> KNOWN -> ADMITTED -> SCOPED, then per-capability CONFORMANT_FOR_CAPABILITY. No universal trusted flag exists.",
+  "sensitivity_ladder": [
+    "open",
+    "scoped",
+    "protected",
+    "governance"
+  ],
+  "capabilities": [
+    {
+      "id": "orientation.read",
+      "description": "Read Atlas orientation state and component map.",
+      "owner": "atlas",
+      "component": "atlas",
+      "sensitivity": "open",
+      "scope_kind": "ecosystem",
+      "default_posture": "grantable",
+      "grant_at_state": "KNOWN",
+      "evidence": [],
+      "conformant_path": []
+    },
+    {
+      "id": "ecosystem.inspect",
+      "description": "Inspect ecosystem components, relationships, and entry points.",
+      "owner": "atlas",
+      "component": "atlas",
+      "sensitivity": "open",
+      "scope_kind": "ecosystem",
+      "default_posture": "grantable",
+      "grant_at_state": "KNOWN",
+      "evidence": [],
+      "conformant_path": []
+    },
+    {
+      "id": "repo.read",
+      "description": "Read repository content inside the session scope.",
+      "owner": "owning-repo",
+      "component": "atlas",
+      "sensitivity": "scoped",
+      "scope_kind": "repo",
+      "default_posture": "grantable",
+      "grant_at_state": "ADMITTED",
+      "evidence": [],
+      "conformant_path": []
+    },
+    {
+      "id": "change.propose",
+      "description": "Propose a change (proposal state only, never promotion).",
+      "owner": "mncds",
+      "component": "mncds",
+      "sensitivity": "scoped",
+      "scope_kind": "repo",
+      "default_posture": "grantable",
+      "grant_at_state": "ADMITTED",
+      "evidence": [],
+      "conformant_path": [
+        "change.propose",
+        "validate",
+        "provide evidence",
+        "promotion"
+      ]
+    },
+    {
+      "id": "repo.edit",
+      "description": "Edit working-tree content inside the session scope.",
+      "owner": "owning-repo",
+      "component": "atlas",
+      "sensitivity": "scoped",
+      "scope_kind": "repo",
+      "default_posture": "grantable",
+      "grant_at_state": "SCOPED",
+      "evidence": [
+        "session.scope"
+      ],
+      "conformant_path": [
+        "change.propose",
+        "validate",
+        "provide evidence",
+        "promotion"
+      ]
+    },
+    {
+      "id": "tests.execute",
+      "description": "Execute tests on Fabric workers inside the session scope.",
+      "owner": "fabric",
+      "component": "fabric",
+      "sensitivity": "scoped",
+      "scope_kind": "execution-target",
+      "default_posture": "grantable",
+      "grant_at_state": "SCOPED",
+      "evidence": [
+        "session.scope",
+        "execution.target"
+      ],
+      "conformant_path": [
+        "declare execution target",
+        "worker.dispatch",
+        "tests.execute"
+      ]
+    },
+    {
+      "id": "artifact.create",
+      "description": "Create artifacts inside the session scope with provenance.",
+      "owner": "fabric",
+      "component": "fabric",
+      "sensitivity": "scoped",
+      "scope_kind": "repo",
+      "default_posture": "grantable",
+      "grant_at_state": "SCOPED",
+      "evidence": [
+        "session.scope",
+        "provenance.recorded"
+      ],
+      "conformant_path": []
+    },
+    {
+      "id": "network.fetch",
+      "description": "Fetch declared remote resources.",
+      "owner": "fabric",
+      "component": "fabric",
+      "sensitivity": "scoped",
+      "scope_kind": "execution-target",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "session.scope",
+        "network.declared"
+      ],
+      "conformant_path": [
+        "declare network use",
+        "worker.dispatch"
+      ]
+    },
+    {
+      "id": "worker.dispatch",
+      "description": "Dispatch bounded work to Fabric execution targets.",
+      "owner": "fabric",
+      "component": "fabric",
+      "sensitivity": "scoped",
+      "scope_kind": "execution-target",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "session.scope",
+        "execution.target"
+      ],
+      "conformant_path": [
+        "declare execution target",
+        "fabric placement",
+        "worker.dispatch"
+      ]
+    },
+    {
+      "id": "evidence.attest",
+      "description": "Attach attestations to Commons evidence traces.",
+      "owner": "commons",
+      "component": "commons",
+      "sensitivity": "scoped",
+      "scope_kind": "repo",
+      "default_posture": "grantable",
+      "grant_at_state": "SCOPED",
+      "evidence": [
+        "session.scope",
+        "participant.identity"
+      ],
+      "conformant_path": []
+    },
+    {
+      "id": "change.validate",
+      "description": "Run action validation over a proposed change.",
+      "owner": "mncs-actions",
+      "component": "mncs-actions",
+      "sensitivity": "scoped",
+      "scope_kind": "change-set",
+      "default_posture": "grantable",
+      "grant_at_state": "SCOPED",
+      "evidence": [
+        "action.declared"
+      ],
+      "conformant_path": [
+        "declare intent as MNCS action",
+        "change.validate"
+      ]
+    },
+    {
+      "id": "change.sign",
+      "description": "Sign a change with a rights attestation.",
+      "owner": "rights-provenance",
+      "component": "rights-provenance",
+      "sensitivity": "protected",
+      "scope_kind": "change-set",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "provenance.complete",
+        "participant.identity"
+      ],
+      "conformant_path": [
+        "change.propose",
+        "validate",
+        "record provenance",
+        "change.sign"
+      ]
+    },
+    {
+      "id": "change.merge",
+      "description": "Merge a change into a protected branch.",
+      "owner": "rights-provenance",
+      "component": "rights-provenance",
+      "sensitivity": "protected",
+      "scope_kind": "repo",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "actions.conformant",
+        "provenance.complete",
+        "tests.passed",
+        "independent_confirmations>=2"
+      ],
+      "conformant_path": [
+        "change.propose",
+        "validate",
+        "provide evidence",
+        "promotion"
+      ]
+    },
+    {
+      "id": "release.publish",
+      "description": "Publish a release artifact.",
+      "owner": "mncs",
+      "component": "mncs",
+      "sensitivity": "protected",
+      "scope_kind": "repo",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "actions.conformant",
+        "provenance.complete",
+        "independent_confirmations>=2"
+      ],
+      "conformant_path": [
+        "promotion decision",
+        "release.publish"
+      ]
+    },
+    {
+      "id": "validator.modify",
+      "description": "Modify a validator or conformance check.",
+      "owner": "mncs",
+      "component": "mncs",
+      "sensitivity": "governance",
+      "scope_kind": "validator",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "actions.conformant",
+        "provenance.complete",
+        "independent_confirmations>=2",
+        "forge.evaluation"
+      ],
+      "conformant_path": [
+        "change.propose",
+        "forge evaluation",
+        "independent confirmation",
+        "promotion"
+      ]
+    },
+    {
+      "id": "policy.modify",
+      "description": "Modify policy, rights, or governance configuration.",
+      "owner": "forge",
+      "component": "forge",
+      "sensitivity": "governance",
+      "scope_kind": "policy",
+      "default_posture": "conditional",
+      "grant_at_state": null,
+      "evidence": [
+        "provenance.complete",
+        "independent_confirmations>=2",
+        "forge.evaluation"
+      ],
+      "conformant_path": [
+        "change.propose",
+        "forge evaluation",
+        "independent confirmation",
+        "promotion"
+      ]
+    },
+    {
+      "id": "capability.grant",
+      "description": "Grant or expand another participant's capability.",
+      "owner": "rights-provenance",
+      "component": "rights-provenance",
+      "sensitivity": "governance",
+      "scope_kind": "capability",
+      "default_posture": "denied",
+      "grant_at_state": null,
+      "evidence": [
+        "independent_confirmations>=2"
+      ],
+      "conformant_path": [
+        "request capability",
+        "owning-authority review",
+        "scoped grant"
+      ]
+    }
+  ],
+  "rights_scopes": {
+    "change.propose": "may_propose",
+    "evidence.attest": "may_provide_evidence",
+    "change.validate": "may_evaluate",
+    "change.sign": "may_attest",
+    "change.merge": "may_promote",
+    "repo.edit": "may_modify_repository",
+    "validator.modify": "may_approve_change_class",
+    "policy.modify": "may_approve_change_class",
+    "capability.grant": "may_approve",
+    "release.publish": "may_promote"
+  },
+  "lifecycle_gate": {
+    "change.propose": "proposal",
+    "change.validate": "validation",
+    "change.sign": "validation",
+    "change.merge": "confirmation",
+    "release.publish": "promotion"
+  }
+}

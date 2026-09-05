@@ -18,6 +18,8 @@ Do not infer family architecture from repository names alone. Establish the owni
 
 For automated discovery, [site/atlas.json](site/atlas.json) provides a compact machine-readable family map with stable component IDs, operator components, relationships, and task entry points. Its schema is [site/schema/atlas.schema.json](site/schema/atlas.schema.json). Both are orientation-only and never outrank the owning project's current documentation or specifications.
 
+For participant admission and capability brokerage, continue into [site/admission.json](site/admission.json) (schema: [site/schema/admission.schema.json](site/schema/admission.schema.json), contract: [docs/ADMISSION.md](docs/ADMISSION.md)). Establish a session (`OUTSIDE → KNOWN → ADMITTED → SCOPED`), query capabilities through the `admission/` broker, and follow `conformant_path` on denial. Atlas grants entry, not trust: every decision names its owning subsystem.
+
 ## Family-wide invariants
 
 - **MNCS defines technical acceptance/conformance semantics.** MNCDS is an independently versioned specification that separately governs the development process.

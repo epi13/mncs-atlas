@@ -52,7 +52,8 @@
     "entry_points": {
       "type": "array",
       "items": {"$ref": "#/$defs/entryPoint"}
-    }
+    },
+    "admission": {"$ref": "#/$defs/admissionPointer"}
   },
   "$defs": {
     "maturityModel": {
@@ -138,6 +139,17 @@
         "note": {"type": "string"}
       },
       "additionalProperties": false
+    },
+    "admissionPointer": {
+      "type": "object",
+      "required": ["document", "version", "authority"],
+      "properties": {
+        "document": {"const": "admission.json"},
+        "version": {"type": "string"},
+        "authority": {"const": "orientation-only"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": true

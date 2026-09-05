@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epi13.github.io/mncs-atlas/schema/admission.schema.json",
+  "title": "MNCS Atlas admission and capability orientation map",
+  "description": "Non-normative schema for the generated Atlas admission document. Canonical source is the admission.vocabulary Python module; site/admission.json is its projection.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "version",
+    "authority",
+    "states",
+    "sensitivity_ladder",
+    "capabilities"
+  ],
+  "properties": {
+    "schema_version": {"const": "mncs.atlas-admission-map/1"},
+    "version": {"type": "string"},
+    "authority": {"const": "orientation-only"},
+    "note": {"type": "string"},
+    "states": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "state_policy": {"type": "string"},
+    "sensitivity_ladder": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "capabilities": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/admissionCapability"},
+      "minItems": 1
+    },
+    "rights_scopes": {"type": "object"},
+    "lifecycle_gate": {"type": "object"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "admissionCapability": {
+      "type": "object",
+      "required": ["id", "description", "owner", "component", "sensitivity", "scope_kind", "default_posture"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "owner": {"type": "string", "minLength": 1},
+        "component": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "sensitivity": {"type": "string", "minLength": 1},
+        "scope_kind": {"type": "string"},
+        "default_posture": {"type": "string"},
+        "grant_at_state": {"type": ["string", "null"]},
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "conformant_path": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  }
+}
