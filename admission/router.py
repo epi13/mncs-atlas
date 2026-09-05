@@ -35,14 +35,17 @@ _LIFECYCLE_ORDER = {name: index for index, name in enumerate(LIFECYCLE_STATES)}
 #: Digest binding every capability decision to its exact issued content.
 #: v1 canonical form: UTF-8 JSON with sorted keys and compact separators,
 #: computed over the decision mapping *without* ``decision_digest``.
-#: Downstream verifiers (mncs-harness, mncs-language) recompute this
-#: byte-identically; any post-issuance edit breaks the digest.
+#: Raw UTF-8 (not ASCII-escaped) so ``serde_json`` (mncs-language) and
+#: Python ``json`` produce byte-identical canonical forms for the same
+#: value: both sort object keys by code point, use compact separators,
+#: and emit UTF-8. Downstream verifiers recompute this byte-identically;
+#: any post-issuance edit breaks the digest.
 DECISION_DIGEST_ALG = "sha256:canonical-json-v1"
 
 
 def canonical_decision_bytes(decision: dict) -> bytes:
     body = {key: value for key, value in decision.items() if key != "decision_digest"}
-    return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def decision_digest(decision: dict) -> str:
