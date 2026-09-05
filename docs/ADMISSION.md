@@ -140,6 +140,48 @@ map grants no authority: orientation is re-evaluated per query and denied
 capabilities stay denied no matter how well the participant understands
 them.
 
+## Executable admission in MNCS
+
+The composition mechanism above is executable MNCS, not just Python:
+`mncs/admission.mncs` implements admission states, the 17-capability table,
+verdict composition over owner-produced findings, structured denials, bypass
+classification, and orientation summaries as pure scalar functions
+(`i64`/`bool` in, `i64` out). The Python package remains the rich boundary:
+it owns strings, owner adapters, and evidence sets, and translates across
+the boundary through the thin glue in `admission/mncs_glue.py`. Authority
+stays distributed exactly as before; only the mechanism is machine-native.
+
+`mncs/admission-corpus.json` is the executable contract: every case carries
+`expected` values derived from the Python model through the glue
+(`mncs/gen_admission_corpus.py`; CI enforces `--check`), so
+`mncs experiment run` verifies the MNCS module against owner-defined
+semantics instead of against itself. `tests/test_admission_mncs_parity.py`
+pins the derivation (corpus matches a fresh derivation; every capability,
+owner, evidence string, and path step projects into the ABI).
+
+Scalar ABI boundary rules (host obligations, not MNCS semantics):
+
+- Identity interning: participant/attester strings become nonzero `i64`
+  through a host string table (`StringTable`); `0` means unset. Only
+  equality is ever observed (self-attestation exclusion), so any injective
+  mapping preserves semantics.
+- Unknown capability: the host rejects names outside the vocabulary before
+  they reach the module. The module's malformed-decision path (reason 16)
+  is defense in depth, never the primary gate.
+- Attestation bound: four attester slots plus a count. Hosts pass at most
+  four; further confirmations only strengthen a grant already established.
+- Evidence projection: set-like evidence becomes missing-bits; entries with
+  no bit (`admission-state` rungs, lifecycle rungs, independent-forge prose)
+  travel as the first-blocking reason code, and
+  `independent_confirmations>=2` travels as the need-confirmations flag.
+- Reason code: the FIRST blocking finding in canonical adapter order
+  (posture, rights, lifecycle, forge, commons, fabric, actions). The Python
+  decision joins all finding prose; the scalar decision names the first
+  bar so the denial can teach exactly one next step.
+- Actor correlation: bypass findings carry no actor (no room in the packed
+  layout and none needed for classification). The host joins findings back
+  to events by call order, mirroring `scan()`'s `event_index`.
+
 ## Authority ownership map
 
 ```text
@@ -176,11 +218,40 @@ Proven gaps discovered by this work (evidence, not complaints):
    model coverage. A model that can project admission explicitly (bounded
    capability arrays, pointer-aware discovery) is the next language/model
    pass.
-2. **Conditional authority is not yet expressible.** MNCS 0.10 expresses
-   the admission *shapes* (records, bounded arrays, byte-coded states) but
-   has no clean encoding for conditional grants with expiry, dynamic
-   authority dispatch, or open-ended evidence sets. The Python admission
-   package therefore remains the evaluation runtime; `mncs/admission-model.mncs`
-   is the shape contract, with a parity test (`MncsShapeParityTests`)
-   pinning record names. When the language gains these concepts, the
-   router's composition semantics should migrate to MNCS first.
+2. **Conditional authority is now executable (resolved this pass).**
+   The router's composition semantics migrated to MNCS first, as
+   predicted: `mncs/admission.mncs` implements admission states, the
+   17-capability table, verdict composition (`FAIL > UNKNOWN > PASS`
+   over the real `mncs.core.status` lattice), structured denials, bypass
+   classification, and orientation as pure scalar functions. Conditional
+   authority is encoded as evidence bits plus a need-confirmations flag
+   plus a first-blocking reason code; open-ended evidence sets are
+   bounded at the ABI (4 attester slots, 8 evidence bits) with documented
+   host rules (see "Executable admission in MNCS" above). Evidence:
+   44-case model-derived corpus (`mncs/admission-corpus.json`), 9/9
+   session and 11/11 denial/bypass cases met on research bytecode and
+   portable WASM, and 44/44 met V8-direct on the 31,921-byte
+   portable-WASM artifact the runner materialized deterministically
+   across runs (SHA-256 `a45e2315…`). The Python package remains the rich boundary (strings,
+   owner adapters); `mncs/admission-model.mncs` remains the shape
+   contract pinned by `MncsShapeParityTests`. Live owner findings still
+   arrive as host-provided scalars by design — Atlas composes authority
+   findings, it does not counterfeit them.
+3. **Runner observation cost for composed decisions.** A composed
+   capability decision is dominated by its evidence-set union, spelled
+   as 48 arithmetic bit-tests (6 nested 8-bit ORs; one such OR measured
+   at 390 interpreter steps in isolation). Measured on research
+   bytecode: ~80-step cases return in seconds, a 566-step case took
+   194 s end to end (~60 s compile), a single composed query did not
+   finish in 900 s, 23 queries did not finish in 3,300 s on either
+   backend, and the 17-query orientation did not finish in 2,700 s on
+   either backend — while the same WASM bytes execute all 44 cases in
+   seconds under V8-direct. Per-step cost grows super-linearly with trace length, so
+   composed decisions are currently verifiable through the runner only
+   in small slices, with full-corpus parity attested V8-direct on
+   byte-identical artifacts instead. If the runner gains cheaper
+   observation (or the language gains multi-bit operations so evidence
+   sets stop being spelled one bit-test at a time), the full corpus
+   should move back to runner-gated on both backends;
+   `scripts/build_mncs_wasm.py` admission support waits on exactly
+   that.
