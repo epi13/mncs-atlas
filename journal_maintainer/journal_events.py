@@ -143,6 +143,16 @@ def compute_event_digest(event: Mapping[str, Any]) -> str:
     return "sha256:" + hashlib.sha256(canonical_event_bytes(event)).hexdigest()
 
 
+def crypto_available() -> bool:
+    """Whether Ed25519 issuance can run here. Chain/digest checks are stdlib."""
+    try:
+        import importlib.util
+
+        return importlib.util.find_spec("cryptography") is not None
+    except (ImportError, ValueError):
+        return False
+
+
 def _ed25519():
     try:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import (
@@ -1009,6 +1019,10 @@ def verify_chain(
     """
     errors: list[str] = []
     events: list[dict[str, Any]] = []
+    signatures_checkable = True
+    if keychain is not None and not crypto_available():
+        errors.append("signatures unverifiable: 'cryptography' package unavailable")
+        signatures_checkable = False
     for path in log.event_files():
         try:
             event = log.load_event(path)
@@ -1024,7 +1038,7 @@ def verify_chain(
             errors.append(f"{event_id}: event_id does not match content")
         if compute_event_digest(event) != event.get("event_digest"):
             errors.append(f"{event_id}: event_digest does not match content")
-        if keychain is not None:
+        if keychain is not None and signatures_checkable:
             issuer = event.get("issuer") or {}
             public = keychain.get(str(issuer.get("key_id") or ""))
             if public is None:

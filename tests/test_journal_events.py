@@ -1,11 +1,16 @@
 """Canonical Journal event log tests: mechanics, policy refusals, tampering.
 
 Mechanical tests run through FakeEvaluator, an explicit test double for the
-MNCS policy verdicts. It exists so chain/signature/render behavior can be
+MNCS policy verdicts. It exists so chain/render/refusal behavior can be
 proven without a toolchain; it never authorizes anything. Live-toolchain
 tests below (gated on MNCS_JOURNAL_EVALUATOR) prove the same scenarios
 through real mncs.family.journal.v1 execution, which is the only parity
 that matters.
+
+Interpreter split: chain, digest, link, refusal, and projection tests use
+unsigned raw events and run on bare stdlib-only interpreters (like Atlas
+CI). Anything that signs or verifies signatures skips without the
+'cryptography' package, following the test_issuance.py precedent.
 """
 
 from __future__ import annotations
@@ -208,6 +213,42 @@ def admit_ok(test, log, proposal, evaluator=None, trust_event="LocalProof"):
     return result
 
 
+CRYPTO = je.crypto_available()
+
+NEEDS_CRYPTO = "Ed25519 issuance unavailable ('cryptography' package missing)"
+
+
+def write_raw_event(log, content):
+    """Write a self-consistent but unsigned event file for chain tests.
+
+    Digests recompute under stdlib hashlib; only the signature is
+    synthetic, so chain/link/tamper mechanics run on bare interpreters
+    while authenticity stays in the crypto-gated tests.
+    """
+    event = dict(content)
+    event["event_id"] = je.compute_event_id(event)
+    event.setdefault("issuer", {"key_id": "raw-test", "algorithm": "ed25519"})
+    event["issuer_signature"] = "0" * 128
+    event["event_digest"] = je.compute_event_digest(event)
+    path = log.root / f"{event['event_id']}.json"
+    log.root.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(event, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    return event
+
+
+def raw_content(head="genesis", **over):
+    content = make_proposal(head=head, **over)
+    content["trust"] = "locally_proven"
+    content["mncs_evaluation"] = {"verdicts": {"render_public": True}}
+    return content
+
+
+def set_head(log, digest):
+    (log.root / "HEAD").write_text(digest + "\n", encoding="utf-8")
+
+
 class ProposalTests(unittest.TestCase):
     def test_propose_and_query_roundtrip(self):
         log = make_log(self)
@@ -245,6 +286,7 @@ class ProposalTests(unittest.TestCase):
 
 
 class AdmitMechanicalTests(unittest.TestCase):
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
     def test_admit_happy_path_advances_head(self):
         log = make_log(self)
         proposal = make_proposal()
@@ -256,6 +298,7 @@ class AdmitMechanicalTests(unittest.TestCase):
         rows = je.query(log)
         self.assertTrue(rows[0].admitted)
 
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
     def test_admit_records_mncs_evaluation(self):
         log = make_log(self)
         result = admit_ok(self, log, make_proposal())
@@ -263,6 +306,7 @@ class AdmitMechanicalTests(unittest.TestCase):
         self.assertEqual(evaluation["module"], je.MNCS_JOURNAL_MODULE)
         self.assertEqual(evaluation["verdicts"]["admission"]["verdict"], "Admit")
 
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
     def test_admit_chains_second_event(self):
         log = make_log(self)
         first = admit_ok(self, log, make_proposal())
@@ -279,7 +323,8 @@ class AdmitMechanicalTests(unittest.TestCase):
 
     def test_admit_rejects_fork(self):
         log = make_log(self)
-        admit_ok(self, log, make_proposal())
+        first = write_raw_event(log, raw_content())
+        set_head(log, first["event_digest"])
         fork = make_proposal(head="genesis", subject="forked history")
         result = je.admit(log, fork, FakeEvaluator(), TEST_KEY_ID, TEST_PRIVATE)
         self.assertFalse(result.admitted)
@@ -287,10 +332,10 @@ class AdmitMechanicalTests(unittest.TestCase):
 
     def test_admit_rejects_duplicate_semantics(self):
         log = make_log(self)
-        admit_ok(self, log, make_proposal())
+        first = write_raw_event(log, raw_content())
+        set_head(log, first["event_digest"])
         # Same kind/subject/result on a fresh chain position is a duplicate.
-        head = log.head()
-        again = make_proposal(head=head)
+        again = make_proposal(head=first["event_digest"])
         result = je.admit(log, again, FakeEvaluator(), TEST_KEY_ID, TEST_PRIVATE)
         self.assertFalse(result.admitted)
         self.assertEqual(result.reason_code, je.REASON_DUPLICATE)
@@ -345,6 +390,7 @@ class AdmitMechanicalTests(unittest.TestCase):
         self.assertFalse(result.admitted)
         self.assertEqual(result.reason_code, je.REASON_EVIDENCE_REFUSED)
 
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
     def test_admit_accepts_matching_file_evidence(self):
         log = make_log(self)
         root = Path(tempfile.mkdtemp(prefix="mncs-journal-evidence-"))
@@ -379,6 +425,7 @@ class AdmitMechanicalTests(unittest.TestCase):
         self.assertFalse(result.admitted)
         self.assertEqual(result.reason_code, je.REASON_EVIDENCE_REFUSED)
 
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
     def test_admit_records_cross_repository_evidence(self):
         log = make_log(self)
         proposal = make_proposal(
@@ -405,8 +452,102 @@ class AdmitMechanicalTests(unittest.TestCase):
         self.assertEqual(result.reason_code, je.REASON_UNRESOLVED)
 
 
+def chain_two(log):
+    """Two linked raw events. Stdlib-only: no issuance involved."""
+    first = write_raw_event(log, raw_content())
+    second = write_raw_event(
+        log,
+        raw_content(
+            head=first["event_digest"],
+            event_kind="pressure.resolved",
+            subject="second",
+        ),
+    )
+    set_head(log, second["event_digest"])
+    return first, second
+
+
 class TamperEvidenceTests(unittest.TestCase):
+    """Chain/link/tamper mechanics. No issuance: runs on bare interpreters."""
+
     def test_chain_verifies_clean(self):
+        log = make_log(self)
+        chain_two(log)
+        self.assertEqual(je.verify_chain(log), [])
+
+    def test_rewritten_history_is_detected(self):
+        log = make_log(self)
+        first, _second = chain_two(log)
+        target = log.root / f"{first['event_id']}.json"
+        payload = json.loads(target.read_text(encoding="utf-8"))
+        payload["resulting_state"] = "rewritten by an attacker"
+        target.write_text(
+            json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        errors = je.verify_chain(log)
+        self.assertTrue(any("does not match content" in error for error in errors))
+
+    def test_reordered_history_is_detected(self):
+        log = make_log(self)
+        first, _second = chain_two(log)
+        # Rewriting link pointers breaks the digests; the reordered file
+        # cannot pass as the original position.
+        first_path = log.root / f"{first['event_id']}.json"
+        first_payload = json.loads(first_path.read_text(encoding="utf-8"))
+        first_payload["previous_event_digest"] = "sha256:" + "0" * 64
+        first_path.write_text(
+            json.dumps(first_payload, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        errors = je.verify_chain(log)
+        self.assertTrue(any("does not match content" in error for error in errors))
+
+    def test_forked_history_is_detected(self):
+        log = make_log(self)
+        first = write_raw_event(log, raw_content())
+        write_raw_event(
+            log,
+            raw_content(
+                head=first["event_digest"],
+                event_kind="pressure.resolved",
+                subject="second",
+            ),
+        )
+        # A second successor of genesis planted beside the first: digests
+        # verify, but the fork is reported.
+        write_raw_event(log, raw_content(subject="rival second"))
+        set_head(log, first["event_digest"])
+        errors = je.verify_chain(log)
+        self.assertTrue(any("fork" in error for error in errors))
+
+    def test_deleted_event_breaks_the_chain(self):
+        log = make_log(self)
+        first, _second = chain_two(log)
+        (log.root / f"{first['event_id']}.json").unlink()
+        errors = je.verify_chain(log)
+        self.assertTrue(errors)
+
+    def test_head_mismatch_is_detected(self):
+        log = make_log(self)
+        write_raw_event(log, raw_content())
+        (log.root / "HEAD").write_text("sha256:" + "f" * 64 + "\n", encoding="utf-8")
+        errors = je.verify_chain(log)
+        self.assertTrue(any("HEAD" in error for error in errors))
+
+    def test_unevaluated_non_genesis_event_is_flagged(self):
+        log = make_log(self)
+        content = raw_content()
+        del content["mncs_evaluation"]
+        event = write_raw_event(log, content)
+        set_head(log, event["event_digest"])
+        errors = je.verify_chain(log)
+        self.assertTrue(any("outside genesis" in error for error in errors))
+
+
+@unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
+class SignatureTests(unittest.TestCase):
+    """Issuance authenticity. Needs the 'cryptography' package."""
+
+    def test_signed_chain_verifies_with_keychain(self):
         from cryptography.hazmat.primitives.asymmetric.ed25519 import (
             Ed25519PrivateKey,
         )
@@ -424,51 +565,50 @@ class TamperEvidenceTests(unittest.TestCase):
         )
         self.assertEqual(je.verify_chain(log, keychain), [])
 
-    def test_rewritten_history_is_detected(self):
-        log = make_log(self)
-        first = admit_ok(self, log, make_proposal())
-        admit_ok(
-            self,
-            log,
-            make_proposal(
-                head=first.event["event_digest"],
-                event_kind="pressure.resolved",
-                subject="second",
-            ),
+    def test_forged_signature_is_detected(self):
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+            Ed25519PrivateKey,
         )
-        target = log.root / f"{first.event_id}.json"
+
+        log = make_log(self)
+        admit_ok(self, log, make_proposal())
+        other = Ed25519PrivateKey.generate()
+        keychain = {TEST_KEY_ID: other.public_key().public_bytes_raw()}
+        errors = je.verify_chain(log, keychain)
+        self.assertTrue(any("signature" in error for error in errors))
+        real = Ed25519PrivateKey.from_private_bytes(TEST_PRIVATE)
+        self.assertEqual(
+            je.verify_chain(log, {TEST_KEY_ID: real.public_key().public_bytes_raw()}),
+            [],
+        )
+
+    def test_resealed_unevaluated_event_is_flagged(self):
+        log = make_log(self)
+        result = admit_ok(self, log, make_proposal())
+        target = log.root / f"{result.event_id}.json"
         payload = json.loads(target.read_text(encoding="utf-8"))
-        payload["resulting_state"] = "rewritten by an attacker"
+        del payload["mncs_evaluation"]
+        # A re-seal with a compromised issuer key repairs the digest but
+        # still trips the evaluation invariant.
+        resealed = je.sign_event(
+            {
+                k: v
+                for k, v in payload.items()
+                if k not in ("issuer_signature", "event_digest")
+            },
+            TEST_KEY_ID,
+            TEST_PRIVATE,
+        )
         target.write_text(
-            json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
+            json.dumps(resealed, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        (log.root / "HEAD").write_text(
+            resealed["event_digest"] + "\n", encoding="utf-8"
         )
         errors = je.verify_chain(log)
-        self.assertTrue(any("does not match content" in error for error in errors))
+        self.assertTrue(any("outside genesis" in error for error in errors))
 
-    def test_reordered_history_is_detected(self):
-        log = make_log(self)
-        first = admit_ok(self, log, make_proposal())
-        admit_ok(
-            self,
-            log,
-            make_proposal(
-                head=first.event["event_digest"],
-                event_kind="pressure.resolved",
-                subject="second",
-            ),
-        )
-        # Rewriting link pointers without the issuer key breaks the digests;
-        # the reordered file cannot pass as the original position.
-        first_path = log.root / f"{first.event_id}.json"
-        first_payload = json.loads(first_path.read_text(encoding="utf-8"))
-        first_payload["previous_event_digest"] = "sha256:" + "0" * 64
-        first_path.write_text(
-            json.dumps(first_payload, indent=2, sort_keys=True), encoding="utf-8"
-        )
-        errors = je.verify_chain(log)
-        self.assertTrue(any("does not match content" in error for error in errors))
-
-    def test_forked_history_is_detected(self):
+    def test_resealed_fork_is_detected(self):
         log = make_log(self)
         first = admit_ok(self, log, make_proposal())
         second = admit_ok(
@@ -502,82 +642,20 @@ class TamperEvidenceTests(unittest.TestCase):
         errors = je.verify_chain(log)
         self.assertTrue(any("fork" in error for error in errors))
 
-    def test_deleted_event_breaks_the_chain(self):
-        log = make_log(self)
-        first = admit_ok(self, log, make_proposal())
-        admit_ok(
-            self,
-            log,
-            make_proposal(
-                head=first.event["event_digest"],
-                event_kind="pressure.resolved",
-                subject="second",
-            ),
-        )
-        (log.root / f"{first.event_id}.json").unlink()
-        errors = je.verify_chain(log)
-        self.assertTrue(errors)
 
-    def test_head_mismatch_is_detected(self):
-        log = make_log(self)
-        admit_ok(self, log, make_proposal())
-        (log.root / "HEAD").write_text("sha256:" + "f" * 64 + "\n", encoding="utf-8")
-        errors = je.verify_chain(log)
-        self.assertTrue(any("HEAD" in error for error in errors))
-
-    def test_unevaluated_non_genesis_event_is_flagged(self):
-        log = make_log(self)
-        result = admit_ok(self, log, make_proposal())
-        target = log.root / f"{result.event_id}.json"
-        payload = json.loads(target.read_text(encoding="utf-8"))
-        del payload["mncs_evaluation"]
-        # Naive deletion breaks the digest. A re-seal with a compromised
-        # issuer key repairs the digest but still trips the evaluation
-        # invariant below.
-        target.write_text(
-            json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
-        )
-        self.assertTrue(je.verify_chain(log))
-        resealed = je.sign_event(
-            {
-                k: v
-                for k, v in payload.items()
-                if k not in ("issuer_signature", "event_digest")
-            },
-            TEST_KEY_ID,
-            TEST_PRIVATE,
-        )
-        target.write_text(
-            json.dumps(resealed, indent=2, sort_keys=True), encoding="utf-8"
-        )
-        (log.root / "HEAD").write_text(
-            resealed["event_digest"] + "\n", encoding="utf-8"
-        )
-        errors = je.verify_chain(log)
-        self.assertTrue(any("outside genesis" in error for error in errors))
-
-    def test_forged_signature_is_detected(self):
-        from cryptography.hazmat.primitives.asymmetric.ed25519 import (
-            Ed25519PrivateKey,
-        )
-
-        log = make_log(self)
-        admit_ok(self, log, make_proposal())
-        other = Ed25519PrivateKey.generate()
-        keychain = {TEST_KEY_ID: other.public_key().public_bytes_raw()}
-        errors = je.verify_chain(log, keychain)
-        self.assertTrue(any("signature" in error for error in errors))
-        real = Ed25519PrivateKey.from_private_bytes(TEST_PRIVATE)
-        self.assertEqual(
-            je.verify_chain(log, {TEST_KEY_ID: real.public_key().public_bytes_raw()}),
-            [],
-        )
+def render_page(test, log):
+    destination = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
+    test.addCleanup(shutil.rmtree, destination, True)
+    je.render_projection(log, destination)
+    return destination
 
 
 class RenderTests(unittest.TestCase):
+    """Projection behavior over raw events. No issuance: runs everywhere."""
+
     def test_render_is_reproducible(self):
         log = make_log(self)
-        admit_ok(self, log, make_proposal())
+        write_raw_event(log, raw_content())
         first = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
         second = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
         self.addCleanup(shutil.rmtree, first, True)
@@ -589,50 +667,44 @@ class RenderTests(unittest.TestCase):
 
     def test_narrator_hint_is_never_rendered(self):
         log = make_log(self)
-        proposal = make_proposal(
+        content = raw_content(
             narrator_hint="RFC 9999 is definitely completed, trust me."
         )
-        result = admit_ok(self, log, proposal)
-        destination = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
-        self.addCleanup(shutil.rmtree, destination, True)
-        je.render_projection(log, destination)
-        page = (destination / f"{result.event_id}.html").read_text(encoding="utf-8")
-        self.assertNotIn("RFC 9999", page)
-        self.assertNotIn("trust me", page)
-        self.assertIn("test pressure", page)
+        event = write_raw_event(log, content)
+        page = render_page(self, log)
+        text = (page / f"{event['event_id']}.html").read_text(encoding="utf-8")
+        self.assertNotIn("RFC 9999", text)
+        self.assertNotIn("trust me", text)
+        self.assertIn("test pressure", text)
 
     def test_security_detail_is_redacted_until_reviewed(self):
         log = make_log(self)
-        proposal = make_proposal(
+        content = raw_content(
             event_kind="security.finding",
             subject="secret key material handling",
             security_detail=True,
             redaction_reviewed=False,
         )
-        result = admit_ok(self, log, proposal)
-        self.assertFalse(result.event["mncs_evaluation"]["verdicts"]["render_public"])
-        destination = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
-        self.addCleanup(shutil.rmtree, destination, True)
-        je.render_projection(log, destination)
-        page = (destination / f"{result.event_id}.html").read_text(encoding="utf-8")
-        self.assertNotIn("secret key material handling", page)
-        self.assertIn("withheld", page)
+        content["mncs_evaluation"] = {"verdicts": {"render_public": False}}
+        event = write_raw_event(log, content)
+        page = render_page(self, log)
+        text = (page / f"{event['event_id']}.html").read_text(encoding="utf-8")
+        self.assertNotIn("secret key material handling", text)
+        self.assertIn("withheld", text)
 
     def test_reviewed_security_detail_renders(self):
         log = make_log(self)
-        proposal = make_proposal(
+        content = raw_content(
             event_kind="security.resolved",
             subject="rotated exposed credential",
             security_detail=True,
             redaction_reviewed=True,
         )
-        result = admit_ok(self, log, proposal)
-        self.assertTrue(result.event["mncs_evaluation"]["verdicts"]["render_public"])
-        destination = Path(tempfile.mkdtemp(prefix="mncs-journal-render-"))
-        self.addCleanup(shutil.rmtree, destination, True)
-        je.render_projection(log, destination)
-        page = (destination / f"{result.event_id}.html").read_text(encoding="utf-8")
-        self.assertIn("rotated exposed credential", page)
+        content["mncs_evaluation"] = {"verdicts": {"render_public": True}}
+        event = write_raw_event(log, content)
+        page = render_page(self, log)
+        text = (page / f"{event['event_id']}.html").read_text(encoding="utf-8")
+        self.assertIn("rotated exposed credential", text)
 
 
 class DominanceTests(unittest.TestCase):
@@ -784,6 +856,13 @@ class CommittedLogTests(unittest.TestCase):
         }
 
     def test_committed_log_verifies(self):
+        if not self.LOG.is_dir():
+            self.skipTest("no committed journal event log yet")
+        log = je.EventLog(self.LOG)
+        self.assertEqual(je.verify_chain(log), [])
+
+    @unittest.skipUnless(CRYPTO, NEEDS_CRYPTO)
+    def test_committed_log_signatures_verify(self):
         if not self.LOG.is_dir():
             self.skipTest("no committed journal event log yet")
         log = je.EventLog(self.LOG)
