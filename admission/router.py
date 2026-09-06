@@ -17,6 +17,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
+from typing import Any
 
 from .model import Session
 from .vocabulary import (
@@ -439,6 +440,7 @@ class Router:
         attestations: tuple[dict, ...] | list[dict] = (),
         execution_target: str = "",
         network_declared: bool = False,
+        issuer: Any = None,
     ) -> dict:
         cap = get_capability(capability_id)
         request = Query(
@@ -502,4 +504,10 @@ class Router:
             "decision_digest_alg": DECISION_DIGEST_ALG,
         }
         decision["decision_digest"] = decision_digest(decision)
+        if issuer is not None:
+            # Authentic issuance: the Router decides, the issuer binds
+            # the exact issued bytes to the Atlas issuer key. Unsigned
+            # decisions carry no issuance proof and fail downstream
+            # verification (epi13/mncs-atlas#31).
+            decision = issuer.sign_decision(decision)
         return decision
