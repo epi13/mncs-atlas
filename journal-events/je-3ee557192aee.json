@@ -1,0 +1,112 @@
+{
+  "affected_repositories": [
+    "epi13/mncs-language"
+  ],
+  "affected_rfcs": [],
+  "commons_confirmations": [],
+  "event_digest": "sha256:7d57643f493a38594f19a8dcebd968f4f126fa781f11001763ecfce701ed3da1",
+  "event_id": "je-3ee557192aee",
+  "event_kind": "capability.added",
+  "evidence": [
+    {
+      "id": "lang-commit",
+      "kind": "commit",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40"
+    },
+    {
+      "digest": "sha256:5e75e9c6cd36f269ab2a80125e48837cae2ec1e05e7ddf4700e44e2f64121678",
+      "id": "journal.mncs",
+      "kind": "file",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40:library/family/journal.mncs"
+    },
+    {
+      "digest": "sha256:a57e70ce5bc8ffd53ff1b9734f81241458bc2c188d54d261d1da6f321d7c0ea6",
+      "id": "gen_journal_corpus.py",
+      "kind": "file",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40:scripts/gen_journal_corpus.py"
+    },
+    {
+      "digest": "sha256:3403afb4c4e2a428e4574e68c8565a4b242d56393bc8a7d206501a706f0501a9",
+      "id": "journal-corpus.json",
+      "kind": "file",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40:examples/execution/journal-corpus.json"
+    },
+    {
+      "digest": "sha256:bbc30af0e3894d8a244a7deda026e9df18c5302fd3852382d10abe67a845923a",
+      "id": "journal.rs",
+      "kind": "file",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40:crates/mncs-cli/tests/journal.rs"
+    },
+    {
+      "digest": "sha256:9016fe21533a0dd12493761d72cd9204f2fc14a5c052ae22f1d58593e5cf3e7f",
+      "id": "journal-event-core.md",
+      "kind": "file",
+      "uri": "mncs-language@0df7d1e2bb7bf7d1434ba6550e17083a285bfa40:docs/journal-event-core.md"
+    },
+    {
+      "id": "corpus-5-backend",
+      "kind": "conformance-result",
+      "uri": "mncs-language:examples/execution/journal-corpus.json (35/35 on five backends, 2026-09-06)"
+    },
+    {
+      "id": "journal-rs",
+      "kind": "experiment-record",
+      "uri": "mncs-language:crates/mncs-cli/tests/journal.rs (3 passed, 2026-09-06)"
+    }
+  ],
+  "issuer": {
+    "algorithm": "ed25519",
+    "key_id": "journal-ceremony-2026-09-06"
+  },
+  "issuer_signature": "7b9f6f203b63ac99d9c82937d9c6f09f6dbe30059aabfa9e76cb4641f3a1f13d9f18f95ef0673a16180eef31d0b592e40966368b24949e9d94e608806776000f",
+  "mncs_evaluation": {
+    "backend": "mncs-research-bytecode",
+    "evaluator": "mncs-cli:mncs",
+    "module": "mncs.family.journal.v1",
+    "result_digest": "sha256:6fe9efb5804cca0fb2680df49a1e086f6d6e35b138232d4ef04d2aff4279f40f",
+    "verdicts": {
+      "admission": {
+        "reason": 0,
+        "verdict": "Admit"
+      },
+      "gate": "PASS",
+      "render_public": true,
+      "trust": {
+        "accepted": true,
+        "following": "locally_proven",
+        "reason": 0
+      }
+    }
+  },
+  "pressure_origin": "journal-canonicalization campaign",
+  "previous_event_digest": "sha256:26da2cdd5c0e944b0a73dae44d1761625b5f3e5bb267ea25c4b1e6f9a78e5452",
+  "previous_state": "no MNCS-native journal policy",
+  "project": "epi13/mncs-language",
+  "provenance": {
+    "bundle_id": null,
+    "producer": "atlas-journal-ceremony",
+    "revision": "0df7d1e2bb7bf7d1434ba6550e17083a285bfa40",
+    "synthesizer": "editor-draft"
+  },
+  "resulting_state": "mncs.family.journal.v1 with 35-case corpus",
+  "schema": "mncs.journal.event.v1",
+  "security": {
+    "contains_detail": false,
+    "redaction_reviewed": false
+  },
+  "subject": "mncs.family.journal.v1 decision core",
+  "timestamp": "2026-09-06T13:36:14Z",
+  "trust": "locally_proven",
+  "validators": [
+    {
+      "name": "mncs-journal-corpus-5-backend",
+      "ref": "35/35 cases on five executable backends",
+      "verdict": "PASS"
+    },
+    {
+      "name": "mncs-journal-rs",
+      "ref": "cargo test -p mncs-cli --test journal: 3 passed",
+      "verdict": "PASS"
+    }
+  ]
+}

@@ -145,8 +145,8 @@ before it is preserved context, not attested history.
    `mncs_evaluation` for the module, backend, and verdicts.
 3. `python -m journal_maintainer render-events --check` (projection
    reproduces the committed pages).
-4. Re-run the cited MNCS corpus cases with the locked toolchain to replay
-   the policy verdicts.
+4. Re-run the cited MNCS corpus cases with the toolchain built from the
+   `provenance.revision` commit to replay the policy verdicts.
 
 ## Current limits (honest gaps)
 

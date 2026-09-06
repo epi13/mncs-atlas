@@ -1,0 +1,106 @@
+{
+  "affected_repositories": [
+    "epi13/mncs-atlas",
+    "epi13/mncs-language"
+  ],
+  "affected_rfcs": [
+    "0026",
+    "0008",
+    "0037"
+  ],
+  "commons_confirmations": [],
+  "event_digest": "sha256:01f98fef1b16bd66320e8210ab5682206591ae4026272cf2fa07b06c03503f9f",
+  "event_id": "je-17ba8957e1a2",
+  "event_kind": "architecture.changed",
+  "evidence": [
+    {
+      "id": "atlas-commit",
+      "kind": "commit",
+      "uri": "mncs-atlas@04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05"
+    },
+    {
+      "digest": "sha256:5d10c5df3a4bbf6f9e49d1ee84162130925bc2ed7a055fa6c834b276a2aa63c9",
+      "id": "journal-event.schema.json",
+      "kind": "file",
+      "uri": "mncs-atlas@04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05:schema/journal-event.schema.json"
+    },
+    {
+      "digest": "sha256:cf261c2ba427c67f909f9c1ef51a6c2fc68a18275a807044eff3cd7c680e11f7",
+      "id": "journal_events.py",
+      "kind": "file",
+      "uri": "mncs-atlas@04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05:journal_maintainer/journal_events.py"
+    },
+    {
+      "digest": "sha256:7b9e9be1337abacbc7b20205b75b6101dd8780541f517753d55f25a8d8b5f7e2",
+      "id": "test_journal_events.py",
+      "kind": "file",
+      "uri": "mncs-atlas@04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05:tests/test_journal_events.py"
+    },
+    {
+      "digest": "sha256:a98963750d5d657299aa1e9c6f33cfe5fd6eab99bba2d19650af08897bf07744",
+      "id": "JOURNAL_EVENTS.md",
+      "kind": "file",
+      "uri": "mncs-atlas@04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05:docs/JOURNAL_EVENTS.md"
+    },
+    {
+      "id": "atlas-unittest",
+      "kind": "experiment-record",
+      "uri": "mncs-atlas:tests/test_journal_events.py (mechanical suite green, 2026-09-06)"
+    }
+  ],
+  "issuer": {
+    "algorithm": "ed25519",
+    "key_id": "journal-ceremony-2026-09-06"
+  },
+  "issuer_signature": "77e2c1465d88d957db934c65101f648d0af1fd6d90545cc703da024b965a842da2a7a80ac344702d45f3da28981fd018a8e13893415cbf7de155010f9ac1c700",
+  "mncs_evaluation": {
+    "backend": "mncs-research-bytecode",
+    "evaluator": "mncs-cli:mncs",
+    "module": "mncs.family.journal.v1",
+    "result_digest": "sha256:6fe9efb5804cca0fb2680df49a1e086f6d6e35b138232d4ef04d2aff4279f40f",
+    "verdicts": {
+      "admission": {
+        "reason": 0,
+        "verdict": "Admit"
+      },
+      "gate": "PASS",
+      "render_public": true,
+      "trust": {
+        "accepted": true,
+        "following": "locally_proven",
+        "reason": 0
+      }
+    }
+  },
+  "pressure_origin": "journal-canonicalization campaign",
+  "previous_event_digest": "sha256:7d57643f493a38594f19a8dcebd968f4f126fa781f11001763ecfce701ed3da1",
+  "previous_state": "editorial HTML only",
+  "project": "epi13/mncs-atlas",
+  "provenance": {
+    "bundle_id": null,
+    "producer": "atlas-journal-ceremony",
+    "revision": "04a8e31ebaa26b78ecb2e2aa0a9692ef1ed2df05",
+    "synthesizer": "editor-draft"
+  },
+  "resulting_state": "hash-chained event log with MNCS policy admission",
+  "schema": "mncs.journal.event.v1",
+  "security": {
+    "contains_detail": false,
+    "redaction_reviewed": false
+  },
+  "subject": "canonical Journal event log with separated admission",
+  "timestamp": "2026-09-06T13:37:09Z",
+  "trust": "locally_proven",
+  "validators": [
+    {
+      "name": "atlas-journal-events-unittest",
+      "ref": "mechanical suite green incl. adversarial refusals",
+      "verdict": "PASS"
+    },
+    {
+      "name": "mncs-live-admission",
+      "ref": "LiveEvaluatorTests: dominance parity plus live admit/refusals",
+      "verdict": "PASS"
+    }
+  ]
+}
