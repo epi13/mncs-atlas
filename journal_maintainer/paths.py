@@ -25,7 +25,7 @@ MIRROR_PATHS = (
     "schema/atlas.schema.json",
 )
 
-MIRROR_TREES = ("journal",)
+MIRROR_TREES = ("journal", "journal-events")
 
 # Routine publication writes. Implementation/CI/docs changes belong in a
 # separate PR and are never auto-merge eligible for a journal run.

@@ -1,0 +1,11 @@
+{
+  "keys": {
+    "journal-ceremony-2026-09-06": {
+      "algorithm": "ed25519",
+      "note": "Private component held in ceremony session memory only; destroyed after use. Retained for verification; rotation needs a KEYS.json update through a reviewed implementation change.",
+      "public_hex": "bf7c988dc9bb6e57dedb12feeb2ad9235fc564f87fd7a1fc0f0ecdfe139f373c",
+      "role": "genesis and first-admissions issuer"
+    }
+  },
+  "schema": "mncs.journal.keys.v1"
+}

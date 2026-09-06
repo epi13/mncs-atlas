@@ -1,0 +1,56 @@
+{
+  "affected_repositories": [
+    "epi13/mncs-atlas"
+  ],
+  "affected_rfcs": [],
+  "commons_confirmations": [],
+  "event_digest": "sha256:26da2cdd5c0e944b0a73dae44d1761625b5f3e5bb267ea25c4b1e6f9a78e5452",
+  "event_id": "je-127088fa21f1",
+  "event_kind": "project.migrated",
+  "evidence": [
+    {
+      "digest": "sha256:8af516d73ada57ef5e5235335f5d018ec85d2e7506b141cea994d1cd28a46699",
+      "id": "legacy-2026-08-20-starting-the-development-journal",
+      "kind": "legacy-html",
+      "uri": "site/journal/2026-08-20-starting-the-development-journal.html"
+    },
+    {
+      "digest": "sha256:afaa97784651cac236df5e725898efc0c736f3b99bc90278d3ed0e2b0765df65",
+      "id": "legacy-2026-08-24-concept-reconstruction-pressure-language-and-family-records",
+      "kind": "legacy-html",
+      "uri": "site/journal/2026-08-24-concept-reconstruction-pressure-language-and-family-records.html"
+    },
+    {
+      "digest": "sha256:81a527dd3506af066219721a9f34b4e1f094877615b95c1d3059c2fcad01e7b4",
+      "id": "legacy-2026-09-04-development-pressure-language-experiments-owner-specific-promotion",
+      "kind": "legacy-html",
+      "uri": "site/journal/2026-09-04-development-pressure-language-experiments-owner-specific-promotion.html"
+    }
+  ],
+  "issuer": {
+    "algorithm": "ed25519",
+    "key_id": "journal-ceremony-2026-09-06"
+  },
+  "issuer_signature": "4744c828e451043733555e11c3950103d7064a105c146159ad755df6fed36e47d2011d00bb8a386b4c1fced8d312ee0f6201d6d21665554111632a5bd814d90f",
+  "mncs_evaluation": null,
+  "pressure_origin": "journal-canonicalization campaign",
+  "previous_event_digest": "genesis",
+  "previous_state": "editorial-only history",
+  "project": "epi13/mncs-atlas",
+  "provenance": {
+    "bundle_id": null,
+    "producer": "atlas-journal-ceremony",
+    "revision": null,
+    "synthesizer": "heuristic"
+  },
+  "resulting_state": "legacy_unattested baseline under canonical chain",
+  "schema": "mncs.journal.event.v1",
+  "security": {
+    "contains_detail": false,
+    "redaction_reviewed": false
+  },
+  "subject": "legacy Development Journal HTML preserved as unattested baseline",
+  "timestamp": "2026-09-06T13:36:14Z",
+  "trust": "legacy_unattested",
+  "validators": []
+}

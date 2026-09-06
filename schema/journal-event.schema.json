@@ -1,0 +1,184 @@
+{
+  "$id": "https://epi13.github.io/mncs-atlas/schema/journal-event.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MNCS Journal canonical progress event",
+  "description": "Machine-readable canonical Journal history. Human prose is a projection of these records, never the source of truth. Claims (proposals) become canonical only through the admission path documented in docs/JOURNAL_EVENTS.md.",
+  "type": "object",
+  "required": [
+    "schema",
+    "event_id",
+    "project",
+    "event_kind",
+    "subject",
+    "previous_state",
+    "resulting_state",
+    "timestamp",
+    "evidence",
+    "provenance",
+    "validators",
+    "commons_confirmations",
+    "affected_rfcs",
+    "affected_repositories",
+    "security",
+    "trust",
+    "previous_event_digest",
+    "event_digest"
+  ],
+  "properties": {
+    "schema": { "const": "mncs.journal.event.v1" },
+    "event_id": { "type": "string", "pattern": "^je-[0-9a-f]{12}$" },
+    "project": { "type": "string", "minLength": 1 },
+    "event_kind": {
+      "type": "string",
+      "enum": [
+        "capability.added",
+        "capability.proven",
+        "capability.regressed",
+        "rfc.advanced",
+        "rfc.completed",
+        "backend.conformant",
+        "backend.regressed",
+        "stdlib.expanded",
+        "pressure.discovered",
+        "pressure.resolved",
+        "security.finding",
+        "security.resolved",
+        "commons.promoted",
+        "project.migrated",
+        "release.created",
+        "architecture.changed"
+      ]
+    },
+    "subject": { "type": "string", "minLength": 1 },
+    "previous_state": { "type": "string", "minLength": 1 },
+    "resulting_state": { "type": "string", "minLength": 1 },
+    "timestamp": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$" },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "uri"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "commit",
+              "merged-pr",
+              "action-result",
+              "conformance-result",
+              "evidence-receipt",
+              "provenance-attestation",
+              "commons-record",
+              "experiment-record",
+              "signed-artifact",
+              "badge-evidence",
+              "file",
+              "prior-event",
+              "legacy-html"
+            ]
+          },
+          "uri": { "type": "string", "minLength": 1 },
+          "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["producer", "synthesizer"],
+      "properties": {
+        "producer": { "type": "string", "minLength": 1 },
+        "synthesizer": { "type": "string", "enum": ["editor-draft", "heuristic"] },
+        "bundle_id": { "type": ["string", "null"] },
+        "revision": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "validators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "verdict"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "verdict": { "type": "string", "enum": ["PASS", "FAIL", "UNKNOWN"] },
+          "ref": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "commons_confirmations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["record_id"],
+        "properties": {
+          "record_id": { "type": "string", "minLength": 1 },
+          "uri": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "affected_rfcs": { "type": "array", "items": { "type": "string" } },
+    "affected_repositories": { "type": "array", "items": { "type": "string" } },
+    "pressure_origin": { "type": ["string", "null"] },
+    "security": {
+      "type": "object",
+      "required": ["contains_detail", "redaction_reviewed"],
+      "properties": {
+        "contains_detail": { "type": "boolean" },
+        "redaction_reviewed": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "trust": {
+      "type": "string",
+      "enum": [
+        "observed",
+        "locally_proven",
+        "independently_confirmed",
+        "commons_promoted",
+        "legacy_unattested"
+      ]
+    },
+    "previous_event_digest": {
+      "type": "string",
+      "pattern": "^(genesis|sha256:[0-9a-f]{64})$"
+    },
+    "mncs_evaluation": {
+      "type": ["object", "null"],
+      "required": ["module", "evaluator", "backend", "verdicts"],
+      "properties": {
+        "module": { "type": "string", "minLength": 1 },
+        "evaluator": { "type": "string", "minLength": 1 },
+        "backend": { "type": "string", "minLength": 1 },
+        "result_digest": { "type": "string" },
+        "verdicts": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "interpretation": {
+      "type": "object",
+      "description": "Non-authoritative model/hint prose. Signed for tamper-evidence, never rendered as history.",
+      "properties": {
+        "narrator_hint": { "type": "string" },
+        "classifier_hint": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "issuer": {
+      "type": "object",
+      "required": ["key_id", "algorithm"],
+      "properties": {
+        "key_id": { "type": "string", "minLength": 1 },
+        "algorithm": { "const": "ed25519" }
+      },
+      "additionalProperties": false
+    },
+    "issuer_signature": { "type": "string", "pattern": "^[0-9a-f]{128}$" },
+    "event_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  },
+  "additionalProperties": false
+}

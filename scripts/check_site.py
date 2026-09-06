@@ -33,7 +33,7 @@ MIRROR_PATHS = (
     "schema/atlas.schema.json",
     "schema/admission.schema.json",
 )
-MIRROR_TREES = ("journal",)
+MIRROR_TREES = ("journal", "journal-events")
 MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
 for _tree in MIRROR_TREES:
     _source_root = SITE / _tree

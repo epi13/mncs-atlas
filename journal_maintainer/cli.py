@@ -46,6 +46,10 @@ def build_parser() -> argparse.ArgumentParser:
     check = sub.add_parser("check-paths", help="Prove that changed paths are within the authorized journal surface")
     check.add_argument("--base", required=False, help="Trusted PR base revision (required for committed-diff CI checks)")
     check.add_argument("--head", default="HEAD", help="Exact PR head revision (default: HEAD)")
+    events = sub.add_parser("render-events", help="Reproduce the canonical event projection")
+    events.add_argument("--log", default="site/journal-events", help="Canonical event log directory")
+    events.add_argument("--check", action="store_true", help="Fail when the projection differs instead of writing")
+    sub.add_parser("verify-events", help="Verify the canonical event chain")
     sub.add_parser("validate", help="Run Atlas site and journal checks")
     finalize = sub.add_parser("finalize", help="Re-evaluate one PR after independent CI completes")
     finalize.add_argument("--pr-number", type=int, required=True)
@@ -72,6 +76,43 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"- {error}")
             return 1
         print("Journal Maintainer and Atlas site validation passed.")
+        return 0
+    if args.command == "verify-events":
+        from .journal_events import EventLog, verify_chain
+
+        log = EventLog(root / "site" / "journal-events")
+        errors = verify_chain(log)
+        if errors:
+            print("Canonical event chain verification failed:")
+            for error in errors:
+                print(f"- {error}")
+            return 1
+        print("Canonical event chain verifies.")
+        return 0
+    if args.command == "render-events":
+        import tempfile
+
+        from .journal_events import EventLog, render_projection
+
+        log = EventLog(Path(args.log) if Path(args.log).is_absolute() else root / args.log)
+        if args.check:
+            with tempfile.TemporaryDirectory(prefix="mncs-journal-render-check-") as tmp:
+                written = render_projection(log, Path(tmp))
+                stale = [
+                    path for path in written
+                    if not (log.root / path.name).is_file()
+                    or (log.root / path.name).read_bytes() != path.read_bytes()
+                ]
+            if stale:
+                print("Stale event projection:")
+                for path in stale:
+                    print(f"- {path.name}")
+                return 1
+            print("Canonical event projection is current.")
+            return 0
+        written = render_projection(log, log.root)
+        for path in written:
+            print(f"wrote {path.relative_to(root)}")
         return 0
     if args.command == "finalize":
         config = load_config(root, mode="guarded-auto")
