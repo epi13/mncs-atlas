@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mncs-atlas/scene-graph.schema.json",
+  "title": "MNCS scene graph exchange",
+  "description": "Compact machine-native visual context an agent consumes instead of pixels. Produced by the MNCS visual observer (mncs.core.vision.v1); queried through mncs_atlas.scene_graph. English prose is never canonical here.",
+  "type": "object",
+  "required": ["schema_version", "frame", "nodes", "delta"],
+  "properties": {
+    "schema_version": {"const": "mncs-atlas.scene-graph/1"},
+    "frame": {"type": "integer", "minimum": 0},
+    "provenance": {
+      "type": "object",
+      "required": ["observer", "renderer"],
+      "properties": {
+        "observer": {"type": "string"},
+        "renderer": {"type": "string"},
+        "backend": {"type": "string"},
+        "note": {"type": "string"}
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "left", "top", "width", "height", "confidence"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 0},
+          "kind": {"enum": ["rectangle", "line", "blob"]},
+          "left": {"type": "integer", "minimum": 0},
+          "top": {"type": "integer", "minimum": 0},
+          "width": {"type": "integer", "minimum": 1},
+          "height": {"type": "integer", "minimum": 1},
+          "confidence": {"type": "integer", "minimum": 0, "maximum": 100}
+        }
+      }
+    },
+    "delta": {
+      "type": "object",
+      "required": ["appeared", "disappeared", "moved", "changed", "unchanged", "has_focus"],
+      "properties": {
+        "appeared": {"type": "integer", "minimum": 0},
+        "disappeared": {"type": "integer", "minimum": 0},
+        "moved": {"type": "integer", "minimum": 0},
+        "changed": {"type": "integer", "minimum": 0},
+        "unchanged": {"type": "integer", "minimum": 0},
+        "has_focus": {"type": "boolean"},
+        "focus_id": {"type": "integer", "minimum": 0},
+        "focus_old_left": {"type": "integer", "minimum": 0},
+        "focus_old_top": {"type": "integer", "minimum": 0},
+        "focus_new_left": {"type": "integer", "minimum": 0},
+        "focus_new_top": {"type": "integer", "minimum": 0}
+      }
+    },
+    "sizes": {
+      "type": "object",
+      "description": "Measured representation sizes in bytes (JSON UTF-8 unless noted).",
+      "properties": {
+        "raw_frame_pixels": {"type": "integer", "minimum": 0},
+        "raw_frame_note": {"type": "string"},
+        "scene_json": {"type": "integer", "minimum": 0},
+        "delta_json": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
