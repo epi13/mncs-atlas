@@ -32,6 +32,7 @@ MIRROR_PATHS = (
 
 MIRROR_TREES = (
     "journal",
+    "journal-events",
 )
 
 
