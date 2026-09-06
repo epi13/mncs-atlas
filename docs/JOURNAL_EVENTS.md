@@ -138,8 +138,11 @@ before it is preserved context, not attested history.
 
 ## How a human verifies an entry
 
-1. `python -m journal_maintainer verify-events` (chain, digests,
-   signatures, evaluation discipline).
+1. `python -m journal_maintainer verify-events` (stdlib-only: chain,
+   digests, evaluation discipline). Signature verification against
+   `KEYS.json` runs at the API/test level and needs the `cryptography`
+   package; without it the checker reports signatures unverifiable
+   rather than passing them.
 2. Open `site/journal-events/je-<id>.json`: check `evidence` digests
    against the cited bytes, `validators` against the cited runs, and
    `mncs_evaluation` for the module, backend, and verdicts.
