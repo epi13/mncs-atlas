@@ -1,0 +1,112 @@
+mncs 0.9;
+
+// mncs_atlas.scene_graph — agent-facing scene queries over observed structure.
+//
+// This module does NOT perceive pixels: perception lives in
+// mncs.core.vision.v1 (MNCS language workspace), which emits scene graphs.
+// Atlas consumes those graphs through this scalar ABI (all i64): node
+// identity, bounding geometry, confidence bands, and frame deltas. An agent
+// queries structures and changes here without re-deriving anything from
+// pixels; the JSON Schema for the exchanged graphs is
+// schema/scene-graph.schema.json, and tests/fixtures/scene-demo.json is a
+// real observed demo (renderer -> pixels -> observer -> delta).
+//
+// Code tables (all i64):
+//   kind:        0 rectangle, 1 line, 2 blob
+//   band:        0 low (<50), 1 firm (50..79), 2 certain (>=80)
+// Node identity is an observer-assigned u64 that fits i64; only equality
+// and the delta focus fields are observed (no pointer semantics).
+module mncs_atlas.scene_graph;
+
+fn rect_area(width: i64, height: i64) -> (result: i64) {
+    return width *% height;
+}
+
+fn node_matches(node_id: i64, want: i64) -> (result: bool) {
+    return node_id == want;
+}
+
+// Axis-aligned overlap with exclusive bounds (zero-area boxes never overlap).
+fn rects_overlap(a_left: i64, a_top: i64, a_width: i64, a_height: i64, b_left: i64, b_top: i64, b_width: i64, b_height: i64) -> (result: bool) {
+    if (a_width <= 0) || (a_height <= 0) {
+        return false;
+    }
+    if (b_width <= 0) || (b_height <= 0) {
+        return false;
+    }
+    let a_right: i64 = a_left +% a_width;
+    let a_bottom: i64 = a_top +% a_height;
+    let b_right: i64 = b_left +% b_width;
+    let b_bottom: i64 = b_top +% b_height;
+    return (a_left < b_right) && (b_left < a_right) && (a_top < b_bottom) && (b_top < a_bottom);
+}
+
+// Full containment of a node box in a viewport box (exclusive bounds).
+fn viewport_contains(v_left: i64, v_top: i64, v_width: i64, v_height: i64, n_left: i64, n_top: i64, n_width: i64, n_height: i64) -> (result: bool) {
+    if (n_width <= 0) || (n_height <= 0) {
+        return false;
+    }
+    let v_right: i64 = v_left +% v_width;
+    let v_bottom: i64 = v_top +% v_height;
+    let n_right: i64 = n_left +% n_width;
+    let n_bottom: i64 = n_top +% n_height;
+    return (v_left <= n_left) && (n_right <= v_right) && (v_top <= n_top) && (n_bottom <= v_bottom);
+}
+
+fn confidence_band(confidence: i64) -> (result: i64) {
+    if confidence >= 80 {
+        return 2;
+    }
+    if confidence >= 50 {
+        return 1;
+    }
+    return 0;
+}
+
+fn focus_moved(old_left: i64, old_top: i64, new_left: i64, new_top: i64) -> (result: bool) {
+    if old_left == new_left {
+        return old_top != new_top;
+    }
+    return true;
+}
+
+// A pure move: exactly one moved node, nothing appeared, disappeared, or
+// changed shape. Focus fields carry the displacement.
+fn delta_is_move(appeared: i64, disappeared: i64, moved: i64, changed: i64, unchanged: i64) -> (result: bool)
+    metamorphic prop_move_has_position_change
+{
+    if moved == 1 {
+        if appeared == 0 {
+            if disappeared == 0 {
+                if changed == 0 {
+                    return unchanged == 0;
+                }
+            }
+        }
+        return false;
+    }
+    return false;
+}
+
+// A quiet frame: nothing appeared, disappeared, moved, or changed.
+fn delta_is_quiet(appeared: i64, disappeared: i64, moved: i64, changed: i64, unchanged: i64) -> (result: bool) {
+    if appeared == 0 {
+        if disappeared == 0 {
+            if moved == 0 {
+                if changed == 0 {
+                    return unchanged >= 1;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// A reported move must displace the focus point; otherwise the observer and
+// the delta disagree and the agent must distrust the focus fields.
+fn prop_move_has_position_change(moved: i64, old_left: i64, old_top: i64, new_left: i64, new_top: i64) -> (result: bool) {
+    if moved == 1 {
+        return focus_moved(old_left, old_top, new_left, new_top);
+    }
+    return true;
+}

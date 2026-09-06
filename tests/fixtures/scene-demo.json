@@ -1,0 +1,40 @@
+{
+ "schema_version": "mncs-atlas.scene-graph/1",
+ "frame": 1,
+ "provenance": {
+  "observer": "mncs.core.vision.v1 observe/track/scene_delta (threshold 16)",
+  "renderer": "mncs.core.image.v1 render_rect_outline A=(1,1,6,5) B=(2,1,7,5) fg=255 bg=0",
+  "backend": "mncs-portable-wasm-mvp",
+  "note": "every pixel and record produced by MNCS execution; Python only chained experiment runs"
+ },
+ "nodes": [
+  {
+   "id": 0,
+   "kind": "rectangle",
+   "left": 1,
+   "top": 0,
+   "width": 7,
+   "height": 6,
+   "confidence": 100
+  }
+ ],
+ "delta": {
+  "appeared": 0,
+  "disappeared": 0,
+  "moved": 1,
+  "changed": 0,
+  "unchanged": 0,
+  "has_focus": true,
+  "focus_id": 0,
+  "focus_old_left": 0,
+  "focus_old_top": 0,
+  "focus_new_left": 1,
+  "focus_new_top": 0
+ },
+ "sizes": {
+  "raw_frame_pixels": 64,
+  "raw_frame_note": "8x8 grayscale bytes (binary); two frames = 128 bytes",
+  "scene_json": 108,
+  "delta_json": 191
+ }
+}

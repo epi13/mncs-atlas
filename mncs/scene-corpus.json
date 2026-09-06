@@ -1,0 +1,1242 @@
+{
+  "schema_version": "0.1",
+  "name": "scene-abi-v1",
+  "cases": [
+    {
+      "id": "area-demo",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rect_area"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 42,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "area-zero",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rect_area"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 0,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "match-same",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "node_matches"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "match-other",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "node_matches"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 1,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "overlap-demo",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rects_overlap"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 1,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "overlap-disjoint",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rects_overlap"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 5,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 5,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "overlap-touching",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rects_overlap"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "overlap-zero-area",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "rects_overlap"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "viewport-demo",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "viewport_contains"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 8,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 8,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "viewport-outside",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "viewport_contains"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 4,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 4,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 7,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 6,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "band-certain",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "confidence_band"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 100,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 2,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "band-firm",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "confidence_band"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 60,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 1,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "band-low",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "confidence_band"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 20,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 0,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "band-zero",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "confidence_band"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "integer": {
+            "value": 0,
+            "type": {
+              "bits": 64,
+              "signed": true
+            }
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "delta-demo-is-move",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "delta_is_move"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 1,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "delta-demo-not-quiet",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "delta_is_quiet"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 1,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "delta-quiet",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "delta_is_quiet"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 3,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "delta-quiet-not-move",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "delta_is_move"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 3,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "focus-demo-moved",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "focus_moved"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 1,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 0,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": true
+          }
+        }
+      ],
+      "expected_status": "returned"
+    },
+    {
+      "id": "focus-same",
+      "request": {
+        "schema_version": "0.1",
+        "target": {
+          "module": "mncs_atlas.scene_graph",
+          "function": "focus_moved"
+        },
+        "arguments": [
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 3,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 2,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          },
+          {
+            "integer": {
+              "value": 3,
+              "type": {
+                "bits": 64,
+                "signed": true
+              }
+            }
+          }
+        ],
+        "step_budget": 16384
+      },
+      "expected": [
+        {
+          "boolean": {
+            "value": false
+          }
+        }
+      ],
+      "expected_status": "returned"
+    }
+  ]
+}
