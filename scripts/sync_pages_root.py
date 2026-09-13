@@ -12,8 +12,10 @@ SITE = ROOT / "site"
 MIRROR_PATHS = (
     "index.html",
     "experimental-atlas.html",
+    "registry.html",
     "404.html",
     "atlas.json",
+    "registry.json",
     "admission.json",
     "robots.txt",
     "sitemap.xml",
@@ -28,6 +30,7 @@ MIRROR_PATHS = (
     "assets/journal.css",
     "schema/atlas.schema.json",
     "schema/admission.schema.json",
+    "schema/registry.schema.json",
 )
 
 MIRROR_TREES = (

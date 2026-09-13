@@ -8,6 +8,15 @@
   "canonical_human_guide": "https://epi13.github.io/mncs-atlas/",
   "canonical_repository": "https://github.com/epi13/mncs-atlas",
   "schema": "https://epi13.github.io/mncs-atlas/schema/atlas.schema.json",
+  "machine_registry": {
+    "document": "registry.json",
+    "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
+    "authority": "architecture-and-ownership-graph",
+    "registry_revision": "4655ddbb75c0d9ba",
+    "registry_hash": "4655ddbb75c0d9ba54b4e9ea09e11fe931b2577ab88444507aab7a04e9c1557a",
+    "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
+    "purpose": "Validated family-wide project, capability, ownership, dependency, and decision graph for targeted machine queries."
+  },
   "documentation": {
     "architecture": "https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md",
     "operating_model": "https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md",

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
+  "title": "MNCS Atlas compiled family registry",
+  "description": "Deterministic, non-normative architecture and ownership graph compiled by Atlas.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "registry_id", "authority", "source_contracts", "projects", "capabilities", "decisions", "edges", "exclusions", "source_digests", "registry_hash", "registry_revision"],
+  "properties": {
+    "schema_version": {"const": "mncs-atlas.family-registry/v1"},
+    "registry_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+    "authority": {"type": "object", "required": ["kind", "does_not_create", "note"], "additionalProperties": false, "properties": {"kind": {"const": "architecture-and-ownership-graph"}, "does_not_create": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "note": {"type": "string", "minLength": 1}}},
+    "source_contracts": {"type": "object", "required": ["repository_manifest", "commons"], "additionalProperties": false, "properties": {"repository_manifest": {"const": "mncs-family.repository-manifest/v0alpha1"}, "commons": {"type": "string", "minLength": 1}}},
+    "projects": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/project"}},
+    "capabilities": {"type": "array", "items": {"$ref": "#/$defs/capability"}},
+    "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}},
+    "exclusions": {"type": "array", "items": {"type": "object"}},
+    "source_digests": {"type": "object"},
+    "registry_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "registry_revision": {"type": "string", "pattern": "^[0-9a-f]{16}$"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
+    "project": {"type": "object", "required": ["id", "name", "repository", "role", "category", "lifecycle", "authority_class", "responsibility", "non_goals", "dependencies", "checkout_names", "aliases", "manifest"], "properties": {"id": {"$ref": "#/$defs/id"}, "name": {"type": "string"}, "repository": {"type": "string", "format": "uri"}, "role": {"type": "string"}, "category": {"type": "string"}, "lifecycle": {"enum": ["active", "incubating", "experimental", "orientation", "deprecated", "retired"]}, "authority_class": {"type": "string"}, "responsibility": {"type": "string"}, "non_goals": {"type": "array", "items": {"type": "string"}}, "language_profile": {"type": ["string", "null"]}, "dependencies": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "checkout_names": {"type": "array", "items": {"type": "string"}}, "aliases": {"type": "array", "items": {"type": "string"}}, "manifest": {"type": ["object", "null"]}}, "additionalProperties": true},
+    "capability": {"type": "object", "required": ["id", "name", "description", "ownership", "canonical_authority", "claims", "non_goals"], "properties": {"id": {"$ref": "#/$defs/id"}, "name": {"type": "string"}, "description": {"type": "string"}, "ownership": {"enum": ["exclusive", "shared"]}, "canonical_authority": {"type": ["string", "null"]}, "claims": {"type": "array", "items": {"type": "object"}}, "non_goals": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+    "decision": {"type": "object", "required": ["id", "title", "owner", "source", "status", "affected_capabilities", "affected_projects", "supersedes", "summary"], "properties": {"id": {"type": "string", "minLength": 1}, "title": {"type": "string"}, "owner": {"$ref": "#/$defs/id"}, "source": {"type": "object"}, "status": {"type": "string"}, "affected_capabilities": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "affected_projects": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "supersedes": {"type": ["string", "null"]}, "summary": {"type": "string"}}, "additionalProperties": false},
+    "edge": {"type": "object", "required": ["from", "to", "kind", "description", "evidence"], "additionalProperties": false, "properties": {"from": {"type": "string", "minLength": 1}, "to": {"type": "string", "minLength": 1}, "kind": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}, "evidence": {"type": "array", "items": {"type": "string"}}}}
+  }
+}

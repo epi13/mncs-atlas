@@ -1,0 +1,136 @@
+# MNCS Family Registry
+
+Atlas now has two related machine surfaces:
+
+- `site/atlas.json` remains the small, non-normative human-orientation map.
+- `registry/compiled.json` is the deterministic family architecture graph.
+
+The compiled registry is built from three Atlas-owned, family-level inputs and
+compact repository manifests:
+
+```text
+repository .mncs/project.json files
+        + pinned snapshots of the MNCS family-manifest contract
+        + Atlas ownership claims and decision index
+                         |
+                         v
+               registry/compiled.json
+                         |
+                 local Atlas queries
+```
+
+The repository-manifest input is the existing
+`mncs-family.repository-manifest/v0alpha1` contract owned by the MNCS standard.
+Atlas does not change its semantics. Projects may adopt the same document at
+`.mncs/project.json`; until then Atlas can consume a pinned snapshot from the
+standard checkout. A local manifest wins over the snapshot for that project,
+and the compiled output records whether the source was local or pinned.
+
+## Querying
+
+Run from the Atlas checkout:
+
+```bash
+python -m registry context .
+python -m registry project mncs-ingest
+python -m registry owner source-migration
+python -m registry capability parsing
+python -m registry find "schema validation"
+python -m registry related mncs-compiler
+python -m registry decisions AST
+python -m registry status numeric-primitives
+python -m registry validate
+python -m registry validate --fresh
+```
+
+`context` is the intended agent preflight surface. It identifies the current
+repository by `.mncs/project.json` first and by a registered checkout name as a
+fallback. Its default text output is deliberately compact; `--json` returns
+the versioned `mncs-atlas.context-capsule/v1` object.
+
+## Ownership semantics
+
+Capability claims distinguish `canonical-authority`,
+`primary-implementation`, `secondary-implementation`, `consumer`,
+`experimental-implementation`, and `integration-layer`. A capability can be
+shared, but an `exclusive` capability must have exactly one canonical
+authority. A claim is an Atlas architectural declaration backed by an
+inspectable source reference; it is not a conformance or promotion decision.
+
+The graph also carries `depends_on`, `provides`, `consumes`, `canonical_for`,
+`implements`, `experiments_with`, `governs`, `applies_to`, `owned_by`, and
+`supersedes` edges. Contract edges are normalized through explicit aliases so
+the historical central manifest names `mncs-control` and `mncs-forge` do not
+collapse the actual `mncs-control` dynamics repository into the
+`mncs-control-mcp` operator project.
+
+## Build, sync, and caching
+
+```bash
+python -m registry build
+python -m registry validate
+python -m registry sync --standard-root ../machine-native-complexity-standard
+python -m registry build --workspace-root ../mncs-harness
+```
+
+`registry/compiled.json` contains no clock-generated fields. Its registry hash
+is SHA-256 over the canonical normalized content; the first 16 hex digits are
+the compact registry revision. Source digests make stale local rebuilds
+detectable. `validate --fresh` compares the checked-in artifact with a rebuild
+of the current Atlas inputs and returns `STALE` with both revisions when the
+cache needs regeneration. Agents use the checked-in artifact for normal
+lookups and do not need network access. `sync` is the explicit refresh
+operation for the pinned standard-manifest snapshot.
+
+Workspace discovery is opt-in to preserve reproducibility: a build with
+`--workspace-root` deliberately incorporates local manifests, while the
+default build uses the pinned snapshot plus Atlas's own local manifest.
+
+The eight current adoption pilots in the workspace use this opt-in check:
+
+```bash
+python -m registry build --output /tmp/mncs-family-local.json \
+  --workspace-root ../mncs-numerics --workspace-root ../mncs-ingest \
+  --workspace-root ../mncs-store --workspace-root ../mncs-index \
+  --workspace-root ../mncs-compiler --workspace-root ../mncs-harness \
+  --workspace-root ../mncs-language-service --workspace-root ../RAVEL
+```
+
+## Boundaries
+
+Atlas owns the architecture graph and context projection. Commons remains the
+future source for unresolved family pressure; this registry contains no
+pressure records and pins no Commons pressure schema. Doctor owns migration,
+repair, and conformance work for an individual repository. Forge, Harness,
+Fabric, and the language/compiler repositories retain their own execution,
+assurance, routing, and semantic authorities.
+
+Future Forge/Harness integration should run:
+
+```text
+mncs-atlas context <workspace>
+```
+
+once at agent entry, inject the text capsule into the task preflight, and use
+the JSON commands only for targeted follow-up. The caller should preserve
+`UNKNOWN` when the registry is stale, missing, or cannot identify a project.
+
+## Current `mncs-lang` boundary
+
+Atlas's executable MNCS sources and WASM lock are now on Source Profile 0.16,
+the current producer revision declared by `mncs/mncs-language.lock.json`.
+The bounded MNCS/WASM model owns the typed JSON cursor, source-profile
+semantics, and render-plan projection used by the human site. The registry
+compiler remains a small Python build/query tool because it needs unbounded
+repository traversal, host filesystem access, dynamic JSON maps, SHA-256, and
+CLI/process I/O that the current bounded profile intentionally does not claim.
+It does not reimplement sibling project semantics: catalog and capability
+claims are normalized records, while each repository keeps its own contracts
+and implementation authority.
+
+This workload identified pressures locally, without writing Commons records:
+dynamic graph collections, filesystem discovery, and structured diagnostics are
+useful future language/runtime work; they are not required to make the current
+bounded native Atlas model sound. The pressure list is deliberately kept in
+this campaign documentation until the active Commons coordination work is
+ready to reconcile it.

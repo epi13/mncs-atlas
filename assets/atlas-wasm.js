@@ -53,6 +53,25 @@ function prepareMemory(memory) {
   return memory;
 }
 
+// Current mncs-lang exports module-qualified symbols so independently named
+// functions cannot collide when modules are linked together. Keep Atlas's
+// stable logical ABI names at this host boundary while accepting both the
+// legacy short spelling and the qualified 0.16 spelling.
+function functionExport(exports, logicalName) {
+  if (typeof exports[logicalName] === "function") return exports[logicalName];
+  const escaped = logicalName.replaceAll("_", "__");
+  const suffix = "__" + escaped;
+  const matches = Object.keys(exports).filter(
+    (name) => name.endsWith(suffix) && typeof exports[name] === "function",
+  );
+  if (matches.length !== 1) {
+    throw new Error(
+      "The MNCS/WASM artifact does not expose a unique " + logicalName + " function",
+    );
+  }
+  return exports[matches[0]];
+}
+
 function hostBuffer(exports, memory, capacity) {
   if (typeof exports.mncs_host_buffer !== "function") {
     throw new Error("The MNCS/WASM artifact did not export the host-buffer ABI");
@@ -80,13 +99,16 @@ function scanAtlas(instance, atlasBytes) {
   const exports = instance.exports;
   const memory = prepareMemory(exports.memory);
   const host = hostBuffer(exports, memory, CHUNK_BYTES);
-  let state = exports.atlas_scan_init();
-  forEachChunk(atlasBytes, (chunk) => {
-    new Uint8Array(memory.buffer).set(chunk, host.offset);
-    state = exports.atlas_scan_chunk(state, descriptor(host.offset, chunk.length));
+  const init = functionExport(exports, "atlas_scan_init");
+  const feed = functionExport(exports, "atlas_scan_chunk");
+  const finish = functionExport(exports, "atlas_scan_finish");
+  let state = init();
+  forEachChunk(atlasBytes, (chunkBytes) => {
+    new Uint8Array(memory.buffer).set(chunkBytes, host.offset);
+    state = feed(state, descriptor(host.offset, chunkBytes.length));
     exports.mncs_host_buffer_reset();
   });
-  return Number(exports.atlas_scan_finish(state));
+  return Number(finish(state));
 }
 
 function modelAtlas(instance, atlasBytes) {
@@ -96,17 +118,21 @@ function modelAtlas(instance, atlasBytes) {
   const exports = instance.exports;
   const memory = prepareMemory(exports.memory);
   const host = hostBuffer(exports, memory, CHUNK_BYTES);
-  let state = exports.atlas_model_init();
-  forEachChunk(atlasBytes, (chunk) => {
-    new Uint8Array(memory.buffer).set(chunk, host.offset);
-    state = exports.atlas_model_chunk(state, descriptor(host.offset, chunk.length));
+  const init = functionExport(exports, "atlas_model_init");
+  const feed = functionExport(exports, "atlas_model_chunk");
+  const finish = functionExport(exports, "atlas_model_finish");
+  const render = functionExport(exports, "atlas_render");
+  let state = init();
+  forEachChunk(atlasBytes, (chunkBytes) => {
+    new Uint8Array(memory.buffer).set(chunkBytes, host.offset);
+    state = feed(state, descriptor(host.offset, chunkBytes.length));
   });
   return {
     exports,
     memory,
     state,
-    model: exports.atlas_model_finish(state),
-    plan: exports.atlas_render(state),
+    model: finish(state),
+    plan: render(state),
   };
 }
 

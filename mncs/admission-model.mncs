@@ -1,4 +1,4 @@
-mncs 0.10;
+mncs 0.16;
 
 // Admission and capability-broker shapes for MNCS Atlas.
 // Orientation data only: Atlas grants entry, not trust. Authority stays

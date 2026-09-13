@@ -1,4 +1,4 @@
-mncs 0.10;
+mncs 0.16;
 
 // Experimental Atlas adapter: schema-shaped projections over atlas.json.
 // Selector meanings are data-shape questions, not a JavaScript parser:

@@ -47,10 +47,13 @@ site/                    canonical dependency-free GitHub Pages source
   index.html             overview, entry points, architecture, runtime, projects
   404.html               project-aware not-found page
   atlas.json             machine-readable family + operator orientation map
+  registry.json          generated compiled family architecture/ownership graph
+  registry.html          generated human view of the compiled registry
   robots.txt             crawler guidance
   sitemap.xml            public Pages sitemap
   schema/
     atlas.schema.json     machine-readable Atlas shape
+    registry.schema.json  compiled family registry shape
   assets/
 index.html                generated root compatibility mirror of site/index.html
 404.html                  generated root compatibility mirror of site/404.html
@@ -61,6 +64,7 @@ schema/                   generated root compatibility mirror of site/schema/
 assets/                   generated root compatibility mirror of site/assets/
 .nojekyll                 disables legacy Jekyll rendering when Pages uses main:/
 docs/
+  REGISTRY.md             manifest, graph, ownership, query, cache, and agent capsule contract
   ARCHITECTURE.md         family-level authority and responsibility map
   OPERATING_MODEL.md      reference operator/runtime path and lifecycle ownership
   PROJECTS.md             project directory and responsibility boundaries
@@ -115,7 +119,26 @@ That distinction prevents protected remote control, model routing, persistent ex
 
 ## Machine-readable Atlas
 
-`site/atlas.json` is a non-normative orientation surface for agents and tooling. Version 0.3 adds:
+`site/atlas.json` is a non-normative human-orientation surface. The compiled
+`site/registry.json` is the machine-oriented family architecture graph: it
+indexes projects, capabilities, ownership roles, dependencies, contracts,
+decisions, exclusions, source digests, and a deterministic revision/hash. Use
+the source-checkout CLI for targeted access:
+
+```bash
+python -m registry context .
+python -m registry owner source-migration
+python -m registry decisions AST
+python -m registry validate --fresh
+```
+
+Repository-owned `.mncs/project.json` manifests use the existing
+`mncs-family.repository-manifest/v0alpha1` contract. The checked-in snapshot
+keeps normal queries local and network-free; `--workspace-root` opts into
+fresh sibling-manifest discovery. Full format and ownership semantics are in
+[the registry contract](docs/REGISTRY.md).
+
+The orientation map still provides:
 
 - `mncs-rights-provenance` as an official Incubating family project;
 - explicit `authority_class` metadata separate from maturity;
@@ -156,6 +179,9 @@ owning subsystem; Atlas itself owns only orientation data.
 - [Contributing](CONTRIBUTING.md)
 - [Machine-readable Atlas](site/atlas.json)
 - [Atlas schema](site/schema/atlas.schema.json)
+- [Compiled family registry](site/registry.json)
+- [Registry schema](site/schema/registry.schema.json)
+- [Family registry contract](docs/REGISTRY.md)
 - [Atlas MNCS/WASM conversion record](docs/ATLAS-WASM-MIGRATION.md)
 - [MNCS browser host boundary](docs/MNCS-BROWSER-HOST.md)
 

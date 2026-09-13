@@ -1,8 +1,8 @@
 {
   "schema_version": "0.1",
   "repository": "https://github.com/epi13/mncs-language",
-  "revision": "25e60cd656c5cdd3a411fa542a350459aa73c65d",
+  "revision": "f9d790b62d6db14cb7a281ec3c3bf09df7bd6bb6",
   "backend": "mncs-portable-wasm-mvp",
-  "source_profile": "0.10",
+  "source_profile": "0.16",
   "purpose": "Pinned producer revision for deterministic Atlas WASM regeneration"
 }

@@ -140,11 +140,18 @@ class AtlasWasmTests(unittest.TestCase):
 import { readFile } from "node:fs/promises";
 const bytes = await readFile(process.argv[2]);
 const { instance } = await WebAssembly.instantiate(bytes, {});
+const fn = (name) => {
+  if (typeof instance.exports[name] === "function") return instance.exports[name];
+  const suffix = "__" + name.replaceAll("_", "__");
+  const matches = Object.keys(instance.exports).filter((key) => key.endsWith(suffix) && typeof instance.exports[key] === "function");
+  if (matches.length !== 1) throw new Error(`missing unique ${name} export`);
+  return instance.exports[matches[0]];
+};
 const input = new TextEncoder().encode('{"projects":[{"maturity":"experimental"}]}');
 const packed = instance.exports.mncs_host_buffer(input.length);
 const offset = Number(packed & 0xffffffffn);
 new Uint8Array(instance.exports.memory.buffer).set(input, offset);
-const result = instance.exports.atlas_model_probe((BigInt(input.length) << 32n) | BigInt(offset));
+const result = fn("atlas_model_probe")((BigInt(input.length) << 32n) | BigInt(offset));
 if (result !== 1001n) process.exit(1);
 console.log("node-wasm-ok");
 """
@@ -165,17 +172,27 @@ const wasm = await readFile(process.argv[2]);
 const atlas = await readFile(process.argv[3]);
 const { instance } = await WebAssembly.instantiate(wasm, {});
 const e = instance.exports;
+const fn = (name) => {
+  if (typeof e[name] === "function") return e[name];
+  const suffix = "__" + name.replaceAll("_", "__");
+  const matches = Object.keys(e).filter((key) => key.endsWith(suffix) && typeof e[key] === "function");
+  if (matches.length !== 1) throw new Error(`missing unique ${name} export`);
+  return e[matches[0]];
+};
 const memory = e.memory;
 const descriptor = (offset, length) => (BigInt(length) << 32n) | BigInt(offset);
 const packed = e.mncs_host_buffer(64);
 const offset = Number(packed & 0xffffffffn);
-let state = e.atlas_model_init();
+const init = fn("atlas_model_init");
+const feed = fn("atlas_model_chunk");
+const render = fn("atlas_render");
+let state = init();
 for (let index = 0; index < atlas.length; index += 64) {
   const chunk = atlas.subarray(index, index + 64);
   new Uint8Array(memory.buffer).set(chunk, offset);
-  state = e.atlas_model_chunk(state, descriptor(offset, chunk.length));
+  state = feed(state, descriptor(offset, chunk.length));
 }
-const plan = e.atlas_render(state);
+const plan = render(state);
 const view = new DataView(memory.buffer);
 const u32 = (address) => view.getUint32(address, true);
 const u64 = (address) => Number(view.getBigUint64(address, true));
