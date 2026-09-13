@@ -149,11 +149,15 @@ investigation:
 | --- | --- | --- |
 | [`MNCS-LANG-4F3798658F55`](https://github.com/epi13/MNCS-Commons/blob/main/pressures/records/MNCS-LANG-4F3798658F55.json) — nested cell address normalization | resolved | `mncs-language` `f527b49` |
 | [`MNCS-LANG-4219A56741DB`](https://github.com/epi13/MNCS-Commons/blob/main/pressures/records/MNCS-LANG-4219A56741DB.json) — packed bounded view lifetime | resolved | `mncs-language` `f9d790b` |
+| [`MNCS-LANG-59894A2D6A3D`](https://github.com/epi13/MNCS-Commons/blob/main/pressures/records/MNCS-LANG-59894A2D6A3D.json) — source-level function/export contract resolution | resolved | `mncs-harness` `512af42` |
 
 Commons preserves the pre-fix reproductions, current verification from both
 the language owner and Atlas, and the lifecycle events. See the local
 [Atlas backend evidence](development-evidence/atlas-wasm-backend-2026-09.md)
-for the consumer-facing explanation. Remaining language limitations around
+for the consumer-facing explanation. The Harness artifact-contract pressure
+is documented in its
+[`language-pressure.md`](https://github.com/epi13/mncs-harness/blob/main/docs/language-pressure.md)
+ledger. Remaining language limitations around
 unbounded filesystem discovery, dynamic maps, hashing, and process I/O stay
 documented as deferred pressures until they receive their own reproducible
 records.
