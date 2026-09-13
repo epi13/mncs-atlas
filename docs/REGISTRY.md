@@ -141,9 +141,10 @@ and implementation authority.
 
 ## Pressure records from the Atlas workload
 
-The two concrete backend pressures exposed while bringing Atlas to profile
-`0.16` are now recorded in Commons and linked to their human-readable
-investigation:
+The direct Atlas WASM workload exposed two concrete backend pressures while
+bringing Atlas to profile `0.16`; the related current-compiler Harness refresh
+exposed a third artifact-contract pressure. All three are now recorded in
+Commons and linked to human-readable investigations:
 
 | Pressure | Status | Implementation |
 | --- | --- | --- |
