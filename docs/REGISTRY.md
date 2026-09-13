@@ -98,12 +98,13 @@ python -m registry build --output /tmp/mncs-family-local.json \
 
 ## Boundaries
 
-Atlas owns the architecture graph and context projection. Commons remains the
-future source for unresolved family pressure; this registry contains no
-pressure records and pins no Commons pressure schema. Doctor owns migration,
-repair, and conformance work for an individual repository. Forge, Harness,
-Fabric, and the language/compiler repositories retain their own execution,
-assurance, routing, and semantic authorities.
+Atlas owns the architecture graph and context projection. Commons owns
+unresolved family pressure and its append-only evidence/lifecycle exchange;
+Atlas records only stable architecture relationships and links to pressure
+records when a campaign exposes them. Doctor owns migration, repair, and
+conformance work for an individual repository. Forge, Harness, Fabric, and
+the language/compiler repositories retain their own execution, assurance,
+routing, and semantic authorities.
 
 Future Forge/Harness integration should run:
 
@@ -128,9 +129,21 @@ It does not reimplement sibling project semantics: catalog and capability
 claims are normalized records, while each repository keeps its own contracts
 and implementation authority.
 
-This workload identified pressures locally, without writing Commons records:
-dynamic graph collections, filesystem discovery, and structured diagnostics are
-useful future language/runtime work; they are not required to make the current
-bounded native Atlas model sound. The pressure list is deliberately kept in
-this campaign documentation until the active Commons coordination work is
-ready to reconcile it.
+## Pressure records from the Atlas workload
+
+The two concrete backend pressures exposed while bringing Atlas to profile
+`0.16` are now recorded in Commons and linked to their human-readable
+investigation:
+
+| Pressure | Status | Implementation |
+| --- | --- | --- |
+| [`MNCS-LANG-4F3798658F55`](https://github.com/epi13/MNCS-Commons/blob/main/pressures/records/MNCS-LANG-4F3798658F55.json) — nested cell address normalization | resolved | `mncs-language` `f527b49` |
+| [`MNCS-LANG-4219A56741DB`](https://github.com/epi13/MNCS-Commons/blob/main/pressures/records/MNCS-LANG-4219A56741DB.json) — packed bounded view lifetime | resolved | `mncs-language` `f9d790b` |
+
+Commons preserves the pre-fix reproductions, current verification from both
+the language owner and Atlas, and the lifecycle events. See the local
+[Atlas backend evidence](development-evidence/atlas-wasm-backend-2026-09.md)
+for the consumer-facing explanation. Remaining language limitations around
+unbounded filesystem discovery, dynamic maps, hashing, and process I/O stay
+documented as deferred pressures until they receive their own reproducible
+records.
