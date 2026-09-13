@@ -16,7 +16,22 @@ Do not infer family architecture from repository names alone. Establish the owni
 6. If the change crosses a boundary, read the adjacent project's public contract before modifying either side.
 7. Preserve evidence, lifecycle, and authority semantics in code, documentation, tests, and prompts.
 
-For automated discovery, [site/atlas.json](site/atlas.json) provides a compact machine-readable family map with stable component IDs, operator components, relationships, and task entry points. Its schema is [site/schema/atlas.schema.json](site/schema/atlas.schema.json). Both are orientation-only and never outrank the owning project's current documentation or specifications.
+For automated discovery, run the compiled registry preflight first:
+
+```bash
+python -m registry context .
+```
+
+It emits the versioned, few-hundred-token `mncs-atlas.context-capsule/v1`
+surface with the current project, ownership, nearby projects, dependencies,
+and relevant decisions. Use `owner`, `capability`, `related`, `decisions`, and
+`find` for targeted follow-up; use `validate --fresh` when the cache may be
+stale. The published equivalent is [site/registry.json](site/registry.json),
+whose schema is [site/schema/registry.schema.json](site/schema/registry.schema.json).
+The older [site/atlas.json](site/atlas.json) remains the small human and
+operator-orientation map; its schema is [site/schema/atlas.schema.json](site/schema/atlas.schema.json).
+All Atlas surfaces are non-normative and never outrank the owning project's
+current documentation or specifications.
 
 For participant admission and capability brokerage, continue into [site/admission.json](site/admission.json) (schema: [site/schema/admission.schema.json](site/schema/admission.schema.json), contract: [docs/ADMISSION.md](docs/ADMISSION.md)). Establish a session (`OUTSIDE → KNOWN → ADMITTED → SCOPED`), query capabilities through the `admission/` broker, and follow `conformant_path` on denial. Atlas grants entry, not trust: every decision names its owning subsystem.
 

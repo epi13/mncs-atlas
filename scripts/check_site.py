@@ -17,8 +17,10 @@ CANONICAL_URL = "https://epi13.github.io/mncs-atlas/"
 MIRROR_PATHS = (
     "index.html",
     "experimental-atlas.html",
+    "registry.html",
     "404.html",
     "atlas.json",
+    "registry.json",
     "admission.json",
     "robots.txt",
     "sitemap.xml",
@@ -32,6 +34,7 @@ MIRROR_PATHS = (
     "assets/journal.css",
     "schema/atlas.schema.json",
     "schema/admission.schema.json",
+    "schema/registry.schema.json",
 )
 MIRROR_TREES = ("journal", "journal-events")
 MIRRORS = {SITE / relative: ROOT / relative for relative in MIRROR_PATHS}
@@ -87,6 +90,19 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
         errors.append("site/atlas.json is missing schema_version")
     if atlas.get("canonical_human_guide") != CANONICAL_URL:
         errors.append("site/atlas.json canonical_human_guide does not match the Pages URL")
+
+    machine_registry = atlas.get("machine_registry")
+    if not isinstance(machine_registry, dict):
+        errors.append("site/atlas.json must define a machine_registry pointer")
+    else:
+        if machine_registry.get("document") != "registry.json":
+            errors.append("site/atlas.json machine_registry.document must point to registry.json")
+        if machine_registry.get("schema") != f"{CANONICAL_URL}schema/registry.schema.json":
+            errors.append("site/atlas.json machine_registry.schema has an unexpected URL")
+        if machine_registry.get("authority") != "architecture-and-ownership-graph":
+            errors.append("site/atlas.json machine_registry.authority is contradictory")
+        if not machine_registry.get("query_interface"):
+            errors.append("site/atlas.json machine_registry.query_interface is missing")
 
     maturity_model = atlas.get("maturity_model")
     if not isinstance(maturity_model, dict):
@@ -398,6 +414,42 @@ def check_wasm_manifest(manifest: object, errors: list[str]) -> None:
             errors.append(f"WASM manifest entry {name} is missing compiler identity")
 
 
+def check_registry(registry: object, atlas: object, errors: list[str]) -> None:
+    """Check the published compiled registry without importing Atlas code."""
+
+    if not isinstance(registry, dict):
+        errors.append("site/registry.json must contain a JSON object")
+        return
+    if registry.get("schema_version") != "mncs-atlas.family-registry/v1":
+        errors.append("site/registry.json has an unsupported schema_version")
+        return
+    registry_hash = registry.get("registry_hash")
+    if not isinstance(registry_hash, str) or len(registry_hash) != 64:
+        errors.append("site/registry.json must declare a SHA-256 registry_hash")
+    else:
+        body = {key: value for key, value in registry.items() if key not in {"registry_hash", "registry_revision"}}
+        actual = hashlib.sha256(
+            json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        if actual != registry_hash:
+            errors.append("site/registry.json registry_hash does not match canonical content")
+    if not isinstance(registry.get("registry_revision"), str) or registry.get("registry_revision") != str(registry_hash)[:16]:
+        errors.append("site/registry.json registry_revision does not match registry_hash")
+    if not isinstance(registry.get("projects"), list) or not registry["projects"]:
+        errors.append("site/registry.json projects must be a non-empty list")
+    if not isinstance(registry.get("capabilities"), list) or not registry["capabilities"]:
+        errors.append("site/registry.json capabilities must be a non-empty list")
+    if not isinstance(registry.get("edges"), list) or not registry["edges"]:
+        errors.append("site/registry.json edges must be a non-empty list")
+    if isinstance(atlas, dict):
+        pointer = atlas.get("machine_registry")
+        if isinstance(pointer, dict):
+            if pointer.get("registry_revision") != registry.get("registry_revision"):
+                errors.append("site/atlas.json machine_registry.registry_revision drifts from site/registry.json")
+            if pointer.get("registry_hash") != registry.get("registry_hash"):
+                errors.append("site/atlas.json machine_registry.registry_hash drifts from site/registry.json")
+
+
 def check() -> list[str]:
     errors: list[str] = []
     html_files = sorted(SITE.rglob("*.html"))
@@ -443,10 +495,17 @@ def check() -> list[str]:
             errors.append(f"missing required site file: {path.relative_to(ROOT)}")
 
     atlas_path = SITE / "atlas.json"
+    atlas: object | None = None
     if atlas_path.is_file():
         atlas = load_json(atlas_path, errors)
         if atlas is not None:
             check_atlas(atlas, errors)
+
+    registry_path = SITE / "registry.json"
+    if registry_path.is_file():
+        registry = load_json(registry_path, errors)
+        if registry is not None:
+            check_registry(registry, atlas, errors)
 
     manifest_path = SITE / "assets" / "atlas-wasm-manifest.json"
     if manifest_path.is_file():

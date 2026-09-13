@@ -14,6 +14,7 @@
   <title>MNCS Atlas — Machine-Native Complexity Standard</title>
   <link rel="canonical" href="https://epi13.github.io/mncs-atlas/">
   <link rel="alternate" type="application/json" href="atlas.json" title="MNCS Atlas machine-readable map">
+  <link rel="alternate" type="application/json" href="registry.json" title="MNCS Atlas compiled family registry">
   <link rel="stylesheet" href="assets/styles.css">
   <script type="application/ld+json">
   {
@@ -168,10 +169,12 @@
             <span class="entry-index">09</span>
             <p class="project-type">For agents &amp; tooling</p>
             <h3>Load the family map programmatically</h3>
-            <p><code>atlas.json</code> exposes stable IDs, project roles, operator components, relationships, entry points, and freshness guidance.</p>
+            <p><code>registry.json</code> is the validated architecture and ownership graph. Use <code>atlas.json</code> for human orientation and the registry for compact targeted queries.</p>
             <div class="entry-links">
-              <a class="text-link" href="atlas.json">Open atlas.json ↗</a>
-              <a class="text-link" href="schema/atlas.schema.json">Schema ↗</a>
+              <a class="text-link" href="registry.json">Open registry.json ↗</a>
+              <a class="text-link" href="registry.html">Human registry view ↗</a>
+              <a class="text-link" href="schema/registry.schema.json">Registry schema ↗</a>
+              <a class="text-link" href="atlas.json">Human map ↗</a>
             </div>
           </article>
           <article class="entry-card machine-entry">
@@ -420,10 +423,10 @@
       </div>
 
       <div class="shell callout">
-        <div><p class="card-kicker">Machine orientation</p><h3>Building an agent or tool that needs to navigate MNCS?</h3><p>Start from <code>atlas.json</code> for stable IDs and relationships, then follow the owning project's current documentation before acting.</p></div>
+        <div><p class="card-kicker">Machine orientation</p><h3>Building an agent or tool that needs to navigate MNCS?</h3><p>Start from <code>registry.json</code> for ownership, capability, dependency, and decision lookups; use <code>atlas.json</code> for human orientation, then follow the owning project's current documentation before acting.</p></div>
         <div class="callout-actions">
-          <a class="button primary" href="atlas.json">Open atlas.json</a>
-          <a class="button ghost" href="schema/atlas.schema.json">Open schema</a>
+          <a class="button primary" href="registry.json">Open family registry</a>
+          <a class="button ghost" href="atlas.json">Open human map</a>
         </div>
       </div>
     </section>

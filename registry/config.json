@@ -1,0 +1,41 @@
+{
+  "schema_version": "mncs-atlas.registry-config/v1",
+  "registry_id": "mncs-family",
+  "current_language_profile": "0.16",
+  "project_aliases": {
+    "atlas": "mncs-atlas",
+    "commons": "mncs-commons",
+    "control": "mncs-control-mcp",
+    "fabric": "mncs-fabric",
+    "forge": "mncs-forge-mcp",
+    "mnel": "mnel",
+    "mncs-atlas": "mncs-atlas",
+    "mncs-commons": "mncs-commons",
+    "mncs-control-mcp": "mncs-control-mcp",
+    "mncs-forge-mcp": "mncs-forge-mcp",
+    "mncs-forge": "mncs-forge-mcp",
+    "ravel": "ravel",
+    "rust-validator": "mncs-validator-rs"
+  },
+  "central_manifest_aliases": {
+    "mncs-control": "mncs-control-mcp",
+    "mncs-forge": "mncs-forge-mcp"
+  },
+  "exclusions": [
+    {
+      "repository": "mncs-fabric-lazy-bundle",
+      "reason": "Distribution fixture and packaging companion; its runtime responsibility is owned by mncs-fabric.",
+      "revisit_when": "It declares an independently owned family contract."
+    },
+    {
+      "repository": "mncs-forge-mcp-b1-compat",
+      "reason": "Compatibility harness for an earlier Forge protocol; it is not a current family authority.",
+      "revisit_when": "It becomes a maintained provider with a distinct contract."
+    },
+    {
+      "repository": "workspace-related-but-unregistered",
+      "reason": "The controller workspace also contains independent applications, benchmarks, and tools without an MNCS family contract or authoritative family responsibility claim; they remain outside the formal registry until evidence supports inclusion.",
+      "examples": ["dSense", "dTree", "graphflow-agent-bench", "latentWalker", "scratchtrack", "gimp-local-mcp", "rgbmatrix_painter"]
+    }
+  ]
+}

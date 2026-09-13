@@ -1,0 +1,1637 @@
+{
+  "schema_version": "mncs-atlas.manifest-snapshot/v1",
+  "source": {
+    "repository": "machine-native-complexity-standard",
+    "path": "family/manifests",
+    "revision": "0735b9f721a1901f2291433ae0bf9193bf913222"
+  },
+  "manifests": [
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncds",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "development-record-schema",
+            "version": "0.1-rc.1",
+            "kind": "specification",
+            "stability": "stable",
+            "fingerprint_sources": [
+              "schemas/mncds-development-record-0.1.schema.json",
+              "conformance/"
+            ],
+            "consumers_declared": [
+              "mncs",
+              "mncs-validator-rs",
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "concept-experiment-bindings",
+            "version": "0.2-alpha",
+            "kind": "binding-doc",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "docs/concept-experiment-bindings.md"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs.normative-specification",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          }
+        ],
+        "tests": [
+          {
+            "test": "pytest",
+            "covers": [
+              "development-record-schema"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "timeout_seconds": 1200
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-atlas",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "family-map",
+            "version": "0.3",
+            "kind": "orientation-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "site/atlas.json",
+              "docs/PROJECTS.md"
+            ]
+          },
+          {
+            "contract": "terminology-index",
+            "version": "0.1",
+            "kind": "orientation-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "docs/TERMINOLOGY.md"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs.family-registry",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "notes": "Descriptive alignment; Atlas stays non-normative."
+          },
+          {
+            "contract": "mncs-control.journal-context",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          }
+        ],
+        "tests": [
+          {
+            "test": "ci-checks",
+            "covers": [
+              "family-map",
+              "terminology-index"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "scripts/check_site.py"
+              ],
+              "timeout_seconds": 600
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-commons",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "record-store-api",
+            "version": "0.5.0.dev1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_commons/store.py",
+              "src/mncs_commons/models.py",
+              "schemas/mncs-commons-v0alpha1.schema.json"
+            ],
+            "consumers_declared": [
+              "mncs-harness",
+              "mncs-control",
+              "mnel",
+              "ravel"
+            ]
+          },
+          {
+            "contract": "family-record-spine",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_commons/family.py",
+              "compat/family-record-producers.json",
+              "docs/FAMILY_RECORD_SPINE.md"
+            ],
+            "consumers_declared": [
+              "mncs-control",
+              "mncs-harness",
+              "mncs"
+            ]
+          },
+          {
+            "contract": "exchange-protocol",
+            "version": "0alpha1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mncs-commons-exchange-v0alpha1.schema.json"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.compiler-record",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          },
+          {
+            "contract": "mncs-fabric.family-execution-reference",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          },
+          {
+            "contract": "mncs-forge.concept-evaluation-record",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          },
+          {
+            "contract": "mncs-harness.actor-provenance",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false
+          }
+        ],
+        "tests": [
+          {
+            "test": "pytest",
+            "covers": [
+              "record-store-api",
+              "family-record-spine",
+              "exchange-protocol"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "pytest",
+                "-q"
+              ],
+              "timeout_seconds": 1800
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-control",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "concept-experiment-manifest",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_control_mcp/experiments.py"
+            ],
+            "consumers_declared": [
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "replication-pipeline",
+            "version": "0.4.10",
+            "kind": "service-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_control_mcp/replication.py"
+            ]
+          },
+          {
+            "contract": "journal-context",
+            "version": "1",
+            "kind": "projection-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_control_mcp/journal_context.py"
+            ],
+            "consumers_declared": [
+              "mncs-atlas"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-forge.concept-evaluation-record",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_control_mcp/adapters.py"
+            ]
+          },
+          {
+            "contract": "mncs-fabric.family-execution-reference",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_control_mcp/replication.py"
+            ]
+          },
+          {
+            "contract": "mncs-harness.actor-provenance",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_control_mcp/experiments.py"
+            ]
+          },
+          {
+            "contract": "mncs-language.cli-toolchain",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.5"
+            },
+            "required": true,
+            "evidence_refs": [
+              "control.toml",
+              "docs/EXPERIMENT-REPLICATION.md"
+            ]
+          },
+          {
+            "contract": "mncs-commons.family-record-spine",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_control_mcp/replication.py"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "pytest",
+            "covers": [
+              "concept-experiment-manifest",
+              "replication-pipeline",
+              "journal-context"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "pytest",
+                "-q"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-fabric",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "execution-plane",
+            "version": "0.2.0a31",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_fabric/models.py",
+              "src/mncs_fabric/receipts.py",
+              "schemas/"
+            ],
+            "consumers_declared": [
+              "mncs-harness",
+              "mnel",
+              "mncs-control",
+              "mncs-forge"
+            ],
+            "notes": "job-plan/artifact-manifest/execution-record/cohort-result v0.1 schema family under PROTOCOL_VERSION mncs-fabric.protocol.v0.1."
+          },
+          {
+            "contract": "family-execution-reference",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_fabric/receipts.py"
+            ],
+            "consumers_declared": [
+              "mncs-control",
+              "mncs-commons",
+              "mncs-forge"
+            ]
+          },
+          {
+            "contract": "public-controller-contract",
+            "version": "0.1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_fabric/contracts.py"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.cli-toolchain",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "notes": "Frozen-experiment packaging examples only."
+          },
+          {
+            "contract": "mncs-forge.forge-provider-protocol",
+            "envelope": {
+              "op": "exact",
+              "version": "0.1"
+            },
+            "required": false,
+            "evidence_refs": [
+              "mncs-forge.toml",
+              "scripts/forge_provider.py"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "unittest",
+            "covers": [
+              "execution-plane",
+              "family-execution-reference",
+              "public-controller-contract"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "tests",
+                "-v"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-forge",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "forge-provider-protocol",
+            "version": "0.1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "docs/provider-protocol.md"
+            ],
+            "consumers_declared": [
+              "mncs-language",
+              "mncs-lineage",
+              "ravel",
+              "mncs-reference-studies",
+              "mncs-fabric",
+              "mncs"
+            ]
+          },
+          {
+            "contract": "concept-evaluation-record",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_forge/concept_experiments.py"
+            ],
+            "consumers_declared": [
+              "mncs-control",
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "development-workflow-control",
+            "version": "0.3",
+            "kind": "config-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mncs-forge-config.schema.json"
+            ],
+            "consumers_declared": [
+              "mncs-language",
+              "ravel",
+              "mnel",
+              "mncs-lineage",
+              "mncs-fabric",
+              "mncs-reference-studies",
+              "mncs-commons",
+              "mncs"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.compiler-record",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_forge/compiler_evolution.py"
+            ]
+          },
+          {
+            "contract": "mncs-language.experiment-record",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_forge/compiler_evolution.py"
+            ]
+          },
+          {
+            "contract": "mncs-fabric.execution-plane",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.2.0a0"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_forge/fabric_execution.py"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "check-script",
+            "covers": [
+              "concept-evaluation-record",
+              "forge-provider-protocol",
+              "development-workflow-control"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                ".venv/bin/ruff",
+                "check",
+                "."
+              ],
+              "timeout_seconds": 600
+            }
+          },
+          {
+            "test": "pytest",
+            "covers": [
+              "concept-evaluation-record",
+              "forge-provider-protocol",
+              "development-workflow-control"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                ".venv/bin/pytest",
+                "-q"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-harness",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "actor-provenance",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/epi13_local_harness/actor_provenance.py"
+            ],
+            "consumers_declared": [
+              "mncs-control",
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "experiment-stack",
+            "version": "1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/epi13_local_harness/experiment_stack.py"
+            ]
+          },
+          {
+            "contract": "experiment-readiness",
+            "version": "1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/epi13_local_harness/experiment_readiness.py"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-fabric.public-controller-contract",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.2.0a17"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/epi13_local_harness/fabric_compat.py"
+            ]
+          },
+          {
+            "contract": "mncs-commons.record-store-api",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.5.0.dev1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "pyproject.toml"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "unittest",
+            "covers": [
+              "actor-provenance",
+              "experiment-stack",
+              "experiment-readiness"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "tests",
+                "-v"
+              ],
+              "timeout_seconds": 1800
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-language-service",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "lsp-protocol",
+            "version": "0.1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/lsp/src/lib.rs"
+            ]
+          },
+          {
+            "contract": "mcp-tools",
+            "version": "0.1",
+            "kind": "protocol",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mcp/src/lib.rs"
+            ]
+          },
+          {
+            "contract": "static-syntax-grammar",
+            "version": "0.1",
+            "kind": "grammar-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "integration/static-syntax/mncs.tmLanguage.json",
+              "crates/static-syntax/src/grammar.rs"
+            ],
+            "consumers_declared": [
+              "mncs-atlas"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.source-profile",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.5"
+            },
+            "required": true,
+            "evidence_refs": [
+              "Cargo.lock"
+            ]
+          },
+          {
+            "contract": "mncs-language.core-standard-library",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "notes": "Cross-repo family-workspace symbol resolution target."
+          },
+          {
+            "contract": "mncs-lineage.succession-fixtures",
+            "envelope": {
+              "op": "exact",
+              "version": "0.1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "tests/fixtures/lineage"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "cargo-test-workspace",
+            "covers": [
+              "lsp-protocol",
+              "mcp-tools",
+              "static-syntax-grammar"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "cargo",
+                "test",
+                "--workspace"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-language",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "source-profile",
+            "version": "0.6",
+            "kind": "language-profile",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "docs/source-profile-0.6.md",
+              "crates/mncs-syntax/src/source.rs"
+            ],
+            "consumers_declared": [
+              "mncs-language-service",
+              "ravel",
+              "mnel",
+              "mncs-lineage",
+              "mncs-rights-provenance"
+            ],
+            "notes": "Additive profile envelopes 0.1..0.6; each minor is an independent provided contract."
+          },
+          {
+            "contract": "core-standard-library",
+            "version": "0.1",
+            "kind": "module-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "library/core/status.mncs",
+              "library/core/logic.mncs",
+              "library/core/ordering.mncs",
+              "library/core/result.mncs",
+              "library/core/version.mncs",
+              "library/family/coherence.mncs"
+            ],
+            "consumers_declared": [
+              "mncs-language-service",
+              "ravel",
+              "mncs",
+              "mncs-rights-provenance"
+            ],
+            "notes": "mncs.core.* plus mncs.family.coherence decision core; consumers bind by identity-bound differential agreement until RFC 0014 linking."
+          },
+          {
+            "contract": "compiler-record",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mncs-model/src/compiler.rs"
+            ],
+            "consumers_declared": [
+              "mncs-forge",
+              "mncs-control",
+              "mncs-commons"
+            ],
+            "notes": "Schema identity mncs-language.family-compiler-reference.v0.1 over CompilationStudyResult."
+          },
+          {
+            "contract": "experiment-record",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mncs-model/src/experiment.rs"
+            ],
+            "consumers_declared": [
+              "mncs-forge",
+              "mncs-control",
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "semantic-identity",
+            "version": "0.1",
+            "kind": "identity-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mncs-model/src/identity.rs",
+              "crates/mncs-model/src/canonical.rs"
+            ],
+            "consumers_declared": [
+              "mncs-language-service",
+              "ravel",
+              "mnel",
+              "mncs-commons"
+            ]
+          },
+          {
+            "contract": "backend-interface",
+            "version": "0.1",
+            "kind": "capability-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mncs-codegen/src/lib.rs",
+              "crates/mncs-codegen/src/matrix.rs"
+            ],
+            "consumers_declared": [
+              "mncs-forge",
+              "mncs-lineage",
+              "ravel"
+            ],
+            "notes": "Registered adapters: portable-wasm-mvp, research-bytecode, llvm, c11, cranelift; capability envelope from registered adapters only."
+          },
+          {
+            "contract": "cli-toolchain",
+            "version": "0.6",
+            "kind": "tool-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "crates/mncs-cli/src/main.rs"
+            ],
+            "consumers_declared": [
+              "ravel",
+              "mncs-lineage",
+              "mncs-control",
+              "mncs"
+            ],
+            "notes": "Bounded CLI verbs consumed cross-repo: source-study, experiment run/execute, canonicalize, compile."
+          }
+        ],
+        "consumes": [],
+        "tests": [
+          {
+            "test": "cargo-test-workspace",
+            "covers": [
+              "source-profile",
+              "core-standard-library",
+              "compiler-record",
+              "experiment-record",
+              "semantic-identity",
+              "backend-interface",
+              "cli-toolchain"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "cargo",
+                "test",
+                "--workspace"
+              ],
+              "timeout_seconds": 3600
+            }
+          },
+          {
+            "test": "coherence-corpus-bytecode",
+            "covers": [
+              "core-standard-library"
+            ],
+            "obligation": "family-integration",
+            "command": {
+              "argv": [
+                "target/release/mncs",
+                "experiment",
+                "run",
+                "library/family/coherence.mncs",
+                "--backend",
+                "mncs-research-bytecode",
+                "--corpus",
+                "examples/execution/family-coherence-aggregate-corpus.json"
+              ],
+              "timeout_seconds": 900
+            }
+          }
+        ]
+      },
+      "manifest_location": "central",
+      "authority": {
+        "note": "Semantic authority for all provided contracts."
+      }
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-lineage",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "succession-core-module",
+            "version": "0.1",
+            "kind": "module-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "language/lineage-core.mncs"
+            ],
+            "consumers_declared": [
+              "mncs-language-service"
+            ]
+          },
+          {
+            "contract": "synthetic-lineage-g0",
+            "version": "0.1",
+            "kind": "fixture-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "language/synthetic-lineage-g0.mncs",
+              "language/negative/g0-proposer-self-certification.mncs"
+            ],
+            "consumers_declared": [
+              "mncs-language-service"
+            ]
+          },
+          {
+            "contract": "lineage-forge-provider",
+            "version": "0.1",
+            "kind": "provider-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "tools/mncs_lineage_forge_provider.py",
+              "mncs-forge.toml"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.source-profile",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.5"
+            },
+            "required": true
+          },
+          {
+            "contract": "mncs-language.cli-toolchain",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.5"
+            },
+            "required": true,
+            "evidence_refs": [
+              "docs/LANGUAGE_IMPLEMENTATION.md",
+              "tools/build_lineage_artifacts.py"
+            ]
+          },
+          {
+            "contract": "mncs-forge.forge-provider-protocol",
+            "envelope": {
+              "op": "exact",
+              "version": "0.1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "mncs-forge.toml"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "pytest",
+            "covers": [
+              "succession-core-module",
+              "synthetic-lineage-g0"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python3",
+                "-m",
+                "pytest",
+                "tests/",
+                "-q"
+              ],
+              "timeout_seconds": 1800
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-reference-studies",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "study-methodology",
+            "version": "0.1",
+            "kind": "methodology-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "methodology/"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs.normative-specification",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "methodology/standards-dependency.md",
+              "mncs-forge.toml"
+            ]
+          },
+          {
+            "contract": "mncs-forge.development-workflow-control",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.3"
+            },
+            "required": true,
+            "evidence_refs": [
+              "mncs-forge.toml"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "repository-validate",
+            "covers": [
+              "study-methodology"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "tools/validate_repository.py"
+              ],
+              "timeout_seconds": 1200
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-rights-provenance",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "rights-manifest-schema",
+            "version": "0.1",
+            "kind": "schema-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "specs/",
+              "schemas/mncs-rights-manifest.schema.json"
+            ],
+            "notes": "Incubating; v0.2 subsystem work proceeds on feat/rights-provenance-subsystem and must not be declared here before it lands."
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.source-profile",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.5"
+            },
+            "required": false,
+            "notes": "Planned language-native policy module; undeclared while unmerged."
+          }
+        ],
+        "tests": [
+          {
+            "test": "validate-examples",
+            "covers": [
+              "rights-manifest-schema"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "scripts/validate_examples.py"
+              ],
+              "timeout_seconds": 600
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-tui",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "terminal-ui-consumer",
+            "version": "0.1",
+            "kind": "consumer-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "README.md"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.source-profile",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "README.md"
+            ]
+          },
+          {
+            "contract": "mncs-language-service.lsp-protocol",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "README.md"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "repository-readme",
+            "covers": [
+              "terminal-ui-consumer"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "git",
+                "diff",
+                "--check"
+              ],
+              "timeout_seconds": 60
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs-validator-rs",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "independent-corpus-validator",
+            "version": "0.1",
+            "kind": "validator-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs.normative-specification",
+            "envelope": {
+              "op": "exact",
+              "version": "0.3-rc.1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "README.md"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "cargo-test",
+            "covers": [
+              "independent-corpus-validator"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "cargo",
+                "test"
+              ],
+              "timeout_seconds": 1800
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mncs",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "family-registry",
+            "version": "0.1",
+            "kind": "registry-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "family/mncs-family.v0.1.json",
+              "schemas/mncs-family-registry-0.1.schema.json"
+            ],
+            "consumers_declared": [
+              "mncs-atlas",
+              "mncs"
+            ],
+            "notes": "Discovery/bootstrap map; compatibility state UNKNOWN by design until family coherence evidence exists."
+          },
+          {
+            "contract": "repository-manifest-format",
+            "version": "0alpha1",
+            "kind": "schema-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mncs-family-repository-manifest-v0alpha1.schema.json"
+            ],
+            "consumers_declared": [
+              "mncs-language",
+              "mncs-language-service",
+              "mncs-commons",
+              "mncs-fabric",
+              "mncs-forge",
+              "mncs-harness",
+              "mncs-control",
+              "ravel",
+              "mnel",
+              "mncs-lineage",
+              "mncds",
+              "mncs-rights-provenance",
+              "mncs-atlas",
+              "mncs-reference-studies",
+              "mncs-validator-rs"
+            ]
+          },
+          {
+            "contract": "normative-specification",
+            "version": "0.3-rc.1",
+            "kind": "specification",
+            "stability": "stable",
+            "fingerprint_sources": [
+              "spec/",
+              "conformance-corpus/"
+            ]
+          },
+          {
+            "contract": "coherence-cli",
+            "version": "0.1",
+            "kind": "tool-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "src/mncs_validator/family/"
+            ],
+            "consumers_declared": [
+              "mncs-language",
+              "ravel",
+              "mnel"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.core-standard-library",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_validator/family/"
+            ],
+            "notes": "Coherence verdicts execute mncs.core.version + mncs.family.coherence; host code must not reimplement them."
+          },
+          {
+            "contract": "mncs-language.cli-toolchain",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.6"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mncs_validator/family/"
+            ]
+          },
+          {
+            "contract": "mncds.development-record-schema",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.1"
+            },
+            "required": false,
+            "evidence_refs": [
+              "schemas/mncds-development-record-0.1.schema.json"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "make-check",
+            "covers": [
+              "normative-specification",
+              "family-registry",
+              "repository-manifest-format",
+              "coherence-cli"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "make",
+                "check"
+              ],
+              "timeout_seconds": 3600
+            }
+          }
+        ]
+      },
+      "manifest_location": "central",
+      "authority": {
+        "note": "Normative authority for MNCS acceptance semantics only; family coherence metadata remains descriptive of relationships, not conformance."
+      }
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "mnel",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "ledger-record",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mnel-records.schema.json"
+            ]
+          },
+          {
+            "contract": "provider-study-suite",
+            "version": "0.4",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mnel-provider-study.schema.json",
+              "schemas/mnel-calibration.schema.json"
+            ]
+          },
+          {
+            "contract": "distributed-workload",
+            "version": "0.5",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/"
+            ]
+          },
+          {
+            "contract": "family-integration-report",
+            "version": "0.1",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "schemas/mnel-family-integration.schema.json",
+              "src/mnel/family_integration.py"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.semantic-identity",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "compat/mncs-family-compatibility-0.1.json"
+            ]
+          },
+          {
+            "contract": "mncs-forge.forge-provider-protocol",
+            "envelope": {
+              "op": "exact",
+              "version": "0.1"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mnel/family_integration.py"
+            ]
+          },
+          {
+            "contract": "mncs-fabric.public-controller-contract",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.2.0a0"
+            },
+            "required": true,
+            "evidence_refs": [
+              "src/mnel/family_integration.py",
+              "compat/mncs-family-compatibility-0.1.json"
+            ]
+          },
+          {
+            "contract": "mncs-commons.record-store-api",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "src/mnel/family_integration.py"
+            ]
+          },
+          {
+            "contract": "ravel.development-record-schema",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "src/mnel/family_integration.py"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "unittest",
+            "covers": [
+              "ledger-record",
+              "provider-study-suite",
+              "distributed-workload",
+              "family-integration-report"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "tests",
+                "-v"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    },
+    {
+      "schema_version": "mncs-family.repository-manifest/v0alpha1",
+      "repository": "ravel",
+      "revision": 1,
+      "contracts": {
+        "provides": [
+          {
+            "contract": "ravel-core-binding",
+            "version": "0.6",
+            "kind": "module-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "mncs/workspace/ravel_core.mncs"
+            ],
+            "consumers_declared": [
+              "mncs-language"
+            ]
+          },
+          {
+            "contract": "development-record-schema",
+            "version": "0.6-preregistration",
+            "kind": "record-schema",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "ravel_versions/0.6/"
+            ],
+            "consumers_declared": [
+              "mnel",
+              "mncs-commons"
+            ]
+          }
+        ],
+        "consumes": [
+          {
+            "contract": "mncs-language.source-profile",
+            "envelope": {
+              "op": "compatible-minor",
+              "version": "0.5"
+            },
+            "required": true,
+            "evidence_refs": [
+              "tools/ravel_mncs_check.py",
+              "ravel_versions/0.6/ravel-0.6-family-compatibility-lock.json"
+            ]
+          },
+          {
+            "contract": "mncs-language.core-standard-library",
+            "envelope": {
+              "op": "any"
+            },
+            "required": true,
+            "evidence_refs": [
+              "mncs/docs/mncs-native-evidence.md"
+            ]
+          },
+          {
+            "contract": "mncs-language.cli-toolchain",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.5"
+            },
+            "required": true,
+            "evidence_refs": [
+              "tools/ravel_mncs_check.py"
+            ]
+          },
+          {
+            "contract": "mncs-fabric.public-controller-contract",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "ravel_versions/0.6/ravel-0.6-family-compatibility-lock.json"
+            ]
+          },
+          {
+            "contract": "mncs-forge.development-workflow-control",
+            "envelope": {
+              "op": "at-least",
+              "version": "0.3"
+            },
+            "required": true,
+            "evidence_refs": [
+              "mncs-forge.toml"
+            ]
+          },
+          {
+            "contract": "mncs-commons.record-store-api",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": [
+              "ravel_versions/0.6/ravel-0.6-family-compatibility-lock.json"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "test": "unittest",
+            "covers": [
+              "ravel-core-binding",
+              "development-record-schema"
+            ],
+            "obligation": "self",
+            "command": {
+              "argv": [
+                "python",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "tests",
+                "-v"
+              ],
+              "timeout_seconds": 2400
+            }
+          },
+          {
+            "test": "mncs-experiments-check",
+            "covers": [
+              "ravel-core-binding"
+            ],
+            "obligation": "consumer-compatibility",
+            "command": {
+              "argv": [
+                "python3",
+                "tools/ravel_mncs_check.py",
+                "mncs-experiments"
+              ],
+              "timeout_seconds": 2400
+            }
+          }
+        ]
+      },
+      "manifest_location": "central"
+    }
+  ]
+}
+

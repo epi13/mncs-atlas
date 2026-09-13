@@ -112,6 +112,10 @@ jobs:
           files = [
               "scripts/check_site.py",
               "scripts/sync_pages_root.py",
+              "registry/__init__.py",
+              "registry/model.py",
+              "registry/__main__.py",
+              "scripts/render_registry_page.py",
               "scripts/sync_admission.py",
               "scripts/mncs-project-check.py",
               "scripts/check_journal.py",
@@ -124,6 +128,15 @@ jobs:
 
       - name: Check Pages root mirror
         run: python scripts/sync_pages_root.py --check
+
+      - name: Build and validate the deterministic family registry
+        run: |
+          python -m registry build --output /tmp/atlas-registry.json
+          cmp /tmp/atlas-registry.json registry/compiled.json
+          cmp /tmp/atlas-registry.json site/registry.json
+          python scripts/render_registry_page.py
+          git diff --exit-code -- site/registry.html
+          python -m registry validate site/registry.json
 
       - name: Check site links, assets, and machine map
         run: python scripts/check_site.py

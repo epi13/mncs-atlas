@@ -1,0 +1,61 @@
+{
+  "schema_version": "mncs-family.repository-manifest/v0alpha1",
+  "repository": "mncs-atlas",
+  "revision": 2,
+  "manifest_location": "in-repository",
+  "authority": {
+    "note": "Atlas owns family architecture and ownership indexing only; it does not create normative conformance, Commons pressure status, or sibling-project authority."
+  },
+  "contracts": {
+    "provides": [
+      {
+        "contract": "family-map",
+        "version": "0.4",
+        "kind": "orientation-surface",
+        "stability": "experimental",
+        "fingerprint_sources": ["site/atlas.json", "docs/PROJECTS.md"]
+      },
+      {
+        "contract": "family-registry",
+        "version": "1",
+        "kind": "compiled-architecture-graph",
+        "stability": "experimental",
+        "fingerprint_sources": ["registry/project-catalog.json", "registry/capability-claims.json", "registry/decisions.json", "registry/manifest-snapshot.json"]
+      },
+      {
+        "contract": "context-capsule",
+        "version": "1",
+        "kind": "agent-preflight-surface",
+        "stability": "experimental",
+        "fingerprint_sources": ["registry/__main__.py", "docs/REGISTRY.md"]
+      }
+    ],
+    "consumes": [
+      {
+        "contract": "mncs.family-repository-manifest",
+        "envelope": {"op": "any"},
+        "required": false,
+        "notes": "Atlas consumes repository-owned manifests as descriptive graph inputs."
+      },
+      {
+        "contract": "mncs-control.journal-context",
+        "envelope": {"op": "any"},
+        "required": false
+      }
+    ],
+    "tests": [
+      {
+        "test": "registry-tests",
+        "covers": ["family-registry", "context-capsule"],
+        "obligation": "self",
+        "command": {"argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-t", "."]}
+      },
+      {
+        "test": "registry-validation",
+        "covers": ["family-registry"],
+        "obligation": "family-integration",
+        "command": {"argv": ["python", "-m", "registry", "validate"]}
+      }
+    ]
+  }
+}
