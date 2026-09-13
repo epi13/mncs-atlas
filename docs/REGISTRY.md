@@ -106,7 +106,17 @@ conformance work for an individual repository. Forge, Harness, Fabric, and
 the language/compiler repositories retain their own execution, assurance,
 routing, and semantic authorities.
 
-Future Forge/Harness integration should run:
+MNCS Harness now implements this preflight contract in its routed `ask`,
+interactive `chat`, and detached `submit` paths (see the
+[`mncs-harness` implementation](https://github.com/epi13/mncs-harness/blob/main/src/mncs_harness/atlas_context.py)).
+It discovers a nearby checkout or an explicit `MNCS_ATLAS_ROOT`, invokes the
+existing Atlas CLI, and injects a bounded text capsule without maintaining a
+second registry parser. Missing or stale local Atlas data fails open for
+ordinary Harness routing. Forge integration remains intentionally deferred
+until its launch/evaluation lifecycle can consume the same contract without
+coupling Atlas to Forge internals.
+
+The intended entry-point query is:
 
 ```text
 mncs-atlas context <workspace>
