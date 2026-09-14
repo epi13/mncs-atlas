@@ -192,18 +192,21 @@
       "category": "assurance",
       "lifecycle": "experimental",
       "authority_class": "family-assurance-automation",
-      "responsibility": "Reusable GitHub Actions and family workflows for verification, evidence, provenance, coordination, and bounded aggregate checks.",
+      "responsibility": "Reusable GitHub Actions and family workflows for verification, evidence, provenance, coordination, and bounded aggregate checks, including the mncs-debug provider membrane.",
       "non_goals": [
         "Commons pressure status",
         "MNCS conformance semantics",
-        "family architecture ownership"
+        "family architecture ownership",
+        "test or debugger semantics"
       ],
       "language_profile": null,
       "language_profile_status": "not-declared",
       "dependencies": [
         "mncds",
         "mncs",
-        "mncs-forge-mcp"
+        "mncs-debug",
+        "mncs-forge-mcp",
+        "mncs-test"
       ],
       "checkout_names": [
         "mncs-actions"
@@ -227,7 +230,7 @@
         "sibling project implementation"
       ],
       "language_profile": "0.16",
-      "language_profile_status": "current",
+      "language_profile_status": "legacy",
       "dependencies": [],
       "checkout_names": [
         "mncs-atlas"
@@ -684,6 +687,28 @@
       "manifest": null
     },
     {
+      "id": "mncs-debug",
+      "name": "MNCS Debug",
+      "repository": "https://github.com/epi13/mncs-debug",
+      "role": "structured-debugger",
+      "category": "assurance",
+      "lifecycle": "experimental",
+      "authority_class": "debug-semantics",
+      "responsibility": "Canonical structured debugger for witnesses, traces, inspection, provenance, replay guarantees, and capability truth; it consumes test evidence without redefining test semantics.",
+      "non_goals": [],
+      "language_profile": "0.17",
+      "language_profile_status": "current",
+      "dependencies": [
+        "mncs-language",
+        "mncs-test"
+      ],
+      "checkout_names": [
+        "mncs-debug"
+      ],
+      "aliases": [],
+      "manifest": null
+    },
+    {
       "id": "mncs-doc",
       "name": "MNCS Doc",
       "repository": "https://github.com/epi13/mncs-doc",
@@ -719,10 +744,12 @@
         "family architecture registry",
         "language semantic authority"
       ],
-      "language_profile": "0.16",
+      "language_profile": "0.17",
       "language_profile_status": "current",
       "dependencies": [
-        "mncs-language"
+        "mncs-debug",
+        "mncs-language",
+        "mncs-test"
       ],
       "checkout_names": [
         "mncs-doctor"
@@ -1183,7 +1210,7 @@
       "authority_class": "language-semantics-authority",
       "responsibility": "Verification-native language, compiler, semantic representation, standard library, effects, and backend contracts.",
       "non_goals": [],
-      "language_profile": "0.16",
+      "language_profile": "0.17",
       "language_profile_status": "current",
       "dependencies": [],
       "checkout_names": [
@@ -1291,11 +1318,12 @@
       "category": "language",
       "lifecycle": "experimental",
       "authority_class": "language-tooling",
-      "responsibility": "Resident LSP and MCP semantic tooling over mncs-language; it does not own language semantics.",
+      "responsibility": "Resident LSP and MCP semantic tooling over mncs-language, including the shared source/debug identity projection; it does not own language or debugger semantics.",
       "non_goals": [],
-      "language_profile": "0.14",
-      "language_profile_status": "legacy",
+      "language_profile": "0.17",
+      "language_profile_status": "current",
       "dependencies": [
+        "mncs-debug",
         "mncs-language"
       ],
       "checkout_names": [
@@ -1821,6 +1849,27 @@
       ],
       "checkout_names": [
         "mncs-system-monitor"
+      ],
+      "aliases": [],
+      "manifest": null
+    },
+    {
+      "id": "mncs-test",
+      "name": "MNCS Test",
+      "repository": "https://github.com/epi13/mncs-test",
+      "role": "canonical-test-provider",
+      "category": "assurance",
+      "lifecycle": "experimental",
+      "authority_class": "verification-semantics",
+      "responsibility": "Canonical first-class MNCS test provider: compiler-owned inventory, selection, native oracle/suite semantics, TestResult and CheckResult evidence; it does not own execution transport or debugging semantics.",
+      "non_goals": [],
+      "language_profile": "0.17",
+      "language_profile_status": "current",
+      "dependencies": [
+        "mncs-language"
+      ],
+      "checkout_names": [
+        "mncs-test"
       ],
       "aliases": [],
       "manifest": null
@@ -4861,7 +4910,21 @@
     },
     {
       "from": "project:mncs-actions",
+      "to": "project:mncs-debug",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-actions",
       "to": "project:mncs-forge-mcp",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-actions",
+      "to": "project:mncs-test",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -5278,6 +5341,20 @@
       "evidence": []
     },
     {
+      "from": "project:mncs-debug",
+      "to": "project:mncs-language",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-debug",
+      "to": "project:mncs-test",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
       "from": "project:mncs-doc",
       "to": "capability:data-normalization",
       "kind": "consumes",
@@ -5321,7 +5398,21 @@
     },
     {
       "from": "project:mncs-doctor",
+      "to": "project:mncs-debug",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-doctor",
       "to": "project:mncs-language",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-doctor",
+      "to": "project:mncs-test",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -5951,6 +6042,13 @@
     },
     {
       "from": "project:mncs-language-service",
+      "to": "project:mncs-debug",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-language-service",
       "to": "project:mncs-language",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
@@ -6418,6 +6516,13 @@
       "evidence": []
     },
     {
+      "from": "project:mncs-test",
+      "to": "project:mncs-language",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
       "from": "project:mncs-tui",
       "to": "capability:terminal-ui",
       "kind": "canonical_for",
@@ -6769,7 +6874,7 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "6fdb13c1dc9d179f4e7c26d9f4cdf7be30b513ff9db61740dc5adf96f091e6a0",
+    "project_catalog": "9074dc493c528602b9178eb6f90f1261420018df0c3d5a9715d52b464996f8b6",
     "capability_claims": "12380de18e0b215ce2b5f096fa38ec5ab618a4f6e66e60cd73fb1aa67704d2fc",
     "decisions": "56df1da5d216823002034eac7d11ff70adbdd4d105f2319a77236ee9e6a51125",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
@@ -6793,6 +6898,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "4655ddbb75c0d9ba54b4e9ea09e11fe931b2577ab88444507aab7a04e9c1557a",
-  "registry_revision": "4655ddbb75c0d9ba"
+  "registry_hash": "91be923419e59e300937819b0981ab454fe718c7226e687f21525b869240b332",
+  "registry_revision": "91be923419e59e30"
 }

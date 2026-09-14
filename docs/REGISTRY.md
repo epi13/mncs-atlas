@@ -128,8 +128,10 @@ the JSON commands only for targeted follow-up. The caller should preserve
 
 ## Current `mncs-lang` boundary
 
-Atlas's executable MNCS sources and WASM lock are now on Source Profile 0.16,
-the current producer revision declared by `mncs/mncs-language.lock.json`.
+Atlas's executable MNCS sources and WASM lock intentionally remain pinned to
+Source Profile 0.16 for their current published WASM artifact, while the
+family's current producer profile is 0.17. That compatibility pin is an Atlas
+build boundary, not a claim that the family language is still 0.16.
 The bounded MNCS/WASM model owns the typed JSON cursor, source-profile
 semantics, and render-plan projection used by the human site. The registry
 compiler remains a small Python build/query tool because it needs unbounded
@@ -142,7 +144,7 @@ and implementation authority.
 ## Pressure records from the Atlas workload
 
 The direct Atlas WASM workload exposed two concrete backend pressures while
-bringing Atlas to profile `0.16`; the related current-compiler Harness refresh
+bringing Atlas's pinned artifact to profile `0.16`; the related current-compiler Harness refresh
 exposed a third artifact-contract pressure. All three are now recorded in
 Commons and linked to human-readable investigations:
 

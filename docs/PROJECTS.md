@@ -54,6 +54,23 @@ Repository: https://github.com/epi13/mncs-language-service
 
 Language-server and MCP tooling for MNCS Language consumers. It exposes tooling surfaces without owning language or conformance semantics.
 
+### MNCS Test
+
+Repository: https://github.com/epi13/mncs-test
+
+Canonical first-class MNCS test provider. It consumes compiler-owned test
+inventory, owns test selection and native oracle/suite semantics, and emits
+`mncs.test-result/1` plus `mncs.check-result/1`. It does not own Actions
+transport or debugger semantics.
+
+### MNCS Debug
+
+Repository: https://github.com/epi13/mncs-debug
+
+Canonical structured debugger for witnesses, traces, inspection, provenance,
+replay guarantees, and truthful capability discovery. It imports canonical
+test results but does not redefine test verdicts.
+
 ### Independent Rust Validator
 
 Repository: https://github.com/epi13/mncs-validator-rs

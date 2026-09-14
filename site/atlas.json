@@ -12,8 +12,8 @@
     "document": "registry.json",
     "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
     "authority": "architecture-and-ownership-graph",
-    "registry_revision": "4655ddbb75c0d9ba",
-    "registry_hash": "4655ddbb75c0d9ba54b4e9ea09e11fe931b2577ab88444507aab7a04e9c1557a",
+    "registry_revision": "91be923419e59e30",
+    "registry_hash": "91be923419e59e300937819b0981ab454fe718c7226e687f21525b869240b332",
     "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
     "purpose": "Validated family-wide project, capability, ownership, dependency, and decision graph for targeted machine queries."
   },
@@ -146,7 +146,25 @@
       "role": "language-tooling",
       "maturity": "experimental",
       "authority_class": "language-tooling",
-      "responsibility": "Language-server and MCP tooling for MNCS Language consumers; it exposes tooling surfaces without owning language or conformance semantics."
+      "responsibility": "Language-server and MCP tooling for MNCS Language consumers, including the shared source/debug identity projection; it exposes tooling surfaces without owning language or debugger semantics."
+    },
+    {
+      "id": "mncs-test",
+      "name": "MNCS Test",
+      "repository": "https://github.com/epi13/mncs-test",
+      "role": "canonical-test-provider",
+      "maturity": "experimental",
+      "authority_class": "verification-semantics",
+      "responsibility": "Compiler-inventoried first-class test provider and native TestResult/CheckResult authority; it does not own Actions transport or debugger semantics."
+    },
+    {
+      "id": "mncs-debug",
+      "name": "MNCS Debug",
+      "repository": "https://github.com/epi13/mncs-debug",
+      "role": "structured-debugger",
+      "maturity": "experimental",
+      "authority_class": "debug-semantics",
+      "responsibility": "Structured witnesses, traces, inspection, provenance, replay guarantees, and capability truth over MNCS execution; it consumes test evidence without redefining test semantics."
     },
     {
       "id": "forge",
@@ -286,6 +304,42 @@
       "to": "mncs",
       "kind": "verification-composition",
       "description": "MNCS Actions composes owner-produced check evidence into aggregate verdicts and deterministic badges without becoming a conformance authority itself."
+    },
+    {
+      "from": "mncs-test",
+      "to": "mncs-language",
+      "kind": "compiler-inventory-consumer",
+      "description": "MNCS Test consumes compiler-owned first-class test inventory and preserves native test oracle and suite semantics."
+    },
+    {
+      "from": "mncs-debug",
+      "to": "mncs-test",
+      "kind": "failure-evidence-consumer",
+      "description": "MNCS Debug imports the canonical mncs.test-result/1 selected execution and adds debugger-owned witness, trace, inspection, provenance, and replay evidence."
+    },
+    {
+      "from": "mncs-actions",
+      "to": "mncs-debug",
+      "kind": "provider-transport",
+      "description": "MNCS Actions invokes mncs-debug, validates and transports its versioned artifacts, and preserves receipts/digests without interpreting debugger semantics."
+    },
+    {
+      "from": "forge",
+      "to": "mncs-test",
+      "kind": "structured-provider",
+      "description": "Forge orchestrates canonical tests through structured TestResult and CheckResult artifacts rather than terminal summaries."
+    },
+    {
+      "from": "forge",
+      "to": "mncs-debug",
+      "kind": "structured-provider",
+      "description": "Forge invokes debugger capabilities and evidence queries for failing tests, preserving UNKNOWN when a debug capability is unavailable."
+    },
+    {
+      "from": "mncs-language-service",
+      "to": "mncs-debug",
+      "kind": "source-binding-projection",
+      "description": "The language service projects compiler-owned source/test identities and stable declaration spans into the debugger vocabulary; runtime operation and live breakpoint claims remain explicit capabilities."
     },
     {
       "from": "mncds",

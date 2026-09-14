@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-atlas.registry-config/v1",
   "registry_id": "mncs-family",
-  "current_language_profile": "0.16",
+  "current_language_profile": "0.17",
   "project_aliases": {
     "atlas": "mncs-atlas",
     "commons": "mncs-commons",
