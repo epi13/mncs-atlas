@@ -193,7 +193,7 @@ def build_cases() -> list[dict]:
          {"kind": "evidence", "digest": "not-a-digest"}, 1 << 3),
         ("bypass-undeclared-cross-repo",
          {"kind": "mutation", "paths": ["src/a.py"],
-          "repos": ["mncs-fabric", "mncs-forge-mcp"]}, 1 << 4),
+          "repos": ["mncs-fabric", "mncs-forge"]}, 1 << 4),
         ("bypass-undeclared-network",
          {"kind": "execution", "network_used": True}, 1 << 5),
         ("bypass-unauthorized-dispatch",

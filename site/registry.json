@@ -205,7 +205,7 @@
         "mncds",
         "mncs",
         "mncs-debug",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-test"
       ],
       "checkout_names": [
@@ -452,7 +452,7 @@
             "evidence_refs": []
           },
           {
-            "contract": "mncs-forge-mcp.concept-evaluation-record",
+            "contract": "mncs-forge.concept-evaluation-record",
             "envelope": {
               "op": "any"
             },
@@ -531,7 +531,7 @@
       "dependencies": [
         "mncs-commons",
         "mncs-fabric",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-harness"
       ],
       "checkout_names": [
@@ -582,7 +582,7 @@
         ],
         "consumes": [
           {
-            "contract": "mncs-forge-mcp.concept-evaluation-record",
+            "contract": "mncs-forge.concept-evaluation-record",
             "envelope": {
               "op": "any"
             },
@@ -849,7 +849,7 @@
             "evidence_refs": []
           },
           {
-            "contract": "mncs-forge-mcp.forge-provider-protocol",
+            "contract": "mncs-forge.forge-provider-protocol",
             "envelope": {
               "op": "exact",
               "version": "0.1"
@@ -913,9 +913,9 @@
       "manifest": null
     },
     {
-      "id": "mncs-forge-mcp",
+      "id": "mncs-forge",
       "name": "MNCS Forge",
-      "repository": "https://github.com/epi13/mncs-forge-mcp",
+      "repository": "https://github.com/epi13/mncs-forge",
       "role": "development-and-evidence-control-plane",
       "category": "development-control",
       "lifecycle": "active",
@@ -929,6 +929,7 @@
         "mncs-language"
       ],
       "checkout_names": [
+        "mncs-forge",
         "mncs-forge-mcp"
       ],
       "aliases": [
@@ -944,7 +945,7 @@
         "sha256": "164d76da5eee9fef6533a5765baf0ab668aa188c77bc5f6d52c3520e415c5499",
         "provides": [
           {
-            "id": "mncs-forge-mcp.forge-provider-protocol/0.1",
+            "id": "mncs-forge.forge-provider-protocol/0.1",
             "contract": "forge-provider-protocol",
             "version": "0.1",
             "kind": "protocol",
@@ -954,7 +955,7 @@
             ]
           },
           {
-            "id": "mncs-forge-mcp.concept-evaluation-record/0.1",
+            "id": "mncs-forge.concept-evaluation-record/0.1",
             "contract": "concept-evaluation-record",
             "version": "0.1",
             "kind": "record-schema",
@@ -964,7 +965,7 @@
             ]
           },
           {
-            "id": "mncs-forge-mcp.development-workflow-control/0.3",
+            "id": "mncs-forge.development-workflow-control/0.3",
             "contract": "development-workflow-control",
             "version": "0.3",
             "kind": "config-surface",
@@ -1053,7 +1054,7 @@
       "dependencies": [
         "mncs-commons",
         "mncs-fabric",
-        "mncs-forge-mcp"
+        "mncs-forge"
       ],
       "checkout_names": [
         "mncs-harness"
@@ -1441,7 +1442,7 @@
       "language_profile": "0.14",
       "language_profile_status": "legacy",
       "dependencies": [
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "checkout_names": [
@@ -1511,7 +1512,7 @@
             ]
           },
           {
-            "contract": "mncs-forge-mcp.forge-provider-protocol",
+            "contract": "mncs-forge.forge-provider-protocol",
             "envelope": {
               "op": "exact",
               "version": "0.1"
@@ -1692,7 +1693,7 @@
             ]
           },
           {
-            "contract": "mncs-forge-mcp.development-workflow-control",
+            "contract": "mncs-forge.development-workflow-control",
             "envelope": {
               "op": "at-least",
               "version": "0.3"
@@ -2120,7 +2121,7 @@
             ]
           },
           {
-            "contract": "mncs-forge-mcp.forge-provider-protocol",
+            "contract": "mncs-forge.forge-provider-protocol",
             "envelope": {
               "op": "exact",
               "version": "0.1"
@@ -2182,7 +2183,7 @@
       "language_profile_status": "legacy",
       "dependencies": [
         "mncs-fabric",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-language"
       ],
       "checkout_names": [
@@ -2264,7 +2265,7 @@
             ]
           },
           {
-            "contract": "mncs-forge-mcp.development-workflow-control",
+            "contract": "mncs-forge.development-workflow-control",
             "envelope": {
               "op": "at-least",
               "version": "0.3"
@@ -2584,7 +2585,7 @@
       "name": "Development and evidence workflow",
       "description": "Bounded candidate workflows, provider orchestration, evidence gaps, lineage, and evaluator-mode boundaries.",
       "ownership": "exclusive",
-      "canonical_authority": "mncs-forge-mcp",
+      "canonical_authority": "mncs-forge",
       "claims": [
         {
           "project": "mncs-control-mcp",
@@ -2596,7 +2597,7 @@
           "note": ""
         },
         {
-          "project": "mncs-forge-mcp",
+          "project": "mncs-forge",
           "role": "canonical-authority",
           "status": "active",
           "evidence": [
@@ -2635,7 +2636,7 @@
           "note": "MNCDS is independently versioned from MNCS."
         },
         {
-          "project": "mncs-forge-mcp",
+          "project": "mncs-forge",
           "role": "consumer",
           "status": "active",
           "evidence": [
@@ -2747,7 +2748,7 @@
           "note": "Fabric owns fleet lifecycle and execution evidence."
         },
         {
-          "project": "mncs-forge-mcp",
+          "project": "mncs-forge",
           "role": "consumer",
           "status": "active",
           "evidence": [
@@ -2805,7 +2806,7 @@
           "note": "Actions automates evidence transport and aggregation without owning the semantics of the claims it checks."
         },
         {
-          "project": "mncs-forge-mcp",
+          "project": "mncs-forge",
           "role": "consumer",
           "status": "active",
           "evidence": [
@@ -3247,7 +3248,7 @@
           "note": ""
         },
         {
-          "project": "mncs-forge-mcp",
+          "project": "mncs-forge",
           "role": "consumer",
           "status": "active",
           "evidence": [
@@ -3559,7 +3560,7 @@
       "affected_projects": [
         "mncs-actions",
         "mncs-atlas",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-validator-rs"
       ],
       "supersedes": null,
@@ -3582,7 +3583,7 @@
         "mncs-atlas",
         "mncs-commons",
         "mncs-doctor",
-        "mncs-forge-mcp",
+        "mncs-forge",
         "mncs-harness"
       ],
       "supersedes": null,
@@ -3910,7 +3911,7 @@
     },
     {
       "from": "capability:development-evidence-workflow",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "owned_by",
       "description": "Canonical authority claim; Atlas does not confer external authority.",
       "evidence": [
@@ -4182,7 +4183,7 @@
     },
     {
       "from": "decision:ACTIONS-ARCH-0001",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "applies_to",
       "description": "Indexed affected project.",
       "evidence": []
@@ -4233,7 +4234,7 @@
     },
     {
       "from": "decision:ATLAS-ADR-0001",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "applies_to",
       "description": "Indexed affected project.",
       "evidence": []
@@ -4917,7 +4918,7 @@
     },
     {
       "from": "project:mncs-actions",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -5088,7 +5089,7 @@
     },
     {
       "from": "project:mncs-commons",
-      "to": "contract:mncs-forge-mcp.concept-evaluation-record",
+      "to": "contract:mncs-forge.concept-evaluation-record",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -5230,7 +5231,7 @@
     },
     {
       "from": "project:mncs-control-mcp",
-      "to": "contract:mncs-forge-mcp.concept-evaluation-record",
+      "to": "contract:mncs-forge.concept-evaluation-record",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -5265,7 +5266,7 @@
     },
     {
       "from": "project:mncs-control-mcp",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -5486,7 +5487,7 @@
     },
     {
       "from": "project:mncs-fabric",
-      "to": "contract:mncs-forge-mcp.forge-provider-protocol",
+      "to": "contract:mncs-forge.forge-provider-protocol",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -5589,7 +5590,7 @@
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "capability:development-evidence-workflow",
       "kind": "canonical_for",
       "description": "Forge evaluates workflows but cannot self-promote results.",
@@ -5599,7 +5600,7 @@
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "capability:development-process-governance",
       "kind": "consumes",
       "description": "Forge executes bounded development workflows under MNCDS boundaries.",
@@ -5608,84 +5609,84 @@
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "capability:exact-target-execution",
       "kind": "consumes",
-      "description": "mncs-forge-mcp declares a consumer relationship to exact-target-execution.",
+      "description": "mncs-forge declares a consumer relationship to exact-target-execution.",
       "evidence": [
         "README.md"
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "capability:family-ci-evidence",
       "kind": "consumes",
-      "description": "mncs-forge-mcp declares a consumer relationship to family-ci-evidence.",
+      "description": "mncs-forge declares a consumer relationship to family-ci-evidence.",
       "evidence": [
         "README.md"
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "capability:rights-provenance",
       "kind": "consumes",
-      "description": "mncs-forge-mcp declares a consumer relationship to rights-provenance.",
+      "description": "mncs-forge declares a consumer relationship to rights-provenance.",
       "evidence": [
         "README.md"
       ]
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "contract:mncs-fabric.execution-plane",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "contract:mncs-language.compiler-record",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "contract:mncs-language.experiment-record",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "project:mncs-fabric",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
+      "from": "project:mncs-forge",
       "to": "project:mncs-language",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
-      "to": "contract:mncs-forge-mcp.concept-evaluation-record/0.1",
+      "from": "project:mncs-forge",
+      "to": "contract:mncs-forge.concept-evaluation-record/0.1",
       "kind": "provides",
       "description": "Repository manifest provides this contract.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
-      "to": "contract:mncs-forge-mcp.development-workflow-control/0.3",
+      "from": "project:mncs-forge",
+      "to": "contract:mncs-forge.development-workflow-control/0.3",
       "kind": "provides",
       "description": "Repository manifest provides this contract.",
       "evidence": []
     },
     {
-      "from": "project:mncs-forge-mcp",
-      "to": "contract:mncs-forge-mcp.forge-provider-protocol/0.1",
+      "from": "project:mncs-forge",
+      "to": "contract:mncs-forge.forge-provider-protocol/0.1",
       "kind": "provides",
       "description": "Repository manifest provides this contract.",
       "evidence": []
@@ -5783,7 +5784,7 @@
     },
     {
       "from": "project:mncs-harness",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -6118,7 +6119,7 @@
     },
     {
       "from": "project:mncs-lineage",
-      "to": "contract:mncs-forge-mcp.forge-provider-protocol",
+      "to": "contract:mncs-forge.forge-provider-protocol",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -6139,7 +6140,7 @@
     },
     {
       "from": "project:mncs-lineage",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -6353,7 +6354,7 @@
     },
     {
       "from": "project:mncs-reference-studies",
-      "to": "contract:mncs-forge-mcp.development-workflow-control",
+      "to": "contract:mncs-forge.development-workflow-control",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -6664,7 +6665,7 @@
     },
     {
       "from": "project:mnel",
-      "to": "contract:mncs-forge-mcp.forge-provider-protocol",
+      "to": "contract:mncs-forge.forge-provider-protocol",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -6786,7 +6787,7 @@
     },
     {
       "from": "project:ravel",
-      "to": "contract:mncs-forge-mcp.development-workflow-control",
+      "to": "contract:mncs-forge.development-workflow-control",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -6821,7 +6822,7 @@
     },
     {
       "from": "project:ravel",
-      "to": "project:mncs-forge-mcp",
+      "to": "project:mncs-forge",
       "kind": "depends_on",
       "description": "Declared direct family dependency.",
       "evidence": []
@@ -6874,9 +6875,9 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "9074dc493c528602b9178eb6f90f1261420018df0c3d5a9715d52b464996f8b6",
-    "capability_claims": "12380de18e0b215ce2b5f096fa38ec5ab618a4f6e66e60cd73fb1aa67704d2fc",
-    "decisions": "56df1da5d216823002034eac7d11ff70adbdd4d105f2319a77236ee9e6a51125",
+    "project_catalog": "783bcdd57da4569b974aa18eb6801673235f7b8c133058fecb2b7eb3855a2849",
+    "capability_claims": "f5de651b495031b93e61a8f131dfccd4ca3f7c5a4fb69d51783b0e4166c5a8bf",
+    "decisions": "b316320c6f941b632f613b431f73969ebb247a292c4afc2f9dbfe26ee9be3859",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
@@ -6884,7 +6885,7 @@
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
-      "mncs-forge-mcp": "164d76da5eee9fef6533a5765baf0ab668aa188c77bc5f6d52c3520e415c5499",
+      "mncs-forge": "164d76da5eee9fef6533a5765baf0ab668aa188c77bc5f6d52c3520e415c5499",
       "mncs-harness": "f69ccd45c92f10787ab90b7b5362912bbbd1da06c38ab3f5b2c62856ee0f0a37",
       "mncs-language-service": "97a071c2548b3840adf118d048efa29604f82b0d1e16f45067aa9b837c9c1ed2",
       "mncs-language": "ebf87c8f6714b7170f16541773621fc514c991dbb2a3e491712dc143ed600288",
@@ -6898,6 +6899,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "91be923419e59e300937819b0981ab454fe718c7226e687f21525b869240b332",
-  "registry_revision": "91be923419e59e30"
+  "registry_hash": "715d3e301f095cea73e9906ddea43fddb81d2044b00447bc93a4a063af5b16b1",
+  "registry_revision": "715d3e301f095cea"
 }

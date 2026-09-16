@@ -77,9 +77,9 @@ Repository: https://github.com/epi13/mncs-validator-rs
 
 An independent offline Rust validator for supported MNCS subsets. It is intentionally separate from the Python validator and does not execute evidence binaries.
 
-### MNCS Forge MCP
+### MNCS Forge
 
-Repository: https://github.com/epi13/mncs-forge-mcp
+Repository: https://github.com/epi13/mncs-forge
 
 A non-normative MCP/CLI development and evidence control plane. Forge determines and evaluates declared development workflows, evidence, experiments, and gaps. It records candidate/evidence lineage, exposes bounded micro-verifiers, and preserves evaluator-mode boundaries while delegating normative decisions to MNCS and MNCDS validators.
 

@@ -7,19 +7,19 @@
     "commons": "mncs-commons",
     "control": "mncs-control-mcp",
     "fabric": "mncs-fabric",
-    "forge": "mncs-forge-mcp",
+    "forge": "mncs-forge",
     "mnel": "mnel",
     "mncs-atlas": "mncs-atlas",
     "mncs-commons": "mncs-commons",
     "mncs-control-mcp": "mncs-control-mcp",
-    "mncs-forge-mcp": "mncs-forge-mcp",
-    "mncs-forge": "mncs-forge-mcp",
+    "mncs-forge-mcp": "mncs-forge",
+    "mncs-forge": "mncs-forge",
     "ravel": "ravel",
     "rust-validator": "mncs-validator-rs"
   },
   "central_manifest_aliases": {
     "mncs-control": "mncs-control-mcp",
-    "mncs-forge": "mncs-forge-mcp"
+    "mncs-forge": "mncs-forge"
   },
   "exclusions": [
     {

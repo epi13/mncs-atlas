@@ -169,7 +169,7 @@
     {
       "id": "forge",
       "name": "Forge",
-      "repository": "https://github.com/epi13/mncs-forge-mcp",
+      "repository": "https://github.com/epi13/mncs-forge",
       "role": "development-and-evidence-control-plane",
       "maturity": "active-infrastructure",
       "authority_class": "non-normative-development-infrastructure",

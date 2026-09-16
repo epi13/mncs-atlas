@@ -373,7 +373,7 @@ class BypassDetectionTests(unittest.TestCase):
 
     def test_undeclared_cross_repo(self) -> None:
         findings = scan([{"kind": "mutation", "actor": "agent-7",
-                          "paths": ["src/a.py"], "repos": ["mncs-fabric", "mncs-forge-mcp"]}])
+                          "paths": ["src/a.py"], "repos": ["mncs-fabric", "mncs-forge"]}])
         self.assertEqual(findings[0]["code"], "UNDECLARED_CROSS_REPO_MUTATION")
 
     def test_undeclared_network_and_dispatch(self) -> None:
