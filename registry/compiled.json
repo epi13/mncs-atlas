@@ -2,7 +2,7 @@
   "schema_version": "mncs-atlas.family-registry/v1",
   "registry_id": "mncs-family",
   "authority": {
-    "kind": "architecture-and-ownership-graph",
+    "kind": "orientation-and-ownership-graph",
     "does_not_create": [
       "conformance",
       "certification",
@@ -200,8 +200,8 @@
         "family architecture ownership",
         "test or debugger semantics"
       ],
-      "language_profile": null,
-      "language_profile_status": "not-declared",
+      "language_profile": "0.18",
+      "language_profile_status": "current",
       "dependencies": [
         "mncds",
         "mncs",
@@ -219,14 +219,15 @@
       "id": "mncs-atlas",
       "name": "MNCS Atlas",
       "repository": "https://github.com/epi13/mncs-atlas",
-      "role": "family-architecture-registry",
+      "role": "family-orientation-registry",
       "category": "documentation",
       "lifecycle": "active",
-      "authority_class": "family-architecture-memory",
-      "responsibility": "Family architecture and ownership graph, compact machine registry, context capsules, human orientation, and indexed decisions; it is non-normative.",
+      "authority_class": "family-orientation",
+      "responsibility": "Non-normative family orientation, ownership pointers, related-project discovery, compact navigation capsules, human presentation, and indexed decisions; Commons and owning repositories remain authoritative for architecture, pressure, and implementation facts.",
       "non_goals": [
         "Commons pressure status",
         "MNCS conformance",
+        "authoritative family preflight",
         "repository migration or repair",
         "sibling project implementation"
       ],
@@ -242,10 +243,10 @@
       ],
       "manifest": {
         "schema_version": "mncs-family.repository-manifest/v0alpha1",
-        "revision": 3,
+        "revision": 5,
         "location": "in-repository",
         "origin": "repository:.mncs/project.json",
-        "sha256": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
+        "sha256": "be15e8f3a3801b9ee0b8c24fc2dca2daed28e4a8fe8e273ccd70d6fdca8357ab",
         "provides": [
           {
             "id": "mncs-atlas.family-map/0.4",
@@ -262,7 +263,7 @@
             "id": "mncs-atlas.family-registry/1",
             "contract": "family-registry",
             "version": "1",
-            "kind": "compiled-architecture-graph",
+            "kind": "compiled-orientation-graph",
             "stability": "experimental",
             "fingerprint_sources": [
               "registry/capability-claims.json",
@@ -275,7 +276,7 @@
             "id": "mncs-atlas.context-capsule/1",
             "contract": "context-capsule",
             "version": "1",
-            "kind": "agent-preflight-surface",
+            "kind": "orientation-capsule",
             "stability": "experimental",
             "fingerprint_sources": [
               "docs/REGISTRY.md",
@@ -285,7 +286,7 @@
         ],
         "consumes": [
           {
-            "contract": "mncs.family-repository-manifest",
+            "contract": "mncs.repository-manifest-format",
             "envelope": {
               "op": "any"
             },
@@ -727,8 +728,8 @@
       "authority_class": "document-library-authority",
       "responsibility": "Unicode-aware structured documents, source spans, syntax trees, transformations, formatting, layout, search, and interchange.",
       "non_goals": [],
-      "language_profile": "0.14",
-      "language_profile_status": "legacy",
+      "language_profile": "0.18",
+      "language_profile_status": "current",
       "dependencies": [
         "mncs-data",
         "mncs-language"
@@ -750,10 +751,10 @@
       "responsibility": "Repository discovery, health, repair, migration planning, transactional fixes, verification, and conformance bringing projects to current expectations.",
       "non_goals": [
         "Commons pressure coordination",
-        "family architecture registry",
+        "family orientation registry",
         "language semantic authority"
       ],
-      "language_profile": "0.17",
+      "language_profile": "0.16",
       "language_profile_status": "legacy",
       "dependencies": [
         "mncs-debug",
@@ -2188,8 +2189,8 @@
       "authority_class": "research-advisory",
       "responsibility": "Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS and MNCDS authority.",
       "non_goals": [],
-      "language_profile": "0.14",
-      "language_profile_status": "legacy",
+      "language_profile": "0.18",
+      "language_profile_status": "current",
       "dependencies": [
         "mncs-fabric",
         "mncs-forge",
@@ -2778,26 +2779,6 @@
       "non_goals": []
     },
     {
-      "id": "family-architecture-registry",
-      "name": "Family architecture registry",
-      "description": "Projects, ownership, capabilities, dependencies, relationships, indexed decisions, and compact agent context.",
-      "ownership": "exclusive",
-      "canonical_authority": "mncs-atlas",
-      "claims": [
-        {
-          "project": "mncs-atlas",
-          "role": "canonical-authority",
-          "status": "active",
-          "evidence": [
-            "README.md",
-            "docs/ARCHITECTURE.md"
-          ],
-          "note": "Atlas is non-normative architecture memory and does not replace owning repositories."
-        }
-      ],
-      "non_goals": []
-    },
-    {
       "id": "family-ci-evidence",
       "name": "Family CI and evidence automation",
       "description": "Reusable verification actions, execution receipts, evidence envelopes, aggregate checks, and family workflow composition.",
@@ -2822,6 +2803,26 @@
             "README.md"
           ],
           "note": ""
+        }
+      ],
+      "non_goals": []
+    },
+    {
+      "id": "family-orientation-registry",
+      "name": "Family orientation registry",
+      "description": "Non-normative projects, relationships, ownership pointers, indexed decisions, and human/agent orientation summaries.",
+      "ownership": "exclusive",
+      "canonical_authority": "mncs-atlas",
+      "claims": [
+        {
+          "project": "mncs-atlas",
+          "role": "canonical-authority",
+          "status": "active",
+          "evidence": [
+            "README.md",
+            "docs/ARCHITECTURE.md"
+          ],
+          "note": "Atlas is canonical only for its orientation projection; Commons and owning repositories remain authoritative for architecture, pressure, and implementation facts."
         }
       ],
       "non_goals": []
@@ -3577,7 +3578,7 @@
     },
     {
       "id": "ATLAS-ADR-0001",
-      "title": "Atlas is the family architecture and ownership registry",
+      "title": "Atlas is the family orientation and ownership map",
       "owner": "mncs-atlas",
       "source": {
         "kind": "equivalent-architecture-record",
@@ -3586,7 +3587,7 @@
       },
       "status": "active",
       "affected_capabilities": [
-        "family-architecture-registry"
+        "family-orientation-registry"
       ],
       "affected_projects": [
         "mncs-atlas",
@@ -3596,7 +3597,7 @@
         "mncs-harness"
       ],
       "supersedes": null,
-      "summary": "Atlas records projects, capabilities, ownership, relationships, and indexed decisions while preserving Commons, Doctor, Forge, Harness, and language boundaries."
+      "summary": "Atlas records orientation-level project, ownership, relationship, and decision pointers while preserving Commons, owning repositories, Doctor, Forge, Harness, and language boundaries."
     },
     {
       "id": "CONTROL-ADR-0001",
@@ -3699,7 +3700,7 @@
       "status": "active",
       "affected_capabilities": [
         "deterministic-indexing",
-        "family-architecture-registry",
+        "family-orientation-registry",
         "persistent-storage"
       ],
       "affected_projects": [
@@ -3708,7 +3709,7 @@
         "mncs-store"
       ],
       "supersedes": null,
-      "summary": "Indexing owns finding, ranking, relating, and traversing state without becoming canonical storage or semantic authority."
+      "summary": "Indexing owns finding, ranking, relating, and traversing state without becoming canonical storage, semantic authority, or authoritative family preflight."
     },
     {
       "id": "INGEST-ARCH-0001",
@@ -3967,16 +3968,6 @@
       ]
     },
     {
-      "from": "capability:family-architecture-registry",
-      "to": "project:mncs-atlas",
-      "kind": "owned_by",
-      "description": "Canonical authority claim; Atlas does not confer external authority.",
-      "evidence": [
-        "README.md",
-        "docs/ARCHITECTURE.md"
-      ]
-    },
-    {
       "from": "capability:family-ci-evidence",
       "to": "project:mncs-actions",
       "kind": "owned_by",
@@ -3984,6 +3975,16 @@
       "evidence": [
         "README.md",
         "family-capability.json"
+      ]
+    },
+    {
+      "from": "capability:family-orientation-registry",
+      "to": "project:mncs-atlas",
+      "kind": "owned_by",
+      "description": "Canonical authority claim; Atlas does not confer external authority.",
+      "evidence": [
+        "README.md",
+        "docs/ARCHITECTURE.md"
       ]
     },
     {
@@ -4257,7 +4258,7 @@
     },
     {
       "from": "decision:ATLAS-ADR-0001",
-      "to": "capability:family-architecture-registry",
+      "to": "capability:family-orientation-registry",
       "kind": "governs",
       "description": "Indexed affected capability.",
       "evidence": []
@@ -4484,7 +4485,7 @@
     },
     {
       "from": "decision:INDEX-ARCH-0001",
-      "to": "capability:family-architecture-registry",
+      "to": "capability:family-orientation-registry",
       "kind": "governs",
       "description": "Indexed affected capability.",
       "evidence": []
@@ -4941,9 +4942,9 @@
     },
     {
       "from": "project:mncs-atlas",
-      "to": "capability:family-architecture-registry",
+      "to": "capability:family-orientation-registry",
       "kind": "canonical_for",
-      "description": "Atlas is non-normative architecture memory and does not replace owning repositories.",
+      "description": "Atlas is canonical only for its orientation projection; Commons and owning repositories remain authoritative for architecture, pressure, and implementation facts.",
       "evidence": [
         "README.md",
         "docs/ARCHITECTURE.md"
@@ -4974,7 +4975,7 @@
     },
     {
       "from": "project:mncs-atlas",
-      "to": "contract:mncs.family-repository-manifest",
+      "to": "contract:mncs.repository-manifest-format",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
       "evidence": []
@@ -6891,13 +6892,13 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "02e79f3965968669e93b3ec45d0a7e240bf3b019a651114c20bcfe59fc3348ab",
-    "capability_claims": "f5de651b495031b93e61a8f131dfccd4ca3f7c5a4fb69d51783b0e4166c5a8bf",
-    "decisions": "b316320c6f941b632f613b431f73969ebb247a292c4afc2f9dbfe26ee9be3859",
+    "project_catalog": "61a0280f7086c8f7d1250d82994c42ebfc7b1e2e9028177a7a2f4b11565e4768",
+    "capability_claims": "ca8e0cadc52f5da27fac4e0b9e1125b73086faf5cb9b40b54dd2a41781023208",
+    "decisions": "88673827c414ec295b6c3092b65ff508fe9715d79c988dafa6b7f4cb911579f7",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
-      "mncs-atlas": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
+      "mncs-atlas": "be15e8f3a3801b9ee0b8c24fc2dca2daed28e4a8fe8e273ccd70d6fdca8357ab",
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
@@ -6915,6 +6916,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "ca6b843f09c62c267f1ecd6ea0fdb5f1f9c342c70fc9c4ba3680df2bc1bd0744",
-  "registry_revision": "ca6b843f09c62c26"
+  "registry_hash": "dc720caea96b182e2fbb4d4dec862f56644c6b5beca02fcb09d0177f7e5bd55c",
+  "registry_revision": "dc720caea96b182e"
 }

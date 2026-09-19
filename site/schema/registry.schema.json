@@ -9,7 +9,7 @@
   "properties": {
     "schema_version": {"const": "mncs-atlas.family-registry/v1"},
     "registry_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
-    "authority": {"type": "object", "required": ["kind", "does_not_create", "note"], "additionalProperties": false, "properties": {"kind": {"const": "architecture-and-ownership-graph"}, "does_not_create": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "note": {"type": "string", "minLength": 1}}},
+    "authority": {"type": "object", "required": ["kind", "does_not_create", "note"], "additionalProperties": false, "properties": {"kind": {"const": "orientation-and-ownership-graph"}, "does_not_create": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "note": {"type": "string", "minLength": 1}}},
     "source_contracts": {"type": "object", "required": ["repository_manifest", "commons"], "additionalProperties": false, "properties": {"repository_manifest": {"const": "mncs-family.repository-manifest/v0alpha1"}, "commons": {"type": "string", "minLength": 1}}},
     "projects": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/project"}},
     "capabilities": {"type": "array", "items": {"$ref": "#/$defs/capability"}},

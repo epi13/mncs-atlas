@@ -99,8 +99,8 @@ def check_atlas(atlas: object, errors: list[str]) -> None:
             errors.append("site/atlas.json machine_registry.document must point to registry.json")
         if machine_registry.get("schema") != f"{CANONICAL_URL}schema/registry.schema.json":
             errors.append("site/atlas.json machine_registry.schema has an unexpected URL")
-        if machine_registry.get("authority") != "architecture-and-ownership-graph":
-            errors.append("site/atlas.json machine_registry.authority is contradictory")
+        if machine_registry.get("authority") != "orientation-and-ownership-graph":
+            errors.append("site/atlas.json machine_registry.authority must identify the orientation-only graph")
         if not machine_registry.get("query_interface"):
             errors.append("site/atlas.json machine_registry.query_interface is missing")
 

@@ -142,7 +142,7 @@ class RegistryTests(unittest.TestCase):
         registry = build_registry(output=None, workspace_roots=[ROOT.parent / "mncs-harness"])
         harness = next(row for row in registry["projects"] if row["id"] == "mncs-harness")
         self.assertEqual(harness["manifest"]["origin"], "repository:.mncs/project.json")
-        self.assertEqual(harness["manifest"]["revision"], 2)
+        self.assertEqual(harness["manifest"]["revision"], 4)
 
     def test_generated_human_registry_view_is_derived(self) -> None:
         rendered = subprocess.run(

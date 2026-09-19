@@ -11,11 +11,11 @@
   "machine_registry": {
     "document": "registry.json",
     "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
-    "authority": "architecture-and-ownership-graph",
-    "registry_revision": "ca6b843f09c62c26",
-    "registry_hash": "ca6b843f09c62c267f1ecd6ea0fdb5f1f9c342c70fc9c4ba3680df2bc1bd0744",
+    "authority": "orientation-and-ownership-graph",
+    "registry_revision": "dc720caea96b182e",
+    "registry_hash": "dc720caea96b182e2fbb4d4dec862f56644c6b5beca02fcb09d0177f7e5bd55c",
     "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
-    "purpose": "Validated family-wide project, capability, ownership, dependency, and decision graph for targeted machine queries."
+    "purpose": "Validated non-normative family orientation and ownership graph for targeted human and machine queries."
   },
   "documentation": {
     "architecture": "https://github.com/epi13/mncs-atlas/blob/main/docs/ARCHITECTURE.md",

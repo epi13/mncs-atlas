@@ -3,7 +3,7 @@
 Atlas now has two related machine surfaces:
 
 - `site/atlas.json` remains the small, non-normative human-orientation map.
-- `registry/compiled.json` is the deterministic family architecture graph.
+- `registry/compiled.json` is the deterministic family orientation/ownership graph.
 
 The compiled registry is built from three Atlas-owned, family-level inputs and
 compact repository manifests:
@@ -43,10 +43,12 @@ python -m registry validate
 python -m registry validate --fresh
 ```
 
-`context` is the intended agent preflight surface. It identifies the current
-repository by `.mncs/project.json` first and by a registered checkout name as a
-fallback. Its default text output is deliberately compact; `--json` returns
-the versioned `mncs-atlas.context-capsule/v1` object.
+`context` is an orientation surface for humans and repository browsing. It
+identifies the current repository by `.mncs/project.json` first and by a
+registered checkout name as a fallback. Its default text output is deliberately
+compact; `--json` returns the versioned `mncs-atlas.context-capsule/v1` object
+with `surface_role: orientation-only`. Authoritative agent preflight is the
+Language Service `family_agent_context` query.
 
 ## Ownership semantics
 
@@ -109,25 +111,21 @@ individual repository. Forge, Harness, Fabric, and the language/compiler
 repositories retain their own execution, assurance, routing, and semantic
 authorities.
 
-MNCS Harness now implements this preflight contract in its routed `ask`,
-interactive `chat`, and detached `submit` paths (see the
-[`mncs-harness` implementation](https://github.com/epi13/mncs-harness/blob/main/src/mncs_harness/atlas_context.py)).
-It discovers a nearby checkout or an explicit `MNCS_ATLAS_ROOT`, invokes the
-existing Atlas CLI, and injects a bounded text capsule without maintaining a
-second registry parser. Missing or stale local Atlas data fails open for
-ordinary Harness routing. Forge integration remains intentionally deferred
-until its launch/evaluation lifecycle can consume the same contract without
-coupling Atlas to Forge internals.
+Atlas remains useful to Harness and humans as optional orientation, but it is
+not the Harness preflight authority. Harness uses the bounded Language Service
+family-agent-context interface first and may add this capsule as a clearly
+labelled orientation fragment. Missing or stale Atlas data therefore does not
+change authoritative completeness.
 
-The intended entry-point query is:
+The authoritative agent entry-point query is:
 
 ```text
-mncs-atlas context <workspace>
+family_agent_context(<workspace>)
 ```
 
-once at agent entry, inject the text capsule into the task preflight, and use
-the JSON commands only for targeted follow-up. The caller should preserve
-`UNKNOWN` when the registry is stale, missing, or cannot identify a project.
+Atlas `mncs-atlas context <workspace>` is an optional orientation follow-up.
+The caller should preserve `UNKNOWN` when an owning authority is stale,
+missing, or cannot identify a project.
 
 ## Current `mncs-lang` boundary
 

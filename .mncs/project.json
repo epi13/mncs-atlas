@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-atlas",
-  "revision": 3,
+  "revision": 5,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Atlas owns non-normative family orientation and ownership indexing only; Commons owns canonical architecture/convergence facts, and Atlas does not create normative conformance, pressure status, or sibling-project authority."
@@ -26,21 +26,21 @@
       {
         "contract": "family-registry",
         "version": "1",
-        "kind": "compiled-architecture-graph",
+        "kind": "compiled-orientation-graph",
         "stability": "experimental",
         "fingerprint_sources": ["registry/project-catalog.json", "registry/capability-claims.json", "registry/decisions.json", "registry/manifest-snapshot.json"]
       },
       {
         "contract": "context-capsule",
         "version": "1",
-        "kind": "agent-preflight-surface",
+        "kind": "orientation-capsule",
         "stability": "experimental",
         "fingerprint_sources": ["registry/__main__.py", "docs/REGISTRY.md"]
       }
     ],
     "consumes": [
       {
-        "contract": "mncs.family-repository-manifest",
+        "contract": "mncs.repository-manifest-format",
         "envelope": {"op": "any"},
         "required": false,
         "notes": "Atlas consumes repository-owned manifests as descriptive graph inputs."

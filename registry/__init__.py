@@ -2,7 +2,8 @@
 
 The package is intentionally dependency-free.  JSON is a boundary format for
 the registry; the compiled artifact is deterministic and is suitable for
-local agent preflight without a network request.
+local orientation without a network request. Authoritative family preflight
+belongs to Language Service.
 """
 
 from .model import RegistryError, build_registry, load_registry, validate_registry

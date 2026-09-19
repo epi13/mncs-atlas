@@ -597,7 +597,7 @@ def build_registry(
         "schema_version": REGISTRY_SCHEMA,
         "registry_id": config.get("registry_id", "mncs-family"),
         "authority": {
-            "kind": "architecture-and-ownership-graph",
+            "kind": "orientation-and-ownership-graph",
             "does_not_create": [
                 "conformance",
                 "certification",
