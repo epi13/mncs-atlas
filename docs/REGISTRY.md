@@ -98,13 +98,16 @@ python -m registry build --output /tmp/mncs-family-local.json \
 
 ## Boundaries
 
-Atlas owns the architecture graph and context projection. Commons owns
-unresolved family pressure and its append-only evidence/lifecycle exchange;
-Atlas records only stable architecture relationships and links to pressure
-records when a campaign exposes them. Doctor owns migration, repair, and
-conformance work for an individual repository. Forge, Harness, Fabric, and
-the language/compiler repositories retain their own execution, assurance,
-routing, and semantic authorities.
+Atlas owns a non-normative orientation graph and context projection. Commons
+owns the canonical family architecture/convergence model, unresolved family
+pressure, and their append-only evidence/lifecycle exchange; Atlas projects
+those facts only when a bounded orientation view needs them and links to
+pressure records when a campaign exposes them. Language Service may compose a
+bounded agent packet from these authorities, but does not move ownership into
+Atlas or itself. Doctor owns migration, repair, and conformance work for an
+individual repository. Forge, Harness, Fabric, and the language/compiler
+repositories retain their own execution, assurance, routing, and semantic
+authorities.
 
 MNCS Harness now implements this preflight contract in its routed `ask`,
 interactive `chat`, and detached `submit` paths (see the
@@ -130,7 +133,7 @@ the JSON commands only for targeted follow-up. The caller should preserve
 
 Atlas's executable MNCS sources and WASM lock intentionally remain pinned to
 Source Profile 0.16 for their current published WASM artifact, while the
-family's current producer profile is 0.17. That compatibility pin is an Atlas
+family's current producer profile is 0.18. That compatibility pin is an Atlas
 build boundary, not a claim that the family language is still 0.16.
 The bounded MNCS/WASM model owns the typed JSON cursor, source-profile
 semantics, and render-plan projection used by the human site. The registry

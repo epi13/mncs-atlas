@@ -603,9 +603,10 @@ def build_registry(
                 "certification",
                 "independent evidence",
                 "Commons pressure status",
+                "canonical Commons architecture identity",
                 "runtime application authority",
             ],
-            "note": "Atlas records declared family architecture; owning repositories and external authorities retain semantic authority.",
+            "note": "Atlas projects family orientation and ownership claims; Commons owns canonical architecture/convergence facts and owning repositories retain semantic authority.",
         },
         "source_contracts": {
             "repository_manifest": MANIFEST_SCHEMA,

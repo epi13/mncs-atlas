@@ -9,14 +9,15 @@ Do not infer family architecture from repository names alone. Establish the owni
 ## Orientation sequence
 
 1. Read this file.
-2. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) to establish family authority boundaries.
-3. If the task touches a running deployment, service ownership, model routing, remote control, Harness, Fabric, or Commons, read [docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
-4. Read [docs/PROJECTS.md](docs/PROJECTS.md) and identify the repository or deployment component that owns the requested behavior.
-5. Read that owning project's current README and relevant architecture/specification documents.
-6. If the change crosses a boundary, read the adjacent project's public contract before modifying either side.
-7. Preserve evidence, lifecycle, and authority semantics in code, documentation, tests, and prompts.
+2. When Language Service is available, obtain its bounded `family_agent_context` packet first; it composes current language and Commons identities without making Atlas authoritative.
+3. Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) to establish family authority boundaries.
+4. If the task touches a running deployment, service ownership, model routing, remote control, Harness, Fabric, or Commons, read [docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
+5. Read [docs/PROJECTS.md](docs/PROJECTS.md) and identify the repository or deployment component that owns the requested behavior.
+6. Read that owning project's current README and relevant architecture/specification documents.
+7. If the change crosses a boundary, read the adjacent project's public contract before modifying either side.
+8. Preserve evidence, lifecycle, and authority semantics in code, documentation, tests, and prompts.
 
-For automated discovery, run the compiled registry preflight first:
+For orientation-only automated discovery, run the compiled registry preflight:
 
 ```bash
 python -m registry context .
@@ -30,8 +31,9 @@ stale. The published equivalent is [site/registry.json](site/registry.json),
 whose schema is [site/schema/registry.schema.json](site/schema/registry.schema.json).
 The older [site/atlas.json](site/atlas.json) remains the small human and
 operator-orientation map; its schema is [site/schema/atlas.schema.json](site/schema/atlas.schema.json).
-All Atlas surfaces are non-normative and never outrank the owning project's
-current documentation or specifications.
+Atlas surfaces are non-normative projections and never outrank the owning
+project's current documentation, Commons architecture identity, or governing
+specifications.
 
 For participant admission and capability brokerage, continue into [site/admission.json](site/admission.json) (schema: [site/schema/admission.schema.json](site/schema/admission.schema.json), contract: [docs/ADMISSION.md](docs/ADMISSION.md)). Establish a session (`OUTSIDE → KNOWN → ADMITTED → SCOPED`), query capabilities through the `admission/` broker, and follow `conformant_path` on denial. Atlas grants entry, not trust: every decision names its owning subsystem.
 

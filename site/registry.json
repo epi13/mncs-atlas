@@ -8,9 +8,10 @@
       "certification",
       "independent evidence",
       "Commons pressure status",
+      "canonical Commons architecture identity",
       "runtime application authority"
     ],
-    "note": "Atlas records declared family architecture; owning repositories and external authorities retain semantic authority."
+    "note": "Atlas projects family orientation and ownership claims; Commons owns canonical architecture/convergence facts and owning repositories retain semantic authority."
   },
   "source_contracts": {
     "repository_manifest": "mncs-family.repository-manifest/v0alpha1",
@@ -241,10 +242,10 @@
       ],
       "manifest": {
         "schema_version": "mncs-family.repository-manifest/v0alpha1",
-        "revision": 2,
+        "revision": 3,
         "location": "in-repository",
         "origin": "repository:.mncs/project.json",
-        "sha256": "1ffdaad6487f414c3c4bbc2fb9355ce746e2161c58df5fb34315c8f27bbf4cec",
+        "sha256": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
         "provides": [
           {
             "id": "mncs-atlas.family-map/0.4",
@@ -293,6 +294,14 @@
           },
           {
             "contract": "mncs-control.journal-context",
+            "envelope": {
+              "op": "any"
+            },
+            "required": false,
+            "evidence_refs": []
+          },
+          {
+            "contract": "mncs-commons.family-architecture",
             "envelope": {
               "op": "any"
             },
@@ -696,7 +705,7 @@
       "authority_class": "debug-semantics",
       "responsibility": "Canonical structured debugger for witnesses, traces, inspection, provenance, replay guarantees, and capability truth; it consumes test evidence without redefining test semantics.",
       "non_goals": [],
-      "language_profile": "0.17",
+      "language_profile": "0.18",
       "language_profile_status": "current",
       "dependencies": [
         "mncs-language",
@@ -745,7 +754,7 @@
         "language semantic authority"
       ],
       "language_profile": "0.17",
-      "language_profile_status": "current",
+      "language_profile_status": "legacy",
       "dependencies": [
         "mncs-debug",
         "mncs-language",
@@ -1211,7 +1220,7 @@
       "authority_class": "language-semantics-authority",
       "responsibility": "Verification-native language, compiler, semantic representation, standard library, effects, and backend contracts.",
       "non_goals": [],
-      "language_profile": "0.17",
+      "language_profile": "0.18",
       "language_profile_status": "current",
       "dependencies": [],
       "checkout_names": [
@@ -1321,7 +1330,7 @@
       "authority_class": "language-tooling",
       "responsibility": "Resident LSP and MCP semantic tooling over mncs-language, including the shared source/debug identity projection; it does not own language or debugger semantics.",
       "non_goals": [],
-      "language_profile": "0.17",
+      "language_profile": "0.18",
       "language_profile_status": "current",
       "dependencies": [
         "mncs-debug",
@@ -1864,7 +1873,7 @@
       "authority_class": "verification-semantics",
       "responsibility": "Canonical first-class MNCS test provider: compiler-owned inventory, selection, native oracle/suite semantics, TestResult and CheckResult evidence; it does not own execution transport or debugging semantics.",
       "non_goals": [],
-      "language_profile": "0.17",
+      "language_profile": "0.18",
       "language_profile_status": "current",
       "dependencies": [
         "mncs-language"
@@ -4951,6 +4960,13 @@
     },
     {
       "from": "project:mncs-atlas",
+      "to": "contract:mncs-commons.family-architecture",
+      "kind": "consumes",
+      "description": "Repository manifest consumes this contract.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-atlas",
       "to": "contract:mncs-control.journal-context",
       "kind": "consumes",
       "description": "Repository manifest consumes this contract.",
@@ -6875,13 +6891,13 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "783bcdd57da4569b974aa18eb6801673235f7b8c133058fecb2b7eb3855a2849",
+    "project_catalog": "02e79f3965968669e93b3ec45d0a7e240bf3b019a651114c20bcfe59fc3348ab",
     "capability_claims": "f5de651b495031b93e61a8f131dfccd4ca3f7c5a4fb69d51783b0e4166c5a8bf",
     "decisions": "b316320c6f941b632f613b431f73969ebb247a292c4afc2f9dbfe26ee9be3859",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
-      "mncs-atlas": "1ffdaad6487f414c3c4bbc2fb9355ce746e2161c58df5fb34315c8f27bbf4cec",
+      "mncs-atlas": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
@@ -6899,6 +6915,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "715d3e301f095cea73e9906ddea43fddb81d2044b00447bc93a4a063af5b16b1",
-  "registry_revision": "715d3e301f095cea"
+  "registry_hash": "ca6b843f09c62c267f1ecd6ea0fdb5f1f9c342c70fc9c4ba3680df2bc1bd0744",
+  "registry_revision": "ca6b843f09c62c26"
 }

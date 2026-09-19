@@ -1,10 +1,18 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-atlas",
-  "revision": 2,
+  "revision": 3,
   "manifest_location": "in-repository",
   "authority": {
-    "note": "Atlas owns family architecture and ownership indexing only; it does not create normative conformance, Commons pressure status, or sibling-project authority."
+    "note": "Atlas owns non-normative family orientation and ownership indexing only; Commons owns canonical architecture/convergence facts, and Atlas does not create normative conformance, pressure status, or sibling-project authority."
+  },
+  "organization": {
+    "layout": "mncs.repository-layout/1",
+    "surfaces": [
+      {"path": "registry/", "class": "generated", "authority": "mncs-atlas", "note": "Orientation projection; not canonical Commons architecture."},
+      {"path": "site/", "class": "canonical", "authority": "mncs-atlas", "note": "Human/family orientation source."},
+      {"path": "scripts/", "class": "host-boundary", "note": "Static-site, filesystem, and registry projection adapters."}
+    ]
   },
   "contracts": {
     "provides": [
@@ -41,6 +49,12 @@
         "contract": "mncs-control.journal-context",
         "envelope": {"op": "any"},
         "required": false
+      },
+      {
+        "contract": "mncs-commons.family-architecture",
+        "envelope": {"op": "any"},
+        "required": false,
+        "notes": "Commons remains canonical for architecture/convergence facts; Atlas consumes only bounded orientation inputs."
       }
     ],
     "tests": [
