@@ -196,7 +196,7 @@ const plan = render(state);
 const view = new DataView(memory.buffer);
 const u32 = (address) => view.getUint32(address, true);
 const u64 = (address) => Number(view.getBigUint64(address, true));
-if (u32(plan) !== 1 || u64(plan + 16) !== 37 || u64(plan + 32) !== 16 || u64(plan + 40) !== 20) process.exit(2);
+if (u32(plan) !== 1 || u64(plan + 16) !== 39 || u64(plan + 32) !== 18 || u64(plan + 40) !== 26) process.exit(2);
 const nodes = u32(plan + 24);
 const operations = [];
 for (let index = 0; index < u64(plan + 16); index += 1) {
@@ -204,7 +204,7 @@ for (let index = 0; index < u64(plan + 16); index += 1) {
   operations.push(u32(node));
 }
 const counts = (code) => operations.filter((value) => value === code).length;
-if (counts(1) !== 16 || counts(3) !== 1 || counts(4) !== 5 || counts(5) !== 1 || counts(6) !== 6 || counts(7) !== 5 || counts(8) !== 1) process.exit(3);
+if (counts(1) !== 18 || counts(3) !== 1 || counts(4) !== 5 || counts(5) !== 1 || counts(6) !== 6 || counts(7) !== 5 || counts(8) !== 1) process.exit(3);
 const first = u32(nodes + 3 * 8);
 if (u64(first + 56) !== 5 || u64(first + 64) !== 1) process.exit(4);
 const text = (pointer) => {

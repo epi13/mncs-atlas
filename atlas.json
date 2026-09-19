@@ -12,8 +12,8 @@
     "document": "registry.json",
     "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
     "authority": "architecture-and-ownership-graph",
-    "registry_revision": "91be923419e59e30",
-    "registry_hash": "91be923419e59e300937819b0981ab454fe718c7226e687f21525b869240b332",
+    "registry_revision": "ca6b843f09c62c26",
+    "registry_hash": "ca6b843f09c62c267f1ecd6ea0fdb5f1f9c342c70fc9c4ba3680df2bc1bd0744",
     "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
     "purpose": "Validated family-wide project, capability, ownership, dependency, and decision graph for targeted machine queries."
   },
