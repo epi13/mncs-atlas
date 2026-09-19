@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-atlas",
-  "revision": 5,
+  "revision": 6,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Atlas owns non-normative family orientation and ownership indexing only; Commons owns canonical architecture/convergence facts, and Atlas does not create normative conformance, pressure status, or sibling-project authority."
@@ -9,9 +9,9 @@
   "organization": {
     "layout": "mncs.repository-layout/1",
     "surfaces": [
-      {"path": "registry/", "class": "generated", "authority": "mncs-atlas", "note": "Orientation projection; not canonical Commons architecture."},
-      {"path": "site/", "class": "canonical", "authority": "mncs-atlas", "note": "Human/family orientation source."},
-      {"path": "scripts/", "class": "host-boundary", "note": "Static-site, filesystem, and registry projection adapters."}
+      {"path": "registry/", "class": "generated", "authority": "mncs-atlas", "note": "Orientation projection; not canonical Commons architecture.", "classification": {"authority": "none", "lifecycle": "generated", "boundary_kind": "none", "semantic_role": "generated"}},
+      {"path": "site/", "class": "canonical", "authority": "mncs-atlas", "note": "Human/family orientation source.", "classification": {"authority": "canonical", "lifecycle": "active", "boundary_kind": "none", "semantic_role": "canonical-semantic"}},
+      {"path": "scripts/", "class": "host-boundary", "note": "Static-site, filesystem, and registry projection adapters.", "classification": {"authority": "none", "lifecycle": "active", "boundary_kind": "filesystem", "semantic_role": "platform-adapter"}}
     ]
   },
   "contracts": {
