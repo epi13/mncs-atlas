@@ -21,7 +21,7 @@ The family also contains non-normative specifications, operator infrastructure, 
 
 [MNCS Rights & Provenance](https://github.com/epi13/mncs-rights-provenance) is now an official **Incubating** family project. It develops machine-native provenance and rights evidence for artifact origin, transformation lineage, contribution provenance, authorship uncertainty, rights basis, and artifact licensing while intentionally remaining non-normative and not replacing Apache-2.0.
 
-Harness, Control, Fabric, Forge, Commons, RAVEL, MNEL, validators, language research, reference studies, Rights & Provenance, and Atlas itself are not mandatory for MNCS conformance unless a future governing specification explicitly adopts a requirement.
+Harness, Control, Fabric, Forge, Commons, RAVEL, mncs-models, mncs-learn, validators, language research, reference studies, Rights & Provenance, and Atlas itself are not mandatory for MNCS conformance unless a future governing specification explicitly adopts a requirement.
 
 ## What Atlas is for
 
@@ -30,7 +30,7 @@ Atlas should answer the questions that do not belong in any one project README:
 - What is MNCS and what problem is the project family investigating?
 - What is the difference between MNCS and MNCDS?
 - Which repository owns which responsibility?
-- How do Forge, Fabric, Commons, RAVEL, MNEL, Rights & Provenance, the language work, validators, and studies relate?
+- How do Forge, Fabric, Commons, RAVEL, mncs-models, mncs-learn, Rights & Provenance, the language work, validators, and studies relate?
 - How do current operator components such as MNCS Control MCP and MNCS Harness fit without becoming normative requirements?
 - Where does authority live, and where does it explicitly *not* live?
 - Which persistent service owns worker presence, execution history, knowledge state, routing policy, or remote-control state?
@@ -144,7 +144,7 @@ The orientation map still provides:
 - explicit `authority_class` metadata separate from maturity;
 - a machine-readable family maturity model and dependency policy;
 - a machine consumer contract describing safe resolution order and UNKNOWN behavior;
-- additional rights/provenance relationships across Fabric, Forge, Commons, MNCS, MNCDS, and MNEL;
+- additional rights/provenance relationships across Fabric, Forge, Commons, MNCS, MNCDS, and mncs-learn;
 - data-driven website enhancement so the project registry and maturity presentation derive from the canonical machine map;
 - stable IDs, operator components, relationship records, entry points, freshness guidance, and the published JSON Schema.
 
@@ -191,8 +191,23 @@ owning subsystem; Atlas itself owns only orientation data.
 python scripts/sync_pages_root.py --check
 python scripts/check_site.py
 python scripts/check_journal.py
+python scripts/atlas_refresh.py --check
 python -m unittest discover -s tests -t . -v
 ```
+
+## Ecosystem dashboard
+
+[dashboard.html](https://epi13.github.io/mncs-atlas/dashboard.html) is the
+deterministic machine-derived projection of current family state
+(`dashboard.json`, schema `mncs-atlas.dashboard-projection/v1`): ecosystem
+overview, relationship/capability map, native-migration states, pressures,
+verification health, freshness/provenance, and recent movement. Missing
+evidence is UNKNOWN, never PASS. The projector (`projector/`) merges the
+Atlas catalog, workspace manifests, Commons family records, the compiled
+registry, and journal head state; `python -m projector check
+site/dashboard.json` validates a projection. Background refresh (including
+the user-level systemd timer) runs through `scripts/atlas_refresh.py`; see
+[docs/OPERATING_MODEL.md](docs/OPERATING_MODEL.md).
 
 These checks validate local links and fragments, required assets/discovery files, machine-map identity and relationship integrity, maturity vocabulary, authority classes, consumer-contract structure, `.nojekyll`, journal numbering/covered periods, and byte-for-byte parity between the canonical site and the branch-publishing compatibility mirror.
 

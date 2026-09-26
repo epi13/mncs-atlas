@@ -142,7 +142,12 @@ class RegistryTests(unittest.TestCase):
         registry = build_registry(output=None, workspace_roots=[ROOT.parent / "mncs-harness"])
         harness = next(row for row in registry["projects"] if row["id"] == "mncs-harness")
         self.assertEqual(harness["manifest"]["origin"], "repository:.mncs/project.json")
-        self.assertEqual(harness["manifest"]["revision"], 4)
+        # The override mechanism is pinned, not the sibling's revision: the
+        # compiled revision must track the live workspace manifest exactly.
+        live = json.loads(
+            (ROOT.parent / "mncs-harness" / ".mncs" / "project.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(harness["manifest"]["revision"], live["revision"])
 
     def test_generated_human_registry_view_is_derived(self) -> None:
         rendered = subprocess.run(

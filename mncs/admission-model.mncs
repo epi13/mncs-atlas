@@ -1,4 +1,4 @@
-mncs 0.16;
+mncs 0.18;
 
 // Admission and capability-broker shapes for MNCS Atlas.
 // Orientation data only: Atlas grants entry, not trust. Authority stays
@@ -6,11 +6,12 @@ mncs 0.16;
 // capability, decision, and denial records so MNCS-side tooling can parse
 // and project them without re-deciding policy.
 //
-// Pressure note (recorded, not silently worked around): MNCS 0.10 expresses
+// Pressure note (recorded, not silently worked around): MNCS 0.18 expresses
 // closed record shapes well, but conditional grants with expiry, dynamic
 // authority dispatch, and open-ended evidence sets have no clean encoding
 // yet. The Python admission package remains the evaluation runtime; this
-// file is the shape contract both sides conform to. See docs/ADMISSION.md.
+// file is the shape contract both sides conform to, modulo the
+// `capability_name` wire-name mapping noted on Grant. See docs/ADMISSION.md.
 module mncs_atlas.admission_model;
 
 use mncs.std.json_cursor.v1;
@@ -26,8 +27,11 @@ record Participant {
 }
 
 // One scoped capability grant held by a session.
+// Wire-name note: the Python Grant serializes this field as "capability".
+// `capability` is a reserved keyword in MNCS with no escape, so the MNCS
+// record spells it `capability_name`; the two names denote the same slot.
 record Grant {
-    capability: TextView,
+    capability_name: TextView,
     scope: TextView,
     condition_count: u64,
     conditions: [TextView; 8],
@@ -77,7 +81,7 @@ record CapabilityEntry {
 // Broker decision: composed findings with the deciding authority named.
 record CapabilityDecision {
     schema_tag: TextView,
-    capability: TextView,
+    capability_name: TextView,
     status: byte,
     status_text: TextView,
     verdict: TextView,

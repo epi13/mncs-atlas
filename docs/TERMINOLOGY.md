@@ -72,7 +72,7 @@ This index standardizes family-level usage. Project-specific specifications rema
 
 **MNCDS** — Machine-Native Complexity Development Specification. An independently versioned development-process specification governing decomposition, candidate lifecycle, evidence flow, and related development controls.
 
-**MNEL** — Machine-Native Experimental Learning. An evidence-governed experimental learning framework using bounded interventions, causal attribution, and verified-experience distillation.
+**MNEL** — Machine-Native Experimental Learning. Retired umbrella experimental-learning repository (historical reference only); succeeded by **mncs-models** (construction/composition) and **mncs-learn** (training/adaptation orchestration).
 
 **Machine-native** — Designed so machine actors can operate on explicit semantic structure, contracts, identities, evidence, and bounded interfaces without making human inspection impossible. It does not mean machine-exclusive.
 

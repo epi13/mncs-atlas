@@ -1,0 +1,25 @@
+[Unit]
+Description=MNCS Atlas deterministic refresh (projection + static site)
+Documentation=https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Installed by scripts/atlas_refresh.py --install-schedule; @ATLAS_ROOT@ is
+# replaced with the Atlas checkout path at install time.
+WorkingDirectory=@ATLAS_ROOT@
+ExecStart=/usr/bin/python3 @ATLAS_ROOT@/scripts/atlas_refresh.py --publish
+StandardOutput=append:%h/.local/share/mncs-atlas/refresh.log
+StandardError=append:%h/.local/share/mncs-atlas/refresh.log
+# Hardening: read-only checkout plus write access only to generated outputs
+# and machine-local state. Logs stay outside the repository.
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/share/mncs-atlas %h/.cache @ATLAS_ROOT@
+# The refresh publishes derived state; it must never block on secrets.
+NoNewPrivileges=true
+LockPersonality=true
+
+[Install]
+WantedBy=default.target

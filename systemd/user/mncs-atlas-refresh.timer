@@ -1,0 +1,15 @@
+[Unit]
+Description=Weekly MNCS Atlas deterministic refresh
+Documentation=https://github.com/epi13/mncs-atlas/blob/main/docs/OPERATING_MODEL.md
+
+[Timer]
+# Conservative default: Monday morning. Override at install time with
+# scripts/atlas_refresh.py --install-schedule --cadence '<OnCalendar>'.
+OnCalendar=Mon *-*-* 07:13:00
+Persistent=true
+# Single-flight with the interactive controller via the shared lockfile;
+# overlapping ticks exit non-zero without touching the tree.
+Unit=mncs-atlas-refresh.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MNCS Atlas dashboard: deterministic machine-derived projection of current MNCS ecosystem state.">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="MNCS Atlas — Ecosystem Dashboard">
+  <meta property="og:description" content="Deterministic projection of MNCS family state: projects, relationships, pressures, verification, and freshness.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://epi13.github.io/mncs-atlas/dashboard.html">
+  <title>MNCS Atlas — Ecosystem Dashboard</title>
+  <link rel="canonical" href="https://epi13.github.io/mncs-atlas/dashboard.html">
+  <link rel="alternate" type="application/json" href="dashboard.json" title="MNCS Atlas dashboard projection">
+  <style>
+    :root { color-scheme: light; font: 16px/1.55 system-ui, sans-serif; color: #172033; background: #f5f7fb; }
+    body { max-width: 1180px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    header, section { background: white; border: 1px solid #dce2ee; border-radius: 14px; padding: 1.25rem; margin: 1rem 0; }
+    h1, h2, h3 { line-height: 1.2; } h1 { margin-top: 0; } h3 { margin-bottom: .45rem; }
+    a { color: #1859a8; } code { font-family: ui-monospace, monospace; font-size: .9em; }
+    .meta { color: #63708a; font-size: .88rem; } .summary { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .metric { background: #eef3fb; border-radius: 10px; padding: .5rem .75rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .75rem; }
+    .card { border: 1px solid #e1e6f0; border-radius: 10px; padding: .8rem; }
+    .card p { margin: .3rem 0; } table { border-collapse: collapse; width: 100%; } th, td { border-bottom: 1px solid #e1e6f0; padding: .65rem; text-align: left; vertical-align: top; }
+    .scroll { overflow-x: auto; } li { margin: .35rem 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: .05rem .6rem; font-size: .8rem; background: #eef3fb; }
+    .pill.unknown { background: #f3e9c8; } .pill.retired { background: #e4e7ee; }
+    .pill.active { background: #d9ecd9; } .pill.fail { background: #f5cfcf; }
+    .toolbar { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; margin: .5rem 0; }
+    .toolbar input, .toolbar select { font: inherit; padding: .3rem .5rem; border: 1px solid #c9d2e4; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">← MNCS Atlas</a></p>
+    <h1>MNCS Ecosystem Dashboard</h1>
+    <p>Deterministic machine-derived projection of current family state. Atlas displays stored state; it grants no trust or conformance. Missing evidence is <strong>UNKNOWN</strong>, never PASS.</p>
+    <div class="summary" id="dash-metrics"><span class="metric">loading dashboard.json…</span></div>
+    <p class="meta" id="dash-provenance"></p>
+    <p><a href="dashboard.json">Machine projection JSON</a> · <a href="registry.html">Human registry view</a> · <a href="journal/">Development Journal</a></p>
+  </header>
+
+  <section id="ecosystem">
+    <h2>Ecosystem overview</h2>
+    <div class="toolbar">
+      <label>Filter <input id="filter-projects" type="search" placeholder="project, category, lifecycle…"></label>
+      <label>Lifecycle <select id="filter-lifecycle"><option value="">all</option></select></label>
+    </div>
+    <div class="grid" id="dash-projects"></div>
+  </section>
+
+  <section id="relationships">
+    <h2>Relationship / capability map</h2>
+    <div class="scroll"><table id="dash-edges"><thead><tr><th>Producer</th><th>Consumer</th><th>Contract</th><th>Provenance</th></tr></thead><tbody></tbody></table></div>
+    <p class="meta" id="dash-edge-note"></p>
+    <h3>Capability ownership (Commons architecture model)</h3>
+    <div class="scroll"><table id="dash-capabilities"><thead><tr><th>Capability</th><th>Owner</th><th>Kind</th><th>Lifecycle</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section id="implementation">
+    <h2>Native migration / implementation ownership</h2>
+    <p>Only states supported by declared evidence are shown. Everything else is UNKNOWN.</p>
+    <div id="dash-implementation"></div>
+  </section>
+
+  <section id="pressures">
+    <h2>Language / capability pressures</h2>
+    <p>Stored pressure state, displayed as stored. Atlas is not the pressure authority.</p>
+    <div class="summary" id="dash-pressure-counts"></div>
+    <div class="scroll"><table id="dash-pressure-table"><thead><tr><th>ID</th><th>Repositories</th><th>Capability / domain</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    <p class="meta" id="dash-pressure-note"></p>
+  </section>
+
+  <section id="verification">
+    <h2>Verification health</h2>
+    <p>No evidence is not PASS: every declared check without a result feed is UNKNOWN.</p>
+    <div class="scroll"><table id="dash-verification"><thead><tr><th>Check</th><th>Contract</th><th>Runner</th><th>State</th><th>Reason</th></tr></thead><tbody></tbody></table></div>
+    <p class="meta" id="dash-verification-note"></p>
+  </section>
+
+  <section id="freshness">
+    <h2>Store / projection freshness</h2>
+    <div id="dash-freshness"></div>
+    <div class="scroll"><table id="dash-sources"><thead><tr><th>Source</th><th>Path</th><th>Content identity</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section id="movement">
+    <h2>Recent movement</h2>
+    <p>Machine-recorded architecture movement only; this is not a commit log.</p>
+    <div id="dash-movement"></div>
+  </section>
+
+<!-- atlas:noscript-fallback:begin -->
+<noscript>
+<table><caption>Atlas dashboard projection sha256:c008558fff7f7b4f6133dff71ddd6725e1a6a6c07ce8f46a78bdc8aa39a0e154 (freshness: current) — full data in dashboard.json</caption><thead><tr><th>project</th><th>category</th><th>lifecycle</th><th>authority</th><th>maturity</th></tr></thead><tbody><tr><td>mncds</td><td>specification</td><td>experimental</td><td>normative-specification</td><td>unknown</td></tr><tr><td>mncs</td><td>standard</td><td>experimental</td><td>normative-specification</td><td>unknown</td></tr><tr><td>mncs-actions</td><td>assurance</td><td>experimental</td><td>family-assurance-automation</td><td>unknown</td></tr><tr><td>mncs-atlas</td><td>documentation</td><td>active</td><td>family-orientation</td><td>unknown</td></tr><tr><td>mncs-atomic</td><td>research</td><td>experimental</td><td>simulation-library-authority</td><td>unknown</td></tr><tr><td>mncs-automation</td><td>runtime</td><td>experimental</td><td>automation-library-authority</td><td>unknown</td></tr><tr><td>mncs-cli</td><td>research</td><td>experimental</td><td>cli-library-authority</td><td>unknown</td></tr><tr><td>mncs-commons</td><td>coordination</td><td>active</td><td>coordination-and-institutional-memory</td><td>unknown</td></tr><tr><td>mncs-compiler</td><td>language</td><td>experimental</td><td>compiler-research</td><td>unknown</td></tr><tr><td>mncs-control</td><td>research</td><td>experimental</td><td>control-systems-research</td><td>unknown</td></tr><tr><td>mncs-control-mcp</td><td>operator</td><td>active</td><td>deployment-operator-control</td><td>unknown</td></tr><tr><td>mncs-crypto</td><td>research</td><td>incubating</td><td>cryptography-pressure-research</td><td>unknown</td></tr><tr><td>mncs-data</td><td>research</td><td>experimental</td><td>data-library-authority</td><td>unknown</td></tr><tr><td>mncs-debug</td><td>assurance</td><td>experimental</td><td>debug-semantics</td><td>unknown</td></tr><tr><td>mncs-doc</td><td>research</td><td>experimental</td><td>document-library-authority</td><td>unknown</td></tr><tr><td>mncs-doctor</td><td>development-control</td><td>active</td><td>repository-migration-authority</td><td>unknown</td></tr><tr><td>mncs-engine</td><td>research</td><td>experimental</td><td>engine-integration</td><td>unknown</td></tr><tr><td>mncs-fabric</td><td>runtime</td><td>active</td><td>execution-substrate</td><td>unknown</td></tr><tr><td>mncs-fem</td><td>research</td><td>experimental</td><td>scientific-compute-authority</td><td>unknown</td></tr><tr><td>mncs-fluid</td><td>research</td><td>experimental</td><td>scientific-compute-authority</td><td>unknown</td></tr><tr><td>mncs-forge</td><td>development-control</td><td>active</td><td>development-assurance</td><td>unknown</td></tr><tr><td>mncs-geometry</td><td>research</td><td>experimental</td><td>geometry-library-authority</td><td>unknown</td></tr><tr><td>mncs-harness</td><td>operator</td><td>active</td><td>deployment-operator-policy</td><td>unknown</td></tr><tr><td>mncs-index</td><td>runtime</td><td>experimental</td><td>derived-index-authority</td><td>unknown</td></tr><tr><td>mncs-ingest</td><td>research</td><td>experimental</td><td>semantic-ingest-authority</td><td>unknown</td></tr><tr><td>mncs-lab</td><td>research</td><td>experimental</td><td>language-research</td><td>unknown</td></tr><tr><td>mncs-language</td><td>language</td><td>experimental</td><td>language-semantics-authority</td><td>unknown</td></tr><tr><td>mncs-language-service</td><td>language</td><td>experimental</td><td>language-tooling</td><td>unknown</td></tr><tr><td>mncs-learn</td><td>research</td><td>experimental</td><td>research-advisory</td><td>unknown</td></tr><tr><td>mncs-lineage</td><td>research</td><td>experimental</td><td>research-advisory</td><td>unknown</td></tr><tr><td>mncs-math</td><td>research</td><td>experimental</td><td>math-library-authority</td><td>unknown</td></tr><tr><td>mncs-media</td><td>research</td><td>experimental</td><td>media-library-authority</td><td>unknown</td></tr><tr><td>mncs-memory</td><td>research</td><td>experimental</td><td>memory-policy-authority</td><td>unknown</td></tr><tr><td>mncs-models</td><td>research</td><td>experimental</td><td>research-advisory</td><td>unknown</td></tr><tr><td>mncs-numerics</td><td>research</td><td>experimental</td><td>numeric-library-authority</td><td>unknown</td></tr><tr><td>mncs-physics</td><td>research</td><td>experimental</td><td>physics-library-authority</td><td>unknown</td></tr><tr><td>mncs-reference-studies</td><td>research</td><td>experimental</td><td>empirical-research</td><td>unknown</td></tr><tr><td>mncs-rights-provenance</td><td>governance</td><td>incubating</td><td>non-normative-incubating-specification</td><td>unknown</td></tr><tr><td>mncs-service</td><td>runtime</td><td>experimental</td><td>service-library-authority</td><td>unknown</td></tr><tr><td>mncs-signal</td><td>research</td><td>experimental</td><td>signal-library-authority</td><td>unknown</td></tr><tr><td>mncs-store</td><td>runtime</td><td>experimental</td><td>persistence-authority</td><td>unknown</td></tr><tr><td>mncs-system-monitor</td><td>runtime</td><td>experimental</td><td>observability-consumer</td><td>unknown</td></tr><tr><td>mncs-test</td><td>assurance</td><td>experimental</td><td>verification-semantics</td><td>unknown</td></tr><tr><td>mncs-tui</td><td>research</td><td>experimental</td><td>consumer-research</td><td>unknown</td></tr><tr><td>mncs-ui</td><td>research</td><td>experimental</td><td>ui-library-authority</td><td>unknown</td></tr><tr><td>mncs-validator-rs</td><td>validator</td><td>active</td><td>bounded-independent-validator</td><td>unknown</td></tr><tr><td>mncs-web</td><td>runtime</td><td>experimental</td><td>web-library-authority</td><td>unknown</td></tr><tr><td>mnel</td><td>research</td><td>retired</td><td>research-advisory</td><td>unknown</td></tr><tr><td>ravel</td><td>research</td><td>experimental</td><td>research-advisory</td><td>unknown</td></tr></tbody></table>
+</noscript>
+<!-- atlas:noscript-fallback:end -->
+
+  <footer class="meta"><p>Dashboard projection <code id="dash-hash">unknown</code>. Journal interpretation lives in the <a href="journal/">Development Journal</a>; the dashboard is deterministic current state, not synthesis.</p></footer>
+  <script src="assets/dashboard.js"></script>
+</body>
+</html>

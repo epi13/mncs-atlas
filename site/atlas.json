@@ -12,8 +12,8 @@
     "document": "registry.json",
     "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
     "authority": "orientation-and-ownership-graph",
-    "registry_revision": "dc720caea96b182e",
-    "registry_hash": "dc720caea96b182e2fbb4d4dec862f56644c6b5beca02fcb09d0177f7e5bd55c",
+    "registry_revision": "44f8583dff45f10a",
+    "registry_hash": "44f8583dff45f10a709875516584a13dadd3e5a1a19e6cbac31691eb7fef903a",
     "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
     "purpose": "Validated non-normative family orientation and ownership graph for targeted human and machine queries."
   },
@@ -209,7 +209,25 @@
       "role": "experimental-learning",
       "maturity": "research",
       "authority_class": "research-advisory",
-      "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
+      "responsibility": "Retired umbrella experimental-learning repository (historical reference only). Model construction moved to mncs-models; learning/training orchestration moved to mncs-learn."
+    },
+    {
+      "id": "mncs-models",
+      "name": "MNCS Models",
+      "repository": "https://github.com/epi13/mncs-models",
+      "role": "model-construction",
+      "maturity": "research",
+      "authority_class": "research-advisory",
+      "responsibility": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives."
+    },
+    {
+      "id": "mncs-learn",
+      "name": "MNCS Learn",
+      "repository": "https://github.com/epi13/mncs-learn",
+      "role": "learning-orchestration",
+      "maturity": "research",
+      "authority_class": "research-advisory",
+      "responsibility": "Learning, training, and adaptation orchestration over constructed models."
     },
     {
       "id": "mncs-tui",
