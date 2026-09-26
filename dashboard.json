@@ -1,6 +1,6 @@
 {
   "envelope": {
-    "generated_at": "2026-09-26T23:23:37+00:00",
+    "generated_at": "2026-09-26T23:53:38+00:00",
     "projector": "mncs-atlas.projector",
     "projector_version": "1"
   },
@@ -261,7 +261,7 @@
           "role": "family-ci-and-evidence-automation"
         },
         {
-          "authority_class": "family-architecture-memory",
+          "authority_class": "family-orientation",
           "authority_reason": "declared",
           "category": "documentation",
           "dependencies": [],
@@ -272,7 +272,7 @@
             "checkout": "mncs-atlas",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 4,
+            "revision": 7,
             "status": "present"
           },
           "maturity": "unknown",
@@ -283,9 +283,9 @@
             "reason": "Atlas is orientation-only and has no repository-owned semantic graph declaration.",
             "state": "explicit_nonparticipant"
           },
-          "purpose": "Family architecture and ownership graph, compact machine registry, context capsules, human orientation, and indexed decisions; it is non-normative.",
+          "purpose": "Non-normative family orientation, ownership pointers, related-project discovery, compact navigation capsules, human presentation, and indexed decisions; Commons and owning repositories remain authoritative for architecture, pressure, and implementation facts.",
           "repository": "https://github.com/epi13/mncs-atlas",
-          "role": "family-architecture-registry"
+          "role": "family-orientation-registry"
         },
         {
           "authority_class": "simulation-library-authority",
@@ -2764,8 +2764,8 @@
         "decision_count": 12,
         "edge_count": 390,
         "project_count": 49,
-        "registry_hash": "9ab99a8adffc55da6ff5507e9c568ffd60729c95d1cb59da0562fe849140ea2a",
-        "registry_revision": "9ab99a8adffc55da",
+        "registry_hash": "44f8583dff45f10a709875516584a13dadd3e5a1a19e6cbac31691eb7fef903a",
+        "registry_revision": "44f8583dff45f10a",
         "status": "present"
       },
       "commons_complete": true,
@@ -2953,24 +2953,24 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:ce0dda295a7ea0e01d3903f98c3ec3e80575e543d14d51cd6934593c6187efc6",
+    "semantic_hash": "sha256:c008558fff7f7b4f6133dff71ddd6725e1a6a6c07ce8f46a78bdc8aa39a0e154",
     "sources": [
       {
-        "content_sha256": "b8fd340099e088b5044fcc5909b7749f7f21d4784463039fcca9ea3819bd9e8f",
+        "content_sha256": "4782f77f64c4a2c6ea0867a249b7673c77fc4dbad255a258a5f9e8dadf8f02d6",
         "id": "atlas-catalog",
         "path": "mncs-atlas/registry/project-catalog.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "0ad64304f3bb391a9d9912bc52877a2e148801aea7d22b77c144bdf02152abfb",
+        "content_sha256": "2cdb1eac7a03e7eaf1b37965f2e0039e95baa67de90e1b5fd5fe673fe435a902",
         "id": "atlas-compiled",
         "path": "mncs-atlas/registry/compiled.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "8454f295ee704b2b2b6315860cd0bdfb2220d11afb1c9f8f801e0143f0eaab19",
+        "content_sha256": "cf9a4efed3b3e86920057eecd528653716ee3e725ef4152bd53708e427c85150",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "22 manifests discovered",
@@ -3114,5 +3114,5 @@
       "declared_count": 6
     }
   },
-  "semantic_hash": "sha256:ce0dda295a7ea0e01d3903f98c3ec3e80575e543d14d51cd6934593c6187efc6"
+  "semantic_hash": "sha256:c008558fff7f7b4f6133dff71ddd6725e1a6a6c07ce8f46a78bdc8aa39a0e154"
 }

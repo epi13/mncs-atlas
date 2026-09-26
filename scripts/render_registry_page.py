@@ -91,7 +91,7 @@ def render(registry: dict) -> str:
   <header>
     <p><a href="index.html">← MNCS Atlas</a></p>
     <h1>MNCS Family Registry</h1>
-    <p>Generated from the deterministic compiled graph. Atlas records family architecture and ownership; owning repositories retain implementation and semantic authority.</p>
+    <p>Generated from the deterministic compiled graph. Atlas records family orientation and ownership pointers; Commons and owning repositories retain architecture, pressure, implementation, and semantic authority.</p>
     <div class="summary">
       <span class="metric"><strong>{len(registry['projects'])}</strong> projects</span>
       <span class="metric"><strong>{len(registry['capabilities'])}</strong> capabilities</span>

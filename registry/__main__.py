@@ -62,6 +62,7 @@ def _context(registry: dict[str, Any], path: Path) -> dict[str, Any]:
     if project is None:
         return {
             "schema_version": "mncs-atlas.context-capsule/v1",
+            "surface_role": "orientation-only",
             "registry_revision": registry["registry_revision"],
             "registry_hash": registry["registry_hash"],
             "project": None,
@@ -106,6 +107,7 @@ def _context(registry: dict[str, Any], path: Path) -> dict[str, Any]:
     )
     return {
         "schema_version": "mncs-atlas.context-capsule/v1",
+        "surface_role": "orientation-only",
         "registry_revision": registry["registry_revision"],
         "registry_hash": registry["registry_hash"],
         "status": "PASS",
@@ -136,6 +138,7 @@ def _text_context(capsule: dict[str, Any]) -> str:
         return "\n".join(
             [
                 "MNCS FAMILY CONTEXT",
+                "Surface role: orientation-only; use Language Service for authoritative family preflight",
                 f"Registry revision: {capsule['registry_revision']}",
                 "Project: UNKNOWN",
                 f"Reason: {capsule['reason']}",
@@ -151,6 +154,7 @@ def _text_context(capsule: dict[str, Any]) -> str:
     ] or ["  none"]
     result = [
         "MNCS FAMILY CONTEXT",
+        "Surface role: orientation-only; use Language Service for authoritative family preflight",
         f"Registry revision: {capsule['registry_revision']}",
         "",
         "Project:",

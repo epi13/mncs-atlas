@@ -47,7 +47,7 @@ site/                    canonical dependency-free GitHub Pages source
   index.html             overview, entry points, architecture, runtime, projects
   404.html               project-aware not-found page
   atlas.json             machine-readable family + operator orientation map
-  registry.json          generated compiled family architecture/ownership graph
+  registry.json          generated compiled family orientation/ownership graph
   registry.html          generated human view of the compiled registry
   robots.txt             crawler guidance
   sitemap.xml            public Pages sitemap
@@ -120,7 +120,7 @@ That distinction prevents protected remote control, model routing, persistent ex
 ## Machine-readable Atlas
 
 `site/atlas.json` is a non-normative human-orientation surface. The compiled
-`site/registry.json` is the machine-oriented family architecture graph: it
+`site/registry.json` is the machine-oriented family orientation/ownership graph: it
 indexes projects, capabilities, ownership roles, dependencies, contracts,
 decisions, exclusions, source digests, and a deterministic revision/hash. Use
 the source-checkout CLI for targeted access:
