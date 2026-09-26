@@ -1,7 +1,7 @@
 {
   "schema_version": "mncs-family.repository-manifest/v0alpha1",
   "repository": "mncs-atlas",
-  "revision": 3,
+  "revision": 4,
   "manifest_location": "in-repository",
   "authority": {
     "note": "Atlas owns non-normative family orientation and ownership indexing only; Commons owns canonical architecture/convergence facts, and Atlas does not create normative conformance, pressure status, or sibling-project authority."
@@ -36,6 +36,13 @@
         "kind": "agent-preflight-surface",
         "stability": "experimental",
         "fingerprint_sources": ["registry/__main__.py", "docs/REGISTRY.md"]
+      },
+      {
+        "contract": "family-dashboard",
+        "version": "1",
+        "kind": "orientation-surface",
+        "stability": "experimental",
+        "fingerprint_sources": ["site/dashboard.json", "projector/project.py", "docs/OPERATING_MODEL.md"]
       }
     ],
     "consumes": [
@@ -69,6 +76,12 @@
         "covers": ["family-registry"],
         "obligation": "family-integration",
         "command": {"argv": ["python", "-m", "registry", "validate"]}
+      },
+      {
+        "test": "dashboard-projection",
+        "covers": ["family-dashboard"],
+        "obligation": "self",
+        "command": {"argv": ["python", "-m", "pytest", "tests/test_projector.py", "-q"]}
       }
     ]
   }

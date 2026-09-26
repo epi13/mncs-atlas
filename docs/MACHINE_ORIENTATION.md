@@ -74,3 +74,17 @@ map into admission:
 The full contract is [ADMISSION.md](ADMISSION.md). The Python
 `admission` package is the reference broker implementation;
 `site/admission.json` is its generated machine projection.
+
+## Ecosystem state projection
+
+`site/dashboard.json` (schema `mncs-atlas.dashboard-projection/v1`,
+rendered at `dashboard.html`) is the deterministic projection of current
+ecosystem state: projects with separate lifecycle/authority/maturity,
+Commons relationship edges and capability ownership, declared
+implementation states, stored pressures, declared verification checks,
+source provenance with content identities, freshness, and recorded
+movement. It is the preferred machine surface for "what is the state of
+MNCS right now"; `atlas.json` remains the small orientation map and
+`registry.json` the ownership graph. Every unresolved fact is an explicit
+UNKNOWN with a reason. Validate with `python -m projector check
+site/dashboard.json`.

@@ -1,0 +1,3118 @@
+{
+  "envelope": {
+    "generated_at": "2026-09-26T23:23:37+00:00",
+    "projector": "mncs-atlas.projector",
+    "projector_version": "1"
+  },
+  "projection": {
+    "capabilities": {
+      "capabilities": [
+        {
+          "alternates": [
+            {
+              "path": "scripts/selective_family_verify.py",
+              "role": "adapter"
+            }
+          ],
+          "id": "actions.family-verification",
+          "kind": "native-module",
+          "lifecycle": "active",
+          "owner": "mncs-actions"
+        },
+        {
+          "alternates": [],
+          "id": "commons.family-coordination",
+          "kind": "coordination-model",
+          "lifecycle": "unknown",
+          "owner": "mncs-commons"
+        },
+        {
+          "alternates": [
+            {
+              "path": "mncs_debug/analysis.py",
+              "role": "adapter"
+            }
+          ],
+          "id": "debug.decision-policy",
+          "kind": "native-module",
+          "lifecycle": "active",
+          "owner": "mncs-debug"
+        },
+        {
+          "alternates": [],
+          "id": "doctor.language-knowledge-check",
+          "kind": "diagnostic-consumer",
+          "lifecycle": "unknown",
+          "owner": "mncs-doctor"
+        },
+        {
+          "alternates": [],
+          "id": "family.agent-context",
+          "kind": "bounded-query-interface",
+          "lifecycle": "unknown",
+          "owner": "mncs-language-service"
+        },
+        {
+          "alternates": [],
+          "id": "language-service.language-knowledge-query",
+          "kind": "query-interface",
+          "lifecycle": "unknown",
+          "owner": "mncs-language-service"
+        },
+        {
+          "alternates": [],
+          "id": "language.capability-index",
+          "kind": "generated_projection",
+          "lifecycle": "unknown",
+          "owner": "mncs-language"
+        },
+        {
+          "alternates": [],
+          "id": "language.compiler-inventory",
+          "kind": "introspection-interface",
+          "lifecycle": "unknown",
+          "owner": "mncs-language"
+        },
+        {
+          "alternates": [],
+          "id": "language.compiler-runtime",
+          "kind": "canonical-host-bootstrap",
+          "lifecycle": "active",
+          "owner": "mncs-language"
+        },
+        {
+          "alternates": [
+            {
+              "path": "src/ravel/impact.py",
+              "role": "differential_oracle"
+            }
+          ],
+          "id": "ravel.planning",
+          "kind": "implementation",
+          "lifecycle": "unknown",
+          "owner": "ravel"
+        },
+        {
+          "alternates": [
+            {
+              "path": "src/ravel/generated/verification_policy.py",
+              "role": "adapter"
+            },
+            {
+              "path": "src/ravel/impact.py",
+              "role": "adapter"
+            }
+          ],
+          "id": "ravel.verification-policy",
+          "kind": "implementation",
+          "lifecycle": "unknown",
+          "owner": "ravel"
+        },
+        {
+          "alternates": [
+            {
+              "path": "tools/mncs_test.py",
+              "role": "differential_oracle"
+            },
+            {
+              "path": "tools/generate_provider.py",
+              "role": "adapter"
+            }
+          ],
+          "id": "test.provider",
+          "kind": "implementation",
+          "lifecycle": "unknown",
+          "owner": "mncs-test"
+        },
+        {
+          "alternates": [],
+          "id": "test.provider-protocol",
+          "kind": "wire-contract",
+          "lifecycle": "unknown",
+          "owner": "mncs-test"
+        }
+      ],
+      "capability_count": 13,
+      "generators": [
+        {
+          "classification": "essential_deterministic_projection",
+          "id": "language.capability-index",
+          "owner": "mncs-language"
+        },
+        {
+          "classification": "essential_deterministic_projection",
+          "id": "test.provider-inventory",
+          "owner": "mncs-test"
+        }
+      ],
+      "policy": {
+        "context_layers": [
+          "identity",
+          "architecture",
+          "contract",
+          "delta",
+          "implementation",
+          "evidence"
+        ],
+        "default_evolution": "in_place",
+        "implementation_versions": "forbidden",
+        "shadow_required_fields": [
+          "supersedes",
+          "parity_event",
+          "retirement_condition",
+          "survivor",
+          "retirement_direction",
+          "parity_state",
+          "retirement_state"
+        ],
+        "wire_versions": "explicit_only"
+      }
+    },
+    "ecosystem": {
+      "catalog_description": "Compact family identity facts maintained by Atlas. Repository manifests remain authoritative for repository-local contracts.",
+      "observed_but_uncatalogued": [],
+      "project_count": 49,
+      "projects": [
+        {
+          "authority_class": "normative-specification",
+          "authority_reason": "declared",
+          "category": "specification",
+          "dependencies": [],
+          "id": "mncds",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": ".mncs-native-family-campaign-20260919-mncds",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 1,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCDS",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "The development-specification repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Independently versioned development-process specification for decomposition, candidate lifecycle, evidence flow, selection, release, and retirement.",
+          "repository": "https://github.com/epi13/machine-native-complexity-development-specification",
+          "role": "development-process-specification"
+        },
+        {
+          "authority_class": "normative-specification",
+          "authority_reason": "declared",
+          "category": "standard",
+          "dependencies": [],
+          "id": "mncs",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "machine-native-complexity-standard",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 2,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "The standard repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Normative implementation-evidence standard: acceptance, evidence, status semantics, schemas, RFCs, and claim boundaries.",
+          "repository": "https://github.com/epi13/machine-native-complexity-standard",
+          "role": "normative-implementation-evidence-standard"
+        },
+        {
+          "authority_class": "family-assurance-automation",
+          "authority_reason": "declared",
+          "category": "assurance",
+          "dependencies": [
+            "mncds",
+            "mncs",
+            "mncs-debug",
+            "mncs-forge",
+            "mncs-test"
+          ],
+          "id": "mncs-actions",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-actions",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 4,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Actions",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Consumes verification plans as the selected-consumer receipt and proof executor.",
+            "state": "participant"
+          },
+          "purpose": "Reusable GitHub Actions and family workflows for verification, evidence, provenance, coordination, and bounded aggregate checks, including the mncs-debug provider membrane.",
+          "repository": "https://github.com/epi13/mncs-actions",
+          "role": "family-ci-and-evidence-automation"
+        },
+        {
+          "authority_class": "family-architecture-memory",
+          "authority_reason": "declared",
+          "category": "documentation",
+          "dependencies": [],
+          "id": "mncs-atlas",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-atlas",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 4,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Atlas",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Atlas is orientation-only and has no repository-owned semantic graph declaration.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Family architecture and ownership graph, compact machine registry, context capsules, human orientation, and indexed decisions; it is non-normative.",
+          "repository": "https://github.com/epi13/mncs-atlas",
+          "role": "family-architecture-registry"
+        },
+        {
+          "authority_class": "simulation-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-numerics",
+            "mncs-physics"
+          ],
+          "id": "mncs-atomic",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Atomic",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Atomic-scale and classical particle simulation, spatial partitioning, neighbor lists, force accumulation, and deterministic parallelism pressure.",
+          "repository": "https://github.com/epi13/mncs-atomic",
+          "role": "atomic-and-particle-simulation"
+        },
+        {
+          "authority_class": "automation-library-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language",
+            "mncs-service"
+          ],
+          "id": "mncs-automation",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-automation",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 1,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Automation",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "Typed workflows, triggers, schedules, files, APIs, credentials, permissions, retries, and audit evidence.",
+          "repository": "https://github.com/epi13/mncs-automation",
+          "role": "workflow-automation"
+        },
+        {
+          "authority_class": "cli-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-cli",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS CLI",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Typed command-line arguments, subcommands, help, completion, structured errors, and CLI ergonomics for MNCS applications.",
+          "repository": "https://github.com/epi13/mncs-cli",
+          "role": "command-line-application-infrastructure"
+        },
+        {
+          "authority_class": "coordination-and-institutional-memory",
+          "authority_reason": "declared",
+          "category": "coordination",
+          "dependencies": [],
+          "id": "mncs-commons",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "MNCS-Commons",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 5,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Commons",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the authoritative architecture and pressure projection contracts consumed by family tooling.",
+            "state": "participant"
+          },
+          "purpose": "Durable structured knowledge exchange and shared work coordination. Pressure semantics remain Commons-owned and externally integrated.",
+          "repository": "https://github.com/epi13/MNCS-Commons",
+          "role": "coordination-and-institutional-memory"
+        },
+        {
+          "authority_class": "compiler-research",
+          "authority_reason": "declared",
+          "category": "language",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-compiler",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-compiler",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 2,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Compiler",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "MNCS-native next-generation compiler architecture and self-hosting pressure; the Stage-0 compiler remains in mncs-language.",
+          "repository": "https://github.com/epi13/mncs-compiler",
+          "role": "next-generation-compiler"
+        },
+        {
+          "authority_class": "control-systems-research",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-math"
+          ],
+          "id": "mncs-control",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Control Systems",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Deterministic real-time loops, state estimation, actuator/sensor boundaries, feedback control, and replayable control behavior.",
+          "repository": "https://github.com/epi13/mncs-control",
+          "role": "dynamical-systems-and-control"
+        },
+        {
+          "authority_class": "deployment-operator-control",
+          "authority_reason": "declared",
+          "category": "operator",
+          "dependencies": [
+            "mncs-commons",
+            "mncs-fabric",
+            "mncs-forge",
+            "mncs-harness"
+          ],
+          "id": "mncs-control-mcp",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Control MCP",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The control MCP has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Protected workspace, Git, process, project, tooling, and bounded service adapters; it does not own Harness, Fabric, Commons, or conformance.",
+          "repository": "https://github.com/epi13/mncs-control-mcp",
+          "role": "protected-remote-workspace-control"
+        },
+        {
+          "authority_class": "cryptography-pressure-research",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-crypto",
+          "lifecycle": "incubating",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Crypto",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Established cryptographic primitives, published vectors, constant-time patterns, memory handling, and compiler/backend pressure for MNCS.",
+          "repository": "https://github.com/epi13/mncs-crypto",
+          "role": "cryptographic-pressure-laboratory"
+        },
+        {
+          "authority_class": "data-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-data",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Data",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Schemas, tables, columns, missing values, Unicode, evolving data, streaming pipelines, and structured interchange pressure.",
+          "repository": "https://github.com/epi13/mncs-data",
+          "role": "data-manipulation"
+        },
+        {
+          "authority_class": "debug-semantics",
+          "authority_reason": "declared",
+          "category": "assurance",
+          "dependencies": [
+            "mncs-language",
+            "mncs-test"
+          ],
+          "id": "mncs-debug",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-debug",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 5,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Debug",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Consumes execution observations and test-result evidence for native diagnosis.",
+            "state": "participant"
+          },
+          "purpose": "Canonical structured debugger for witnesses, traces, inspection, provenance, replay guarantees, and capability truth; it consumes test evidence without redefining test semantics.",
+          "repository": "https://github.com/epi13/mncs-debug",
+          "role": "structured-debugger"
+        },
+        {
+          "authority_class": "document-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-data",
+            "mncs-language"
+          ],
+          "id": "mncs-doc",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-doc",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 2,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Doc",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "Unicode-aware structured documents, source spans, syntax trees, transformations, formatting, layout, search, and interchange.",
+          "repository": "https://github.com/epi13/mncs-doc",
+          "role": "structured-document-infrastructure"
+        },
+        {
+          "authority_class": "repository-migration-authority",
+          "authority_reason": "declared",
+          "category": "development-control",
+          "dependencies": [
+            "mncs-debug",
+            "mncs-language",
+            "mncs-test"
+          ],
+          "id": "mncs-doctor",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-doctor",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 3,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Doctor",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Owns repository health, migration, and repair policy but publishes no Commons semantic contract at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Repository discovery, health, repair, migration planning, transactional fixes, verification, and conformance bringing projects to current expectations.",
+          "repository": "https://github.com/epi13/mncs-doctor",
+          "role": "repository-migration-and-conformance-tooling"
+        },
+        {
+          "authority_class": "engine-integration",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-geometry",
+            "mncs-numerics",
+            "mncs-physics"
+          ],
+          "id": "mncs-engine",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Engine",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "2D/3D graphics, simulation, rendering, and heterogeneous compute pressure workloads across CPU, WASM, and accelerators.",
+          "repository": "https://github.com/epi13/mncs-engine",
+          "role": "graphics-simulation-and-heterogeneous-compute"
+        },
+        {
+          "authority_class": "execution-substrate",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [],
+          "id": "mncs-fabric",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Fabric",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The execution substrate has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Persistent exact-target execution, worker presence, transport, resource observations, retry/recovery, and execution evidence.",
+          "repository": "https://github.com/epi13/mncs-fabric",
+          "role": "execution-substrate"
+        },
+        {
+          "authority_class": "scientific-compute-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-geometry",
+            "mncs-language",
+            "mncs-numerics"
+          ],
+          "id": "mncs-fem",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS FEM",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Meshes, topology, fields, element assembly, material models, sparse solvers, and scientific verification pressure.",
+          "repository": "https://github.com/epi13/mncs-fem",
+          "role": "finite-element-analysis"
+        },
+        {
+          "authority_class": "scientific-compute-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-numerics",
+            "mncs-physics"
+          ],
+          "id": "mncs-fluid",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Fluid",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Fields, meshes, PDE discretization, stencil computation, iterative solvers, parallel reductions, and heterogeneous CFD workloads.",
+          "repository": "https://github.com/epi13/mncs-fluid",
+          "role": "computational-fluid-dynamics"
+        },
+        {
+          "authority_class": "development-assurance",
+          "authority_reason": "declared",
+          "category": "development-control",
+          "dependencies": [
+            "mncs-fabric",
+            "mncs-language"
+          ],
+          "id": "mncs-forge",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-forge",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 7,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Forge",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Consumes verification plans in the development orchestration loop.",
+            "state": "participant"
+          },
+          "purpose": "Bounded development workflows, provider orchestration, evidence gaps, lineage, and evaluator-mode boundaries.",
+          "repository": "https://github.com/epi13/mncs-forge",
+          "role": "development-and-evidence-control-plane"
+        },
+        {
+          "authority_class": "geometry-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-numerics"
+          ],
+          "id": "mncs-geometry",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Geometry",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Geometric primitives, robust predicates, intersections, topology, spatial data structures, and coordinate systems.",
+          "repository": "https://github.com/epi13/mncs-geometry",
+          "role": "computational-geometry"
+        },
+        {
+          "authority_class": "deployment-operator-policy",
+          "authority_reason": "declared",
+          "category": "operator",
+          "dependencies": [
+            "mncs-commons",
+            "mncs-fabric",
+            "mncs-forge"
+          ],
+          "id": "mncs-harness",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-harness",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 4,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Harness",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "The harness has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Deployment-specific model/tool routing, approvals, agent loops, acceptance, and escalation while consuming Fabric and Commons.",
+          "repository": "https://github.com/epi13/mncs-harness",
+          "role": "model-tool-policy-and-deployment-acceptance"
+        },
+        {
+          "authority_class": "derived-index-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-index",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-index",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 2,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Index",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the repository-owned derived-index contract over Store state.",
+            "state": "participant"
+          },
+          "purpose": "Deterministic incremental indexing, discovery, ranking, relation, traversal, and query over family artifacts and metadata.",
+          "repository": "https://github.com/epi13/mncs-index",
+          "role": "deterministic-indexing-and-query"
+        },
+        {
+          "authority_class": "semantic-ingest-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-ingest",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-ingest",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 2,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Ingest",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the repository-owned typed handoff contract for provenance-preserving normalization.",
+            "state": "participant"
+          },
+          "purpose": "External representation to canonical typed structures, relations, context, provenance, and graph-ready semantic fragments.",
+          "repository": "https://github.com/epi13/mncs-ingest",
+          "role": "semantic-ingestion-and-normalization"
+        },
+        {
+          "authority_class": "language-research",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-compiler",
+            "mncs-language"
+          ],
+          "id": "mncs-lab",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Lab",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "REPL, JIT, persistent compiler sessions, incremental compilation, proof-aware execution, and interactive language pressure.",
+          "repository": "https://github.com/epi13/mncs-lab",
+          "role": "interactive-language-laboratory"
+        },
+        {
+          "authority_class": "language-semantics-authority",
+          "authority_reason": "declared",
+          "category": "language",
+          "dependencies": [],
+          "id": "mncs-language",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-language",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 4,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Language",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the compiler-owned semantic-impact contract.",
+            "state": "participant"
+          },
+          "purpose": "Verification-native language, compiler, semantic representation, standard library, effects, and backend contracts.",
+          "repository": "https://github.com/epi13/mncs-language",
+          "role": "language-research"
+        },
+        {
+          "authority_class": "language-tooling",
+          "authority_reason": "declared",
+          "category": "language",
+          "dependencies": [
+            "mncs-debug",
+            "mncs-language"
+          ],
+          "id": "mncs-language-service",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-language-service",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 4,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Language Service",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "No repository-owned semantic graph declaration is published at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Resident LSP and MCP semantic tooling over mncs-language, including the shared source/debug identity projection; it does not own language or debugger semantics.",
+          "repository": "https://github.com/epi13/mncs-language-service",
+          "role": "language-tooling"
+        },
+        {
+          "authority_class": "research-advisory",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-store"
+          ],
+          "id": "mncs-learn",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Learn",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Evidence-driven state transitions across heterogeneous micro-models, adaptive graphs, datasets, checkpoints, and training processes.",
+          "repository": "https://github.com/epi13/mncs-learn",
+          "role": "learning-orchestration"
+        },
+        {
+          "authority_class": "research-advisory",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-forge",
+            "mncs-language"
+          ],
+          "id": "mncs-lineage",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Lineage",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The lineage repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Successor synthesis, inheritance, promotion evidence, rollback, and controlled generational replacement research.",
+          "repository": "https://github.com/epi13/mncs-lineage",
+          "role": "lineage-research"
+        },
+        {
+          "authority_class": "math-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-numerics"
+          ],
+          "id": "mncs-math",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Math",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Exact and numerical scientific mathematics, linear algebra, tensors, intervals, autodiff, statistics, and numerical methods.",
+          "repository": "https://github.com/epi13/mncs-math",
+          "role": "scientific-mathematics"
+        },
+        {
+          "authority_class": "media-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-data",
+            "mncs-language"
+          ],
+          "id": "mncs-media",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Media",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Image, audio, video, timing, metadata, binary I/O, streaming, and codec-boundary pressure workloads.",
+          "repository": "https://github.com/epi13/mncs-media",
+          "role": "media-pipelines"
+        },
+        {
+          "authority_class": "memory-policy-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-index",
+            "mncs-language",
+            "mncs-store"
+          ],
+          "id": "mncs-memory",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Memory",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Immutable observations, claims, contradiction and supersession state, retrieval, escalation, and compact answer capsules.",
+          "repository": "https://github.com/epi13/mncs-memory",
+          "role": "semantic-memory"
+        },
+        {
+          "authority_class": "research-advisory",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-store"
+          ],
+          "id": "mncs-models",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Models",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives; architecture-open model graphs, components, parameters, and heterogeneous stacks. Successor to the model-construction role of MNEL.",
+          "repository": "https://github.com/epi13/mncs-models",
+          "role": "model-construction"
+        },
+        {
+          "authority_class": "numeric-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-numerics",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-numerics",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 1,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Numerics",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "Reusable numerical primitives, reductions, guarded kernels, and algorithms written in MNCS while pressuring the language.",
+          "repository": "https://github.com/epi13/mncs-numerics",
+          "role": "numeric-primitives-and-algorithms"
+        },
+        {
+          "authority_class": "physics-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-math",
+            "mncs-numerics"
+          ],
+          "id": "mncs-physics",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Physics",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Quantities, dimensions, units, constants, mechanics, rigid-body foundations, and scientific physical models.",
+          "repository": "https://github.com/epi13/mncs-physics",
+          "role": "physical-models"
+        },
+        {
+          "authority_class": "empirical-research",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs"
+          ],
+          "id": "mncs-reference-studies",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Reference Studies",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The reference-studies repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Controlled empirical comparisons, reference reimplementations, reproducibility studies, and negative results.",
+          "repository": "https://github.com/epi13/mncs-reference-studies",
+          "role": "empirical-research"
+        },
+        {
+          "authority_class": "non-normative-incubating-specification",
+          "authority_reason": "declared",
+          "category": "governance",
+          "dependencies": [
+            "mncs"
+          ],
+          "id": "mncs-rights-provenance",
+          "lifecycle": "incubating",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Rights & Provenance",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The rights and provenance repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Artifact origin, transformation lineage, contribution provenance, rights basis, licensing evidence, and legal uncertainty without manufacturing legal conclusions.",
+          "repository": "https://github.com/epi13/mncs-rights-provenance",
+          "role": "rights-and-provenance"
+        },
+        {
+          "authority_class": "service-library-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-service",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-service",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 1,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Service",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the repository-owned resident query contract over Store and Index.",
+            "state": "participant"
+          },
+          "purpose": "Long-running service lifecycle, bounded queues, workers, retries, framing, configuration, contracts, and observability.",
+          "repository": "https://github.com/epi13/mncs-service",
+          "role": "application-service-infrastructure"
+        },
+        {
+          "authority_class": "signal-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language",
+            "mncs-numerics"
+          ],
+          "id": "mncs-signal",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Signal",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Sampled signals, timebases, complex arithmetic, FFT/IFFT, streaming, latency, and deterministic signal workloads.",
+          "repository": "https://github.com/epi13/mncs-signal",
+          "role": "signal-processing"
+        },
+        {
+          "authority_class": "persistence-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-store",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-store",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 6,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Store",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the repository-owned durable typed-state contract and consumes normalized handoffs.",
+            "state": "participant"
+          },
+          "purpose": "Typed durable objects, identities, representations, generations, integrity, placement, provenance, and recovery.",
+          "repository": "https://github.com/epi13/mncs-store",
+          "role": "persistent-machine-state"
+        },
+        {
+          "authority_class": "observability-consumer",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language",
+            "mncs-tui"
+          ],
+          "id": "mncs-system-monitor",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS System Monitor",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Bounded OS observation, process/resource relationships, interval-qualified metrics, and human/machine projections.",
+          "repository": "https://github.com/epi13/mncs-system-monitor",
+          "role": "system-observability"
+        },
+        {
+          "authority_class": "verification-semantics",
+          "authority_reason": "declared",
+          "category": "assurance",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-test",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "mncs-test",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 5,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Test",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes the native test-result contract and consumes compiler inventory and verification plans.",
+            "state": "participant"
+          },
+          "purpose": "Canonical first-class MNCS test provider: compiler-owned inventory, selection, native oracle/suite semantics, TestResult and CheckResult evidence; it does not own execution transport or debugging semantics.",
+          "repository": "https://github.com/epi13/mncs-test",
+          "role": "canonical-test-provider"
+        },
+        {
+          "authority_class": "consumer-research",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-tui",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS TUI",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The TUI repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Terminal UI layouts, structured rendering, widgets, interaction, geometry, and bounded terminal host realization.",
+          "repository": "https://github.com/epi13/mncs-tui",
+          "role": "terminal-ui-framework"
+        },
+        {
+          "authority_class": "ui-library-authority",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-language"
+          ],
+          "id": "mncs-ui",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS UI",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Declarative components, layout, reactive state, events, accessibility, animation, and native rendering pressure.",
+          "repository": "https://github.com/epi13/mncs-ui",
+          "role": "declarative-user-interface"
+        },
+        {
+          "authority_class": "bounded-independent-validator",
+          "authority_reason": "declared",
+          "category": "validator",
+          "dependencies": [],
+          "id": "mncs-validator-rs",
+          "lifecycle": "active",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Rust Validator",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The independent validator has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Independent offline validation for supported MNCS subsets; it does not wrap the Python validator or execute evidence.",
+          "repository": "https://github.com/epi13/mncs-validator-rs",
+          "role": "independent-validation"
+        },
+        {
+          "authority_class": "web-library-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-language",
+            "mncs-service"
+          ],
+          "id": "mncs-web",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Web",
+          "observed_in_workspace": false,
+          "participation": null,
+          "purpose": "Typed HTTP and web-service structures, incremental protocol parsing, effects, and application-level web pressure workloads.",
+          "repository": "https://github.com/epi13/mncs-web",
+          "role": "web-application-infrastructure"
+        },
+        {
+          "authority_class": "research-advisory",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-commons",
+            "mncs-language"
+          ],
+          "id": "mnel",
+          "lifecycle": "retired",
+          "lifecycle_reason": "declared",
+          "manifest": null,
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "MNCS Experimental Learning",
+          "observed_in_workspace": false,
+          "participation": {
+            "reason": "The experimental-learning repository has no repository-owned semantic graph declaration at this synchronization point.",
+            "state": "explicit_nonparticipant"
+          },
+          "purpose": "Retired umbrella experimental-learning repository. Model construction moved to mncs-models; learning/training orchestration moved to mncs-learn. Kept for historical reference only.",
+          "repository": "https://github.com/epi13/Machine-Native-Experimental-Learning",
+          "role": "experimental-learning"
+        },
+        {
+          "authority_class": "research-advisory",
+          "authority_reason": "declared",
+          "category": "research",
+          "dependencies": [
+            "mncs-fabric",
+            "mncs-forge",
+            "mncs-language"
+          ],
+          "id": "ravel",
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": {
+            "checkout": "RAVEL",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 5,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "RAVEL",
+          "observed_in_workspace": true,
+          "participation": {
+            "reason": "Publishes verification plans and consumes compiler semantic impact.",
+            "state": "participant"
+          },
+          "purpose": "Evidence strategy, scoped memory, causal interpretation, and reusable learning beneath MNCS and MNCDS authority.",
+          "repository": "https://github.com/epi13/RAVEL",
+          "role": "adaptive-intelligence"
+        }
+      ]
+    },
+    "freshness": {
+      "reason": "all declared sources readable",
+      "status": "current"
+    },
+    "implementation": {
+      "declarations": [
+        {
+          "canonical_entrypoint": "mncs-commons CLI/service",
+          "classification": {
+            "reason": "unrecognized state: host_bootstrap",
+            "state": "unknown"
+          },
+          "declared_status": "host_bootstrap",
+          "native_source_count": 4,
+          "note": "repository-level declaration; no per-project implementation states are declared anywhere",
+          "repository_id": "MNCS-Commons",
+          "source": "commons-native-status",
+          "status": "present"
+        },
+        {
+          "canonical_entrypoint": "StorePhase2 typed object/generation path plus store.*.mncs semantic modules",
+          "classification": {
+            "reason": "unrecognized state: native_canonical_with_retained_session_host_lifecycle_boundary",
+            "state": "unknown"
+          },
+          "declared_status": "native_canonical_with_retained_session_host_lifecycle_boundary",
+          "native_source_count": 11,
+          "note": "repository-level declaration; no per-project implementation states are declared anywhere",
+          "repository_id": "mncs-store",
+          "source": "store-native-status",
+          "status": "present"
+        }
+      ],
+      "per_project_reason": "no per-project implementation declarations exist in any source",
+      "per_project_states": "unknown"
+    },
+    "journal": {
+      "count": 3,
+      "latest": "je-3ee557192aee.json",
+      "note": "the dashboard is deterministic current state; interpretation lives in the Journal"
+    },
+    "movement": {
+      "delta_count": 4,
+      "deltas": [
+        {
+          "added_contracts": [
+            "mncs.declaration-inventory/1",
+            "mncs.language-inventory/1"
+          ],
+          "changed_capabilities": [
+            "actions.family-verification",
+            "language.compiler-inventory"
+          ],
+          "current": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
+          "ownership_changes": [
+            {
+              "capability": "language.compiler-inventory",
+              "change": "compiler-owned introspection surface declared authoritative",
+              "owner": "mncs-language"
+            }
+          ],
+          "previous": "sha256:28e2626037aad47f5f4cd14e8f4d7ecdbc8efca07fe8c46916aeedf35321f7ac",
+          "removed_contracts": []
+        },
+        {
+          "added_contracts": [
+            "mncs.family-agent-context/1"
+          ],
+          "changed_capabilities": [
+            "family.agent-context"
+          ],
+          "current": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+          "ownership_changes": [
+            {
+              "capability": "family.agent-context",
+              "change": "bounded family context projection declared; source facts remain owned by language, Commons, and repository manifests",
+              "owner": "mncs-language-service"
+            }
+          ],
+          "previous": "sha256:e83fe98f9f0f0ec273939b59db1c6c42d9adf3365fcc4dc99e6680c29e68160e",
+          "removed_contracts": []
+        },
+        {
+          "added_contracts": [
+            "commons.mncs.family-agent-projection/1"
+          ],
+          "changed_capabilities": [
+            "actions.family-verification",
+            "debug.decision-policy",
+            "family.agent-context"
+          ],
+          "current": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+          "ownership_changes": [],
+          "previous": "sha256:fdf227f8f5742eaa4fc98b7460e1bdc61cbca4c755de7912da3aadc80018bffa",
+          "removed_contracts": []
+        },
+        {
+          "added_contracts": [],
+          "changed_capabilities": [
+            "actions.family-verification",
+            "debug.decision-policy"
+          ],
+          "current": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
+          "ownership_changes": [],
+          "previous": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
+          "removed_contracts": []
+        }
+      ],
+      "note": "machine-recorded architecture movement only; Git history is not reproduced",
+      "retention": 8
+    },
+    "pressures": {
+      "by_repository": {
+        "mncs-actions": 8,
+        "mncs-atlas": 2,
+        "mncs-commons": 4,
+        "mncs-compiler": 16,
+        "mncs-debug": 16,
+        "mncs-doc": 1,
+        "mncs-doctor": 26,
+        "mncs-engine": 1,
+        "mncs-forge": 14,
+        "mncs-harness": 2,
+        "mncs-index": 19,
+        "mncs-ingest": 12,
+        "mncs-lab": 2,
+        "mncs-language": 18,
+        "mncs-language-service": 11,
+        "mncs-math": 2,
+        "mncs-numerics": 16,
+        "mncs-service": 21,
+        "mncs-signal": 1,
+        "mncs-store": 36,
+        "mncs-test": 7,
+        "mncs-tui": 1,
+        "mncs-web": 12,
+        "ravel": 5
+      },
+      "by_status": {
+        "discovered": 190
+      },
+      "lifecycle_note": "records carry discovery state only; no resolution lifecycle is tracked in the record schema",
+      "listed": [
+        {
+          "capability": "legacy.cp-0003",
+          "content_digest": "sha256:4a8bc352ad2a8b254e7524f828a243b1dceb5438e82522396f126a78bbea876c",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-COMPILER-0D3D67141BA4",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Cursor scans retain bounded no-op iterations"
+        },
+        {
+          "capability": "legacy.cp-0007",
+          "content_digest": "sha256:36c2e1662e6c0f5d3943248419a5261221f05919463bfae363029f82360c9292",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-2EA21F85084E",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Small frontend emits substantial Stage-0 IR/evidence"
+        },
+        {
+          "capability": "legacy.cp-0011",
+          "content_digest": "sha256:97721c60a3f8942818ee7590450bf9ca0310b9f87e202bcff5bd495aa64580ed",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-33EBFEFE9064",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "CP-0011"
+        },
+        {
+          "capability": "legacy.cp-0013",
+          "content_digest": "sha256:307ea436d2fe9b4bf56c223d0f40924df21dd086db7fca4ee2fb3af1f339c0db",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-360418A1CF7A",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "minor",
+          "status": "discovered",
+          "title": "CP-0013"
+        },
+        {
+          "capability": "legacy.cp-0001",
+          "content_digest": "sha256:fc944368eeabb42ba47759534337fa3d579e99dd763b48bf09b8f463345b9bb7",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-378246F62D9D",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Whole compiler sources exceed bounded sequence capacity"
+        },
+        {
+          "capability": "legacy.cp-0006",
+          "content_digest": "sha256:c07169aae9e387241e82bb80bdf70dcc97fd4e4d83e354a8b9e1f1a4ac738f34",
+          "domain": "io.filesystem",
+          "id": "MNCS-COMPILER-38B9F401EC5C",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Stage-0 envelope inference disagrees with leading-comment syntax"
+        },
+        {
+          "capability": "legacy.cp-0004",
+          "content_digest": "sha256:a7864400ef9d5bc439c66d30887beef85f40072e47bb2ff528cd892e55737555",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-3BE4C277C596",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Boolean equality is rejected in scanner state updates"
+        },
+        {
+          "capability": "incremental-session-api",
+          "content_digest": "sha256:46b3b15603dfa21c96d329840d3c1e84eb31f5812c102d2122ee469b7f362e97",
+          "domain": "sessions.incremental",
+          "id": "MNCS-COMPILER-40CF32855108",
+          "repositories": [
+            "mncs-compiler",
+            "mncs-lab"
+          ],
+          "severity": "blocker",
+          "status": "discovered",
+          "title": "No incremental compiler session API; interactive clients cannot hold definitions, generations, or JIT bindings"
+        },
+        {
+          "capability": "legacy.cp-0008",
+          "content_digest": "sha256:ca83c74e3759021fd6bace794e3a20fb43d47fbcb3d2d3a6de95ebe07f7e12a1",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-48E3919FB30E",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "blocking",
+          "status": "discovered",
+          "title": "CP-0008"
+        },
+        {
+          "capability": "legacy.cp-0010",
+          "content_digest": "sha256:e28bbf6d3aa5fb98b739bebaa7d37ed1230025bc39e5d4558f91292cd675e149",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-4924C0E45913",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "moderate",
+          "status": "discovered",
+          "title": "CP-0010"
+        },
+        {
+          "capability": "legacy.cp-0009",
+          "content_digest": "sha256:f19d186534a381d236194243b82b8b2fab8ff9ad958c535d03dd1fb0d9fd01af",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-COMPILER-4EEFAEBA916A",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "moderate",
+          "status": "discovered",
+          "title": "CP-0009"
+        },
+        {
+          "capability": "legacy.cp-0005",
+          "content_digest": "sha256:85dc083860e7c1afe6d9520b555dd9fec2a91c5bccbb69f8b1a6a5e61b999f94",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-6AA9F9765B5B",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Bootstrap differential tests need a host test transport"
+        },
+        {
+          "capability": "legacy.cp-0015",
+          "content_digest": "sha256:f658532656c6216964327d245c796a719fb971e227f222e6ec6e34cb94af2770",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-723468BE594D",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "CP-0015"
+        },
+        {
+          "capability": "structured-compile-failure-debug-artifact",
+          "content_digest": "sha256:f212d6dcfd00bc7382ae22c9458d1d6d9204bd531d63831c8c437fcc67934a33",
+          "domain": "debugging.diagnostics",
+          "id": "MNCS-COMPILER-94428E41EEAC",
+          "repositories": [
+            "mncs-debug",
+            "mncs-language"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Compile diagnostics do not yet form a stable debugger failure artifact"
+        },
+        {
+          "capability": "legacy.cp-0002",
+          "content_digest": "sha256:97a577832f578d9515bc01f162b46f20c284ac85fcb0ddf45a83a8289de723cc",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-9E5BAB7F55A8",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Byte text helpers do not provide Stage-0 Unicode classification"
+        },
+        {
+          "capability": "legacy.cp-0014",
+          "content_digest": "sha256:60a39df44139a48ad8c403e039ba744cada1b4608763655d467c50b59859aca5",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-BABFB889D075",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "blocking",
+          "status": "discovered",
+          "title": "CP-0014"
+        },
+        {
+          "capability": "semantic-operation-source-spans",
+          "content_digest": "sha256:2a4f99ac0aeab98205eb61be1de30e915d7335d5d7b534852293fce62ca609b5",
+          "domain": "debugging.source-maps",
+          "id": "MNCS-COMPILER-E445EECC9F96",
+          "repositories": [
+            "mncs-debug",
+            "mncs-forge",
+            "mncs-language",
+            "mncs-language-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Semantic operation identities lose source spans before execution"
+        },
+        {
+          "capability": "legacy.cp-0012",
+          "content_digest": "sha256:4e5e34eb08ceac3fe254f883b5ebbf93a4b3a1b30a106a2efc18f37fff01de35",
+          "domain": "language-semantics",
+          "id": "MNCS-COMPILER-E75581FDA823",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "moderate",
+          "status": "discovered",
+          "title": "CP-0012"
+        },
+        {
+          "capability": "canonical-capability-ownership",
+          "content_digest": "sha256:e3a8ac3c6dc9766e443f98280bf53de9f39ce90f5e79f778f32871669a9c00b2",
+          "domain": "architecture.autonomous-development",
+          "id": "MNCS-ECO-C1893173AD98",
+          "repositories": [
+            "mncs-actions",
+            "mncs-commons",
+            "mncs-debug",
+            "mncs-doctor",
+            "mncs-language",
+            "mncs-language-service",
+            "mncs-test",
+            "ravel"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Autonomous development accumulates duplicate capability implementations"
+        },
+        {
+          "capability": "legacy.web-p-003",
+          "content_digest": "sha256:3501625c639b9e0f37e1907f8fdfec6bf63f7fb25b2e475daf37a5aa246c4d7f",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-00276ACEE99A",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "minor",
+          "status": "discovered",
+          "title": "No bulk span-copy primitive (replace-per-byte emission)"
+        },
+        {
+          "capability": "legacy.p-004",
+          "content_digest": "sha256:a09ba7b1b00c1f2980a69961b6654881f9e0a46c3c2d2f40bdd8a27df0b1c80a",
+          "domain": "type-system.generics",
+          "id": "MNCS-LANG-019204D482CB",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No generic record declarations (diagnostic half resolved)"
+        },
+        {
+          "capability": "legacy.press-006",
+          "content_digest": "sha256:a6a3c257dbc1fdb3857b9f6b4ece02ce2af83095074c7ded07d429317329e561",
+          "domain": "integrity.hashing",
+          "id": "MNCS-LANG-02A891E03B9E",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No cryptographic digests (P1, hashing, stdlib)"
+        },
+        {
+          "capability": "legacy.press-001",
+          "content_digest": "sha256:03ed4f6562a6b41b4ac307eb033a36bd62e71713512473758109d68e4b52a83e",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-0973D3173B88",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No concurrency primitives (P0, concurrency, runtime)"
+        },
+        {
+          "capability": "legacy.ingest-p-003",
+          "content_digest": "sha256:9b843387eb726cb3bf60fc280c44b0ecad0cf735f0a7f40c309ebeb02bbd51b5",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-0BB8D555BA98",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No UTF-8 scalar semantics in MNCS"
+        },
+        {
+          "capability": "legacy.svc-p-018",
+          "content_digest": "sha256:646761214e4a8851c10668c2a51649f2af0489a3366e130ee9fb84a5e015d2dc",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-0E9B8377967C",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Chained `a.b.c[i]` projections do not parse"
+        },
+        {
+          "capability": "legacy.p1-018.no-memory-mapped-zero-copy-view-primitive-rfc-0009-design-pressure",
+          "content_digest": "sha256:4cfe2a833015192ba3cae63d1c3659278215809e5e3aa8606b3af90753973e58",
+          "domain": "type-system.views",
+          "id": "MNCS-LANG-0EEA4F938BAB",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No memory-mapped / zero-copy view primitive (RFC 0009 design pressure)"
+        },
+        {
+          "capability": "legacy.web-p-001",
+          "content_digest": "sha256:cab8f08ae5c3d3678af8b68ae83943c456d10e40f023118590da23fb7002a626",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-11473A6AEAC0",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "blocker",
+          "status": "discovered",
+          "title": "No socket/network capability in the language"
+        },
+        {
+          "capability": "legacy.svc-p-011",
+          "content_digest": "sha256:229d3b12e8adc94d9789d4b0b7a63a9f58b6ce1fd091c71e84344e3c9321afd1",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-14C2480BB865",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No text type"
+        },
+        {
+          "capability": "legacy.p1-004.no-streaming-or-incremental-hash-api-single-shot-digests-over-64-byte-views-only",
+          "content_digest": "sha256:245b5d7e820d3460ab5d27933a9351595c38998b380f3e330911b881cf733afe",
+          "domain": "type-system.views",
+          "id": "MNCS-LANG-162B2B90388C",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No streaming or incremental hash API; single-shot digests over ≤64-byte views only"
+        },
+        {
+          "capability": "legacy.ingest-p-012",
+          "content_digest": "sha256:1d19fe1024664c0415972dff534967577b0124320e181f76d8dc193868b60992",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-18566C5C28A9",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "+ reserved for tranche C–H findings."
+        },
+        {
+          "capability": "legacy.p-003",
+          "content_digest": "sha256:95a8100632a0ae940eef2e17888af3254ed52941e25c1b0c49a638e470c4e887",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-18E3AA414F9E",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No fill for symbolic bounds (diagnostic half resolved)"
+        },
+        {
+          "capability": "legacy.web-p-008",
+          "content_digest": "sha256:002ee420970d48e2ffd093a28c6e03afbfcc98b0f67945e29d0571bc87c71215",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-1DF6AF1E90DB",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No traits/interfaces for transport abstraction"
+        },
+        {
+          "capability": "legacy.web-p-012",
+          "content_digest": "sha256:7a21689571ae01fe395c85475a9e2999ebc675735acd6ef738a25c2b0d014e34",
+          "domain": "backend",
+          "id": "MNCS-LANG-21A2AA307869",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Native backends trap past small feed-staging counts"
+        },
+        {
+          "capability": "legacy.press-011",
+          "content_digest": "sha256:fa90b376b1ee31cee0fec983392e9ea1904932ae4c609a279523a4c49084c5ae",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-2585924D3133",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Coarse traversal diagnostics (P3, diagnostics, compiler)"
+        },
+        {
+          "capability": "legacy.ingest-p-006",
+          "content_digest": "sha256:8d67fdba2269bf0fc37c8110d4e20e238192ececed9c54407204d7ff746b0fb5",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-2622C5BA89E5",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Strict `select` forces defensive clamping (partially relieved)"
+        },
+        {
+          "capability": "legacy.press-003",
+          "content_digest": "sha256:493468245a419ae53e0ff22a40b3bb25d5f25217ef92524722f8a9d2fc2adda8",
+          "domain": "io.filesystem",
+          "id": "MNCS-LANG-270D33E72EA5",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No filesystem effects (P0, filesystem, language/runtime)"
+        },
+        {
+          "capability": "legacy.p-014",
+          "content_digest": "sha256:2a3e492be4fbb410e2c1be7eb9d267d3c242d4885068d668aed88935115fe0b7",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-289DEF6E2837",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Loop lowering is vectorization-hostile"
+        },
+        {
+          "capability": "legacy.svc-p-001",
+          "content_digest": "sha256:9b5d852658bf800dab8a32b72215c94fc79b929162bb089afe07fa9e7b4a7c49",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-2B19F2A16ACB",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No task/spawn/channel runtime primitives"
+        },
+        {
+          "capability": "legacy.svc-p-013",
+          "content_digest": "sha256:74f18bf3cc16595d6c4dd2bdf0cbeadf98f0cb985b20cb3fcecd2042a908209a",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-2FFA2BD654BA",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Ambient obligations hold verdicts at UNKNOWN"
+        },
+        {
+          "capability": "legacy.press-015",
+          "content_digest": "sha256:8e65925f1f55cd8642dec23a22c047180178f9a3c1826b0b536011d14db5021d",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-3125AEBBC1C3",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No relation values or graph traversal (P3, semantics)"
+        },
+        {
+          "capability": "legacy.svc-p-019",
+          "content_digest": "sha256:a7f0065c85170fa45fa19f0bc431a444083202ed0964ef69ef86a42bd2a37e0a",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-31EB67112747",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Corpus boundary is exact on scalar signedness"
+        },
+        {
+          "capability": "legacy.p2-002.no-view-width-subsumption-forces-widest-view-boundary-signatures",
+          "content_digest": "sha256:d112f87c15c12a5f6c5a2c807784d572d74a4c6533547982e948d4ef0a54f97e",
+          "domain": "type-system.views",
+          "id": "MNCS-LANG-3214070482A7",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No view-width subsumption forces widest-view boundary signatures"
+        },
+        {
+          "capability": "legacy.press-004",
+          "content_digest": "sha256:57cd81879c237c393187b331ebecf0a523db96a10d494da6614a49c7161a8ce6",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-337C9F6113E9",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Integer bitwise operators missing (P2, semantics, compiler)"
+        },
+        {
+          "capability": "legacy.p1-019.host-read-grants-are-single-file-64-byte-whole-content-snapshots",
+          "content_digest": "sha256:01bb52b9a5c0a56e82b2f223de0654693cfa8ec26997e68c232fab9cb5ea8dac",
+          "domain": "io.filesystem",
+          "id": "MNCS-LANG-33AF43744393",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "host_read grants are single-file, ≤64-byte, whole-content snapshots"
+        },
+        {
+          "capability": "math.float-transcendentals",
+          "content_digest": "sha256:b30e4266623812e173fb5d197e8f32e1c88f55ae0b0287e6515815bcef4929c0",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-35EF41F1B6E5",
+          "repositories": [
+            "mncs-math"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No float transcendental or advanced float operations (exp/log/sqrt/pow, rounding control)"
+        },
+        {
+          "capability": "legacy.svc-p-004",
+          "content_digest": "sha256:0ab9bfb6b31f237ff912104b341161784c25f8dbe431ca1569510aad8eefdf29",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-LANG-36E17B6769E9",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Counted-iteration ceiling and nesting bound"
+        },
+        {
+          "capability": "engine.neighborhood-query-grid",
+          "content_digest": "sha256:60970f50991cdb324e05cae8ac958f17f1c906ad1044b65adde9c734297b1965",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-3B4301B2EFAF",
+          "repositories": [
+            "mncs-engine"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No maps or spatial-index structures (deterministic associative queries)"
+        },
+        {
+          "capability": "legacy.ingest-p-007",
+          "content_digest": "sha256:c94c42124b8f4f1d259d52a298de79846abd1e0adfd6a55e09f83b24348b878f",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-3E1FBC01A96F",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Nested module failures hide inner diagnostics"
+        },
+        {
+          "capability": "legacy.press-018",
+          "content_digest": "sha256:f7803f8c7d5da89c76def7483bc26b54ebba41ebc38c0cc3f7da80a2f48e0747",
+          "domain": "effects",
+          "id": "MNCS-LANG-4093EC3401AC",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No storage-compaction / generation-GC effects (P2, persistence)"
+        },
+        {
+          "capability": "legacy.p2-001.single-shot-digest-realization-bound-64-b-with-no-incremental-api",
+          "content_digest": "sha256:7e41f2524e7e0f081bce835eaa43b829e5add3cfd04d747ca81e6495f8b85f9e",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-4130BB4C42C3",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Single-shot digest realization bound (64 B) with no incremental API"
+        },
+        {
+          "capability": "packed-bounded-view-lifetime",
+          "content_digest": "sha256:c0a745fc3678437489f03868b39673a739b86891347602c14a8e0bf3e98b848b",
+          "domain": "backend.region-reclamation",
+          "id": "MNCS-LANG-4219A56741DB",
+          "repositories": [
+            "mncs-atlas",
+            "mncs-language"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Packed bounded views must survive safe region reclamation"
+        },
+        {
+          "capability": "legacy.ingest-p-002",
+          "content_digest": "sha256:7b3908f30fae668cf60a43c2b307640d8065564c09e06d8c75f93c3b8d042485",
+          "domain": "type-system.views",
+          "id": "MNCS-LANG-438BF5EE1996",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "blocker",
+          "status": "discovered",
+          "title": "No arbitrary view sub-slicing (partially relieved by 0.14)"
+        },
+        {
+          "capability": "legacy.svc-p-002",
+          "content_digest": "sha256:bd50994a02767585eba90033745b215d48e22df08c761c26ed1674207628228f",
+          "domain": "effects",
+          "id": "MNCS-LANG-45EB8C1C6D6D",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No socket/TCP/UDP/network effects"
+        },
+        {
+          "capability": "legacy.web-p-004",
+          "content_digest": "sha256:68c4bcf81c9b7caf7129d8e93084b0318e9732d48a4abbffcc13554ed921b45d",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-LANG-470A89615EFE",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "minor",
+          "status": "discovered",
+          "title": "Bounded iteration always pays the static capacity"
+        },
+        {
+          "capability": "legacy.p1-b01.c11-backend-traps-on-large-but-valid-u32-checked-products-backend-divergence",
+          "content_digest": "sha256:43ec7b7e926bcf817a6882186b8499e2d6ed3f02dbca10c6f27b6c482d89af9b",
+          "domain": "backend",
+          "id": "MNCS-LANG-4719D1B72215",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "C11 backend traps on large-but-valid u32 checked products (backend divergence)"
+        },
+        {
+          "capability": "legacy.p1-010.asymmetric-byte-comparisons-exists-but-does-not-mne121",
+          "content_digest": "sha256:41c2ce4111c351f5a23948184fbba2701294dc7004fc13f9c9e8efdf993d6c29",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-493C32111AA5",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Asymmetric byte comparisons: `<=` exists but `<` does not (MNE121)"
+        },
+        {
+          "capability": "legacy.ingest-p-009",
+          "content_digest": "sha256:64742f23fafcaf05cb7ac44e38ccadf906efafee7a906bba2b1671a57fa9e1d0",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-4ACDC59C3AD1",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Fixed windows + counts cross every boundary"
+        },
+        {
+          "capability": "legacy.svc-p-014",
+          "content_digest": "sha256:b612dbf2f5eb091d4afe682d56c4cb3942378432b6a263f552772a07e3492430",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-4C5043BF6AD4",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Grants are whole-program CLI flags"
+        },
+        {
+          "capability": "legacy.ingest-p-010",
+          "content_digest": "sha256:b7470dc25e876f7d787a18e9bfbb3a38b863cc8ba072ec8fb086db3b85d65ab2",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-4E8D16B49738",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Reference-execution cost per call (partially relieved)"
+        },
+        {
+          "capability": "legacy.p-002",
+          "content_digest": "sha256:6614341b60fad3b26a80634c174a983d4850cd7618aac4d1f3926bcdee70b504",
+          "domain": "type-system.generics",
+          "id": "MNCS-LANG-4EBBF1137974",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Host seeding drops repeated generic spellings"
+        },
+        {
+          "capability": "legacy.p1-005.max-sequence-bound-64-caps-value-chunk-and-manifest-sizes",
+          "content_digest": "sha256:695fa7266b6eeaa34ee62d41679c9b19647ce4ae3b7aed4f1285b15b90f45281",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-4EC58934F8DB",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "MAX_SEQUENCE_BOUND (64) caps value, chunk, and manifest sizes"
+        },
+        {
+          "capability": "callable.identity-reflective-typed-invocation",
+          "content_digest": "sha256:d837755a20e424bbcf88a97ad3714cb76049bc8011c5321217019a475e01ebab",
+          "domain": "callable.inventory",
+          "id": "MNCS-LANG-4F28CEEA0AD8",
+          "repositories": [
+            "mncs-actions",
+            "mncs-debug",
+            "mncs-doctor",
+            "mncs-language",
+            "mncs-test",
+            "ravel"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No identity-bound reflective invocation for heterogeneous typed callables"
+        },
+        {
+          "capability": "nested-cell-address-normalization",
+          "content_digest": "sha256:bcaf1dcad90eecbd14c28f0d734a5cfa3b2b7dc6f5b46135b417bc96b6d3a916",
+          "domain": "backend.wasm-address-typing",
+          "id": "MNCS-LANG-4F3798658F55",
+          "repositories": [
+            "mncs-atlas",
+            "mncs-language"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Nested cell loads require explicit WASM address normalization"
+        },
+        {
+          "capability": "legacy.web-p-010",
+          "content_digest": "sha256:7b760a2a85ae487e4adbee61eeff2108df890c3317fc6931d906262f655f225c",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-51DC701BCE74",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No growable buffers (fixed capacities are structural)"
+        },
+        {
+          "capability": "legacy.svc-p-006",
+          "content_digest": "sha256:e13e7e98351dc8e5aa66b0f178d46bb93f0b3724bf1df710b684fa8137a85f5a",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-51E6839084CB",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Immutable values only: no ownership transfer"
+        },
+        {
+          "capability": "legacy.p1-016.no-in-process-call-boundary-every-mncs-invocation-is-a-subprocess-json-round-tri",
+          "content_digest": "sha256:9237cbf2522fa5e39e15ad636da9ae8cf82bc482e28940141b1bc146f0f99554",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-52A5E0C72A39",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No in-process call boundary: every MNCS invocation is a subprocess + JSON round trip"
+        },
+        {
+          "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
+          "content_digest": "sha256:0a0c70884fe5de497697259aebf774e49b82c57bb7b25d9058096b71e1353712",
+          "domain": "type-system.records",
+          "id": "MNCS-LANG-532C63CD5EA3",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Record nominal identities are brittle at the process boundary"
+        },
+        {
+          "capability": "legacy.svc-p-017",
+          "content_digest": "sha256:86d1d8f7569ba1d74d7d7340255dc1bc187ca9de8335ec9737bd7ce5f83d55ca",
+          "domain": "effects",
+          "id": "MNCS-LANG-53AB6362399B",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Effects are declarations, not values"
+        },
+        {
+          "capability": "legacy.press-007",
+          "content_digest": "sha256:7f8f42bf42a4280fa3b33e2eecf95d8247331943fa03d61298b9c1fb26c30636",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-53E07BB00417",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No watching or clocks (P1, watch/time, runtime)"
+        },
+        {
+          "capability": "filesystem.no-follow-metadata-inspection",
+          "content_digest": "sha256:3c72e6d4d83b9097bbf11a8f776a65faf2b68ede1c04cad06ba6a6b5821e6aec",
+          "domain": "io.filesystem",
+          "id": "MNCS-LANG-55F049FD8869",
+          "repositories": [
+            "mncs-language",
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No no-follow directory metadata inspection"
+        },
+        {
+          "capability": "legacy.press-010",
+          "content_digest": "sha256:3b18354b3554cbe2f8342ca2d20ab1e8e4b2e683bcf53c7a3e26bda75911cfe6",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-574813EA04B7",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Per-call process invocation cost (P2, performance/tooling)"
+        },
+        {
+          "capability": "source-level-function-export-resolution",
+          "content_digest": "sha256:dfd11132d3aa5c0223ce7771e18cb96025c3663ab177b2621c2cd62012e11637",
+          "domain": "compiler.artifact-export-contract",
+          "id": "MNCS-LANG-59894A2D6A3D",
+          "repositories": [
+            "mncs-harness",
+            "mncs-language"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Current compiler artifacts separate source function contracts from backend export names"
+        },
+        {
+          "capability": "legacy.p-010",
+          "content_digest": "sha256:107770c4426a8ec5e57a9541fd6bb4142908e265139ae8dd54343873238e0b57",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-5A9472D38CCB",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No float vectors"
+        },
+        {
+          "capability": "legacy.web-p-009",
+          "content_digest": "sha256:173741aa4898f05690d1db5d4d0fefc7070b1665ce93be0fecae60f09d530e47",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-5A94DFD0A049",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "minor",
+          "status": "discovered",
+          "title": "Bounds obligations stay UNKNOWN (proof/contracts ceiling)"
+        },
+        {
+          "capability": "legacy.p1-013.host-cannot-invoke-generic-functions-no-type-arguments-at-the-process-boundary",
+          "content_digest": "sha256:754a4551a265672a038d44d65632eb54fd364dc37d60b4d8d13c011f6603807b",
+          "domain": "type-system.generics",
+          "id": "MNCS-LANG-5B2AD8F659B6",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Host cannot invoke generic functions (no type arguments at the process boundary)"
+        },
+        {
+          "capability": "legacy.press-013",
+          "content_digest": "sha256:6d53f0332bb9784c4afd1d867103885dd800c9bfe9a75a52b28d58aafb9badce",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-5C6229CA836E",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No durable compare-and-swap for publication (P1, synchronization/persistence, runtime)"
+        },
+        {
+          "capability": "generic-typed-callable-reflection",
+          "content_digest": "sha256:7c1c11228587ec94559737e1c2b5d67cbfb2255abbb65df61705c29cd5b658e2",
+          "domain": "callable.inventory",
+          "id": "MNCS-LANG-5E290D20B90B",
+          "repositories": [
+            "mncs-actions",
+            "mncs-debug",
+            "mncs-doctor",
+            "mncs-language",
+            "mncs-test",
+            "ravel"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Generic callable inventory lacks reflective typed invocation binding"
+        },
+        {
+          "capability": "legacy.p1-020.no-typed-error-vocabulary-at-the-process-boundary-u64-status-codes-instead",
+          "content_digest": "sha256:5598aef049b52474d8c3f409fde00cbff1d9854dc1e0490c06931c1fb21273fb",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-649A6B6FA08E",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No typed-error vocabulary at the process boundary (u64 status codes instead)"
+        },
+        {
+          "capability": "cancellable_resource_bounded_process",
+          "content_digest": "sha256:ba77ae12fc57b77b3e4b0160e2b0ccc78bc2a707e18ef8479b570786419699dc",
+          "domain": "io.process-runtime",
+          "id": "MNCS-LANG-64AD712CD2DE",
+          "repositories": [
+            "mncs-forge",
+            "mncs-language"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Process effects lack aggregate resource envelopes and in-flight cancellation handles"
+        },
+        {
+          "capability": "dynamic_query_projection",
+          "content_digest": "sha256:4f13b7462b1d6d74281cfda6d92d8af41bed0269e3b88caf7b649ac35a4a4b94",
+          "domain": "data.registry",
+          "id": "MNCS-LANG-6643CDECCFEC",
+          "repositories": [
+            "mncs-commons"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Reusable bounded structured records had no compiler-owned host projection boundary"
+        },
+        {
+          "capability": "legacy.svc-p-016",
+          "content_digest": "sha256:69b3dfa92bb29d6e10c02aabdfe2801c1c940bf476254941deb528d59d87f02c",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-6644617F0DD3",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Invariants are boolean functions, not proofs"
+        },
+        {
+          "capability": "legacy.p-016",
+          "content_digest": "sha256:2c2fc713aa2a003c3d982e2667544d66b4485cc4dbc95a033ab76fb63646b891",
+          "domain": "backend",
+          "id": "MNCS-LANG-6CE2CD2EB82B",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Generic `checked_index` panics four backends"
+        },
+        {
+          "capability": "legacy.press-009",
+          "content_digest": "sha256:6e16b38437791f9639139c8604ad8c8f2c774a3e2ef207e384ea588d8f4b2318",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-LANG-6D53020635CD",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Nested iteration rejected (P3, semantics, compiler)"
+        },
+        {
+          "capability": "legacy.press-019",
+          "content_digest": "sha256:6adefdbc9b2d4cdfc78f3d2969b3e45990560e817e9d4e05b92fefd96100e2b3",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-6E87ED0AD91C",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No fabric partition/merge/worker-loss semantics (P2, distribution)"
+        },
+        {
+          "capability": "legacy.p2-007.observation-granularity-64-b-reads-one-root-per-capability",
+          "content_digest": "sha256:f42caa4880140dea21e1e8265e0b089ed00e3f7a39686ed4fe94ca574f1e5680",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-7181F1DBC345",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Observation granularity: 64 B reads, one root per capability"
+        },
+        {
+          "capability": "legacy.p2-005.no-atomic-publication-namespace-mutation-or-durability-barrier",
+          "content_digest": "sha256:6989f64dd90cd51549b4d95b0def0fe3d3bb9d59751c221bda4a0ed1b3d1ba4f",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-71DAE5A34032",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "blocker",
+          "status": "discovered",
+          "title": "No atomic publication, namespace mutation, or durability barrier"
+        },
+        {
+          "capability": "legacy.ingest-p-008",
+          "content_digest": "sha256:4dde0658ae74954e65ce18f1f4c43722bdd6e777e1ca185eacfa404a0627d713",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-721E238C2591",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No stdlib distribution for downstream crates"
+        },
+        {
+          "capability": "legacy.svc-p-012",
+          "content_digest": "sha256:3d34ec00378cf0e90a5008521d6271337f046774ef63b10293e1bd605f1c2fea",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-74330424E2FF",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Reserved words collide with service vocabulary"
+        },
+        {
+          "capability": "legacy.press-012",
+          "content_digest": "sha256:69f6816d8da8a8fa268d9ce54782533b15acc2aa4f892bc7bac1e7a6a3434027",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-7610973D3A68",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No cancellation semantics (P2, runtime, language)"
+        },
+        {
+          "capability": "legacy.p-006",
+          "content_digest": "sha256:b419a3b066495b203d7f75175e6958e3590e9f53faa496719c20991d792c4571",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-76B88EDA0119",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Cranelift SIGSEGV on arity-mismatched execution request"
+        },
+        {
+          "capability": "legacy.web-p-007",
+          "content_digest": "sha256:552ff3e5f5c59c0016999537c5d34e26b59b73e31252dfcb5bb4ef911e83ce31",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-770B42F56E6C",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No first-class handlers/closures (numeric dispatch)"
+        },
+        {
+          "capability": "legacy.p1-008.bounded-iteration-ceiling-1-32-per-level-two-levels-shapes-all-scans",
+          "content_digest": "sha256:ee70d33d7f35d5a07dc980509648fb0e3a9d3efb796a333610f4b405b9b2b94b",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-LANG-7BA2DA8A378E",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Bounded-iteration ceiling (1..=32 per level, two levels) shapes all scans"
+        },
+        {
+          "capability": "legacy.svc-p-007",
+          "content_digest": "sha256:10a4e66c83da1bb585ded48d8ea038b17db7b4e0e351b4b1c94496eb03be3b1c",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-7EE649AA6711",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Finite match has no wildcard"
+        },
+        {
+          "capability": "legacy.p-007",
+          "content_digest": "sha256:999fbf181b067fa5d6c4672af93961c6fe670d631683a3e9a2688ea3b3b21734",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-817B22E99A6B",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No exact negation"
+        },
+        {
+          "capability": "legacy.p-015",
+          "content_digest": "sha256:3eb680b4369965aa39c07ef2c9758a9eadd5f568f35bbdc0f8425ed6fa6a53d0",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-8230261A9F13",
+          "repositories": [
+            "mncs-numerics"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "`copy_span` refuses symbolic-bound destinations"
+        },
+        {
+          "capability": "legacy.press-016",
+          "content_digest": "sha256:252a551e2b2123a1dcb502d36a0b38b4ec834eb799934b0cd42e93743e4f6f2d",
+          "domain": "effects",
+          "id": "MNCS-LANG-8303385C7CBD",
+          "repositories": [
+            "mncs-index"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "No durable-commit effects (P1, persistence, runtime)"
+        },
+        {
+          "capability": "legacy.svc-p-003",
+          "content_digest": "sha256:54c62de91237702df74ff7616c585901ee86435771a6ed28df0b863b0b7f4727",
+          "domain": "language-semantics",
+          "id": "MNCS-LANG-846B20062550",
+          "repositories": [
+            "mncs-service"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "64-byte transport chunk forces app-level reassembly"
+        },
+        {
+          "capability": "legacy.ingest-p-005",
+          "content_digest": "sha256:d2b5d01af0accdbb650a56056f5cc26b272bbd8d76e0882842a4963a8c765ae0",
+          "domain": "control-flow.iteration",
+          "id": "MNCS-LANG-88C97B4EEEB1",
+          "repositories": [
+            "mncs-ingest"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Folds have no dead-iteration protection"
+        },
+        {
+          "capability": "legacy.web-p-011",
+          "content_digest": "sha256:110295ce63b4d6f34f83c0752c23d5fe1cf185f57dcc0b29c40bcdb3eb526e42",
+          "domain": "backend",
+          "id": "MNCS-LANG-8930A60B60E0",
+          "repositories": [
+            "mncs-web"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order"
+        },
+        {
+          "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
+          "content_digest": "sha256:7526ba24b672a525ba31329a49832014918650c3e096a55ad95068dc697f2d82",
+          "domain": "io.filesystem",
+          "id": "MNCS-LANG-8AF4BC50DDB4",
+          "repositories": [
+            "mncs-store"
+          ],
+          "severity": "blocker",
+          "status": "discovered",
+          "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language"
+        }
+      ],
+      "reason": "190 records",
+      "status": "present",
+      "total": 190,
+      "truncated": true
+    },
+    "relationships": {
+      "atlas_registry": {
+        "capability_count": 39,
+        "decision_count": 12,
+        "edge_count": 390,
+        "project_count": 49,
+        "registry_hash": "9ab99a8adffc55da6ff5507e9c568ffd60729c95d1cb59da0562fe849140ea2a",
+        "registry_revision": "9ab99a8adffc55da",
+        "status": "present"
+      },
+      "commons_complete": true,
+      "commons_edge_count": 25,
+      "commons_edges": [
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.family-verification/1",
+          "contract_revision": "1",
+          "producer": "mncs-actions",
+          "provenance": "mncs-forge:src/mncs_forge/application/mncs_development.py"
+        },
+        {
+          "consumer": "mncs-actions",
+          "contract": "mncs.pressure-registry/1",
+          "contract_revision": "1",
+          "producer": "mncs-commons",
+          "provenance": "mncs-actions:lib/mncs_family_contract.py"
+        },
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.pressure-registry/1",
+          "contract_revision": "1",
+          "producer": "mncs-commons",
+          "provenance": "mncs-forge:src/mncs_forge/application/mncs_development.py"
+        },
+        {
+          "consumer": "mncs-index",
+          "contract": "mncs.pressure-registry/1",
+          "contract_revision": "1",
+          "producer": "mncs-commons",
+          "provenance": "mncs-index:tests/test_store_projection.py"
+        },
+        {
+          "consumer": "mncs-ingest",
+          "contract": "mncs.pressure-registry/1",
+          "contract_revision": "1",
+          "producer": "mncs-commons",
+          "provenance": "mncs-ingest:src/adapters/structured.rs"
+        },
+        {
+          "consumer": "mncs-actions",
+          "contract": "mncs.debugger/1",
+          "contract_revision": "1",
+          "producer": "mncs-debug",
+          "provenance": "mncs-actions:lib/mncs_family_contract.py"
+        },
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.debugger/1",
+          "contract_revision": "1",
+          "producer": "mncs-debug",
+          "provenance": "mncs-forge:src/mncs_forge/application/mncs_development.py"
+        },
+        {
+          "consumer": "mncs-commons",
+          "contract": "mncs.index.derived-index/1",
+          "contract_revision": "1",
+          "producer": "mncs-index",
+          "provenance": "mncs-commons:docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md"
+        },
+        {
+          "consumer": "mncs-service",
+          "contract": "mncs.index.derived-index/1",
+          "contract_revision": "1",
+          "producer": "mncs-index",
+          "provenance": "mncs-service:tools/resident_service.py"
+        },
+        {
+          "consumer": "mncs-store",
+          "contract": "mncs.ingest.typed-handoff/1",
+          "contract_revision": "1",
+          "producer": "mncs-ingest",
+          "provenance": "mncs-store:src/store/relationship.mncs"
+        },
+        {
+          "consumer": "mncs-debug",
+          "contract": "mncs.execution-observation/1",
+          "contract_revision": "1",
+          "producer": "mncs-language",
+          "provenance": "mncs-debug:docs/architecture.md"
+        },
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.cli-toolchain/1",
+          "contract_revision": "1",
+          "producer": "mncs-language",
+          "provenance": "mncs-forge:src/mncs_forge/mncs_native.py"
+        },
+        {
+          "consumer": "mncs-test",
+          "contract": "mncs.compiler.test-inventory/1",
+          "contract_revision": "0.18",
+          "producer": "mncs-language",
+          "provenance": "mncs-test:native-userland-status.json"
+        },
+        {
+          "consumer": "ravel",
+          "contract": "mncs.semantic-impact/1",
+          "contract_revision": "1",
+          "producer": "mncs-language",
+          "provenance": "ravel:src/ravel/impact.py"
+        },
+        {
+          "consumer": "mncs-commons",
+          "contract": "mncs.service.resident-query/1",
+          "contract_revision": "1",
+          "producer": "mncs-service",
+          "provenance": "mncs-commons:docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md"
+        },
+        {
+          "consumer": "mncs-commons",
+          "contract": "mncs.store.persistent-state/1",
+          "contract_revision": "1",
+          "producer": "mncs-store",
+          "provenance": "mncs-commons:docs/MACHINE_NATIVE_INFORMATION_SUBSTRATE.md"
+        },
+        {
+          "consumer": "mncs-index",
+          "contract": "mncs.store.persistent-state/1",
+          "contract_revision": "1",
+          "producer": "mncs-store",
+          "provenance": "mncs-index:runner/mncs_index/store_feed.py"
+        },
+        {
+          "consumer": "mncs-service",
+          "contract": "mncs.store.persistent-state/1",
+          "contract_revision": "1",
+          "producer": "mncs-store",
+          "provenance": "mncs-service:tools/resident_service.py"
+        },
+        {
+          "consumer": "mncs-actions",
+          "contract": "mncs.test-result/1",
+          "contract_revision": "1",
+          "producer": "mncs-test",
+          "provenance": "mncs-actions:lib/mncs_family_contract.py"
+        },
+        {
+          "consumer": "mncs-debug",
+          "contract": "mncs.test-result/1",
+          "contract_revision": "1",
+          "producer": "mncs-test",
+          "provenance": "mncs-debug:AGENTS.md"
+        },
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.test-result/1",
+          "contract_revision": "1",
+          "producer": "mncs-test",
+          "provenance": "mncs-forge:src/mncs_forge/application/mncs_development.py"
+        },
+        {
+          "consumer": "mncs-actions",
+          "contract": "mncs.verification-plan/1",
+          "contract_revision": "1",
+          "producer": "ravel",
+          "provenance": "mncs-actions:lib/mncs_family_contract.py"
+        },
+        {
+          "consumer": "mncs-forge",
+          "contract": "mncs.verification-plan/1",
+          "contract_revision": "1",
+          "producer": "ravel",
+          "provenance": "mncs-forge:src/mncs_forge/verification_plan_contract.py"
+        },
+        {
+          "consumer": "mncs-test",
+          "contract": "mncs.verification-obligation-plan/1",
+          "contract_revision": "1",
+          "producer": "ravel",
+          "provenance": "mncs-test:tools/mncs_test.py"
+        },
+        {
+          "consumer": "mncs-test",
+          "contract": "mncs.verification-plan/1",
+          "contract_revision": "1",
+          "producer": "ravel",
+          "provenance": "mncs-test:tools/family_contract.py"
+        }
+      ],
+      "commons_limitations": [
+        "Edges are generated from repository-owned declarations joined by Commons; they do not replace compiler semantic graph truth.",
+        "Undeclared or profile-wide contracts must escalate to a wider family boundary."
+      ]
+    },
+    "schema_version": "mncs-atlas.dashboard-projection/v1",
+    "semantic_hash": "sha256:ce0dda295a7ea0e01d3903f98c3ec3e80575e543d14d51cd6934593c6187efc6",
+    "sources": [
+      {
+        "content_sha256": "b8fd340099e088b5044fcc5909b7749f7f21d4784463039fcca9ea3819bd9e8f",
+        "id": "atlas-catalog",
+        "path": "mncs-atlas/registry/project-catalog.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "0ad64304f3bb391a9d9912bc52877a2e148801aea7d22b77c144bdf02152abfb",
+        "id": "atlas-compiled",
+        "path": "mncs-atlas/registry/compiled.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "8454f295ee704b2b2b6315860cd0bdfb2220d11afb1c9f8f801e0143f0eaab19",
+        "id": "workspace-manifests",
+        "path": "workspace/*/.mncs/project.json",
+        "reason": "22 manifests discovered",
+        "status": "present"
+      },
+      {
+        "content_sha256": "a580afda675f21a0e07f49f23b445ec44d882991b86addc5f6145419a6bcfbcb",
+        "id": "commons-participation",
+        "path": "MNCS-Commons/family/participation-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "11857372a947e361b1b6288601d6402e680dceecc5d4a2adebf3bf571d3aa97c",
+        "id": "commons-architecture",
+        "path": "MNCS-Commons/family/architecture-model-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "456ca896c15818f45f5bf68df9d19343ad7557be5fe244312336e23b604756b6",
+        "id": "commons-edges",
+        "path": "MNCS-Commons/family/semantic-edges-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "28b9cc7b7b31922cf2e812a92a3533a3f0117f3704eaa5268aaeac556cf33b49",
+        "id": "commons-deltas",
+        "path": "MNCS-Commons/family/architecture-delta-history-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "0cffe5e23a9b8ea1a3b6aaed59f0d99ba14005adbe72345520139a998b256462",
+        "id": "commons-verification",
+        "path": "MNCS-Commons/family-verification-checks-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "353ec9b58c72328e4ae9b36678fb07cdb3cc65c48e0790f274e1278d794bd579",
+        "id": "commons-native-status",
+        "path": "MNCS-Commons/native-userland-status.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "e8c6345aa61ec0ad4baab82bb1c31b237caf5f2083b295a91b1edeaa192de80e",
+        "id": "commons-pressures",
+        "path": "MNCS-Commons/pressures/records",
+        "reason": "190 records",
+        "status": "present"
+      },
+      {
+        "content_sha256": "8ee1e64f13bf91124ff93c41857e49c1b14d3a6c880d706f278385d0fbb84aa8",
+        "id": "store-verification",
+        "path": "mncs-store/family-verification-checks-v1.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "01f251e2ad963bfdff98992d688fc5ae8473f31090ba488a57d73f15ceb70e9d",
+        "id": "store-native-status",
+        "path": "mncs-store/native-userland-status.json",
+        "reason": "readable",
+        "status": "present"
+      },
+      {
+        "content_sha256": "4dea12ae3c03f97cdb31e1c36cb9fa7c56a5096c74fadf866d4aad2ba496419b",
+        "id": "journal-head",
+        "path": "mncs-atlas/journal-events",
+        "reason": "3 events",
+        "status": "present"
+      }
+    ],
+    "verification": {
+      "banner": "declarations without a result feed: every check is UNKNOWN until an owning verifier publishes results",
+      "declared_checks": [
+        {
+          "contract": "mncs.index.derived-index/1",
+          "identity": "mncs-commons:index-projection",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-commons",
+          "runner": "declaration",
+          "source": "commons-verification",
+          "state": "UNKNOWN",
+          "surface": "derived-index-to-pressure-view"
+        },
+        {
+          "contract": "mncs.service.resident-query/1",
+          "identity": "mncs-commons:resident-query",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-commons",
+          "runner": "declaration",
+          "source": "commons-verification",
+          "state": "UNKNOWN",
+          "surface": "bounded-query-to-authoritative-pressure-state"
+        },
+        {
+          "contract": "mncs.store.persistent-state/1",
+          "identity": "mncs-commons:store-projection",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-commons",
+          "runner": "declaration",
+          "source": "commons-verification",
+          "state": "UNKNOWN",
+          "surface": "typed-store-state-to-pressure-authority"
+        },
+        {
+          "contract": "mncs.store.typed-relations/2",
+          "identity": "mncs-store:generic-typed-relations-v2",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-store",
+          "runner": "native-corpus",
+          "source": "store-verification",
+          "state": "UNKNOWN",
+          "surface": "generic-relation-type-and-optional-metadata"
+        },
+        {
+          "contract": "mncs.store.provenance/1",
+          "identity": "mncs-store:provenance-v1",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-store",
+          "runner": "native-corpus",
+          "source": "store-verification",
+          "state": "UNKNOWN",
+          "surface": "source-producer-transformation-evidence-ancestry"
+        },
+        {
+          "contract": "mncs.ingest.typed-handoff/1",
+          "identity": "mncs-store:typed-handoff-input",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-store",
+          "runner": "declaration",
+          "source": "store-verification",
+          "state": "UNKNOWN",
+          "surface": "typed-handoff-to-import-migration"
+        }
+      ],
+      "declared_count": 6
+    }
+  },
+  "semantic_hash": "sha256:ce0dda295a7ea0e01d3903f98c3ec3e80575e543d14d51cd6934593c6187efc6"
+}

@@ -2,7 +2,7 @@
 
 MNCS is an open experimental standard for accepting generated or machine-optimized implementations through bounded evidence. MNCDS is an independently versioned development-process specification. The wider project family explores languages, development control, distributed execution, coordination, adaptive learning, operator tooling, and empirical study while keeping those roles distinct.
 
-Atlas is non-normative. Harness, Control, Fabric, Forge, Commons, RAVEL, MNEL, validators, language research, reference studies, and Atlas itself are not mandatory for MNCS conformance.
+Atlas is non-normative. Harness, Control, Fabric, Forge, Commons, RAVEL, mncs-models, mncs-learn, validators, language research, reference studies, and Atlas itself are not mandatory for MNCS conformance.
 
 ## Authority before topology
 
@@ -47,7 +47,7 @@ constrains where remote/operator actions may occur
                      Commons
        durable shared/institutional memory
 
-agents/models ----> RAVEL / MNEL
+agents/models ----> RAVEL / mncs-learn
      |                  |
      |                  +---- strategy, experiments, learning, governed memory
      |
@@ -103,9 +103,37 @@ The persistent Commons service owns its storage and lifecycle. Consumers use bou
 
 RAVEL is an adaptive reasoning and evidence-orchestration layer. It chooses what to investigate next, records validated experience, and learns reusable strategies while preserving the governing status of the evidence it consumes. RAVEL memory is advisory.
 
-### MNEL
+### MNEL (retired)
 
-Machine-Native Experimental Learning uses investigators, bounded interventions, deterministic tools/verifiers, causal attribution, and verified-experience distillation to explore learning from governed machine-readable experience. Investigators may propose knowledge; they may not declare it true.
+Machine-Native Experimental Learning was the old umbrella experimental-learning repository. It is retired: model construction and composition moved to `mncs-models`, learning/training/adaptation orchestration moved to `mncs-learn`, and supporting responsibilities moved to Store, Memory, Ingest, Index, and Commons. Historical records may reference MNEL; current architecture must not present it as the central model/learning layer.
+
+### MNCS Models and MNCS Learn
+
+`mncs-models` owns construction, composition, and instantiation of machine-native model architectures. `mncs-learn` owns learning/training/adaptation orchestration over constructed models. Neither redefines the status of evidence it consumes.
+
+## Atlas projection architecture
+
+Atlas renders machine-native state; it does not re-decide it. The deterministic path is:
+
+```text
+repository declarations / observations / evidence
+                     ↓
+            mncs-store / Commons family records
+                     ↓
+        Atlas projector (projector/): bounded typed projection
+                     ↓
+        validation / sanitization (schema + public-field allowlist)
+                     ↓
+        stable dashboard.json + static dashboard.html (site/)
+                     ↓
+        root Pages compatibility mirror
+                     ↓
+              GitHub Pages
+```
+
+The projector (`python -m projector project`) merges the Atlas orientation catalog, workspace repository manifests, Commons family records (participation, architecture model, semantic edges, delta history, verification declarations, native-migration declarations, pressure records), the compiled Atlas registry, and journal head state into `mncs-atlas.dashboard-projection/v1`. Every source carries a content identity; missing sources become explicit UNKNOWN, never fabricated facts. The semantic hash over the payload is the no-change identity: unchanged state regenerates byte-identical semantics, and the refresh controller (`scripts/atlas_refresh.py`) commits and pushes only on semantic change. Generation time lives in the envelope, outside the hash.
+
+The dashboard (`dashboard.html`) is deterministic current state. The Development Journal is bounded human/agent synthesis of significant changes. The dashboard never sources truth from the Journal, and the Journal never rewrites projection state.
 
 ### MNCS Language
 
@@ -161,7 +189,7 @@ calling workflow records evidence, lineage, and status
         |
         +--> Commons remembers durable shared/institutional knowledge or work state
         |
-        +--> RAVEL / MNEL use governed outcomes for later strategy or experiments
+        +--> RAVEL / mncs-learn use governed outcomes for later strategy or experiments
         |
         +--> Reference Studies compare behavior under a frozen protocol
         v

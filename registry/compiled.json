@@ -242,10 +242,10 @@
       ],
       "manifest": {
         "schema_version": "mncs-family.repository-manifest/v0alpha1",
-        "revision": 3,
+        "revision": 4,
         "location": "in-repository",
         "origin": "repository:.mncs/project.json",
-        "sha256": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
+        "sha256": "e49abe5b26c435cf2cdf4d4af02fd564bab9ca84d22949d6435f70c8df6cbca9",
         "provides": [
           {
             "id": "mncs-atlas.family-map/0.4",
@@ -281,6 +281,18 @@
               "docs/REGISTRY.md",
               "registry/__main__.py"
             ]
+          },
+          {
+            "id": "mncs-atlas.family-dashboard/1",
+            "contract": "family-dashboard",
+            "version": "1",
+            "kind": "orientation-surface",
+            "stability": "experimental",
+            "fingerprint_sources": [
+              "docs/OPERATING_MODEL.md",
+              "projector/project.py",
+              "site/dashboard.json"
+            ]
           }
         ],
         "consumes": [
@@ -310,6 +322,7 @@
           }
         ],
         "tests": [
+          "dashboard-projection",
           "registry-tests",
           "registry-validation"
         ]
@@ -1605,6 +1618,28 @@
       "manifest": null
     },
     {
+      "id": "mncs-models",
+      "name": "MNCS Models",
+      "repository": "https://github.com/epi13/mncs-models",
+      "role": "model-construction",
+      "category": "research",
+      "lifecycle": "experimental",
+      "authority_class": "research-advisory",
+      "responsibility": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives; architecture-open model graphs, components, parameters, and heterogeneous stacks. Successor to the model-construction role of MNEL.",
+      "non_goals": [],
+      "language_profile": null,
+      "language_profile_status": "not-declared",
+      "dependencies": [
+        "mncs-language",
+        "mncs-store"
+      ],
+      "checkout_names": [
+        "mncs-models"
+      ],
+      "aliases": [],
+      "manifest": null
+    },
+    {
       "id": "mncs-numerics",
       "name": "MNCS Numerics",
       "repository": "https://github.com/epi13/mncs-numerics",
@@ -2052,9 +2087,9 @@
       "repository": "https://github.com/epi13/Machine-Native-Experimental-Learning",
       "role": "experimental-learning",
       "category": "research",
-      "lifecycle": "experimental",
+      "lifecycle": "retired",
       "authority_class": "research-advisory",
-      "responsibility": "Evidence-governed investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation.",
+      "responsibility": "Retired umbrella experimental-learning repository. Model construction moved to mncs-models; learning/training orchestration moved to mncs-learn. Kept for historical reference only.",
       "non_goals": [],
       "language_profile": "0.14",
       "language_profile_status": "legacy",
@@ -4988,6 +5023,13 @@
     },
     {
       "from": "project:mncs-atlas",
+      "to": "contract:mncs-atlas.family-dashboard/1",
+      "kind": "provides",
+      "description": "Repository manifest provides this contract.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-atlas",
       "to": "contract:mncs-atlas.family-map/0.4",
       "kind": "provides",
       "description": "Repository manifest provides this contract.",
@@ -6293,6 +6335,20 @@
       "evidence": []
     },
     {
+      "from": "project:mncs-models",
+      "to": "project:mncs-language",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-models",
+      "to": "project:mncs-store",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
       "from": "project:mncs-numerics",
       "to": "capability:numeric-primitives",
       "kind": "canonical_for",
@@ -6891,13 +6947,13 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "02e79f3965968669e93b3ec45d0a7e240bf3b019a651114c20bcfe59fc3348ab",
+    "project_catalog": "06f709b0fe14ab8d2cc9d3150d90ed6b57eacff24bed416a721520711b2ce9e4",
     "capability_claims": "f5de651b495031b93e61a8f131dfccd4ca3f7c5a4fb69d51783b0e4166c5a8bf",
     "decisions": "b316320c6f941b632f613b431f73969ebb247a292c4afc2f9dbfe26ee9be3859",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
-      "mncs-atlas": "b79f0331611e8912f12e051e6ce31ed83cf16fd09e272a10f9f2adae921ee135",
+      "mncs-atlas": "e49abe5b26c435cf2cdf4d4af02fd564bab9ca84d22949d6435f70c8df6cbca9",
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
@@ -6915,6 +6971,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "ca6b843f09c62c267f1ecd6ea0fdb5f1f9c342c70fc9c4ba3680df2bc1bd0744",
-  "registry_revision": "ca6b843f09c62c26"
+  "registry_hash": "9ab99a8adffc55da6ff5507e9c568ffd60729c95d1cb59da0562fe849140ea2a",
+  "registry_revision": "9ab99a8adffc55da"
 }

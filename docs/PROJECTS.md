@@ -34,7 +34,7 @@ MNCS Rights & Provenance develops machine-native vocabulary, schemas, evidence m
 
 It is an official MNCS family project because those questions cross source code, Fabric receipts, Commons knowledge, Forge lineage, experiment artifacts, model outputs, future training corpora, and releases. Its current role is to **observe, model, experiment, and learn** from real MNCS workflows.
 
-It is deliberately not yet a new software license, does not replace Apache-2.0, does not determine copyrightability automatically, and is not a hard runtime dependency for Fabric, Forge, Commons, MNEL, MNCS, or MNCDS. Future adoption by governing specifications must be explicit and versioned.
+It is deliberately not yet a new software license, does not replace Apache-2.0, does not determine copyrightability automatically, and is not a hard runtime dependency for Fabric, Forge, Commons, mncs-learn, MNCS, or MNCDS. Future adoption by governing specifications must be explicit and versioned.
 
 Core boundary: **provenance is evidence about origin and transformation; it is not by itself a conclusion about authorship, ownership, or copyrightability.**
 
@@ -129,11 +129,23 @@ Repository: https://github.com/epi13/RAVEL
 
 Recursive Adaptive Vector Execution Lattice: an adaptive intelligence layer for deciding which evidence to gather, what action to take next, and which validated experience to retain. RAVEL operates beneath MNCS/MNCDS authority and cannot promote its own memories into governing truth.
 
-### Machine-Native Experimental Learning
+### MNCS Models
+
+Repository: https://github.com/epi13/mncs-models
+
+Canonical machine-native model construction and composition: explicit typed computational structures assembled from composable primitives — model graphs, components, parameters, recurrent regions, and heterogeneous stacks. It owns structure, not training.
+
+### MNCS Learn
+
+Repository: https://github.com/epi13/mncs-learn
+
+Learning, training, and adaptation orchestration over constructed models: evidence-driven state transitions across micro-models, adaptive graphs, datasets, checkpoints, and training processes. It owns orchestration, not structure.
+
+### Machine-Native Experimental Learning (retired)
 
 Repository: https://github.com/epi13/Machine-Native-Experimental-Learning
 
-An evidence-governed experimental learning framework. MNEL uses investigators, bounded experiments, causal attribution, negative memory, and verified-experience distillation to explore learning from persistent machine-readable experience.
+Retired umbrella experimental-learning repository, kept for historical reference only. Its model-construction role moved to `mncs-models`; its learning/training role moved to `mncs-learn`. Do not present MNEL as the current model/learning architecture.
 
 ### MNCS TUI
 
@@ -161,7 +173,7 @@ The empirical companion to the standards work. It contains controlled case studi
 
 Repository: https://github.com/epi13/mncs-atlas
 
-This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, maturity vocabulary, contributor orientation, the current operator-model boundary, and machine-readable relationships/entry points.
+This repository. Atlas owns no technical conformance authority. Its job is to maintain a coherent family map, common terminology, maturity vocabulary, contributor orientation, the current operator-model boundary, and machine-readable relationships/entry points. Current ecosystem state is derived deterministically into the [dashboard](https://epi13.github.io/mncs-atlas/dashboard.html) (`dashboard.json`); interpretation of significant changes lives in the Development Journal.
 
 ## Choosing where to start
 
@@ -175,7 +187,8 @@ This repository. Atlas owns no technical conformance authority. Its job is to ma
 | operate the authorized development workspace remotely | MNCS Control MCP |
 | execute on an exact persistent worker | Fabric |
 | share findings, requests, replications, or decisions | Commons |
-| learn from governed experience | RAVEL / MNEL |
+| learn from governed experience | RAVEL / mncs-learn |
+| construct or compose a machine-native model | mncs-models |
 | challenge claims empirically | Reference Studies |
 | independently validate a supported record subset | Rust Validator + governing MNCS docs |
 | understand how the family fits together | Atlas |

@@ -209,7 +209,25 @@
       "role": "experimental-learning",
       "maturity": "research",
       "authority_class": "research-advisory",
-      "responsibility": "Investigators, bounded interventions, causal attribution, negative memory, and verified-experience distillation."
+      "responsibility": "Retired umbrella experimental-learning repository (historical reference only). Model construction moved to mncs-models; learning/training orchestration moved to mncs-learn."
+    },
+    {
+      "id": "mncs-models",
+      "name": "MNCS Models",
+      "repository": "https://github.com/epi13/mncs-models",
+      "role": "model-construction",
+      "maturity": "research",
+      "authority_class": "research-advisory",
+      "responsibility": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives."
+    },
+    {
+      "id": "mncs-learn",
+      "name": "MNCS Learn",
+      "repository": "https://github.com/epi13/mncs-learn",
+      "role": "learning-orchestration",
+      "maturity": "research",
+      "authority_class": "research-advisory",
+      "responsibility": "Learning, training, and adaptation orchestration over constructed models."
     },
     {
       "id": "mncs-tui",

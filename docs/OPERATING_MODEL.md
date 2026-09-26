@@ -8,7 +8,7 @@ The operator model answers: *how does a human or agent currently get bounded wor
 
 This document is descriptive and non-normative. Deployment implementations may change faster than the standards. When this document disagrees with an owning repository's current contract, the owning repository wins and Atlas should be updated.
 
-Harness, Control, Fabric, Forge, Commons, RAVEL, and MNEL are not mandatory for MNCS conformance.
+Harness, Control, Fabric, Forge, Commons, RAVEL, mncs-models, and mncs-learn are not mandatory for MNCS conformance.
 
 ## Current operator path
 
@@ -43,7 +43,7 @@ Human / external agent
   durable shared/institutional memory
         |
         v
-   RAVEL / MNEL
+   RAVEL / mncs-learn
  governed learning and experiment strategy
 
            validators / studies
@@ -63,7 +63,7 @@ The drawing is representative, not a mandatory call graph. A client may use Forg
 | **Fabric** | Worker identity/presence, exact-target admission, authenticated transport, bounded execution, retries, resource/capability observations, execution evidence | Semantic route selection, tool/model choice, calling-workflow result acceptance, MNCS conformance |
 | **Worker / provider** | The bounded computation or observation it was asked to perform | Permission to broaden scope or promote its own result |
 | **Commons** | Durable structured coordination, work records, observations, claims, replications, advisories, decisions, provenance-aware knowledge | Execution permission, automatic trust, consensus, conformance |
-| **RAVEL / MNEL** | Strategy, experiments, causal interpretation, reusable governed learning | Redefining the status of evidence they consume |
+| **RAVEL / mncs-learn** | Strategy, experiments, causal interpretation, reusable governed learning | Redefining the status of evidence they consume |
 | **Validators / Reference Studies** | Bounded validation or controlled empirical challenge within their declared protocol | Universal truth outside the supported claim/protocol |
 | **MNCS** | Governing implementation-evidence / technical acceptance semantics | Operational ownership of every tool used to implement the standard; MNCDS process semantics |
 | **MNCDS** | Independently versioned development-process semantics | Operational ownership of every tool used to implement the specification; MNCS evidence semantics |
@@ -123,7 +123,7 @@ Forge can coordinate declared checks and preserve lineage, but governing status 
 ### 6. Learning from outcomes
 
 ```text
-validated / scoped outcomes -> Commons and/or experiment records -> RAVEL / MNEL -> later strategy
+validated / scoped outcomes -> Commons and/or experiment records -> RAVEL / mncs-learn -> later strategy
 ```
 
 Learning can change what the system investigates or tries next. It does not retroactively change FAIL, UNKNOWN, PASS, provenance, independence, or custody properties of the underlying evidence.
@@ -159,3 +159,30 @@ Some operator implementations may be private, local-only, or specific to a refer
 MNCS Harness is reusable operator infrastructure published at https://github.com/epi13/mncs-harness. Its presence in the family map does not make it a normative MNCS requirement.
 
 The public standards and project repositories remain the source of truth for their own contracts. Atlas is the map between them.
+
+## Atlas refresh controller and dashboard
+
+Ecosystem facts change without agents watching. Atlas updates are background machinery, not repeated agent work:
+
+```text
+local deterministic controller (scripts/atlas_refresh.py)
+        ↓
+query canonical state (catalog, workspace manifests, Commons records, registry)
+        ↓
+projector/ builds dashboard.json (schema mncs-atlas.dashboard-projection/v1)
+        ↓
+validate + sanitize + compare semantic hash
+        ↓
+if unchanged: restore the tree, stop
+if changed: regenerate static artifacts, narrow deterministic commit, push
+        ↓
+GitHub Pages publishes the static mirror
+```
+
+- **Dry run:** `python scripts/atlas_refresh.py --check` discovers, projects, and validates without writing anything.
+- **Local refresh:** `python scripts/atlas_refresh.py` regenerates derived files in the working tree.
+- **Publication:** `--publish` adds the narrow commit (generated files only, message carries the semantic hash) and pushes the current branch. Merging to `main` stays a human/PR decision.
+- **Safety:** the controller refuses when the tree holds non-generated changes, holds a single-instance lock, and never commits timestamps: generation time lives in the dashboard envelope, outside the semantic hash.
+- **Scheduling:** `python scripts/atlas_refresh.py --install-schedule` installs a user-level systemd timer (default Monday 07:13 local, configurable via `--cadence`); `--schedule-status` and `--uninstall-schedule` manage it. The scheduler is a host effect: it triggers the controller, it is not Atlas semantics.
+
+Dashboard semantics: the dashboard (`dashboard.html`, data in `dashboard.json`) is deterministic current state with provenance (source content identities, projector identity, freshness). Missing evidence renders as UNKNOWN, never PASS. Authority, maturity, lifecycle, and implementation status stay separate concepts. The Development Journal is not a dashboard input: it interprets significant changes after the fact, and routine journal runs consume already-derived state rather than rediscovering the family.

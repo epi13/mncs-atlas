@@ -45,7 +45,7 @@ For participant admission and capability brokerage, continue into [site/admissio
 - **Execution is not conformance.** Successfully running a bounded workload proves only the claims established by that execution record.
 - **Transport is not trust.** Moving authenticated data or work between machines does not create independent evaluation, protected custody, or correctness.
 - **Coordination is not command authority.** Commons records are structured knowledge/work opportunities and durable coordination state, not an unrestricted instruction channel.
-- **Learning is advisory until governed.** RAVEL and MNEL may propose, prioritize, retain, and distill experience; they do not redefine the status of underlying evidence.
+- **Learning is advisory until governed.** RAVEL, mncs-models, and mncs-learn may propose, prioritize, retain, and distill experience; they do not redefine the status of underlying evidence.
 - **Persistence implies ownership.** A long-lived service owns the identity, lifecycle, recovery, and history it explicitly declares. Consumers must not recreate a shadow authority merely because they can observe or call that service.
 - **Human readability is relocated, not eliminated.** Machine-oriented representation still requires inspectable contracts, provenance, scope, and evidence boundaries.
 
@@ -67,7 +67,9 @@ For participant admission and capability brokerage, continue into [site/admissio
 - **MNCS Language:** verification-native language and semantic representation research.
 - **Reference Studies:** controlled empirical studies and reimplementations.
 - **RAVEL:** adaptive evidence strategy, memory, and learning beneath governing authority.
-- **MNEL:** evidence-governed experimental learning and causal experience distillation.
+- **mncs-models:** canonical machine-native model construction and composition.
+- **mncs-learn:** learning/training/adaptation orchestration over constructed models.
+- **MNEL:** retired umbrella experimental-learning repository (historical reference only).
 - **Atlas:** orientation only.
 
 None of the operator, development, or research components is mandatory for MNCS conformance. Operator implementations may be private, local-only, or deployment-specific. Their presence in Atlas does not make them normative MNCS requirements.
@@ -101,6 +103,6 @@ Do not repair a disagreement by silently changing normative meaning. Surface the
 
 Prefer narrow, evidence-backed changes. Preserve provenance. Reuse public interfaces rather than reaching into sibling internals. Do not add hidden fallback behavior across machines, models, evaluators, or trust boundaries. When evidence is absent, report the gap.
 
-When changing the Atlas website, edit only the canonical `site/` tree, run `python scripts/sync_pages_root.py`, and let CI verify that the root GitHub Pages compatibility mirror remains byte-for-byte current. When changing `site/atlas.json`, keep stable IDs when possible, update its schema/relationships/entry points as needed, and verify every referenced component exists.
+When changing the Atlas website, edit only the canonical `site/` tree, run `python scripts/sync_pages_root.py`, and let CI verify that the root GitHub Pages compatibility mirror remains byte-for-byte current. When ecosystem state changes, regenerate the derived projection with `python scripts/atlas_refresh.py` (dry run: `--check`; publish: `--publish`) rather than hand-editing `dashboard.json`, `registry.html`, or the registry — those are projector/compiler output with semantic-hash no-change detection. When changing `site/atlas.json`, keep stable IDs when possible, update its schema/relationships/entry points as needed, and verify every referenced component exists.
 
 The Development Journal is a bounded Atlas editorial surface. Recurring machine-maintained entries must go through `python -m journal_maintainer` as documented in [docs/JOURNAL_MAINTAINER.md](docs/JOURNAL_MAINTAINER.md) and [docs/JOURNAL_MAINTAINER_IMPLEMENTATION.md](docs/JOURNAL_MAINTAINER_IMPLEMENTATION.md). Routine journal publication may not rewrite specifications, sibling repositories, or unrelated Atlas files. Journal prose is not project authority. Machine-verifiable ecosystem progress is recorded separately as canonical events (`site/journal-events/`, [docs/JOURNAL_EVENTS.md](docs/JOURNAL_EVENTS.md)): proposals are public, admission requires live `mncs.family.journal.v1` policy verdicts plus the issuer key, and routine runs must not write that tree.
