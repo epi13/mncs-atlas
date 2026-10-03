@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:073df0ced55485a670d27be667c67fe6abf74be31ac435ea03b1fa3309fec1c8",
+      "manifests": "sha256:2d6ddba3e078f1830ffdd64415b9cd661ce03b2f5b870f8611d2aac87376195d",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:b2cf2adeefd5fc6cd47e2017ef2c11ca0d08cde419e8eb6d677951c78b9a75a3"
+    "source_epoch": "sha256:d293f4cd2ab6a99237197135bda69a818037e0d9dd042ea28002cee671894f99"
   },
   "projection": {
     "capabilities": {
@@ -355,11 +355,17 @@
           "id": "mncs-cli",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-cli",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS CLI",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Typed command-line arguments, subcommands, help, completion, structured errors, and CLI ergonomics for MNCS applications.",
           "repository": "https://github.com/epi13/mncs-cli",
@@ -475,11 +481,17 @@
           "id": "mncs-crypto",
           "lifecycle": "incubating",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-crypto",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Crypto",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Established cryptographic primitives, published vectors, constant-time patterns, memory handling, and compiler/backend pressure for MNCS.",
           "repository": "https://github.com/epi13/mncs-crypto",
@@ -854,11 +866,17 @@
           "id": "mncs-lab",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-lab",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Lab",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "REPL, JIT, persistent compiler sessions, incremental compilation, proof-aware execution, and interactive language pressure.",
           "repository": "https://github.com/epi13/mncs-lab",
@@ -3013,7 +3031,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:1a5cf513d485da29af510a77c2a8c639df2372bd92ae6b16b90ec3d8cead9d80",
+    "semantic_hash": "sha256:86d0347f612af9805bc9b94c6a7b968284bd0ec3ed5e49b89f1cd65fa3368118",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3030,7 +3048,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "1a63c9cfb5096c11aba33725225084875cd9c25a4b2f02f2cb0fcb0114f71963",
+        "content_sha256": "362b9593638f171d93a67c75c9d82cac1094bed90279d63632b31a14a2899c38",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3184,5 +3202,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:1a5cf513d485da29af510a77c2a8c639df2372bd92ae6b16b90ec3d8cead9d80"
+  "semantic_hash": "sha256:86d0347f612af9805bc9b94c6a7b968284bd0ec3ed5e49b89f1cd65fa3368118"
 }
