@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:2d6ddba3e078f1830ffdd64415b9cd661ce03b2f5b870f8611d2aac87376195d",
+      "manifests": "sha256:61282465f9db5d08689a42323ce8be38cee2d895f741670ae02033a9d5881975",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:d293f4cd2ab6a99237197135bda69a818037e0d9dd042ea28002cee671894f99"
+    "source_epoch": "sha256:c369b45a03372d896efc56cf4b724b006828cd82a66b0ce3cddadfd98f4a07c0"
   },
   "projection": {
     "capabilities": {
@@ -659,11 +659,17 @@
           "id": "mncs-fabric",
           "lifecycle": "active",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-fabric",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Fabric",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": {
             "reason": "The execution substrate has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -995,11 +1001,17 @@
           "id": "mncs-math",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-math",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Math",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Exact and numerical scientific mathematics, linear algebra, tensors, intervals, autodiff, statistics, and numerical methods.",
           "repository": "https://github.com/epi13/mncs-math",
@@ -1390,11 +1402,17 @@
           "id": "mncs-web",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-web",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Web",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Typed HTTP and web-service structures, incremental protocol parsing, effects, and application-level web pressure workloads.",
           "repository": "https://github.com/epi13/mncs-web",
@@ -3031,7 +3049,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:86d0347f612af9805bc9b94c6a7b968284bd0ec3ed5e49b89f1cd65fa3368118",
+    "semantic_hash": "sha256:2ee990205117eda9b5cbcbba0b57e4ed30bcc6c304662926427354f3f61431c3",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3048,7 +3066,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "362b9593638f171d93a67c75c9d82cac1094bed90279d63632b31a14a2899c38",
+        "content_sha256": "82e6c97bed353212b0c120c2ec020862ca13e0d151c0fd592bbe0e011c2992fd",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3202,5 +3220,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:86d0347f612af9805bc9b94c6a7b968284bd0ec3ed5e49b89f1cd65fa3368118"
+  "semantic_hash": "sha256:2ee990205117eda9b5cbcbba0b57e4ed30bcc6c304662926427354f3f61431c3"
 }
