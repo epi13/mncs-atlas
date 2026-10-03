@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:fcf70a62c30557c8f4b95253522b75b7bd278d62b1709c02fd4b4ff7570f98c2",
+      "manifests": "sha256:1f5d78d7afb909bf1162e9d906c7eaf713b6c33ec417a76e3b96ae2b29ef206c",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:0d3e3c9cac3162d7ccee8c16645c18c3d2a192706cb482b142ea3ae73ff530e7"
+    "source_epoch": "sha256:583970f7b4cc4c31924635ad1495657c2b1becc1bf10db65b416e48c9a1dfd6e"
   },
   "projection": {
     "capabilities": {
@@ -508,11 +508,17 @@
           "id": "mncs-data",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-data",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Data",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Schemas, tables, columns, missing values, Unicode, evolving data, streaming pipelines, and structured interchange pressure.",
           "repository": "https://github.com/epi13/mncs-data",
@@ -957,11 +963,17 @@
           "id": "mncs-learn",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-learn",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Learn",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Evidence-driven state transitions across heterogeneous micro-models, adaptive graphs, datasets, checkpoints, and training processes.",
           "repository": "https://github.com/epi13/mncs-learn",
@@ -1072,11 +1084,17 @@
           "id": "mncs-models",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-models",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Models",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives; architecture-open model graphs, components, parameters, and heterogeneous stacks. Successor to the model-construction role of MNEL.",
           "repository": "https://github.com/epi13/mncs-models",
@@ -3086,7 +3104,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:5682fa397b69c43ca1881b6776c7560024ece69ed462c04ec374f18fa4a5e514",
+    "semantic_hash": "sha256:878bd699d193c1e5b48dc8d9a8fd32b44279a863cb50ffd58785bb1cef495496",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3103,7 +3121,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "7f80a7178f05378e7b3ab9bed5ca5cb4920168720324d1496549fa14e67fbb76",
+        "content_sha256": "5cbc11dc639344a643f51550d134b3d37a716dba2471b5e233829382e445f4f2",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3257,5 +3275,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:5682fa397b69c43ca1881b6776c7560024ece69ed462c04ec374f18fa4a5e514"
+  "semantic_hash": "sha256:878bd699d193c1e5b48dc8d9a8fd32b44279a863cb50ffd58785bb1cef495496"
 }
