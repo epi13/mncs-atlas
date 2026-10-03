@@ -2,16 +2,15 @@
 
 Writes ``site/dashboard.json`` (the full envelope) and refreshes the
 ``<noscript>`` fallback table inside ``site/dashboard.html`` so core facts
-remain readable when WASM or JavaScript is unavailable.  Generation time
-lives only in the envelope: it never enters the semantic hash, so
-re-rendering unchanged state produces byte-identical semantic output.
+remain readable when WASM or JavaScript is unavailable.  The envelope
+carries only deterministic provenance (never wall-clock time), so
+re-rendering unchanged state produces byte-identical output.
 """
 
 from __future__ import annotations
 
 import html
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -26,14 +25,24 @@ NOSCRIPT_BEGIN = "<!-- atlas:noscript-fallback:begin -->"
 NOSCRIPT_END = "<!-- atlas:noscript-fallback:end -->"
 
 
-def envelope(payload: dict[str, Any]) -> dict[str, Any]:
-    """Wrap a validated payload with generation metadata (outside the hash)."""
+def envelope(payload: dict[str, Any], *, source_epoch: str | None = None,
+             observed: dict[str, str] | None = None) -> dict[str, Any]:
+    """Wrap a validated payload with projector identity (outside the hash).
+
+    The envelope is fully deterministic: provenance travels as the
+    observed semantic epoch (supplied by ambient callers) rather than a
+    wall-clock timestamp, so re-rendering unchanged state is byte-identical.
+    """
+    block: dict[str, Any] = {
+        "projector": PROJECTOR_ID,
+        "projector_version": PROJECTOR_VERSION,
+    }
+    if source_epoch is not None:
+        block["source_epoch"] = source_epoch
+    if observed is not None:
+        block["observed_sources"] = observed
     return {
-        "envelope": {
-            "projector": PROJECTOR_ID,
-            "projector_version": PROJECTOR_VERSION,
-            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        },
+        "envelope": block,
         "semantic_hash": payload["semantic_hash"],
         "projection": payload,
     }

@@ -160,52 +160,52 @@ def _normalized_id(value: str, aliases: Mapping[str, str]) -> str:
     return aliases.get(value, value)
 
 
-def _load_catalog(path: Path) -> dict[str, dict[str, Any]]:
-    raw = read_json(path)
+def _load_catalog(raw: Any, origin: str) -> dict[str, dict[str, Any]]:
     if not isinstance(raw, dict) or raw.get("schema_version") != "mncs-atlas.project-catalog/v1":
-        raise RegistryError(f"{path} is not an Atlas project catalog v1")
+        raise RegistryError(f"{origin} is not an Atlas project catalog v1")
     rows = raw.get("projects")
     if not isinstance(rows, list):
-        raise RegistryError(f"{path}.projects must be a list")
+        raise RegistryError(f"{origin}.projects must be a list")
     result: dict[str, dict[str, Any]] = {}
     for index, row in enumerate(rows):
         if not isinstance(row, dict) or not isinstance(row.get("id"), str):
-            raise RegistryError(f"{path}.projects[{index}] has no stable id")
+            raise RegistryError(f"{origin}.projects[{index}] has no stable id")
         project_id = row["id"]
         if project_id in result:
-            raise RegistryError(f"{path} duplicates project {project_id}")
+            raise RegistryError(f"{origin} duplicates project {project_id}")
         result[project_id] = row
     return result
 
 
-def _load_claims(path: Path) -> list[dict[str, Any]]:
-    raw = read_json(path)
+def _load_claims(raw: Any, origin: str) -> list[dict[str, Any]]:
     if not isinstance(raw, dict) or raw.get("schema_version") != "mncs-atlas.capability-claims/v1":
-        raise RegistryError(f"{path} is not an Atlas capability-claims v1 document")
+        raise RegistryError(f"{origin} is not an Atlas capability-claims v1 document")
     claims = raw.get("capabilities")
     if not isinstance(claims, list):
-        raise RegistryError(f"{path}.capabilities must be a list")
+        raise RegistryError(f"{origin}.capabilities must be a list")
     return claims
 
 
-def _load_decisions(path: Path) -> list[dict[str, Any]]:
-    raw = read_json(path)
+def _load_decisions(raw: Any, origin: str) -> list[dict[str, Any]]:
     if not isinstance(raw, dict) or raw.get("schema_version") != "mncs-atlas.decision-index/v1":
-        raise RegistryError(f"{path} is not an Atlas decision-index v1 document")
+        raise RegistryError(f"{origin} is not an Atlas decision-index v1 document")
     decisions = raw.get("decisions")
     if not isinstance(decisions, list):
-        raise RegistryError(f"{path}.decisions must be a list")
+        raise RegistryError(f"{origin}.decisions must be a list")
     return decisions
 
 
 def _snapshot_manifests(path: Path) -> list[tuple[dict[str, Any], str]]:
-    raw = read_json(path)
+    return _snapshot_manifests_value(read_json(path), str(path))
+
+
+def _snapshot_manifests_value(raw: Any, origin: str) -> list[tuple[dict[str, Any], str]]:
     if not isinstance(raw, dict) or raw.get("schema_version") != "mncs-atlas.manifest-snapshot/v1":
-        raise RegistryError(f"{path} is not an Atlas manifest snapshot v1")
+        raise RegistryError(f"{origin} is not an Atlas manifest snapshot v1")
     manifests = raw.get("manifests")
     if not isinstance(manifests, list):
-        raise RegistryError(f"{path}.manifests must be a list")
-    return [(manifest, f"{path}#manifests[{index}]") for index, manifest in enumerate(manifests)]
+        raise RegistryError(f"{origin}.manifests must be a list")
+    return [(manifest, f"{origin}#manifests[{index}]") for index, manifest in enumerate(manifests)]
 
 
 def _discover_local_manifests(roots: Iterable[Path]) -> list[tuple[dict[str, Any], str]]:
@@ -367,8 +367,15 @@ def build_registry(
     output: Path | None = DEFAULT_OUTPUT,
     workspace_roots: Iterable[Path] = (),
     manifest_snapshot: Path | None = None,
+    live_manifests: list[tuple[dict[str, Any], str]] | None = None,
+    inputs: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Compile catalog + manifests + claims + decisions into one artifact."""
+    """Compile catalog + manifests + claims + decisions into one artifact.
+
+    Ambient callers pass explicit live manifests (already observed through
+    semantic subjects) instead of rescanning the workspace; the CLI keeps
+    scanning when none are given.
+    """
 
     root = root.resolve()
     registry_dir = root / "registry"
@@ -376,10 +383,22 @@ def build_registry(
     claims_path = registry_dir / "capability-claims.json"
     decisions_path = registry_dir / "decisions.json"
     snapshot_path = manifest_snapshot or registry_dir / "manifest-snapshot.json"
-    catalog = _load_catalog(catalog_path)
-    claims = _load_claims(claims_path)
-    decisions = _load_decisions(decisions_path)
-    config = read_json(registry_dir / "config.json")
+    config_path = registry_dir / "config.json"
+    raw_inputs = inputs or {}
+
+    def _raw(name: str, path: Path) -> Any:
+        if name in raw_inputs:
+            return raw_inputs[name]
+        return read_json(path)
+
+    raw_catalog = _raw("catalog", catalog_path)
+    raw_claims = _raw("claims", claims_path)
+    raw_decisions = _raw("decisions", decisions_path)
+    raw_snapshot = _raw("snapshot", snapshot_path)
+    catalog = _load_catalog(raw_catalog, str(catalog_path))
+    claims = _load_claims(raw_claims, str(claims_path))
+    decisions = _load_decisions(raw_decisions, str(decisions_path))
+    config = _raw("config", config_path)
     aliases = config.get("project_aliases", {}) if isinstance(config, dict) else {}
     central_aliases = config.get("central_manifest_aliases", {}) if isinstance(config, dict) else {}
     if not isinstance(aliases, dict) or any(not isinstance(k, str) or not isinstance(v, str) for k, v in aliases.items()):
@@ -387,13 +406,15 @@ def build_registry(
     if not isinstance(central_aliases, dict) or any(not isinstance(k, str) or not isinstance(v, str) for k, v in central_aliases.items()):
         raise RegistryError("registry/config.json central_manifest_aliases must be a string map")
     local_roots = [root / ".mncs/project.json", *workspace_roots]
-    raw_manifests = _snapshot_manifests(snapshot_path) + _discover_local_manifests(local_roots)
+    if live_manifests is None:
+        live_manifests = _discover_local_manifests(local_roots)
+    raw_manifests = _snapshot_manifests_value(raw_snapshot, str(snapshot_path)) + list(live_manifests)
     selected: dict[str, tuple[dict[str, Any], str, bool]] = {}
     source_digests: dict[str, Any] = {
-        "project_catalog": _source_digest(read_json(catalog_path)),
-        "capability_claims": _source_digest(read_json(claims_path)),
-        "decisions": _source_digest(read_json(decisions_path)),
-        "manifest_snapshot": _source_digest(read_json(snapshot_path)),
+        "project_catalog": _source_digest(raw_catalog),
+        "capability_claims": _source_digest(raw_claims),
+        "decisions": _source_digest(raw_decisions),
+        "manifest_snapshot": _source_digest(raw_snapshot),
         "manifests": {},
     }
     errors: list[str] = []
