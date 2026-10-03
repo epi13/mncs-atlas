@@ -768,6 +768,51 @@
     "format": "utf-8"
    },
    "bootstrap_digest": "sha256:019f6e57e98ac6ee1238afb67bf5f1595e9e369e37f141e853220da1810183d8"
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:registry-json-mirror",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.verbatim-copy",
+   "inputs": [
+    "site/registry.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:registry-json",
+     "slot": "registry",
+     "path": "site/registry.json",
+     "format": "utf-8"
+    }
+   ],
+   "output": "registry.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.verbatim-copy",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.verbatim-copy",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json"
+   },
+   "bootstrap_digest": "sha256:2cdb1eac7a03e7eaf1b37965f2e0039e95baa67de90e1b5fd5fe673fe435a902"
   }
  ]
 }

@@ -12,8 +12,6 @@
     "document": "registry.json",
     "schema": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json",
     "authority": "orientation-and-ownership-graph",
-    "registry_revision": "44f8583dff45f10a",
-    "registry_hash": "44f8583dff45f10a709875516584a13dadd3e5a1a19e6cbac31691eb7fef903a",
     "query_interface": "mncs-atlas context/project/capability/owner/decisions/related/find",
     "purpose": "Validated non-normative family orientation and ownership graph for targeted human and machine queries."
   },

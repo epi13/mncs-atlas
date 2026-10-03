@@ -444,13 +444,10 @@ def check_registry(registry: object, atlas: object, errors: list[str]) -> None:
         errors.append("site/registry.json capabilities must be a non-empty list")
     if not isinstance(registry.get("edges"), list) or not registry["edges"]:
         errors.append("site/registry.json edges must be a non-empty list")
-    if isinstance(atlas, dict):
-        pointer = atlas.get("machine_registry")
-        if isinstance(pointer, dict):
-            if pointer.get("registry_revision") != registry.get("registry_revision"):
-                errors.append("site/atlas.json machine_registry.registry_revision drifts from site/registry.json")
-            if pointer.get("registry_hash") != registry.get("registry_hash"):
-                errors.append("site/atlas.json machine_registry.registry_hash drifts from site/registry.json")
+    # The machine_registry block in atlas.json is a static pointer only
+    # (document/schema/authority/query_interface). Registry identity lives
+    # exclusively in registry.json; nothing duplicates it, so there is no
+    # drift to check.
 
 
 def check() -> list[str]:
