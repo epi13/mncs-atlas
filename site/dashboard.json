@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:54c88654828bb51b43ba41bc129f43a3d6da24cd838c7a4863111fbfd77331a1",
+      "manifests": "sha256:3f791d0be0f009273b9ee8037c9151df879991a5037cd1b095f24816d844c897",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:26275ba404cd1ae607dbb58db5205403ff3c3e3a04d209282ec770972ec355a4"
+    "source_epoch": "sha256:37e628b2b059203e65b247c70f14b957fbd046fd94ebbe5e3904f55ea5ff2135"
   },
   "projection": {
     "capabilities": {
@@ -1032,11 +1032,17 @@
           "id": "mncs-lineage",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-lineage",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Lineage",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": {
             "reason": "The lineage repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1111,11 +1117,17 @@
           "id": "mncs-memory",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-memory",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Memory",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Immutable observations, claims, contradiction and supersession state, retrieval, escalation, and compact answer capsules.",
           "repository": "https://github.com/epi13/mncs-memory",
@@ -1434,11 +1446,17 @@
           "id": "mncs-tui",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-tui",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS TUI",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": {
             "reason": "The TUI repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -3182,7 +3200,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:d063458062b90d2e831f73d0f32ebc8b821e1a3cd1e5f3d8eb43de12c43356b9",
+    "semantic_hash": "sha256:76944496cf6af56b1291cf02e5e919350184ddaa993e4271d5c4bacd8d33e81a",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3199,7 +3217,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "fcbdad8ebff7e3b6c37165e9478cd8875ca08a0bd6c1b5e2078a5990f38d5699",
+        "content_sha256": "ea61c66f5523a72d65f1cc585d593ebbf8e7cae19c990440f91eacc0339d26c4",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3353,5 +3371,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:d063458062b90d2e831f73d0f32ebc8b821e1a3cd1e5f3d8eb43de12c43356b9"
+  "semantic_hash": "sha256:76944496cf6af56b1291cf02e5e919350184ddaa993e4271d5c4bacd8d33e81a"
 }
