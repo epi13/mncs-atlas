@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:1f5d78d7afb909bf1162e9d906c7eaf713b6c33ec417a76e3b96ae2b29ef206c",
+      "manifests": "sha256:85d18d370ef8b9e2beed63b95c7435a17a9638e067d1a7ef76d4a57ca578e58e",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:583970f7b4cc4c31924635ad1495657c2b1becc1bf10db65b416e48c9a1dfd6e"
+    "source_epoch": "sha256:816c4f0b0cf0bb397d37262ad0b74c78dad137b00f9bba9b243fec1e15e8ecfa"
   },
   "projection": {
     "capabilities": {
@@ -624,11 +624,17 @@
           "id": "mncs-engine",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-engine",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Engine",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "2D/3D graphics, simulation, rendering, and heterogeneous compute pressure workloads across CPU, WASM, and accelerators.",
           "repository": "https://github.com/epi13/mncs-engine",
@@ -769,11 +775,17 @@
           "id": "mncs-geometry",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-geometry",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Geometry",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Geometric primitives, robust predicates, intersections, topology, spatial data structures, and coordinate systems.",
           "repository": "https://github.com/epi13/mncs-geometry",
@@ -1137,11 +1149,17 @@
           "id": "mncs-physics",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-physics",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 2,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Physics",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Quantities, dimensions, units, constants, mechanics, rigid-body foundations, and scientific physical models.",
           "repository": "https://github.com/epi13/mncs-physics",
@@ -3104,7 +3122,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:878bd699d193c1e5b48dc8d9a8fd32b44279a863cb50ffd58785bb1cef495496",
+    "semantic_hash": "sha256:831e6a89a9f823c5f87572252443450ed3ccdb15a46c6767bc7c4d493e5e4f31",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3121,7 +3139,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "5cbc11dc639344a643f51550d134b3d37a716dba2471b5e233829382e445f4f2",
+        "content_sha256": "2a0d47ec713f37bfc99c87c6ba5a7d43d8f49f1864ce5d603c18cb1f36dca8d0",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3275,5 +3293,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:878bd699d193c1e5b48dc8d9a8fd32b44279a863cb50ffd58785bb1cef495496"
+  "semantic_hash": "sha256:831e6a89a9f823c5f87572252443450ed3ccdb15a46c6767bc7c4d493e5e4f31"
 }
