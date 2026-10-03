@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:0fd3861768dab0dbe2cc8daad523c43cafd3c994fef640479bdfbab600dc17b2",
+      "manifests": "sha256:3aefc67a3b9c456895c464c076b2e7d792ebf89ba8f07ffc57f3de7aaafe02aa",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:96b724c60273ab0a62b842cffb21f905c91fae765d697892112ae4aebef52a33"
+    "source_epoch": "sha256:be7c2e5f48f927db0c2fb8c06557db4649b07f016f404164bd529ccd6d199c09"
   },
   "projection": {
     "capabilities": {
@@ -3013,7 +3013,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:cd302f8ea478c80eb1b0df84fb81fa37414dc3c7318f0eea709b7390e90c7795",
+    "semantic_hash": "sha256:4acb4bf24405ea7e84ccb502782c3c3e08d730a9e87751308a6cd92c64c8d4f4",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3030,10 +3030,10 @@
         "status": "present"
       },
       {
-        "content_sha256": "775c1d3f710d1a45ee859ebe2268ea5845e94544718afdca93674f80993199f2",
+        "content_sha256": "3aadddec9a4205bb2c52ccd2baf05bd28bf4a4c903f71e7f5ffcdc7feadd9c00",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
-        "reason": "52 manifests observed",
+        "reason": "50 manifests observed",
         "status": "present"
       },
       {
@@ -3184,5 +3184,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:cd302f8ea478c80eb1b0df84fb81fa37414dc3c7318f0eea709b7390e90c7795"
+  "semantic_hash": "sha256:4acb4bf24405ea7e84ccb502782c3c3e08d730a9e87751308a6cd92c64c8d4f4"
 }
