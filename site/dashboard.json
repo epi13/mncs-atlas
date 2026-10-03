@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:9f2061072765a16278dcc4706e42421a428ae4887667d1a94c954bc6a7c80084",
+      "manifests": "sha256:4de5adc22fa5077a91340995687a28fcf5fa97bd3fd36999e664fa270e842ff3",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:be6f472da0af9aa8297ce5b2408060cceb46db717b0a9792b1f68c38ebab8cec"
+    "source_epoch": "sha256:31dadc259eb956272297f1b5f042e0a4e7640e01a899bb07546b2de8fb233b55"
   },
   "projection": {
     "capabilities": {
@@ -1187,11 +1187,17 @@
           "id": "mncs-reference-studies",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-reference-studies",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Reference Studies",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": {
             "reason": "The reference-studies repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1210,11 +1216,17 @@
           "id": "mncs-rights-provenance",
           "lifecycle": "incubating",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-rights-provenance",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Rights & Provenance",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": {
             "reason": "The rights and provenance repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1343,11 +1355,17 @@
           "id": "mncs-system-monitor",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": null,
+          "manifest": {
+            "checkout": "mncs-system-monitor",
+            "origin": "repository:.mncs/project.json",
+            "reason": "observed",
+            "revision": 1,
+            "status": "present"
+          },
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS System Monitor",
-          "observed_in_workspace": false,
+          "observed_in_workspace": true,
           "participation": null,
           "purpose": "Bounded OS observation, process/resource relationships, interval-qualified metrics, and human/machine projections.",
           "repository": "https://github.com/epi13/mncs-system-monitor",
@@ -3140,7 +3158,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:5463ee27697869fe3301e89a8151de7e82aeb604cee9a172411566c86c9c2c38",
+    "semantic_hash": "sha256:aa6da7ae168ee6b284e1cd3d70b71ebe071978b9fd4afa5576f03deada5a16d9",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3157,7 +3175,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "3d56fe45a5a0a07e42111c6babb1e89a07081a9eca45128c2648f2867b84a897",
+        "content_sha256": "6657f61cf533e984134bfebe8ad36ed096ed9889eb20ff6524fadc1ce95ddd75",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3311,5 +3329,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:5463ee27697869fe3301e89a8151de7e82aeb604cee9a172411566c86c9c2c38"
+  "semantic_hash": "sha256:aa6da7ae168ee6b284e1cd3d70b71ebe071978b9fd4afa5576f03deada5a16d9"
 }
