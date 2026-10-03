@@ -11,6 +11,31 @@ admission sync, mirror freshness, unit tests, journal integrity) under the
 hand-edited; see `.github/workflows/mncs-family.yml`.
 
 <!-- MNCS:generated:begin -->
+## Project entry
+
+mncs-atlas owns non-normative family orientation: the project catalog, the compiled family registry, and the dashboard projection over live family state. Commons owns canonical architecture facts; Atlas never confers authority.
+
+```bash
+python3 scripts/mncs-project-check.py
+```
+
+```bash
+python3 -m registry build
+```
+
+```bash
+python3 -m projector project
+```
+
+Declared capabilities (declarations do not establish execution health):
+
+- `ambient-projection-coherence/1` — semantic-projection-lifecycle-and-interpretation (experimental)
+- `context-capsule/1` — orientation-capsule (experimental)
+- `family-dashboard/1` — orientation-surface (experimental)
+- `family-map/0.4` — orientation-surface (experimental)
+- `family-registry/1` — compiled-orientation-graph (experimental)
+
+Semantic sources and ownership: `.mncs/projections.json`.
 <!-- MNCS:generated:end -->
 
 MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, distinguishes authority from operator topology, and gives humans and agents a reliable place to start.

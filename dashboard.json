@@ -1,7 +1,23 @@
 {
   "envelope": {
+    "observed_sources": {
+      "architecture": "sha256:efd5c5673ad9a48afebf504c30594ecaaed73edf6146433802a26e03dc99115a",
+      "catalog": "sha256:300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
+      "compiled": "sha256:f2dc2bd3c03df70103fac6f8ce5cdfbceec369abcc335aec22bded4e00ee99f3",
+      "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
+      "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
+      "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
+      "manifests": "sha256:7000bdad8baa13a9fef7b9655d81259433179c5372146934f4fcb76bb2ed6892",
+      "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
+      "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
+      "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
+      "store_native_status": "sha256:8a91ab0ca7f56946d58e0a87db2fbcb0a6e479b432f9580a46ab0796d1d758af",
+      "store_verification": "sha256:7a8481316bdb6ffbe5bace91db168cbcd9e821a0e5639411b8c70c9df6c3bfbe",
+      "verification": "sha256:888511c09fe214516f0005835e88817f42dfc3d23d6ab7aa5b01e7c92aec474e"
+    },
     "projector": "mncs-atlas.projector",
-    "projector_version": "1"
+    "projector_version": "1",
+    "source_epoch": "sha256:4795942172e4a117b5bd1b0b0c810bef24c42dc56463c56f356d8e3b925d3845"
   },
   "projection": {
     "capabilities": {
@@ -177,7 +193,7 @@
           "manifest": {
             "checkout": "machine-native-complexity-development-specification",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 3,
             "status": "present"
           },
@@ -204,7 +220,7 @@
           "manifest": {
             "checkout": "machine-native-complexity-standard",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 3,
             "status": "present"
           },
@@ -237,7 +253,7 @@
           "manifest": {
             "checkout": "mncs-actions",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 5,
             "status": "present"
           },
@@ -264,8 +280,8 @@
           "manifest": {
             "checkout": "mncs-atlas",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
-            "revision": 7,
+            "reason": "observed",
+            "revision": 8,
             "status": "present"
           },
           "maturity": "unknown",
@@ -316,7 +332,7 @@
           "manifest": {
             "checkout": "mncs-automation",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 3,
             "status": "present"
           },
@@ -360,7 +376,7 @@
           "manifest": {
             "checkout": "MNCS-Commons",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 10,
             "status": "present"
           },
@@ -389,7 +405,7 @@
           "manifest": {
             "checkout": "mncs-compiler",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 8,
             "status": "present"
           },
@@ -503,7 +519,7 @@
           "manifest": {
             "checkout": "mncs-debug",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 7,
             "status": "present"
           },
@@ -533,7 +549,7 @@
           "manifest": {
             "checkout": "mncs-doc",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 3,
             "status": "present"
           },
@@ -561,7 +577,7 @@
           "manifest": {
             "checkout": "mncs-doctor",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 6,
             "status": "present"
           },
@@ -610,7 +626,7 @@
           "manifest": {
             "checkout": "mncs-environment",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 6,
             "status": "present"
           },
@@ -702,7 +718,7 @@
           "manifest": {
             "checkout": "mncs-forge",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 11,
             "status": "present"
           },
@@ -753,7 +769,7 @@
           "manifest": {
             "checkout": "mncs-harness",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 4,
             "status": "present"
           },
@@ -782,7 +798,7 @@
           "manifest": {
             "checkout": "mncs-index",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 2,
             "status": "present"
           },
@@ -811,7 +827,7 @@
           "manifest": {
             "checkout": "mncs-ingest",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 2,
             "status": "present"
           },
@@ -859,7 +875,7 @@
           "manifest": {
             "checkout": "mncs-language",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 4,
             "status": "present"
           },
@@ -889,7 +905,7 @@
           "manifest": {
             "checkout": "mncs-language-service",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 5,
             "status": "present"
           },
@@ -1048,7 +1064,7 @@
           "manifest": {
             "checkout": "mncs-numerics",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 1,
             "status": "present"
           },
@@ -1141,7 +1157,7 @@
           "manifest": {
             "checkout": "mncs-service",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 1,
             "status": "present"
           },
@@ -1189,7 +1205,7 @@
           "manifest": {
             "checkout": "mncs-stdlib",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 1,
             "status": "present"
           },
@@ -1215,7 +1231,7 @@
           "manifest": {
             "checkout": "mncs-store",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 14,
             "status": "present"
           },
@@ -1265,7 +1281,7 @@
           "manifest": {
             "checkout": "mncs-test",
             "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
+            "reason": "observed",
             "revision": 10,
             "status": "present"
           },
@@ -2806,10 +2822,10 @@
       "atlas_registry": {
         "capability_count": 39,
         "decision_count": 12,
-        "edge_count": 390,
+        "edge_count": 391,
         "project_count": 49,
-        "registry_hash": "44f8583dff45f10a709875516584a13dadd3e5a1a19e6cbac31691eb7fef903a",
-        "registry_revision": "44f8583dff45f10a",
+        "registry_hash": "06bae305c3b22e6dfbe5d94f7b8dd138a9d5a18b063305548af7fcf25f084c5f",
+        "registry_revision": "06bae305c3b22e6d",
         "status": "present"
       },
       "commons_complete": true,
@@ -2997,87 +3013,87 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:e56f948ba95f37a2dbc13d08e95c9b102bfa561a3f9f0924e0ddd84f4b9cd22a",
+    "semantic_hash": "sha256:7a7f230eda8aa2072a24b43c663901f671965bf374bf5a84b9169ffb9f09bf9f",
     "sources": [
       {
-        "content_sha256": "4782f77f64c4a2c6ea0867a249b7673c77fc4dbad255a258a5f9e8dadf8f02d6",
+        "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
         "id": "atlas-catalog",
         "path": "mncs-atlas/registry/project-catalog.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "2cdb1eac7a03e7eaf1b37965f2e0039e95baa67de90e1b5fd5fe673fe435a902",
+        "content_sha256": "f2dc2bd3c03df70103fac6f8ce5cdfbceec369abcc335aec22bded4e00ee99f3",
         "id": "atlas-compiled",
         "path": "mncs-atlas/registry/compiled.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "c324c51e3e8631dcf67e639647ebf4b523651b9950e5e37dd93ef74224952bc8",
+        "content_sha256": "d6f1b28b17bf7f7d82ff8448e403a37043f78dab18dc13cc4cdf51b3fe94f34c",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
-        "reason": "23 manifests discovered",
+        "reason": "52 manifests observed",
         "status": "present"
       },
       {
-        "content_sha256": "a580afda675f21a0e07f49f23b445ec44d882991b86addc5f6145419a6bcfbcb",
+        "content_sha256": "d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
         "id": "commons-participation",
         "path": "MNCS-Commons/family/participation-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "cd9a74a32209331dbfb755b56b0f7fbf362f746e21affc843c8b3968995ad766",
+        "content_sha256": "efd5c5673ad9a48afebf504c30594ecaaed73edf6146433802a26e03dc99115a",
         "id": "commons-architecture",
         "path": "MNCS-Commons/family/architecture-model-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "456ca896c15818f45f5bf68df9d19343ad7557be5fe244312336e23b604756b6",
+        "content_sha256": "19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
         "id": "commons-edges",
         "path": "MNCS-Commons/family/semantic-edges-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "eadb978d264e028c31f3ecdfcbc24ac000c2f6ee05468862401fd912647f8049",
+        "content_sha256": "493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
         "id": "commons-deltas",
         "path": "MNCS-Commons/family/architecture-delta-history-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "0cffe5e23a9b8ea1a3b6aaed59f0d99ba14005adbe72345520139a998b256462",
+        "content_sha256": "888511c09fe214516f0005835e88817f42dfc3d23d6ab7aa5b01e7c92aec474e",
         "id": "commons-verification",
         "path": "MNCS-Commons/family-verification-checks-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "353ec9b58c72328e4ae9b36678fb07cdb3cc65c48e0790f274e1278d794bd579",
+        "content_sha256": "c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
         "id": "commons-native-status",
         "path": "MNCS-Commons/native-userland-status.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "de93b336614dc666d7b34fce60dcacf0fe732c2c8b6a59cd536997e200fd90ae",
+        "content_sha256": "fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
         "id": "commons-pressures",
         "path": "MNCS-Commons/pressures/records",
         "reason": "198 records",
         "status": "present"
       },
       {
-        "content_sha256": "6c1fa03b653ac392863c30014d16f0e8fbf77cb3043cb546e06a1c9dc21a766a",
+        "content_sha256": "7a8481316bdb6ffbe5bace91db168cbcd9e821a0e5639411b8c70c9df6c3bfbe",
         "id": "store-verification",
         "path": "mncs-store/family-verification-checks-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "cbbee9d9cf9b90527d741efcd657ab7367e398928e20e04088151d9b83a840a9",
+        "content_sha256": "8a91ab0ca7f56946d58e0a87db2fbcb0a6e479b432f9580a46ab0796d1d758af",
         "id": "store-native-status",
         "path": "mncs-store/native-userland-status.json",
         "reason": "readable",
@@ -3168,5 +3184,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:e56f948ba95f37a2dbc13d08e95c9b102bfa561a3f9f0924e0ddd84f4b9cd22a"
+  "semantic_hash": "sha256:7a7f230eda8aa2072a24b43c663901f671965bf374bf5a84b9169ffb9f09bf9f"
 }

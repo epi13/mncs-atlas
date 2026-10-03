@@ -243,10 +243,10 @@
       ],
       "manifest": {
         "schema_version": "mncs-family.repository-manifest/v0alpha1",
-        "revision": 7,
+        "revision": 8,
         "location": "in-repository",
         "origin": "repository:.mncs/project.json",
-        "sha256": "79419b1f485a8237023b236c5969ca592feb1c7ce13d68fbffb8045af6bbb1d4",
+        "sha256": "b42b2b0274fef2cbd06ab59c1ced04f433ed65adb061f1f98b95d40e326ce432",
         "provides": [
           {
             "id": "mncs-atlas.family-map/0.4",
@@ -294,6 +294,14 @@
               "projector/project.py",
               "site/dashboard.json"
             ]
+          },
+          {
+            "id": "mncs-atlas.ambient-projection-coherence/1",
+            "contract": "ambient-projection-coherence",
+            "version": "1",
+            "kind": "semantic-projection-lifecycle-and-interpretation",
+            "stability": "experimental",
+            "fingerprint_sources": []
           }
         ],
         "consumes": [
@@ -5017,6 +5025,13 @@
     },
     {
       "from": "project:mncs-atlas",
+      "to": "contract:mncs-atlas.ambient-projection-coherence/1",
+      "kind": "provides",
+      "description": "Repository manifest provides this contract.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-atlas",
       "to": "contract:mncs-atlas.context-capsule/1",
       "kind": "provides",
       "description": "Repository manifest provides this contract.",
@@ -6924,18 +6939,16 @@
   ],
   "exclusions": [
     {
-      "repository": "mncs-fabric-lazy-bundle",
       "reason": "Distribution fixture and packaging companion; its runtime responsibility is owned by mncs-fabric.",
+      "repository": "mncs-fabric-lazy-bundle",
       "revisit_when": "It declares an independently owned family contract."
     },
     {
-      "repository": "mncs-forge-mcp-b1-compat",
       "reason": "Compatibility harness for an earlier Forge protocol; it is not a current family authority.",
+      "repository": "mncs-forge-mcp-b1-compat",
       "revisit_when": "It becomes a maintained provider with a distinct contract."
     },
     {
-      "repository": "workspace-related-but-unregistered",
-      "reason": "The controller workspace also contains independent applications, benchmarks, and tools without an MNCS family contract or authoritative family responsibility claim; they remain outside the formal registry until evidence supports inclusion.",
       "examples": [
         "dSense",
         "dTree",
@@ -6944,7 +6957,9 @@
         "scratchtrack",
         "gimp-local-mcp",
         "rgbmatrix_painter"
-      ]
+      ],
+      "reason": "The controller workspace also contains independent applications, benchmarks, and tools without an MNCS family contract or authoritative family responsibility claim; they remain outside the formal registry until evidence supports inclusion.",
+      "repository": "workspace-related-but-unregistered"
     }
   ],
   "source_digests": {
@@ -6954,7 +6969,7 @@
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
-      "mncs-atlas": "79419b1f485a8237023b236c5969ca592feb1c7ce13d68fbffb8045af6bbb1d4",
+      "mncs-atlas": "b42b2b0274fef2cbd06ab59c1ced04f433ed65adb061f1f98b95d40e326ce432",
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
@@ -6972,6 +6987,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "44f8583dff45f10a709875516584a13dadd3e5a1a19e6cbac31691eb7fef903a",
-  "registry_revision": "44f8583dff45f10a"
+  "registry_hash": "06bae305c3b22e6dfbe5d94f7b8dd138a9d5a18b063305548af7fcf25f084c5f",
+  "registry_revision": "06bae305c3b22e6d"
 }

@@ -1,0 +1,128 @@
+{
+  "capabilities": [
+    {
+      "contract": "family-map",
+      "fingerprint_sources": [
+        "site/atlas.json",
+        "docs/PROJECTS.md"
+      ],
+      "kind": "orientation-surface",
+      "stability": "experimental",
+      "version": "0.4"
+    },
+    {
+      "contract": "family-registry",
+      "fingerprint_sources": [
+        "registry/project-catalog.json",
+        "registry/capability-claims.json",
+        "registry/decisions.json",
+        "registry/manifest-snapshot.json"
+      ],
+      "kind": "compiled-orientation-graph",
+      "stability": "experimental",
+      "version": "1"
+    },
+    {
+      "contract": "context-capsule",
+      "fingerprint_sources": [
+        "registry/__main__.py",
+        "docs/REGISTRY.md"
+      ],
+      "kind": "orientation-capsule",
+      "stability": "experimental",
+      "version": "1"
+    },
+    {
+      "contract": "family-dashboard",
+      "fingerprint_sources": [
+        "site/dashboard.json",
+        "projector/project.py",
+        "docs/OPERATING_MODEL.md"
+      ],
+      "kind": "orientation-surface",
+      "stability": "experimental",
+      "version": "1"
+    },
+    {
+      "contract": "ambient-projection-coherence",
+      "kind": "semantic-projection-lifecycle-and-interpretation",
+      "output_scope": "explicit projection declarations; canonical subjects; Store provenance; native reconciliation",
+      "stability": "experimental",
+      "version": "1"
+    }
+  ],
+  "dependencies": [
+    {
+      "contract": "mncs.repository-manifest-format",
+      "envelope": {
+        "op": "any"
+      },
+      "notes": "Atlas consumes repository-owned manifests as descriptive graph inputs.",
+      "required": false
+    },
+    {
+      "contract": "mncs-control.journal-context",
+      "envelope": {
+        "op": "any"
+      },
+      "required": false
+    },
+    {
+      "contract": "mncs-commons.family-architecture",
+      "envelope": {
+        "op": "any"
+      },
+      "notes": "Commons remains canonical for architecture/convergence facts; Atlas consumes only bounded orientation inputs.",
+      "required": false
+    }
+  ],
+  "entry": [
+    "python3 scripts/mncs-project-check.py",
+    "python3 -m registry build",
+    "python3 -m projector project"
+  ],
+  "purpose": "mncs-atlas owns non-normative family orientation: the project catalog, the compiled family registry, and the dashboard projection over live family state. Commons owns canonical architecture facts; Atlas never confers authority.",
+  "repository": "mncs-atlas",
+  "schema_version": "mncs.project-view/1",
+  "source_identity": "sha256:c521161846428c5a6daa1a0ebd97f8b8a803c35f040eda1e140a01949b84618e",
+  "structure": {
+    "layout": "mncs.repository-layout/1",
+    "surfaces": [
+      {
+        "authority": "mncs-atlas",
+        "class": "generated",
+        "classification": {
+          "authority": "none",
+          "boundary_kind": "none",
+          "lifecycle": "generated",
+          "semantic_role": "generated"
+        },
+        "note": "Orientation projection; not canonical Commons architecture.",
+        "path": "registry/"
+      },
+      {
+        "authority": "mncs-atlas",
+        "class": "canonical",
+        "classification": {
+          "authority": "canonical",
+          "boundary_kind": "none",
+          "lifecycle": "active",
+          "semantic_role": "canonical-semantic"
+        },
+        "note": "Human/family orientation source.",
+        "path": "site/"
+      },
+      {
+        "class": "host-boundary",
+        "classification": {
+          "authority": "none",
+          "boundary_kind": "filesystem",
+          "lifecycle": "active",
+          "semantic_role": "platform-adapter"
+        },
+        "note": "Static-site, filesystem, and registry projection adapters.",
+        "path": "scripts/"
+      }
+    ]
+  }
+}
