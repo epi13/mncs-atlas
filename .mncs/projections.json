@@ -1,0 +1,773 @@
+{
+ "schema_version": "mncs.projection-inventory/1",
+ "projections": [
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:overview",
+   "owner": "mncs-atlas:project-state",
+   "template": "human.repository-overview",
+   "inputs": [
+    ".mncs/project-state.json",
+    ".mncs/project.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:purpose",
+     "slot": "purpose",
+     "path": ".mncs/project-state.json",
+     "select": "/purpose"
+    },
+    {
+     "subject": "mncs-atlas:entry",
+     "slot": "entry",
+     "path": ".mncs/project-state.json",
+     "select": "/entry"
+    },
+    {
+     "subject": "mncs-atlas:capabilities",
+     "slot": "capabilities",
+     "path": ".mncs/project.json",
+     "select": "/contracts/provides"
+    }
+   ],
+   "output": "README.md",
+   "output_kind": "region",
+   "renderer": {
+    "identity": "human.repository-overview",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "human.repository-overview",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "markdown"
+   },
+   "admit": {
+    "sources": 3,
+    "template_present": true,
+    "create_allowed": false
+   },
+   "bootstrap_digest": "sha256:b8a8c16113619bf1d7b96f945c40cf5866309ee04bdc5f7906c97a68b6345e46"
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:project-view",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.project-view",
+   "inputs": [
+    ".mncs/project-state.json",
+    ".mncs/project.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:purpose",
+     "slot": "purpose",
+     "path": ".mncs/project-state.json",
+     "select": "/purpose"
+    },
+    {
+     "subject": "mncs-atlas:entry",
+     "slot": "entry",
+     "path": ".mncs/project-state.json",
+     "select": "/entry"
+    },
+    {
+     "subject": "mncs-atlas:capabilities",
+     "slot": "capabilities",
+     "path": ".mncs/project.json",
+     "select": "/contracts/provides"
+    },
+    {
+     "subject": "mncs-atlas:repository",
+     "slot": "repository",
+     "path": ".mncs/project.json",
+     "select": "/repository"
+    },
+    {
+     "subject": "mncs-atlas:dependencies",
+     "slot": "dependencies",
+     "path": ".mncs/project.json",
+     "select": "/contracts/consumes"
+    },
+    {
+     "subject": "mncs-atlas:structure",
+     "slot": "structure",
+     "path": ".mncs/project.json",
+     "select": "/organization"
+    }
+   ],
+   "output": ".mncs/project-view.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.project-view",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.project-view",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json",
+    "schema_ref": {
+     "repository": "MNCS-Commons",
+     "path": "schemas/project-view-1.schema.json",
+     "identity": "mncs.project-view/1"
+    }
+   }
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:registry",
+   "owner": "mncs-atlas:project-state",
+   "template": "mncs-atlas.registry",
+   "inputs": [
+    ".mncs/project.json",
+    "registry/project-catalog.json",
+    "registry/capability-claims.json",
+    "registry/decisions.json",
+    "registry/manifest-snapshot.json",
+    "registry/config.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:catalog",
+     "slot": "catalog",
+     "path": "registry/project-catalog.json"
+    },
+    {
+     "subject": "mncs-atlas:claims",
+     "slot": "claims",
+     "path": "registry/capability-claims.json"
+    },
+    {
+     "subject": "mncs-atlas:decisions",
+     "slot": "decisions",
+     "path": "registry/decisions.json"
+    },
+    {
+     "subject": "mncs-atlas:snapshot",
+     "slot": "snapshot",
+     "path": "registry/manifest-snapshot.json"
+    },
+    {
+     "subject": "mncs-atlas:config",
+     "slot": "config",
+     "path": "registry/config.json"
+    },
+    {
+     "subject": "mncs-atlas:manifest",
+     "slot": "own_manifest",
+     "path": ".mncs/project.json"
+    }
+   ],
+   "output": "registry/compiled.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "mncs-atlas.registry",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1",
+    "entry": {
+     "module": "projector/ambient.py",
+     "callable": "render_registry"
+    }
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "mncs-atlas.registry",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json",
+    "--renderer-root",
+    "{checkout}"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json",
+    "schema_ref": {
+     "repository": "mncs-atlas",
+     "path": "site/schema/registry.schema.json",
+     "identity": "https://epi13.github.io/mncs-atlas/schema/registry.schema.json"
+    }
+   },
+   "bootstrap_digest": "sha256:2cdb1eac7a03e7eaf1b37965f2e0039e95baa67de90e1b5fd5fe673fe435a902",
+   "renderer_sources": [
+    "projector/ambient.py",
+    "registry/model.py"
+   ]
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:registry-json",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.verbatim-copy",
+   "inputs": [
+    "registry/compiled.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:compiled",
+     "slot": "compiled",
+     "path": "registry/compiled.json",
+     "format": "utf-8"
+    }
+   ],
+   "output": "site/registry.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.verbatim-copy",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.verbatim-copy",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json"
+   },
+   "bootstrap_digest": "sha256:2cdb1eac7a03e7eaf1b37965f2e0039e95baa67de90e1b5fd5fe673fe435a902"
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:registry-page",
+   "owner": "mncs-atlas:project-state",
+   "template": "mncs-atlas.registry-page",
+   "inputs": [
+    "registry/compiled.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:compiled",
+     "slot": "compiled",
+     "path": "registry/compiled.json"
+    }
+   ],
+   "output": "site/registry.html",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "mncs-atlas.registry-page",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1",
+    "entry": {
+     "module": "projector/ambient.py",
+     "callable": "render_registry_page"
+    }
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "mncs-atlas.registry-page",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json",
+    "--renderer-root",
+    "{checkout}"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "utf-8"
+   },
+   "bootstrap_digest": "sha256:7e489e723835dcf98b01f82b46a7d7f5844a235359a1dfea427926b8fab52f6b",
+   "renderer_sources": [
+    "projector/ambient.py",
+    "scripts/render_registry_page.py"
+   ]
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:registry-page-mirror",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.verbatim-copy",
+   "inputs": [
+    "site/registry.html"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:registry-page",
+     "slot": "page",
+     "path": "site/registry.html",
+     "format": "utf-8"
+    }
+   ],
+   "output": "registry.html",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.verbatim-copy",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.verbatim-copy",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "utf-8"
+   },
+   "bootstrap_digest": "sha256:7e489e723835dcf98b01f82b46a7d7f5844a235359a1dfea427926b8fab52f6b"
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:dashboard",
+   "owner": "mncs-atlas:project-state",
+   "template": "mncs-atlas.dashboard",
+   "inputs": [
+    "registry/project-catalog.json",
+    "registry/compiled.json",
+    "journal-events"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:catalog",
+     "slot": "catalog",
+     "path": "registry/project-catalog.json",
+     "required": false
+    },
+    {
+     "subject": "mncs-atlas:compiled",
+     "slot": "compiled",
+     "path": "registry/compiled.json",
+     "required": false
+    },
+    {
+     "subject": "family:manifests",
+     "slot": "manifests",
+     "path": ".mncs/project.json",
+     "repository": "*",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:participation",
+     "slot": "participation",
+     "path": "family/participation-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:architecture",
+     "slot": "architecture",
+     "path": "family/architecture-model-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:edges",
+     "slot": "edges",
+     "path": "family/semantic-edges-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:deltas",
+     "slot": "deltas",
+     "path": "family/architecture-delta-history-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:verification",
+     "slot": "verification",
+     "path": "family-verification-checks-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:native-status",
+     "slot": "native_status",
+     "path": "native-userland-status.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:pressures",
+     "slot": "pressures",
+     "path": "pressures/records",
+     "repository": "MNCS-Commons",
+     "format": "json-dir",
+     "required": false
+    },
+    {
+     "subject": "mncs-store:verification",
+     "slot": "store_verification",
+     "path": "family-verification-checks-v1.json",
+     "repository": "mncs-store",
+     "required": false
+    },
+    {
+     "subject": "mncs-store:native-status",
+     "slot": "store_native_status",
+     "path": "native-userland-status.json",
+     "repository": "mncs-store",
+     "required": false
+    },
+    {
+     "subject": "mncs-atlas:journal",
+     "slot": "journal",
+     "path": "journal-events",
+     "format": "json-dir",
+     "required": false
+    }
+   ],
+   "output": "site/dashboard.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "mncs-atlas.dashboard",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1",
+    "entry": {
+     "module": "projector/ambient.py",
+     "callable": "render_dashboard"
+    }
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "mncs-atlas.dashboard",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json",
+    "--renderer-root",
+    "{checkout}"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json",
+    "schema_ref": {
+     "repository": "mncs-atlas",
+     "path": "projector/schema/dashboard-envelope.schema.json",
+     "identity": "https://mncs.dev/schemas/atlas-dashboard-envelope-1.schema.json"
+    }
+   },
+   "bootstrap_digest": "sha256:f0ff0a29254b94863fba7b7e14d8c02b1d387ea96f829288f67241e92e9ca43b",
+   "renderer_sources": [
+    "projector/ambient.py",
+    "projector/discover.py",
+    "projector/project.py",
+    "projector/render.py",
+    "projector/rules.py",
+    "projector/validate.py",
+    "registry/model.py"
+   ]
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:dashboard-mirror",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.verbatim-copy",
+   "inputs": [
+    "site/dashboard.json"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:dashboard",
+     "slot": "dashboard",
+     "path": "site/dashboard.json",
+     "format": "utf-8"
+    }
+   ],
+   "output": "dashboard.json",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.verbatim-copy",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.verbatim-copy",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "json"
+   },
+   "bootstrap_digest": "sha256:f0ff0a29254b94863fba7b7e14d8c02b1d387ea96f829288f67241e92e9ca43b"
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:dashboard-noscript",
+   "owner": "mncs-atlas:project-state",
+   "template": "mncs-atlas.noscript",
+   "inputs": [
+    "registry/project-catalog.json",
+    "registry/compiled.json",
+    "journal-events"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:catalog",
+     "slot": "catalog",
+     "path": "registry/project-catalog.json",
+     "required": false
+    },
+    {
+     "subject": "mncs-atlas:compiled",
+     "slot": "compiled",
+     "path": "registry/compiled.json",
+     "required": false
+    },
+    {
+     "subject": "family:manifests",
+     "slot": "manifests",
+     "path": ".mncs/project.json",
+     "repository": "*",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:participation",
+     "slot": "participation",
+     "path": "family/participation-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:architecture",
+     "slot": "architecture",
+     "path": "family/architecture-model-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:edges",
+     "slot": "edges",
+     "path": "family/semantic-edges-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:deltas",
+     "slot": "deltas",
+     "path": "family/architecture-delta-history-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:verification",
+     "slot": "verification",
+     "path": "family-verification-checks-v1.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:native-status",
+     "slot": "native_status",
+     "path": "native-userland-status.json",
+     "repository": "MNCS-Commons",
+     "required": false
+    },
+    {
+     "subject": "MNCS-Commons:pressures",
+     "slot": "pressures",
+     "path": "pressures/records",
+     "repository": "MNCS-Commons",
+     "format": "json-dir",
+     "required": false
+    },
+    {
+     "subject": "mncs-store:verification",
+     "slot": "store_verification",
+     "path": "family-verification-checks-v1.json",
+     "repository": "mncs-store",
+     "required": false
+    },
+    {
+     "subject": "mncs-store:native-status",
+     "slot": "store_native_status",
+     "path": "native-userland-status.json",
+     "repository": "mncs-store",
+     "required": false
+    },
+    {
+     "subject": "mncs-atlas:journal",
+     "slot": "journal",
+     "path": "journal-events",
+     "format": "json-dir",
+     "required": false
+    }
+   ],
+   "output": "site/dashboard.html",
+   "output_kind": "region",
+   "renderer": {
+    "identity": "mncs-atlas.noscript",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1",
+    "entry": {
+     "module": "projector/ambient.py",
+     "callable": "render_noscript"
+    }
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "mncs-atlas.noscript",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json",
+    "--renderer-root",
+    "{checkout}"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "utf-8"
+   },
+   "admit": {
+    "sources": 13,
+    "template_present": true,
+    "create_allowed": false
+   },
+   "bootstrap_digest": "sha256:019f6e57e98ac6ee1238afb67bf5f1595e9e369e37f141e853220da1810183d8",
+   "renderer_sources": [
+    "projector/ambient.py",
+    "projector/discover.py",
+    "projector/project.py",
+    "projector/render.py",
+    "projector/rules.py",
+    "projector/validate.py",
+    "registry/model.py"
+   ]
+  },
+  {
+   "schema_version": "mncs.semantic-projection/1",
+   "id": "mncs-atlas:dashboard-page-mirror",
+   "owner": "mncs-atlas:project-state",
+   "template": "machine.verbatim-copy",
+   "inputs": [
+    "site/dashboard.html"
+   ],
+   "subjects": [
+    {
+     "subject": "mncs-atlas:dashboard-page",
+     "slot": "page",
+     "path": "site/dashboard.html",
+     "format": "utf-8"
+    }
+   ],
+   "output": "dashboard.html",
+   "output_kind": "whole-file",
+   "renderer": {
+    "identity": "machine.verbatim-copy",
+    "version": "1",
+    "schema_version": "mncs.semantic-state/1"
+   },
+   "provider_capability": "mncs-doc:documentation-projection",
+   "render_argv": [
+    "semantic-project",
+    "--state",
+    "{semantic}",
+    "--route",
+    "machine.verbatim-copy",
+    "--output",
+    "{artifact}/rendered.md",
+    "--provenance-out",
+    "{artifact}/receipt.json"
+   ],
+   "policy": "ambient-safe",
+   "manual_edit_policy": "protected",
+   "verification": {
+    "required": false
+   },
+   "validation": {
+    "format": "utf-8"
+   },
+   "bootstrap_digest": "sha256:019f6e57e98ac6ee1238afb67bf5f1595e9e369e37f141e853220da1810183d8"
+  }
+ ]
+}

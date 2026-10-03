@@ -30,6 +30,9 @@ TOP_LEVEL = (
 
 SOURCE_FIELDS = ("id", "path", "content_sha256", "status", "reason")
 SOURCE_STATUSES = ("present", "missing", "invalid")
+# Availability vocabulary only: a payload asserting current/stale would be
+# a currency verdict no static artifact can honestly make.
+FRESHNESS_STATUSES = ("complete", "partial", "unavailable")
 
 PROJECT_FIELDS = (
     "id",
@@ -80,6 +83,10 @@ def validate(payload: Any) -> list[str]:
     semantic = payload.get("semantic_hash")
     if not isinstance(semantic, str) or not semantic.startswith("sha256:"):
         errors.append("semantic_hash must be a sha256: identity")
+    freshness = payload.get("freshness")
+    if not isinstance(freshness, dict) or freshness.get("status") not in FRESHNESS_STATUSES:
+        errors.append("freshness.status must be an availability verdict: "
+                      + "/".join(FRESHNESS_STATUSES))
     sources = payload.get("sources")
     if not isinstance(sources, list) or not sources:
         errors.append("sources must be a non-empty list")

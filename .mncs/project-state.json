@@ -1,0 +1,9 @@
+{
+  "schema_version": "mncs.project-intent/1",
+  "purpose": "mncs-atlas owns non-normative family orientation: the project catalog, the compiled family registry, and the dashboard projection over live family state. Commons owns canonical architecture facts; Atlas never confers authority.",
+  "entry": [
+    "python3 scripts/mncs-project-check.py",
+    "python3 -m registry build",
+    "python3 -m projector project"
+  ]
+}

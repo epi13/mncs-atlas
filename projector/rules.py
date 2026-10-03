@@ -101,14 +101,26 @@ def verification_state(record: Any) -> dict[str, str]:
 
 
 def freshness_state(source_statuses: list[str]) -> dict[str, str]:
-    """Summarize projection freshness from per-source availability."""
+    """Summarize source availability; never assert currency.
+
+    A static artifact cannot know whether its sources have advanced since
+    it was rendered, so this vocabulary reports only what was observed:
+    complete (every declared source readable), partial (some readable),
+    or unavailable (none readable). Currency verdicts (current/stale)
+    belong to ambient reconciliation and Doctor, which compare the
+    recorded observed epoch against live source state.
+    """
     if not source_statuses:
-        return {"status": "unknown", "reason": "no sources examined"}
-    if all(status == "present" for status in source_statuses):
-        return {"status": "current", "reason": "all declared sources readable"}
-    if all(status in ("missing", "invalid") for status in source_statuses):
-        return {"status": "unknown", "reason": "no declared source readable"}
-    return {"status": "stale", "reason": "some declared sources unreadable"}
+        return {"status": "unavailable", "reason": "no sources examined"}
+    readable = sum(1 for status in source_statuses if status == "present")
+    total = len(source_statuses)
+    if readable == total:
+        return {"status": "complete",
+                "reason": f"all {total} declared sources readable"}
+    if readable == 0:
+        return {"status": "unavailable", "reason": "no declared source readable"}
+    return {"status": "partial",
+            "reason": f"{readable} of {total} declared sources readable"}
 
 
 def stable_key(value: Any) -> str:

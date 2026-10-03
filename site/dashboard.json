@@ -1,6 +1,5 @@
 {
   "envelope": {
-    "generated_at": "2026-09-26T23:53:38+00:00",
     "projector": "mncs-atlas.projector",
     "projector_version": "1"
   },
@@ -113,10 +112,6 @@
             {
               "path": "tools/mncs_test.py",
               "role": "differential_oracle"
-            },
-            {
-              "path": "tools/generate_provider.py",
-              "role": "adapter"
             }
           ],
           "id": "test.provider",
@@ -138,11 +133,6 @@
           "classification": "essential_deterministic_projection",
           "id": "language.capability-index",
           "owner": "mncs-language"
-        },
-        {
-          "classification": "essential_deterministic_projection",
-          "id": "test.provider-inventory",
-          "owner": "mncs-test"
         }
       ],
       "policy": {
@@ -170,8 +160,11 @@
     },
     "ecosystem": {
       "catalog_description": "Compact family identity facts maintained by Atlas. Repository manifests remain authoritative for repository-local contracts.",
-      "observed_but_uncatalogued": [],
-      "project_count": 49,
+      "observed_but_uncatalogued": [
+        "mncs-environment",
+        "mncs-stdlib"
+      ],
+      "project_count": 51,
       "projects": [
         {
           "authority_class": "normative-specification",
@@ -182,10 +175,10 @@
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
           "manifest": {
-            "checkout": ".mncs-native-family-campaign-20260919-mncds",
+            "checkout": "machine-native-complexity-development-specification",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 1,
+            "revision": 3,
             "status": "present"
           },
           "maturity": "unknown",
@@ -212,7 +205,7 @@
             "checkout": "machine-native-complexity-standard",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 2,
+            "revision": 3,
             "status": "present"
           },
           "maturity": "unknown",
@@ -245,7 +238,7 @@
             "checkout": "mncs-actions",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 4,
+            "revision": 5,
             "status": "present"
           },
           "maturity": "unknown",
@@ -324,7 +317,7 @@
             "checkout": "mncs-automation",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 1,
+            "revision": 3,
             "status": "present"
           },
           "maturity": "unknown",
@@ -368,7 +361,7 @@
             "checkout": "MNCS-Commons",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 5,
+            "revision": 10,
             "status": "present"
           },
           "maturity": "unknown",
@@ -397,7 +390,7 @@
             "checkout": "mncs-compiler",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 2,
+            "revision": 8,
             "status": "present"
           },
           "maturity": "unknown",
@@ -511,7 +504,7 @@
             "checkout": "mncs-debug",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 5,
+            "revision": 7,
             "status": "present"
           },
           "maturity": "unknown",
@@ -541,7 +534,7 @@
             "checkout": "mncs-doc",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 2,
+            "revision": 3,
             "status": "present"
           },
           "maturity": "unknown",
@@ -569,7 +562,7 @@
             "checkout": "mncs-doctor",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 3,
+            "revision": 6,
             "status": "present"
           },
           "maturity": "unknown",
@@ -605,6 +598,30 @@
           "purpose": "2D/3D graphics, simulation, rendering, and heterogeneous compute pressure workloads across CPU, WASM, and accelerators.",
           "repository": "https://github.com/epi13/mncs-engine",
           "role": "graphics-simulation-and-heterogeneous-compute"
+        },
+        {
+          "authority_class": "unknown",
+          "authority_reason": "no authority class declared",
+          "category": "unknown",
+          "dependencies": [],
+          "id": "mncs-environment",
+          "lifecycle": "unknown",
+          "lifecycle_reason": "no lifecycle declared",
+          "manifest": {
+            "checkout": "mncs-environment",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 6,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "mncs-environment",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "unknown",
+          "repository": null,
+          "role": "unknown"
         },
         {
           "authority_class": "execution-substrate",
@@ -686,7 +703,7 @@
             "checkout": "mncs-forge",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 7,
+            "revision": 11,
             "status": "present"
           },
           "maturity": "unknown",
@@ -873,7 +890,7 @@
             "checkout": "mncs-language-service",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 4,
+            "revision": 5,
             "status": "present"
           },
           "maturity": "unknown",
@@ -1162,6 +1179,30 @@
           "role": "signal-processing"
         },
         {
+          "authority_class": "unknown",
+          "authority_reason": "no authority class declared",
+          "category": "unknown",
+          "dependencies": [],
+          "id": "mncs-stdlib",
+          "lifecycle": "unknown",
+          "lifecycle_reason": "no lifecycle declared",
+          "manifest": {
+            "checkout": "mncs-stdlib",
+            "origin": "repository:.mncs/project.json",
+            "reason": "repository-owned manifest",
+            "revision": 1,
+            "status": "present"
+          },
+          "maturity": "unknown",
+          "maturity_reason": "no maturity declared",
+          "name": "mncs-stdlib",
+          "observed_in_workspace": true,
+          "participation": null,
+          "purpose": "unknown",
+          "repository": null,
+          "role": "unknown"
+        },
+        {
           "authority_class": "persistence-authority",
           "authority_reason": "declared",
           "category": "runtime",
@@ -1175,7 +1216,7 @@
             "checkout": "mncs-store",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 6,
+            "revision": 14,
             "status": "present"
           },
           "maturity": "unknown",
@@ -1225,7 +1266,7 @@
             "checkout": "mncs-test",
             "origin": "repository:.mncs/project.json",
             "reason": "repository-owned manifest",
-            "revision": 5,
+            "revision": 10,
             "status": "present"
           },
           "maturity": "unknown",
@@ -1361,17 +1402,11 @@
           "id": "ravel",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "RAVEL",
-            "origin": "repository:.mncs/project.json",
-            "reason": "repository-owned manifest",
-            "revision": 5,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "RAVEL",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Publishes verification plans and consumes compiler semantic impact.",
             "state": "participant"
@@ -1383,8 +1418,8 @@
       ]
     },
     "freshness": {
-      "reason": "all declared sources readable",
-      "status": "current"
+      "reason": "all 13 declared sources readable",
+      "status": "complete"
     },
     "implementation": {
       "declarations": [
@@ -1408,7 +1443,7 @@
             "state": "unknown"
           },
           "declared_status": "native_canonical_with_retained_session_host_lifecycle_boundary",
-          "native_source_count": 11,
+          "native_source_count": 18,
           "note": "repository-level declaration; no per-project implementation states are declared anywhere",
           "repository_id": "mncs-store",
           "source": "store-native-status",
@@ -1424,7 +1459,7 @@
       "note": "the dashboard is deterministic current state; interpretation lives in the Journal"
     },
     "movement": {
-      "delta_count": 4,
+      "delta_count": 5,
       "deltas": [
         {
           "added_contracts": [
@@ -1488,6 +1523,16 @@
           "ownership_changes": [],
           "previous": "sha256:79bea5e738af76b0b1d0e697c1c5f410b0f248c7ed9a023c2d80e423199c9cfa",
           "removed_contracts": []
+        },
+        {
+          "added_contracts": [],
+          "changed_capabilities": [
+            "test.provider"
+          ],
+          "current": "sha256:daf2d175e30e909f9294ab6267fc7bf946f2129c75fdd92b02ac55d25725d20e",
+          "ownership_changes": [],
+          "previous": "sha256:0ec0ddb008769d312e33da09cf2b3c9ceb74cebe6f41c34402c81c2ab997d04c",
+          "removed_contracts": []
         }
       ],
       "note": "machine-recorded architecture movement only; Git history is not reproduced",
@@ -1495,33 +1540,32 @@
     },
     "pressures": {
       "by_repository": {
-        "mncs-actions": 8,
+        "mncs-actions": 9,
         "mncs-atlas": 2,
         "mncs-commons": 4,
-        "mncs-compiler": 16,
-        "mncs-debug": 16,
+        "mncs-compiler": 17,
+        "mncs-debug": 17,
         "mncs-doc": 1,
         "mncs-doctor": 26,
         "mncs-engine": 1,
-        "mncs-forge": 14,
-        "mncs-harness": 2,
+        "mncs-environment": 9,
+        "mncs-forge": 17,
+        "mncs-harness": 1,
         "mncs-index": 19,
         "mncs-ingest": 12,
-        "mncs-lab": 2,
-        "mncs-language": 18,
+        "mncs-language": 17,
         "mncs-language-service": 11,
         "mncs-math": 2,
-        "mncs-numerics": 16,
+        "mncs-numerics": 15,
         "mncs-service": 21,
-        "mncs-signal": 1,
-        "mncs-store": 36,
-        "mncs-test": 7,
+        "mncs-store": 37,
+        "mncs-test": 8,
         "mncs-tui": 1,
         "mncs-web": 12,
         "ravel": 5
       },
       "by_status": {
-        "discovered": 190
+        "discovered": 198
       },
       "lifecycle_note": "records carry discovery state only; no resolution lifecycle is tracked in the record schema",
       "listed": [
@@ -1536,6 +1580,18 @@
           "severity": "major",
           "status": "discovered",
           "title": "Cursor scans retain bounded no-op iterations"
+        },
+        {
+          "capability": "legacy.stage0-locked-revision-refresh",
+          "content_digest": "sha256:a0b416c445b0523ae1571d0222afcb369d940a4160445ecb371c057804d5d686",
+          "domain": "tooling.bootstrap",
+          "id": "MNCS-COMPILER-2B5AD318F5E5",
+          "repositories": [
+            "mncs-compiler"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Bootstrap cannot refresh an existing pinned Stage-0 checkout"
         },
         {
           "capability": "legacy.cp-0007",
@@ -1608,19 +1664,6 @@
           "severity": "major",
           "status": "discovered",
           "title": "Boolean equality is rejected in scanner state updates"
-        },
-        {
-          "capability": "incremental-session-api",
-          "content_digest": "sha256:46b3b15603dfa21c96d329840d3c1e84eb31f5812c102d2122ee469b7f362e97",
-          "domain": "sessions.incremental",
-          "id": "MNCS-COMPILER-40CF32855108",
-          "repositories": [
-            "mncs-compiler",
-            "mncs-lab"
-          ],
-          "severity": "blocker",
-          "status": "discovered",
-          "title": "No incremental compiler session API; interactive clients cannot hold definitions, generations, or JIT bindings"
         },
         {
           "capability": "legacy.cp-0008",
@@ -1745,6 +1788,18 @@
           "severity": "moderate",
           "status": "discovered",
           "title": "CP-0012"
+        },
+        {
+          "capability": "pressure-kernel-bound-obligations",
+          "content_digest": "sha256:1a93c0c746bbcec9aded1ed91b08a3f4409589a0fd00d733d11a7c3fcd6533d8",
+          "domain": "compiler.assurance",
+          "id": "MNCS-COMPILER-F37AD881B406",
+          "repositories": [
+            "mncs-environment"
+          ],
+          "severity": "major",
+          "status": "discovered",
+          "title": "Pressure kernel runtime agreement retains compilation obligations"
         },
         {
           "capability": "canonical-capability-ownership",
@@ -2338,10 +2393,11 @@
         },
         {
           "capability": "legacy.p1-014.record-nominal-identities-are-brittle-at-the-process-boundary",
-          "content_digest": "sha256:0a0c70884fe5de497697259aebf774e49b82c57bb7b25d9058096b71e1353712",
+          "content_digest": "sha256:eb0d8dee18a60a600e67a60d27375154f831e39f347682f340719bdb28f0d9e8",
           "domain": "type-system.records",
           "id": "MNCS-LANG-532C63CD5EA3",
           "repositories": [
+            "mncs-compiler",
             "mncs-store"
           ],
           "severity": "major",
@@ -2739,23 +2795,11 @@
           "severity": "major",
           "status": "discovered",
           "title": "Record corpus field order: bytecode accepts declaration order, compiled backends demand canonical order"
-        },
-        {
-          "capability": "legacy.p1-001.no-file-write-effect-persistence-mechanics-cannot-be-expressed-in-mncs-language",
-          "content_digest": "sha256:7526ba24b672a525ba31329a49832014918650c3e096a55ad95068dc697f2d82",
-          "domain": "io.filesystem",
-          "id": "MNCS-LANG-8AF4BC50DDB4",
-          "repositories": [
-            "mncs-store"
-          ],
-          "severity": "blocker",
-          "status": "discovered",
-          "title": "No file-write effect: persistence mechanics cannot be expressed in mncs-language"
         }
       ],
-      "reason": "190 records",
+      "reason": "198 records",
       "status": "present",
-      "total": 190,
+      "total": 198,
       "truncated": true
     },
     "relationships": {
@@ -2953,7 +2997,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:c008558fff7f7b4f6133dff71ddd6725e1a6a6c07ce8f46a78bdc8aa39a0e154",
+    "semantic_hash": "sha256:e56f948ba95f37a2dbc13d08e95c9b102bfa561a3f9f0924e0ddd84f4b9cd22a",
     "sources": [
       {
         "content_sha256": "4782f77f64c4a2c6ea0867a249b7673c77fc4dbad255a258a5f9e8dadf8f02d6",
@@ -2970,10 +3014,10 @@
         "status": "present"
       },
       {
-        "content_sha256": "cf9a4efed3b3e86920057eecd528653716ee3e725ef4152bd53708e427c85150",
+        "content_sha256": "c324c51e3e8631dcf67e639647ebf4b523651b9950e5e37dd93ef74224952bc8",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
-        "reason": "22 manifests discovered",
+        "reason": "23 manifests discovered",
         "status": "present"
       },
       {
@@ -2984,7 +3028,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "11857372a947e361b1b6288601d6402e680dceecc5d4a2adebf3bf571d3aa97c",
+        "content_sha256": "cd9a74a32209331dbfb755b56b0f7fbf362f746e21affc843c8b3968995ad766",
         "id": "commons-architecture",
         "path": "MNCS-Commons/family/architecture-model-v1.json",
         "reason": "readable",
@@ -2998,7 +3042,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "28b9cc7b7b31922cf2e812a92a3533a3f0117f3704eaa5268aaeac556cf33b49",
+        "content_sha256": "eadb978d264e028c31f3ecdfcbc24ac000c2f6ee05468862401fd912647f8049",
         "id": "commons-deltas",
         "path": "MNCS-Commons/family/architecture-delta-history-v1.json",
         "reason": "readable",
@@ -3019,21 +3063,21 @@
         "status": "present"
       },
       {
-        "content_sha256": "e8c6345aa61ec0ad4baab82bb1c31b237caf5f2083b295a91b1edeaa192de80e",
+        "content_sha256": "de93b336614dc666d7b34fce60dcacf0fe732c2c8b6a59cd536997e200fd90ae",
         "id": "commons-pressures",
         "path": "MNCS-Commons/pressures/records",
-        "reason": "190 records",
+        "reason": "198 records",
         "status": "present"
       },
       {
-        "content_sha256": "8ee1e64f13bf91124ff93c41857e49c1b14d3a6c880d706f278385d0fbb84aa8",
+        "content_sha256": "6c1fa03b653ac392863c30014d16f0e8fbf77cb3043cb546e06a1c9dc21a766a",
         "id": "store-verification",
         "path": "mncs-store/family-verification-checks-v1.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "01f251e2ad963bfdff98992d688fc5ae8473f31090ba488a57d73f15ceb70e9d",
+        "content_sha256": "cbbee9d9cf9b90527d741efcd657ab7367e398928e20e04088151d9b83a840a9",
         "id": "store-native-status",
         "path": "mncs-store/native-userland-status.json",
         "reason": "readable",
@@ -3081,6 +3125,16 @@
           "surface": "typed-store-state-to-pressure-authority"
         },
         {
+          "contract": "mncs.store.adaptive-representations/1",
+          "identity": "mncs-store:adaptive-representations-v1",
+          "reason": "declaration without result feed",
+          "repository_id": "mncs-store",
+          "runner": "native-corpus",
+          "source": "store-verification",
+          "state": "UNKNOWN",
+          "surface": "envelope-representation-intent-block-plan-codec-canonical"
+        },
+        {
           "contract": "mncs.store.typed-relations/2",
           "identity": "mncs-store:generic-typed-relations-v2",
           "reason": "declaration without result feed",
@@ -3111,8 +3165,8 @@
           "surface": "typed-handoff-to-import-migration"
         }
       ],
-      "declared_count": 6
+      "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:c008558fff7f7b4f6133dff71ddd6725e1a6a6c07ce8f46a78bdc8aa39a0e154"
+  "semantic_hash": "sha256:e56f948ba95f37a2dbc13d08e95c9b102bfa561a3f9f0924e0ddd84f4b9cd22a"
 }

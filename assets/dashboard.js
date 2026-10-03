@@ -109,9 +109,9 @@
     metrics.appendChild(metric("declared checks", ((data.verification || {}).declared_count || 0)));
     metrics.appendChild(metric("deltas", ((data.movement || {}).delta_count || 0)));
 
-    var generated = (envelope.envelope || {}).generated_at || "unknown time";
+    var observed = (envelope.envelope || {}).source_epoch || "unknown observation";
     document.getElementById("dash-provenance").textContent =
-      "Projection " + (data.semantic_hash || "unknown") + " generated " + generated +
+      "Projection " + (data.semantic_hash || "unknown") + " observed at " + observed +
       " · projector " + ((envelope.envelope || {}).projector || "unknown") + ".";
     var hashEl = document.getElementById("dash-hash");
     if (hashEl) hashEl.textContent = data.semantic_hash || "unknown";

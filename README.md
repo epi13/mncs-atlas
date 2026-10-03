@@ -10,6 +10,9 @@ admission sync, mirror freshness, unit tests, journal integrity) under the
 `atlas-mncs-checks` boundary. It is committed by CI on `main`, never
 hand-edited; see `.github/workflows/mncs-family.yml`.
 
+<!-- MNCS:generated:begin -->
+<!-- MNCS:generated:end -->
+
 MNCS Atlas is the front door for the wider MNCS project family. Individual repositories keep their own detailed, authoritative documentation; Atlas explains the larger research program, keeps family terminology consistent, shows how the pieces fit together, distinguishes authority from operator topology, and gives humans and agents a reliable place to start.
 
 **Normative / specification authority** lives in two independently versioned repositories:

@@ -13,9 +13,10 @@ branch.  Merging to ``main`` stays a human/PR decision.
 ``--check`` is a dry run: discover, project, and validate without writing
 anything into the working tree.
 
-No timestamps enter committed output: generation time lives only in the
-dashboard envelope, and the no-change gate compares semantic hashes, so
-re-running an unchanged world leaves the tree (and history) untouched.
+No timestamps enter committed output: the dashboard envelope carries only
+the observed semantic epoch, and the no-change gate compares semantic
+hashes, so re-running an unchanged world leaves the tree (and history)
+untouched.
 """
 
 from __future__ import annotations

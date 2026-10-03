@@ -51,12 +51,15 @@ class RulesTests(unittest.TestCase):
         self.assertEqual(known["state"], "bridge-adapter")
 
     def test_freshness_combinations(self) -> None:
-        self.assertEqual(rules.freshness_state([])["status"], "unknown")
-        self.assertEqual(rules.freshness_state(["present", "present"])["status"], "current")
-        self.assertEqual(rules.freshness_state(["missing"])["status"], "unknown")
+        self.assertEqual(rules.freshness_state([])["status"], "unavailable")
+        self.assertEqual(rules.freshness_state(["present", "present"])["status"], "complete")
+        self.assertEqual(rules.freshness_state(["missing"])["status"], "unavailable")
         self.assertEqual(
-            rules.freshness_state(["present", "missing"])["status"], "stale"
+            rules.freshness_state(["present", "missing"])["status"], "partial"
         )
+        for statuses in ([], ["present"], ["missing"], ["present", "invalid"]):
+            self.assertNotIn(rules.freshness_state(statuses)["status"],
+                             ("current", "stale"))
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -71,7 +74,7 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(by_id["store-verification"].status, "missing")
         self.assertEqual(by_id["atlas-catalog"].status, "present")
         payload = project_module.project(bundle)
-        self.assertEqual(payload["freshness"]["status"], "stale")
+        self.assertEqual(payload["freshness"]["status"], "partial")
         self.assertEqual(validate_module.validate(payload), [])
 
 
@@ -93,7 +96,7 @@ class ProjectionTests(unittest.TestCase):
         payload = project_module.project(load_bundle())
         self.assertTrue(render_module.verify_semantic_hash(payload))
         tampered = dict(payload)
-        tampered["freshness"] = {"status": "current", "reason": "forged"}
+        tampered["freshness"] = {"status": "complete", "reason": "forged"}
         self.assertFalse(render_module.verify_semantic_hash(tampered))
 
     def test_no_change_detection_ignores_timestamps(self) -> None:

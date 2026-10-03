@@ -21,8 +21,8 @@ from .project import semantic_hash
 
 DASHBOARD_JSON = Path("site/dashboard.json")
 DASHBOARD_HTML = Path("site/dashboard.html")
-NOSCRIPT_BEGIN = "<!-- atlas:noscript-fallback:begin -->"
-NOSCRIPT_END = "<!-- atlas:noscript-fallback:end -->"
+NOSCRIPT_BEGIN = "<!-- MNCS:generated:begin -->"
+NOSCRIPT_END = "<!-- MNCS:generated:end -->"
 
 
 def envelope(payload: dict[str, Any], *, source_epoch: str | None = None,
