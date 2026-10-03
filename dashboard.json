@@ -7,7 +7,7 @@
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:3f791d0be0f009273b9ee8037c9151df879991a5037cd1b095f24816d844c897",
+      "manifests": "sha256:6b523fcf8797cc31f73bc2110257085bce6dae6186a158f5660cbc30086148b5",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:37e628b2b059203e65b247c70f14b957fbd046fd94ebbe5e3904f55ea5ff2135"
+    "source_epoch": "sha256:25ac88168a98bc6f9b5d36f5e2291784d3c443e14c92fda740ff908db90b478a"
   },
   "projection": {
     "capabilities": {
@@ -3200,7 +3200,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:76944496cf6af56b1291cf02e5e919350184ddaa993e4271d5c4bacd8d33e81a",
+    "semantic_hash": "sha256:ffa056f207a223c7a5c41370c8df04bb53131195fcd31de8dd15e60bf5d42c89",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3217,7 +3217,7 @@
         "status": "present"
       },
       {
-        "content_sha256": "ea61c66f5523a72d65f1cc585d593ebbf8e7cae19c990440f91eacc0339d26c4",
+        "content_sha256": "0af5bd76d70fd9b0c0a719facefa62f66a128db3164a4bae66d9102692149ce5",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3371,5 +3371,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:76944496cf6af56b1291cf02e5e919350184ddaa993e4271d5c4bacd8d33e81a"
+  "semantic_hash": "sha256:ffa056f207a223c7a5c41370c8df04bb53131195fcd31de8dd15e60bf5d42c89"
 }
