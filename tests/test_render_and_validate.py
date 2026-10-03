@@ -74,6 +74,39 @@ class RenderAndValidateTests(unittest.TestCase):
         sitemap = render_sitemap("https://epi13.github.io/mncs-atlas/", [("2026-08-21-notes.html", date(2026, 8, 21))])
         self.assertIn("journal/2026-08-21-notes.html", sitemap)
 
+    def test_published_journal_has_unique_numbers(self) -> None:
+        errors = validate_journal(ROOT / "site" / "journal")
+        self.assertFalse(
+            [error for error in errors if "duplicate journal numbers" in error],
+            f"published journal carries duplicate numbers: {errors}",
+        )
+
+    def _numbered_draft(self, number: int) -> DraftEntry:
+        covered = CoveredInterval(
+            start=datetime(2026, 8, 21, tzinfo=timezone.utc),
+            end=datetime(2026, 8, 21, 23, 59, tzinfo=timezone.utc),
+        )
+        return DraftEntry(
+            number=number,
+            title="Number collision probe",
+            slug="number-collision-probe",
+            lede="A draft used only to exercise number uniqueness.",
+            sections=[DraftSection("What moved", ["Nothing. It is not a specification."])],
+            disclosure="Test draft synthesized by the Atlas Journal Maintainer. It is a dated developmental record, not a specification.",
+            covered=covered,
+            published=date(2026, 8, 21),
+        )
+
+    def test_draft_rejects_colliding_number(self) -> None:
+        errors = validate_draft(self._numbered_draft(2), set(), {1, 2, 3})
+        self.assertTrue(
+            any("duplicate journal number" in error for error in errors),
+            f"colliding draft number accepted: {errors}",
+        )
+
+    def test_draft_accepts_fresh_number(self) -> None:
+        self.assertEqual(validate_draft(self._numbered_draft(4), set(), {1, 2, 3}), [])
+
     def test_invalid_filename_is_caught(self) -> None:
         with TemporaryDirectory() as tmp:
             journal = Path(tmp) / "journal"

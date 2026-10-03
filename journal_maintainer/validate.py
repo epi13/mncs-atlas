@@ -32,9 +32,10 @@ def validate_journal(journal_dir: Path) -> list[str]:
         if ENTRY_NAME.match(name) is None:
             errors.append(f"invalid journal filename: {name}")
     numbers = [entry.number for entry in entries if entry.number]
-    duplicates = [str(number) for number, count in Counter(numbers).items() if count > 1]
-    if duplicates:
-        errors.append("duplicate journal numbers: " + ", ".join(duplicates))
+    duplicates = [number for number, count in Counter(numbers).items() if count > 1]
+    for number in duplicates:
+        holders = sorted(entry.filename for entry in entries if entry.number == number)
+        errors.append(f"duplicate journal numbers: {number} ({', '.join(holders)})")
     covered_keys = [entry.covered.key for entry in entries if entry.covered is not None]
     duplicate_keys = [key for key, count in Counter(covered_keys).items() if count > 1]
     if duplicate_keys:
@@ -67,10 +68,16 @@ def validate_journal(journal_dir: Path) -> list[str]:
     return errors
 
 
-def validate_draft(draft: DraftEntry, existing_slugs: set[str]) -> list[str]:
+def validate_draft(
+    draft: DraftEntry,
+    existing_slugs: set[str],
+    existing_numbers: set[int] | None = None,
+) -> list[str]:
     errors: list[str] = []
     if draft.number < 1:
         errors.append("journal number must be positive")
+    if existing_numbers is not None and draft.number in existing_numbers:
+        errors.append(f"duplicate journal number {draft.number:03d}")
     if slugify(draft.slug) != draft.slug:
         errors.append("journal slug is not normalized")
     if draft.filename in existing_slugs:

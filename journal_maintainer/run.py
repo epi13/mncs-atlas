@@ -191,7 +191,11 @@ def execute_run(
 
     rendered = render_entry(draft, run)
     run.rendered = rendered
-    draft_errors = validate_draft(draft, {entry.filename for entry in existing})
+    draft_errors = validate_draft(
+        draft,
+        {entry.filename for entry in existing},
+        {entry.number for entry in existing},
+    )
     if draft_errors:
         run.outcome = RunOutcome.FAILED
         run.failure = FailureState(code="INVALID_JOURNAL_OUTPUT", message="; ".join(draft_errors))
