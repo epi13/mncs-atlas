@@ -812,6 +812,30 @@
       "manifest": null
     },
     {
+      "id": "mncs-environment",
+      "name": "MNCS Environment",
+      "repository": "https://github.com/epi13/mncs-environment",
+      "role": "agent-workspace-orchestration",
+      "category": "runtime",
+      "lifecycle": "experimental",
+      "authority_class": "session-composition-authority",
+      "responsibility": "Session composition, authority projection, and campaign lifecycle orchestration for MNCS agent workspaces.",
+      "non_goals": [],
+      "language_profile": null,
+      "language_profile_status": "not-declared",
+      "dependencies": [
+        "mncs-automation",
+        "mncs-commons",
+        "mncs-language-service",
+        "mncs-store"
+      ],
+      "checkout_names": [
+        "mncs-environment"
+      ],
+      "aliases": [],
+      "manifest": null
+    },
+    {
       "id": "mncs-fabric",
       "name": "MNCS Fabric",
       "repository": "https://github.com/epi13/mncs-fabric",
@@ -1860,6 +1884,27 @@
       "manifest": null
     },
     {
+      "id": "mncs-stdlib",
+      "name": "MNCS Standard Library",
+      "repository": "https://github.com/epi13/mncs-stdlib",
+      "role": "canonical-standard-library",
+      "category": "language",
+      "lifecycle": "experimental",
+      "authority_class": "standard-library-authority",
+      "responsibility": "Canonical reusable MNCS facilities, written in MNCS itself and distributed as content-addressed modules.",
+      "non_goals": [],
+      "language_profile": null,
+      "language_profile_status": "not-declared",
+      "dependencies": [
+        "mncs-language"
+      ],
+      "checkout_names": [
+        "mncs-stdlib"
+      ],
+      "aliases": [],
+      "manifest": null
+    },
+    {
       "id": "mncs-store",
       "name": "MNCS Store",
       "repository": "https://github.com/epi13/mncs-store",
@@ -2067,6 +2112,25 @@
           "cargo-test"
         ]
       }
+    },
+    {
+      "id": "mncs-vm",
+      "name": "MNCS VM",
+      "repository": "https://github.com/epi13/mncs-vm",
+      "role": "deterministic-execution-runtime",
+      "category": "runtime",
+      "lifecycle": "experimental",
+      "authority_class": "execution-semantics-authority",
+      "responsibility": "Canonical machine-native virtual machine and execution runtime for MNCS bytecode: deterministic core execution preserving explicit contracts, effects, capabilities, bounds, identity, and evidence.",
+      "non_goals": [],
+      "language_profile": null,
+      "language_profile_status": "not-declared",
+      "dependencies": [],
+      "checkout_names": [
+        "mncs-vm"
+      ],
+      "aliases": [],
+      "manifest": null
     },
     {
       "id": "mncs-web",
@@ -5541,6 +5605,34 @@
       "evidence": []
     },
     {
+      "from": "project:mncs-environment",
+      "to": "project:mncs-automation",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-environment",
+      "to": "project:mncs-commons",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-environment",
+      "to": "project:mncs-language-service",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
+      "from": "project:mncs-environment",
+      "to": "project:mncs-store",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
       "from": "project:mncs-fabric",
       "to": "capability:exact-target-execution",
       "kind": "canonical_for",
@@ -6547,6 +6639,13 @@
       "evidence": []
     },
     {
+      "from": "project:mncs-stdlib",
+      "to": "project:mncs-language",
+      "kind": "depends_on",
+      "description": "Declared direct family dependency.",
+      "evidence": []
+    },
+    {
       "from": "project:mncs-store",
       "to": "capability:persistent-storage",
       "kind": "canonical_for",
@@ -6963,7 +7062,7 @@
     }
   ],
   "source_digests": {
-    "project_catalog": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
+    "project_catalog": "9b5e1f2aec8e40298302015791aafc49f3d87fbe9a7fb791d72a8cfa542539ec",
     "capability_claims": "ca8e0cadc52f5da27fac4e0b9e1125b73086faf5cb9b40b54dd2a41781023208",
     "decisions": "88673827c414ec295b6c3092b65ff508fe9715d79c988dafa6b7f4cb911579f7",
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
@@ -6987,6 +7086,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "2d7d01f53f674e00b2f6b30298ef4e4b5fb5c644489ae229d70a496344b20435",
-  "registry_revision": "2d7d01f53f674e00"
+  "registry_hash": "9db7f03f1bb200a0ea72dc1b039dc147088d78f060f4fb0987aaccf69dfd11ea",
+  "registry_revision": "9db7f03f1bb200a0"
 }

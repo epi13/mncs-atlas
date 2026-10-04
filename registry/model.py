@@ -132,7 +132,7 @@ def validate_manifest(manifest: Any, origin: str = "manifest") -> list[str]:
             errors.append(f"{label}.envelope.op is invalid")
         if "required" not in item or not isinstance(item.get("required"), bool):
             errors.append(f"{label}.required must be boolean")
-        if contract is not None and not re.fullmatch(r"^[a-z][a-z0-9-]*\.[a-z][a-z0-9._-]*$", contract):
+        if contract is not None and not re.fullmatch(r"^[a-z][a-z0-9._-]*\.[a-z][a-z0-9._-]*(/[a-zA-Z0-9._-]+)?$", contract):
             errors.append(f"{label}.contract must be provider.contract: {contract!r}")
     for index, item in enumerate(contracts.get("tests", [])):
         label = f"{origin}.contracts.tests[{index}]"
@@ -143,7 +143,8 @@ def validate_manifest(manifest: Any, origin: str = "manifest") -> list[str]:
         covers = _string_list(item.get("covers"), f"{label}.covers", errors)
         if not covers:
             errors.append(f"{label}.covers must not be empty")
-        if item.get("obligation") not in {"self", "consumer-compatibility", "family-integration"}:
+        obligation = item.get("obligation")
+        if not isinstance(obligation, str) or not obligation:
             errors.append(f"{label}.obligation is invalid")
         command = item.get("command")
         if command is not None and (
