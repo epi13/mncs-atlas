@@ -2,12 +2,12 @@
   "envelope": {
     "observed_sources": {
       "architecture": "sha256:efd5c5673ad9a48afebf504c30594ecaaed73edf6146433802a26e03dc99115a",
-      "catalog": "sha256:300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
-      "compiled": "sha256:7e9c30b97034c2fc4c1d230024daa9c17a9aab68fa5c515c10ccfa3bc1ee153c",
+      "catalog": "sha256:9b5e1f2aec8e40298302015791aafc49f3d87fbe9a7fb791d72a8cfa542539ec",
+      "compiled": "sha256:43149cf4a53d967b6b7c677a6f7483c3c51dad5b0401ab15710c0216da589893",
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:24f25d4d34bdf0f93f7ab8894b5f815b480ca7c29af3965a6ad8d4d382481c28",
+      "manifests": "sha256:5b65317b01ff8a1df3fe8e4516a503a012c79ce96f531f10e35f2a6982c40b02",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:7dd55e034b0fe05c3fc3d1a556a781ba1c9b59d8a8c0b9c5ab0e6db6d08f1ead"
+    "source_epoch": "sha256:16b5e345a3123175ded3b826704a9db727d70ba79dde298766d80d0df424b627"
   },
   "projection": {
     "capabilities": {
@@ -176,11 +176,7 @@
     },
     "ecosystem": {
       "catalog_description": "Compact family identity facts maintained by Atlas. Repository manifests remain authoritative for repository-local contracts.",
-      "observed_but_uncatalogued": [
-        "mncs-environment",
-        "mncs-stdlib",
-        "mncs-vm"
-      ],
+      "observed_but_uncatalogued": [],
       "project_count": 52,
       "projects": [
         {
@@ -218,17 +214,11 @@
           "id": "mncs",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "machine-native-complexity-standard",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 3,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The standard repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -251,17 +241,11 @@
           "id": "mncs-actions",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-actions",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 7,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Actions",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Consumes verification plans as the selected-consumer receipt and proof executor.",
             "state": "participant"
@@ -309,17 +293,11 @@
           "id": "mncs-atomic",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-atomic",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Atomic",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Atomic-scale and classical particle simulation, spatial partitioning, neighbor lists, force accumulation, and deterministic parallelism pressure.",
           "repository": "https://github.com/epi13/mncs-atomic",
@@ -340,7 +318,7 @@
             "checkout": "mncs-automation",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 3,
+            "revision": 4,
             "status": "present"
           },
           "maturity": "unknown",
@@ -362,17 +340,11 @@
           "id": "mncs-cli",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-cli",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS CLI",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Typed command-line arguments, subcommands, help, completion, structured errors, and CLI ergonomics for MNCS applications.",
           "repository": "https://github.com/epi13/mncs-cli",
@@ -415,17 +387,11 @@
           "id": "mncs-compiler",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-compiler",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 9,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Compiler",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "MNCS-native next-generation compiler architecture and self-hosting pressure; the Stage-0 compiler remains in mncs-language.",
           "repository": "https://github.com/epi13/mncs-compiler",
@@ -442,17 +408,11 @@
           "id": "mncs-control",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-control",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Control Systems",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Deterministic real-time loops, state estimation, actuator/sensor boundaries, feedback control, and replayable control behavior.",
           "repository": "https://github.com/epi13/mncs-control",
@@ -471,17 +431,11 @@
           "id": "mncs-control-mcp",
           "lifecycle": "active",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-control-mcp",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Control MCP",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The control MCP has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -500,17 +454,11 @@
           "id": "mncs-crypto",
           "lifecycle": "incubating",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-crypto",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Crypto",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Established cryptographic primitives, published vectors, constant-time patterns, memory handling, and compiler/backend pressure for MNCS.",
           "repository": "https://github.com/epi13/mncs-crypto",
@@ -526,17 +474,11 @@
           "id": "mncs-data",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-data",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Data",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Schemas, tables, columns, missing values, Unicode, evolving data, streaming pipelines, and structured interchange pressure.",
           "repository": "https://github.com/epi13/mncs-data",
@@ -553,17 +495,11 @@
           "id": "mncs-debug",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-debug",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 9,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Debug",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Consumes execution observations and test-result evidence for native diagnosis.",
             "state": "participant"
@@ -587,7 +523,7 @@
             "checkout": "mncs-doc",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 3,
+            "revision": 4,
             "status": "present"
           },
           "maturity": "unknown",
@@ -642,45 +578,38 @@
           "id": "mncs-engine",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-engine",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Engine",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "2D/3D graphics, simulation, rendering, and heterogeneous compute pressure workloads across CPU, WASM, and accelerators.",
           "repository": "https://github.com/epi13/mncs-engine",
           "role": "graphics-simulation-and-heterogeneous-compute"
         },
         {
-          "authority_class": "unknown",
-          "authority_reason": "no authority class declared",
-          "category": "unknown",
-          "dependencies": [],
+          "authority_class": "session-composition-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
+          "dependencies": [
+            "mncs-automation",
+            "mncs-commons",
+            "mncs-language-service",
+            "mncs-store"
+          ],
           "id": "mncs-environment",
-          "lifecycle": "unknown",
-          "lifecycle_reason": "no lifecycle declared",
-          "manifest": {
-            "checkout": "mncs-environment",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 6,
-            "status": "present"
-          },
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
-          "name": "mncs-environment",
-          "observed_in_workspace": true,
+          "name": "MNCS Environment",
+          "observed_in_workspace": false,
           "participation": null,
-          "purpose": "unknown",
-          "repository": null,
-          "role": "unknown"
+          "purpose": "Session composition, authority projection, and campaign lifecycle orchestration for MNCS agent workspaces.",
+          "repository": "https://github.com/epi13/mncs-environment",
+          "role": "agent-workspace-orchestration"
         },
         {
           "authority_class": "execution-substrate",
@@ -690,17 +619,11 @@
           "id": "mncs-fabric",
           "lifecycle": "active",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-fabric",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 3,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Fabric",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The execution substrate has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -721,17 +644,11 @@
           "id": "mncs-fem",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-fem",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS FEM",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Meshes, topology, fields, element assembly, material models, sparse solvers, and scientific verification pressure.",
           "repository": "https://github.com/epi13/mncs-fem",
@@ -749,17 +666,11 @@
           "id": "mncs-fluid",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-fluid",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Fluid",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Fields, meshes, PDE discretization, stencil computation, iterative solvers, parallel reductions, and heterogeneous CFD workloads.",
           "repository": "https://github.com/epi13/mncs-fluid",
@@ -805,17 +716,11 @@
           "id": "mncs-geometry",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-geometry",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Geometry",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Geometric primitives, robust predicates, intersections, topology, spatial data structures, and coordinate systems.",
           "repository": "https://github.com/epi13/mncs-geometry",
@@ -833,17 +738,11 @@
           "id": "mncs-harness",
           "lifecycle": "active",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-harness",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 5,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Harness",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The harness has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -862,17 +761,11 @@
           "id": "mncs-index",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-index",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 3,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Index",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Publishes the repository-owned derived-index contract over Store state.",
             "state": "participant"
@@ -891,17 +784,11 @@
           "id": "mncs-ingest",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-ingest",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 3,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Ingest",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Publishes the repository-owned typed handoff contract for provenance-preserving normalization.",
             "state": "participant"
@@ -921,17 +808,11 @@
           "id": "mncs-lab",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-lab",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Lab",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "REPL, JIT, persistent compiler sessions, incremental compilation, proof-aware execution, and interactive language pressure.",
           "repository": "https://github.com/epi13/mncs-lab",
@@ -975,17 +856,11 @@
           "id": "mncs-language-service",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-language-service",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 6,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Language Service",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "No repository-owned semantic graph declaration is published at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1005,17 +880,11 @@
           "id": "mncs-learn",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-learn",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Learn",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Evidence-driven state transitions across heterogeneous micro-models, adaptive graphs, datasets, checkpoints, and training processes.",
           "repository": "https://github.com/epi13/mncs-learn",
@@ -1032,17 +901,11 @@
           "id": "mncs-lineage",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-lineage",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Lineage",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The lineage repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1062,17 +925,11 @@
           "id": "mncs-math",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-math",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Math",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Exact and numerical scientific mathematics, linear algebra, tensors, intervals, autodiff, statistics, and numerical methods.",
           "repository": "https://github.com/epi13/mncs-math",
@@ -1089,17 +946,11 @@
           "id": "mncs-media",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-media",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Media",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Image, audio, video, timing, metadata, binary I/O, streaming, and codec-boundary pressure workloads.",
           "repository": "https://github.com/epi13/mncs-media",
@@ -1117,17 +968,11 @@
           "id": "mncs-memory",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-memory",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Memory",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Immutable observations, claims, contradiction and supersession state, retrieval, escalation, and compact answer capsules.",
           "repository": "https://github.com/epi13/mncs-memory",
@@ -1144,17 +989,11 @@
           "id": "mncs-models",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-models",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Models",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Canonical machine-native model construction and composition: typed computational structures assembled from composable primitives; architecture-open model graphs, components, parameters, and heterogeneous stacks. Successor to the model-construction role of MNEL.",
           "repository": "https://github.com/epi13/mncs-models",
@@ -1170,17 +1009,11 @@
           "id": "mncs-numerics",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-numerics",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Numerics",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Reusable numerical primitives, reductions, guarded kernels, and algorithms written in MNCS while pressuring the language.",
           "repository": "https://github.com/epi13/mncs-numerics",
@@ -1197,17 +1030,11 @@
           "id": "mncs-physics",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-physics",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Physics",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Quantities, dimensions, units, constants, mechanics, rigid-body foundations, and scientific physical models.",
           "repository": "https://github.com/epi13/mncs-physics",
@@ -1223,17 +1050,11 @@
           "id": "mncs-reference-studies",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-reference-studies",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Reference Studies",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The reference-studies repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1252,17 +1073,11 @@
           "id": "mncs-rights-provenance",
           "lifecycle": "incubating",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-rights-provenance",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Rights & Provenance",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The rights and provenance repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1281,17 +1096,11 @@
           "id": "mncs-service",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-service",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Service",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "Publishes the repository-owned resident query contract over Store and Index.",
             "state": "participant"
@@ -1311,45 +1120,35 @@
           "id": "mncs-signal",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-signal",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Signal",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Sampled signals, timebases, complex arithmetic, FFT/IFFT, streaming, latency, and deterministic signal workloads.",
           "repository": "https://github.com/epi13/mncs-signal",
           "role": "signal-processing"
         },
         {
-          "authority_class": "unknown",
-          "authority_reason": "no authority class declared",
-          "category": "unknown",
-          "dependencies": [],
+          "authority_class": "standard-library-authority",
+          "authority_reason": "declared",
+          "category": "language",
+          "dependencies": [
+            "mncs-language"
+          ],
           "id": "mncs-stdlib",
-          "lifecycle": "unknown",
-          "lifecycle_reason": "no lifecycle declared",
-          "manifest": {
-            "checkout": "mncs-stdlib",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
-          "name": "mncs-stdlib",
-          "observed_in_workspace": true,
+          "name": "MNCS Standard Library",
+          "observed_in_workspace": false,
           "participation": null,
-          "purpose": "unknown",
-          "repository": null,
-          "role": "unknown"
+          "purpose": "Canonical reusable MNCS facilities, written in MNCS itself and distributed as content-addressed modules.",
+          "repository": "https://github.com/epi13/mncs-stdlib",
+          "role": "canonical-standard-library"
         },
         {
           "authority_class": "persistence-authority",
@@ -1391,17 +1190,11 @@
           "id": "mncs-system-monitor",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-system-monitor",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS System Monitor",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Bounded OS observation, process/resource relationships, interval-qualified metrics, and human/machine projections.",
           "repository": "https://github.com/epi13/mncs-system-monitor",
@@ -1446,17 +1239,11 @@
           "id": "mncs-tui",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-tui",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 1,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS TUI",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The TUI repository has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1475,17 +1262,11 @@
           "id": "mncs-ui",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-ui",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS UI",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Declarative components, layout, reactive state, events, accessibility, animation, and native rendering pressure.",
           "repository": "https://github.com/epi13/mncs-ui",
@@ -1499,17 +1280,11 @@
           "id": "mncs-validator-rs",
           "lifecycle": "active",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-validator-rs",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Rust Validator",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": {
             "reason": "The independent validator has no repository-owned semantic graph declaration at this synchronization point.",
             "state": "explicit_nonparticipant"
@@ -1519,28 +1294,22 @@
           "role": "independent-validation"
         },
         {
-          "authority_class": "unknown",
-          "authority_reason": "no authority class declared",
-          "category": "unknown",
+          "authority_class": "execution-semantics-authority",
+          "authority_reason": "declared",
+          "category": "runtime",
           "dependencies": [],
           "id": "mncs-vm",
-          "lifecycle": "unknown",
-          "lifecycle_reason": "no lifecycle declared",
-          "manifest": {
-            "checkout": "mncs-vm",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "lifecycle": "experimental",
+          "lifecycle_reason": "declared",
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
-          "name": "mncs-vm",
-          "observed_in_workspace": true,
+          "name": "MNCS VM",
+          "observed_in_workspace": false,
           "participation": null,
-          "purpose": "unknown",
-          "repository": null,
-          "role": "unknown"
+          "purpose": "Canonical machine-native virtual machine and execution runtime for MNCS bytecode: deterministic core execution preserving explicit contracts, effects, capabilities, bounds, identity, and evidence.",
+          "repository": "https://github.com/epi13/mncs-vm",
+          "role": "deterministic-execution-runtime"
         },
         {
           "authority_class": "web-library-authority",
@@ -1553,17 +1322,11 @@
           "id": "mncs-web",
           "lifecycle": "experimental",
           "lifecycle_reason": "declared",
-          "manifest": {
-            "checkout": "mncs-web",
-            "origin": "repository:.mncs/project.json",
-            "reason": "observed",
-            "revision": 2,
-            "status": "present"
-          },
+          "manifest": null,
           "maturity": "unknown",
           "maturity_reason": "no maturity declared",
           "name": "MNCS Web",
-          "observed_in_workspace": true,
+          "observed_in_workspace": false,
           "participation": null,
           "purpose": "Typed HTTP and web-service structures, incremental protocol parsing, effects, and application-level web pressure workloads.",
           "repository": "https://github.com/epi13/mncs-web",
@@ -3009,10 +2772,10 @@
       "atlas_registry": {
         "capability_count": 39,
         "decision_count": 12,
-        "edge_count": 391,
-        "project_count": 49,
-        "registry_hash": "2d7d01f53f674e00b2f6b30298ef4e4b5fb5c644489ae229d70a496344b20435",
-        "registry_revision": "2d7d01f53f674e00",
+        "edge_count": 396,
+        "project_count": 52,
+        "registry_hash": "9db7f03f1bb200a0ea72dc1b039dc147088d78f060f4fb0987aaccf69dfd11ea",
+        "registry_revision": "9db7f03f1bb200a0",
         "status": "present"
       },
       "commons_complete": true,
@@ -3200,27 +2963,27 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:f12f61b926964a0c1176d420817f256267ae97640378c9b75cb2114a45c19354",
+    "semantic_hash": "sha256:4d0abd037ef7867113894c283da2106b66bb5eb85c63e0c539cb0256cf2d6b04",
     "sources": [
       {
-        "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
+        "content_sha256": "9b5e1f2aec8e40298302015791aafc49f3d87fbe9a7fb791d72a8cfa542539ec",
         "id": "atlas-catalog",
         "path": "mncs-atlas/registry/project-catalog.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "7e9c30b97034c2fc4c1d230024daa9c17a9aab68fa5c515c10ccfa3bc1ee153c",
+        "content_sha256": "43149cf4a53d967b6b7c677a6f7483c3c51dad5b0401ab15710c0216da589893",
         "id": "atlas-compiled",
         "path": "mncs-atlas/registry/compiled.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "dcd66108755bfef952b1b36c6bb653f29aaae755270d021dff293ec8be2178fb",
+        "content_sha256": "394ec6a9207549fa916b5dd0ac0b361bad11540f427c731f46108d08c5045eef",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
-        "reason": "50 manifests observed",
+        "reason": "10 manifests observed",
         "status": "present"
       },
       {
@@ -3371,5 +3134,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:f12f61b926964a0c1176d420817f256267ae97640378c9b75cb2114a45c19354"
+  "semantic_hash": "sha256:4d0abd037ef7867113894c283da2106b66bb5eb85c63e0c539cb0256cf2d6b04"
 }
