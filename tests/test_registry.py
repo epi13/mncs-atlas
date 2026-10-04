@@ -67,6 +67,39 @@ class RegistryTests(unittest.TestCase):
         self.assertTrue(any("stable project id" in error for error in errors))
         self.assertTrue(any("positive integer" in error for error in errors))
 
+    def test_manifest_mirror_matches_current_standard_surface(self) -> None:
+        manifest = {
+            "schema_version": "mncs-family.repository-manifest/v0alpha1",
+            "repository": "mncs-fixture",
+            "revision": 2,
+            "contracts": {
+                "provides": [
+                    {
+                        "contract": "fixture-contract",
+                        "version": "1",
+                        "kind": "fixture",
+                        "stability": "experimental",
+                    }
+                ],
+                "consumes": [
+                    {
+                        "contract": "mncs.compiler.call/1",
+                        "envelope": {"op": "any"},
+                        "required": True,
+                    }
+                ],
+                "tests": [
+                    {
+                        "test": "fixture-tests",
+                        "covers": ["fixture-contract"],
+                        "obligation": "scheduled",
+                        "command": {"argv": ["python3", "-m", "unittest", "discover", "-s", "tests"]},
+                    }
+                ],
+            },
+        }
+        self.assertEqual(validate_manifest(manifest, "fixture"), [])
+
     def test_duplicate_authority_and_unknown_reference_fail_build(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
