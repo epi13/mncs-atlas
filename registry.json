@@ -246,7 +246,7 @@
         "revision": 8,
         "location": "in-repository",
         "origin": "repository:.mncs/project.json",
-        "sha256": "b42b2b0274fef2cbd06ab59c1ced04f433ed65adb061f1f98b95d40e326ce432",
+        "sha256": "e9eaaf312ec87129090f0e6c490ed478e38a8c588a5b8bf015609af26f4816b5",
         "provides": [
           {
             "id": "mncs-atlas.family-map/0.4",
@@ -6969,7 +6969,7 @@
     "manifest_snapshot": "2bd4e6782cd22e9354d96a669999701811e11791a37556a6beee13f896ff49d1",
     "manifests": {
       "mncds": "dbd67075d1563bad7151b44f1f2042933138f64a0ea628b47894b635ce155c11",
-      "mncs-atlas": "b42b2b0274fef2cbd06ab59c1ced04f433ed65adb061f1f98b95d40e326ce432",
+      "mncs-atlas": "e9eaaf312ec87129090f0e6c490ed478e38a8c588a5b8bf015609af26f4816b5",
       "mncs-commons": "ffc00658ee13a78b36d170c9d3b987733643df2e19c5061f4cf4d191eb2f29cf",
       "mncs-control-mcp": "9bc18081766a73b909964183a299ff249c185491f4d4d3d8ef81c0afe92b8337",
       "mncs-fabric": "5faa0bd6312c8d28d4b3bf9e075551f922749c7afdaae55b5026b09c5a3f9895",
@@ -6987,6 +6987,6 @@
       "ravel": "efcd23c8822c26cb65d0a090ff87c84d67f7cfd50a40347c61e24eb73d7f5ebe"
     }
   },
-  "registry_hash": "06bae305c3b22e6dfbe5d94f7b8dd138a9d5a18b063305548af7fcf25f084c5f",
-  "registry_revision": "06bae305c3b22e6d"
+  "registry_hash": "2d7d01f53f674e00b2f6b30298ef4e4b5fb5c644489ae229d70a496344b20435",
+  "registry_revision": "2d7d01f53f674e00"
 }

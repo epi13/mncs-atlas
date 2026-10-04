@@ -3,11 +3,11 @@
     "observed_sources": {
       "architecture": "sha256:efd5c5673ad9a48afebf504c30594ecaaed73edf6146433802a26e03dc99115a",
       "catalog": "sha256:300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
-      "compiled": "sha256:f2dc2bd3c03df70103fac6f8ce5cdfbceec369abcc335aec22bded4e00ee99f3",
+      "compiled": "sha256:7e9c30b97034c2fc4c1d230024daa9c17a9aab68fa5c515c10ccfa3bc1ee153c",
       "deltas": "sha256:493b57aa3700eb7b6af3f28888e97ae369beb854a16807e090dd2ba4c0a4ab85",
       "edges": "sha256:19d74853cdd39881023838c2989674a2f9c2af5cd1f011385b14f0f493d14dda",
       "journal": "sha256:28f9f740820e0e54822e414c6e9171d3163e20ca5d70e2f5ab665a2f16056ccd",
-      "manifests": "sha256:6b523fcf8797cc31f73bc2110257085bce6dae6186a158f5660cbc30086148b5",
+      "manifests": "sha256:24f25d4d34bdf0f93f7ab8894b5f815b480ca7c29af3965a6ad8d4d382481c28",
       "native_status": "sha256:c3dc0d381ee999fba8ab2457440daf4cfa7f9614961ec3f6329e565b5ddbe6fc",
       "participation": "sha256:d314d75e5789fb5a5886a5268447aee51f62a0ccba74ce06ec8b8616bcacdb5b",
       "pressures": "sha256:fc10d6eefad87400ae2622fd8eff52d87cafb31351b8b77bd95491e6f7ab6b82",
@@ -17,7 +17,7 @@
     },
     "projector": "mncs-atlas.projector",
     "projector_version": "1",
-    "source_epoch": "sha256:25ac88168a98bc6f9b5d36f5e2291784d3c443e14c92fda740ff908db90b478a"
+    "source_epoch": "sha256:7dd55e034b0fe05c3fc3d1a556a781ba1c9b59d8a8c0b9c5ab0e6db6d08f1ead"
   },
   "projection": {
     "capabilities": {
@@ -475,7 +475,7 @@
             "checkout": "mncs-control-mcp",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 1,
+            "revision": 2,
             "status": "present"
           },
           "maturity": "unknown",
@@ -557,7 +557,7 @@
             "checkout": "mncs-debug",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 8,
+            "revision": 9,
             "status": "present"
           },
           "maturity": "unknown",
@@ -694,7 +694,7 @@
             "checkout": "mncs-fabric",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 2,
+            "revision": 3,
             "status": "present"
           },
           "maturity": "unknown",
@@ -1121,7 +1121,7 @@
             "checkout": "mncs-memory",
             "origin": "repository:.mncs/project.json",
             "reason": "observed",
-            "revision": 1,
+            "revision": 2,
             "status": "present"
           },
           "maturity": "unknown",
@@ -3011,8 +3011,8 @@
         "decision_count": 12,
         "edge_count": 391,
         "project_count": 49,
-        "registry_hash": "06bae305c3b22e6dfbe5d94f7b8dd138a9d5a18b063305548af7fcf25f084c5f",
-        "registry_revision": "06bae305c3b22e6d",
+        "registry_hash": "2d7d01f53f674e00b2f6b30298ef4e4b5fb5c644489ae229d70a496344b20435",
+        "registry_revision": "2d7d01f53f674e00",
         "status": "present"
       },
       "commons_complete": true,
@@ -3200,7 +3200,7 @@
       ]
     },
     "schema_version": "mncs-atlas.dashboard-projection/v1",
-    "semantic_hash": "sha256:ffa056f207a223c7a5c41370c8df04bb53131195fcd31de8dd15e60bf5d42c89",
+    "semantic_hash": "sha256:f12f61b926964a0c1176d420817f256267ae97640378c9b75cb2114a45c19354",
     "sources": [
       {
         "content_sha256": "300bd6a7ea7a26805a1c08ff7ff959c506d30cba21281b991ba94dfb7b0e33f4",
@@ -3210,14 +3210,14 @@
         "status": "present"
       },
       {
-        "content_sha256": "f2dc2bd3c03df70103fac6f8ce5cdfbceec369abcc335aec22bded4e00ee99f3",
+        "content_sha256": "7e9c30b97034c2fc4c1d230024daa9c17a9aab68fa5c515c10ccfa3bc1ee153c",
         "id": "atlas-compiled",
         "path": "mncs-atlas/registry/compiled.json",
         "reason": "readable",
         "status": "present"
       },
       {
-        "content_sha256": "0af5bd76d70fd9b0c0a719facefa62f66a128db3164a4bae66d9102692149ce5",
+        "content_sha256": "dcd66108755bfef952b1b36c6bb653f29aaae755270d021dff293ec8be2178fb",
         "id": "workspace-manifests",
         "path": "workspace/*/.mncs/project.json",
         "reason": "50 manifests observed",
@@ -3371,5 +3371,5 @@
       "declared_count": 7
     }
   },
-  "semantic_hash": "sha256:ffa056f207a223c7a5c41370c8df04bb53131195fcd31de8dd15e60bf5d42c89"
+  "semantic_hash": "sha256:f12f61b926964a0c1176d420817f256267ae97640378c9b75cb2114a45c19354"
 }
