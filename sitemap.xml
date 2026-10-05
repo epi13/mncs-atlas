@@ -5,8 +5,7 @@
   </url>
   <url>
     <loc>https://epi13.github.io/mncs-atlas/journal/</loc>
-    <lastmod>2026-09-28</lastmod>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-10-05</lastmod>
   </url>
   <url>
     <loc>https://epi13.github.io/mncs-atlas/journal/2026-08-20-starting-the-development-journal.html</loc>
@@ -25,9 +24,15 @@
     <lastmod>2026-09-20</lastmod>
   </url>
   <url>
-    <loc>https://epi13.github.io/mncs-atlas/journal/2026-09-28-from-model-ownership-to-executable-pressure-records.html</loc>
-    <lastmod>2026-09-28</lastmod>
     <loc>https://epi13.github.io/mncs-atlas/journal/2026-09-21-canonical-pressure-moved-through-migration-repair-and-durable-ownership.html</loc>
     <lastmod>2026-09-21</lastmod>
+  </url>
+  <url>
+    <loc>https://epi13.github.io/mncs-atlas/journal/2026-09-28-from-model-ownership-to-executable-pressure-records.html</loc>
+    <lastmod>2026-09-28</lastmod>
+  </url>
+  <url>
+    <loc>https://epi13.github.io/mncs-atlas/journal/2026-10-05-coherence-moved-from-manifests-into-the-execution-path.html</loc>
+    <lastmod>2026-10-05</lastmod>
   </url>
 </urlset>
